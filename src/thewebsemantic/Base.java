@@ -21,7 +21,7 @@ public class Base {
 	}
 
 	protected String toRDFPropertyName(PropertyDescriptor p) {
-		return HAS + StringUtil.toProperCase(p.getName());
+		return HAS + Util.toProperCase(p.getName());
 	}
 
 	protected RdfProperty annotation(PropertyDescriptor p) {

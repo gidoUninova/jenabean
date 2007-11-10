@@ -1,6 +1,6 @@
 package thewebsemantic;
 
-public class StringUtil {
+public class Util {
 	public static String className(Object bean) {
 		return className(bean.getClass());
 	}
@@ -21,8 +21,7 @@ public class StringUtil {
 			return text.toUpperCase();
 		StringBuilder sb = new StringBuilder();
 		sb.append(text.substring(0, 1).toUpperCase());
-		sb.append(text.substring(1));
-		return sb.toString();
+		return sb.append(text.substring(1)).toString();
 	}
 }
 /*

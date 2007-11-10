@@ -43,7 +43,7 @@ public class TypeWrapper {
 	}
 
 	public String rdfTypeName() {
-		return namespace() + StringUtil.className(c);
+		return namespace() + Util.className(c);
 	}
 
 	public PropertyDescriptor[] descriptors() {
