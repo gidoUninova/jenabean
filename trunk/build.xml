@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ====================================================================== 
+     Nov 5, 2007 3:09:18 PM                                                        
+
+     jenabean    
+     library for saving and retrieving java beans from RDF.
+                   
+     Taylor Cowan                                                               
+     ====================================================================== -->
+<project name="jenabean" default="default">
+
+	<property name="src" location="src" />
+	<property name="build" location="build" />
+	<property name="dist" location="dist" />
+
+	<description>
+    	library for saving and retrieving java beans from RDF.
+    </description>
+
+	<target name="default" depends="init" description="--> library for saving and retrieving java beans from RDF.">
+		<javac srcdir="${src}" destdir="${build}">
+			<classpath>
+				<fileset dir="jenalib">
+					<include name="**/*.jar" />
+				</fileset>
+			</classpath>
+		</javac>
+	</target>
+
+	<target name="init">
+		<tstamp />
+		<mkdir dir="${build}" />
+		<mkdir dir="${dist}" />
+	</target>
+
+	<target name="jar" depends="default">
+		<jar destfile="${dist}/jenabean.jar" basedir="${build}" excludes="**/test/*.class" />
+	</target>
+
+	<target name="clean">
+		<delete verbose="true">
+			<fileset dir="${build}" includes="**/*.class" />
+			<fileset dir="${dist}" includes="**/*.jar" />
+	    </delete>
+	</target>	
+
+</project>
