@@ -175,9 +175,9 @@ public class TestBean2Rdf {
 		
 		Individual i = m.getIndividual(ns + "bogus");
 		assertEquals(null, i);
-		i = m.getIndividual(ns + "IdTesterBean" + bean.getId());
+		i = m.getIndividual(ns + "IdTesterBean/" + bean.getId());
 		assertNotNull(i);
-		assertEquals(ns+"IdTesterBean"+bean.getId(), i.getURI());
+		assertEquals(ns+"IdTesterBean/"+bean.getId(), i.getURI());
 		
 		RDF2Bean reader = new RDF2Bean(m);
 		IdTesterBean bean2 = reader.find(IdTesterBean.class, "example");
@@ -320,7 +320,7 @@ public class TestBean2Rdf {
 		OntModel m = ModelFactory.createOntologyModel();
 		Bean2RDF writer = new Bean2RDF(m);
 		writer.write(u);
-		Individual i = m.getIndividual("http://test#User" + u.getScreenName());
+		Individual i = m.getIndividual("http://test#User/" + u.getScreenName());
 		
 		Property p = m.getProperty("http://test#" + "hasProfile");
 		assertNotNull(i);
@@ -340,7 +340,7 @@ public class TestBean2Rdf {
 		profile.setLastName("Smith");
 		writer.write(u);
 		
-		i = m.getIndividual("http://test#User" + u.getScreenName());
+		i = m.getIndividual("http://test#User/" + u.getScreenName());
 		assertNotNull(i);
 		p = m.getProperty("http://test#" + "hasEmail");
 		Literal l = (Literal)i.getPropertyValue(p);
