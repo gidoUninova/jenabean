@@ -28,10 +28,6 @@ public class Base {
 		return (RdfProperty) p.getReadMethod().getAnnotation(RdfProperty.class);
 	}
 
-	protected boolean isAnnotated(Object o) {
-		return annotated(o.getClass());
-	}
-
 	protected boolean isAnnotated(PropertyDescriptor p) {
 		return p.getReadMethod().isAnnotationPresent(RdfProperty.class);
 	}

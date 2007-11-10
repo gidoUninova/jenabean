@@ -50,7 +50,7 @@ public class RDF2Bean extends Base {
 		TypeWrapper type = TypeWrapper.get(c);
 		m.enterCriticalSection(Lock.READ);
 		cycle = new HashMap<String, Object>();
-		T result = (!annotated(c)) ? null : toObject(c, m.getIndividual(type.rdfTypeName()
+		T result = (!annotated(c)) ? null : toObject(c, m.getIndividual(type.typeUri() + '/'
 				+ id));
 		m.leaveCriticalSection();
 		return result;
@@ -60,7 +60,7 @@ public class RDF2Bean extends Base {
 		try {
 			if (i == null)
 				return null;
-			return (isCycle(i)) ? (T) cycle.get(i.getURI()):applyProperties(c, i);
+			return (isCycle(i)) ? (T)cycle.get(i.getURI()):applyProperties(c, i);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -68,7 +68,7 @@ public class RDF2Bean extends Base {
 	}
 
 	private <T> T toObject(Class<T> c, RDFNode node) {
-		return (node.isLiteral()) ? (T) asLiteral(node).getValue() : toObject(
+		return (node.isLiteral()) ? (T)asLiteral(node).getValue() : toObject(
 				c, asIndividual(node));
 	}
 	
@@ -101,8 +101,8 @@ public class RDF2Bean extends Base {
 		return list;
 	}
 
-	private OntClass getOntClass(Class<?> c) {String s = TypeWrapper.get(c).rdfTypeName();
-		return m.getOntClass(TypeWrapper.get(c).rdfTypeName());
+	private OntClass getOntClass(Class<?> c) {
+		return m.getOntClass(TypeWrapper.get(c).typeUri());
 	}
 
 	/**

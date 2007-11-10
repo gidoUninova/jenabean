@@ -36,7 +36,7 @@ public class TypeWrapperTests {
 	@Test
 	public void testUri() {
 		TypeWrapper t1 = TypeWrapper.get(DeepBean.class);
-		assertEquals("http://test#DeepBean", t1.rdfTypeName());
+		assertEquals("http://test#DeepBean", t1.typeUri());
 		
 	}
 }

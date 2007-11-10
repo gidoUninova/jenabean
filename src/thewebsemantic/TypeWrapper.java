@@ -34,6 +34,10 @@ public class TypeWrapper {
 		return get(c).namespace();
 	}
 	
+	public static boolean isMarked(Object o) {
+		return o.getClass().isAnnotationPresent(Namespace.class);
+	}
+	
 	public static synchronized TypeWrapper type(Object o) {
 		return get(o.getClass());
 	}
@@ -42,7 +46,7 @@ public class TypeWrapper {
 		return (cache.containsKey(c)) ? cache.get(c) : new TypeWrapper(c);
 	}
 
-	public String rdfTypeName() {
+	public String typeUri() {
 		return namespace() + Util.className(c);
 	}
 
@@ -62,7 +66,7 @@ public class TypeWrapper {
 		for (MethodDescriptor md : info.getMethodDescriptors())
 			if (isUri(md))
 				return invokeIdMethod(bean, md.getMethod());
-		return rdfTypeName() + id(bean);
+		return typeUri() + '/' + id(bean);
 	}
 
 	private String id(Object bean) {

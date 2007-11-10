@@ -56,7 +56,7 @@ public class Bean2RDF extends Base {
 	}
 
 	public synchronized Resource write(Object bean) {
-		if (!isAnnotated(bean))
+		if (!isMarked(bean))
 			return null;
 		m.enterCriticalSection(Lock.WRITE);
 		cycle = new ArrayList<Object>();
@@ -66,7 +66,7 @@ public class Bean2RDF extends Base {
 	}
 
 	private Resource _write(Object bean) {
-		Resource rdfType = m.createClass(type(bean).rdfTypeName());
+		Resource rdfType = m.createClass(type(bean).typeUri());
 		Resource rdfResource = findOrNew(rdfType, type(bean).uri(bean));
 		if (cycle.contains(bean))
 			return rdfResource;
@@ -93,7 +93,7 @@ public class Bean2RDF extends Base {
 				Property property = toRdfProperty(ns(bean), p);
 				if ( o instanceof Collection)
 					updateCollection(subject, property, (Collection<?>) o);
-				else if (isAnnotated(o))
+				else if (isMarked(o))
 					updateOrAddBindable(subject, property, o);
 				else
 					getSaver(subject, property).write(o);
@@ -116,7 +116,7 @@ public class Bean2RDF extends Base {
 		subject.removeAll(property);
 		AddSaver saver = new AddSaver(subject, property);
 		for (Object o : c)
-			if (isAnnotated(o))
+			if (isMarked(o))
 				subject.addProperty(property, _write(o)); //recursive
 			else
 				saver.write(o); //leaf
