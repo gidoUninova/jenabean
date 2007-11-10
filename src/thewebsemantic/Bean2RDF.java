@@ -1,6 +1,7 @@
 package thewebsemantic;
 
 import java.beans.PropertyDescriptor;
+import static thewebsemantic.TypeWrapper.*;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -65,9 +66,8 @@ public class Bean2RDF extends Base {
 	}
 
 	private Resource _write(Object bean) {
-		TypeWrapper type = TypeWrapper.get(bean);
-		Resource rdfType = m.createClass(type.rdfTypeName() );
-		Resource rdfResource = findOrNew(rdfType, type.uri(bean));
+		Resource rdfType = m.createClass(type(bean).rdfTypeName());
+		Resource rdfResource = findOrNew(rdfType, type(bean).uri(bean));
 		if (cycle.contains(bean))
 			return rdfResource;
 		cycle.add(bean);
@@ -83,15 +83,14 @@ public class Bean2RDF extends Base {
 	}
 
 	protected Resource write(Object bean, Resource subject) {
-		TypeWrapper type = TypeWrapper.get(bean);
 		try {
-			for (PropertyDescriptor p : type.descriptors()) {
+			for (PropertyDescriptor p : type(bean).descriptors()) {
 				if (p.getWriteMethod() == null )
 					continue;
 				Object o = p.getReadMethod().invoke(bean);
 				if (o == null)
 					continue;
-				Property property = toRdfProperty(type.namespace(), p);
+				Property property = toRdfProperty(ns(bean), p);
 				if ( o instanceof Collection)
 					updateCollection(subject, property, (Collection<?>) o);
 				else if (isAnnotated(o))
