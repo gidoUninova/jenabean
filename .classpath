@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="jenalib/jena.jar" sourcepath="C:/opt/Jena-2.5.4/src"/>
+	<classpathentry kind="lib" path="C:/opt/eclipse/plugins/org.junit4_4.3.1/junit.jar"/>
+	<classpathentry kind="lib" path="jenalib/log4j-1.2.12.jar"/>
+	<classpathentry kind="lib" path="jenalib/commons-logging-1.1.jar"/>
+	<classpathentry kind="lib" path="jenalib/antlr-2.7.5.jar"/>
+	<classpathentry kind="lib" path="jenalib/arq.jar"/>
+	<classpathentry kind="lib" path="jenalib/arq-extra.jar"/>
+	<classpathentry kind="lib" path="jenalib/concurrent.jar"/>
+	<classpathentry kind="lib" path="jenalib/icu4j_3_4.jar"/>
+	<classpathentry kind="lib" path="jenalib/iri.jar"/>
+	<classpathentry kind="lib" path="jenalib/jenatest.jar"/>
+	<classpathentry kind="lib" path="jenalib/json.jar"/>
+	<classpathentry kind="lib" path="jenalib/junit.jar"/>
+	<classpathentry kind="lib" path="jenalib/lucene-core-2.0.0.jar"/>
+	<classpathentry kind="lib" path="jenalib/stax-api-1.0.jar"/>
+	<classpathentry kind="lib" path="jenalib/wstx-asl-3.0.0.jar"/>
+	<classpathentry kind="lib" path="jenalib/xercesImpl.jar"/>
+	<classpathentry kind="lib" path="jenalib/xml-apis.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
