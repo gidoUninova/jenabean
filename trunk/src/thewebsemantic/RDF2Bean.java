@@ -47,9 +47,10 @@ public class RDF2Bean extends Base {
 	}
 
 	public synchronized <T> T find(Class<T> c, String id) {
+		TypeWrapper type = TypeWrapper.get(c);
 		m.enterCriticalSection(Lock.READ);
 		cycle = new HashMap<String, Object>();
-		T result = (!annotated(c)) ? null : toObject(c, m.getIndividual(ns(c)
+		T result = (!annotated(c)) ? null : toObject(c, m.getIndividual(type.rdfTypeName()
 				+ id));
 		m.leaveCriticalSection();
 		return result;

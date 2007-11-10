@@ -7,6 +7,19 @@ import org.junit.Test;
 import thewebsemantic.TypeWrapper;
 
 public class TypeWrapperTests {
+	
+	@Test
+	public void testUri2() {
+		TypeWrapper t1 = TypeWrapper.get(TestUriBean.class);
+		TestUriBean bean = new TestUriBean();
+		bean.setAddress("123 barcamp drive");
+		bean.setCity("JenaTown");
+		bean.setCountry("GB");
+		assertEquals(bean.theUriMethod(), t1.uri(bean));
+		
+		
+	}
+	
 	@Test
 	public void testBasic() {
 		// check caching (there can only be one)

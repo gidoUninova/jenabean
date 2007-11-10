@@ -10,17 +10,16 @@ import thewebsemantic.RdfProperty;
 /**
  * Example domain object for storing book info.
  * 
- * @RdfProperty annotations are used to indicate the Dublib Core property to
- *              bean property bindings. The class itself is given a required
- *              namespace of "http://example.org/".
+ * RdfProperty annotations are used to indicate the Dublin Core property to bean
+ * property bindings. The class itself is given a required namespace of
+ * "http://example.org/".
  * 
  * Note, all properties need not be bound via the RdfProperty annotation. Take
  * for example the isbn property of this bean, which is mapped as part of the
  * beans own namespace. The Id annotation is important, indicating which
  * property is the "natural key" for the bean. If this were missing Bean2RDF
- * would use the beans hashCode() method instead...which is not ideal since
- * the default hashCode() isn't guaranteed to return a unique integer.
- * own.
+ * would use the beans hashCode() method instead...which is not ideal since the
+ * default hashCode() isn't guaranteed to return a unique integer. own.
  * 
  * @author Taylor Cowan
  */

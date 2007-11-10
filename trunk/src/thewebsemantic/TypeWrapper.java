@@ -27,14 +27,14 @@ public class TypeWrapper {
 	}
 
 	public static String ns(Object o) {
-		return get(o).namespace();
+		return type(o).namespace();
 	}
 	
 	public static String ns(Class<?> c) {
 		return get(c).namespace();
 	}
 	
-	public static synchronized TypeWrapper get(Object o) {
+	public static synchronized TypeWrapper type(Object o) {
 		return get(o.getClass());
 	}
 
@@ -59,7 +59,10 @@ public class TypeWrapper {
 	}
 
 	public String uri(Object bean) {
-		return namespace() + id(bean);
+		for (MethodDescriptor md : info.getMethodDescriptors())
+			if (isUri(md))
+				return invokeIdMethod(bean, md.getMethod());
+		return rdfTypeName() + id(bean);
 	}
 
 	private String id(Object bean) {
@@ -93,4 +96,13 @@ public class TypeWrapper {
 	private boolean isId(MethodDescriptor md) {
 		return isId(md.getMethod());
 	}
+	
+	private boolean isUri(MethodDescriptor md) {
+		return isUri(md.getMethod());
+	}	
+
+	private boolean isUri(Method m) {
+		return m.isAnnotationPresent(Uri.class);
+	}
+
 }
