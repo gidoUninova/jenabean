@@ -40,7 +40,7 @@ public class Base {
 		return toRdfProperty(ns(o), p);
 	}
 
-	protected Property toRdfProperty(String namespace, PropertyDescriptor p) {
+	private Property toRdfProperty(String namespace, PropertyDescriptor p) {
 		if (isAnnotated(p))
 			return createProperty(p);
 		else

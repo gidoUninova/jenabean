@@ -30,10 +30,6 @@ public class TypeWrapper {
 		return type(o).namespace();
 	}
 	
-	public static String ns(Class<?> c) {
-		return get(c).namespace();
-	}
-	
 	public static boolean isMarked(Object o) {
 		return o.getClass().isAnnotationPresent(Namespace.class);
 	}
@@ -58,14 +54,11 @@ public class TypeWrapper {
 		return (Namespace) c.getAnnotation(Namespace.class);
 	}
 
-	public String namespace() {
+	private String namespace() {
 		return getNamespaceAnnotation().value();
 	}
 
 	public String uri(Object bean) {
-		for (MethodDescriptor md : info.getMethodDescriptors())
-			if (isUri(md))
-				return invokeIdMethod(bean, md.getMethod());
 		return typeUri() + '/' + id(bean);
 	}
 

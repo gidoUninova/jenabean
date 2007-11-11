@@ -1,8 +1,6 @@
 package thewebsemantic;
 
 import static thewebsemantic.JenaHelper.*;
-import static thewebsemantic.TypeWrapper.ns;
-
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -58,9 +56,8 @@ public class RDF2Bean extends Base {
 
 	private <T> T toObject(Class<T> c, Individual i) {
 		try {
-			if (i == null)
-				return null;
-			return (isCycle(i)) ? (T)cycle.get(i.getURI()):applyProperties(c, i);
+			if (i != null)
+				return (isCycle(i)) ? (T)cycle.get(i.getURI()):applyProperties(c, i);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
