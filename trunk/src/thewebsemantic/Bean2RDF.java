@@ -25,7 +25,7 @@ import com.hp.hpl.jena.shared.Lock;
  * RdfProperty annotation along with the getter method. The value supplied to
  * the RdfProperty annotation is taken as the full RDF property URI.
  * <br/><br/>
- * The bean itself is typed using the Namespace along with the bean name, for
+ * The bean itself is typed using the Namespace annotation along with the bean name, for
  * example, Book.class with namespace "http://example.org/" becomes rdf type
  * "http://example.org/Book".
  * <br/><br/>
@@ -90,7 +90,7 @@ public class Bean2RDF extends Base {
 				Object o = p.getReadMethod().invoke(bean);
 				if (o == null)
 					continue;
-				Property property = toRdfProperty(ns(bean), p);
+				Property property = toRdfProperty(bean, p);
 				if ( o instanceof Collection)
 					updateCollection(subject, property, (Collection<?>) o);
 				else if (isMarked(o))

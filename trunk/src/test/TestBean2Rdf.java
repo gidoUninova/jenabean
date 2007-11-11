@@ -43,7 +43,6 @@ public class TestBean2Rdf {
 			writer.write(new A("" + i));
 		
 		m.write(new FileWriter("tmp.rdf"));
-		m.write(System.out);
 		
 
 		// read from file to ensure complete separation from first model
