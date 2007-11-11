@@ -94,12 +94,6 @@ public class TypeWrapper {
 		return isId(md.getMethod());
 	}
 	
-	private boolean isUri(MethodDescriptor md) {
-		return isUri(md.getMethod());
-	}	
 
-	private boolean isUri(Method m) {
-		return m.isAnnotationPresent(Uri.class);
-	}
 
 }
