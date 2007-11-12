@@ -24,13 +24,26 @@ import com.hp.hpl.jena.rdf.model.RDFNode;
 public class TestBean2Rdf {
 	
 	@Test
+	public void testExists() throws Exception {
+		OntModel m = ModelFactory.createOntologyModel(OntModelSpec.OWL_MEM_RDFS_INF);	
+		final Bean2RDF writer = new Bean2RDF(m);
+		final User u = new User();
+		writer.write(u);
+		
+		RDF2Bean reader = new RDF2Bean(m);
+		assertTrue(reader.exists(User.class, u.getScreenName()));
+		assertFalse(reader.exists(User.class, "not there"));
+		
+		
+	}
+	@Test
 	public void testThreads() throws Exception {
 		OntModel m = ModelFactory.createOntologyModel(OntModelSpec.OWL_MEM_RDFS_INF);	
 		final Bean2RDF writer = new Bean2RDF(m);
 		
 		final User u = new User();
 		u.setEmail("email@place.com");
-		u.setEmail("123asdf");
+		u.setScreenName("123asdf");
 		Profile p = new Profile("tcowan");
 		p.setFirstName("First");
 		p.setLastName("LastLastLast");
@@ -77,15 +90,13 @@ public class TestBean2Rdf {
 		bean1 = reader.find(A.class, "taylor");
 		assertEquals(2, bean1.getFriends().size());
 		Collection<A> friends = bean1.getFriends();
-		for (A a : friends) {
+		for (A a : friends)
 			assertTrue(a.getId().equals("lois") || a.getId().equals("mark"));
-		}
 		bean1 = reader.find(A.class, "lois");
 		assertEquals(2, bean1.getFriends().size());
 		friends = bean1.getFriends();
-		for (A a : friends) {
+		for (A a : friends)
 			assertTrue(a.getId().equals("taylor") || a.getId().equals("jay"));
-		}	
 		
 		assertEquals(reader.loadAll(A.class).size(), 104);
 		

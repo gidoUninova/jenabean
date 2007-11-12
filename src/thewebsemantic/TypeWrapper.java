@@ -58,6 +58,10 @@ public class TypeWrapper {
 		return getNamespaceAnnotation().value();
 	}
 
+	public String uri(String id) {
+		return typeUri() + '/' + id;
+	}
+	
 	public String uri(Object bean) {
 		return typeUri() + '/' + id(bean);
 	}

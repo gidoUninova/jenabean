@@ -1,6 +1,7 @@
 package thewebsemantic;
 
 import static thewebsemantic.JenaHelper.*;
+import static thewebsemantic.TypeWrapper.get;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -45,13 +46,16 @@ public class RDF2Bean extends Base {
 	}
 
 	public synchronized <T> T find(Class<T> c, String id) {
-		TypeWrapper type = TypeWrapper.get(c);
 		m.enterCriticalSection(Lock.READ);
 		cycle = new HashMap<String, Object>();
-		T result = (!annotated(c)) ? null : toObject(c, m.getIndividual(type.typeUri() + '/'
-				+ id));
+		T result = (!annotated(c)) ? null : toObject(c, m.getIndividual(get(c).uri(id)));
 		m.leaveCriticalSection();
 		return result;
+	}
+	
+	public boolean exists(Class<?> c, String id) {
+		String uri = get(c).uri(id);
+		return !(m.getIndividual(uri)==null);
 	}
 
 	private <T> T toObject(Class<T> c, Individual i) {
