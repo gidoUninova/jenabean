@@ -23,6 +23,31 @@ import com.hp.hpl.jena.rdf.model.RDFNode;
 
 public class TestBean2Rdf {
 	
+	@Test
+	public void testThreads() throws Exception {
+		OntModel m = ModelFactory.createOntologyModel(OntModelSpec.OWL_MEM_RDFS_INF);	
+		final Bean2RDF writer = new Bean2RDF(m);
+		
+		final User u = new User();
+		u.setEmail("email@place.com");
+		u.setEmail("123asdf");
+		Profile p = new Profile("tcowan");
+		p.setFirstName("First");
+		p.setLastName("LastLastLast");
+		u.setProfile(p);
+		u.setScreenName("tcowan");
+		Runnable t = new Runnable() {		
+			@Override
+			public void run() {
+				for(int i=0; i<100; i++) {
+					u.setScreenName(i + "");
+					writer.write(u);
+				}
+			}
+		};		
+		new Thread(t).run();
+		new Thread(t).run();
+	}
 	
 	@Test
 	public void testCycle() throws Exception {
