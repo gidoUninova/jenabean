@@ -24,12 +24,21 @@ import com.hp.hpl.jena.rdf.model.RDFNode;
 public class TestBean2Rdf {
 	
 	@Test
+	public void testSimple() {
+		OntModel m = ModelFactory.createOntologyModel(OntModelSpec.OWL_MEM_RDFS_INF);	
+		final Bean2RDF writer = new Bean2RDF(m);
+		KeepItSimple bean = new KeepItSimple();
+		bean.setId("kisv1.1");
+		bean.setValue(444);
+		writer.write(bean);
+	}
+	
+	@Test
 	public void testExists() throws Exception {
 		OntModel m = ModelFactory.createOntologyModel(OntModelSpec.OWL_MEM_RDFS_INF);	
 		final Bean2RDF writer = new Bean2RDF(m);
 		final User u = new User();
-		writer.write(u);
-		
+		writer.write(u);		
 		RDF2Bean reader = new RDF2Bean(m);
 		assertTrue(reader.exists(User.class, u.getScreenName()));
 		assertFalse(reader.exists(User.class, "not there"));
