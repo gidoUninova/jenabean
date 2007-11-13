@@ -31,5 +31,7 @@ public class Bar...
 public String getIsbn() ...
 }}}
 
+jenabean does not support the old "multipart" key bondings like EJB.  Just create one method that returns the multipart key as a concatenated string.  The @Id method may also return an integer if you like.
+
 ==thewebsemantic.RdfProperty( uri ) ==
 @RdfProperty is optional and applied to getter methods.  It's usefull when you do not want the default rdf property bindings (name...hasName...age...hasAge).  The argumnent supplied to @RdfProperty is a URI, an RDF property URI.  If the property exists in the model, it'll be reused, otherwise jena will create it.
