@@ -9,14 +9,24 @@ There are three primary annotations:
   * @Id - indicates the primary key field of the bean.
   * @RdfProperty - allows you to override the default property naming convention of jenabean.
 
-==Namespace( namespace )==
-This annotation is required.  Any object other than a primitive, primitive wrapper, or java.util.Data will be ignored by *jenabean* unless it has this annotation.  This annotation is applied to the class declaration.
+==thewebsemantic.Namespace( namespace )==
+This annotation is required and takes one argument.  Any object other than a primitive, primitive wrapper, or java.util.Data will be ignored by *jenabean* unless it has this annotation.  This annotation is applied to the class declaration.
 
 {{{
+import thewebsematic.Namespace;
+
 @Namespace("http://example.org#")
 public class Foo...
 
 @Namespace("http://my.domain.com/")
 public class Bar...
 
+}}}
+
+==thewebsemantic.Id==
+@Id is optional but recommended.  If ommited jenabean will use the object's `hashCode()` method to derive it's unique id.  `hashCode()` doesn't guarantee unique id's, and the generated ids will be difficult to recreate should you need to find your Individual once persisted.  It is therefore preferable that you mark one method as returning the beans Id.  This should be the most natural key property, for example, a User bean's id would be the screen name or even better, email address.  A book's id would be it's isbn number...
+
+{{{
+@Id
+public String getIsbn() ...
 }}}
