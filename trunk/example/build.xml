@@ -40,6 +40,7 @@
 			<fileset dir="../jenalib"/>
 			<fileset dir="../dist"/>
 		</copy>
+		<copy todir="${build}" file="${src}/StripesResources.properties"/>
 	</target>
 
 	<target name="jar" depends="default">
@@ -49,6 +50,7 @@
 	<target name="clean">
 		<delete dir="${build}" />
 		<delete dir="${lib}" />
+		<delete file="blog.war"/>
 	</target>	
 
 </project>
