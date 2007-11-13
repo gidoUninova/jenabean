@@ -1,15 +1,22 @@
 #summary How to use annotations to persist your objects with jenabean.
 
 = Introduction =
-
 RDF/OWL individuals are identified by a URI.  jenabean annotations are primarily for the purpose of helping you tell jenabean how to map your object to a valid URI.
 
 = Details =
-
 There are three primary annotations:
   * @Namespace - gives a namespace to the java class.
   * @Id - indicates the primary key field of the bean.
   * @RdfProperty - allows you to override the default property naming convention of jenabean.
 
 ==Namespace( namespace )==
-This annotation is required.  Any object other than a primitive, primitive wrapper, or java.util.Data will be ignored by *jenabean* unless it has this annotation.
+This annotation is required.  Any object other than a primitive, primitive wrapper, or java.util.Data will be ignored by *jenabean* unless it has this annotation.  This annotation is applied to the class declaration.
+
+{{{
+@Namespace("http://example.org#")
+public class Foo...
+
+@Namespace("http://my.domain.com/")
+public class Bar...
+
+}}}
