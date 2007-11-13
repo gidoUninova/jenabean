@@ -38,10 +38,8 @@
 	</target>
 
 	<target name="clean">
-		<delete verbose="true">
-			<fileset dir="${build}" includes="**/*.class" />
-			<fileset dir="${dist}" includes="**/*.jar" />
-	    </delete>
+		<delete dir="${build}" />
+		<delete dir="${dist}" />
 	</target>	
 
 </project>
