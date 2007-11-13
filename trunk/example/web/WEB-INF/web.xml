@@ -47,7 +47,6 @@
 		<url-pattern>*.action</url-pattern>
 	</servlet-mapping>
 
-
 	<listener>
 		<listener-class>example.ContextListener</listener-class>
 	</listener>
@@ -56,6 +55,9 @@
     	<listener-class>example.SessionListener</listener-class>
     </listener>
  
+	<welcome-file-list>
+		<welcome-file>index.jsp</welcome-file>
+	</welcome-file-list>
 
 </web-app>
 
