@@ -14,6 +14,11 @@ public class Util {
 		return (i > 0) ? type.substring(i + 1) : type;
 	}
 	
+	public static String last(String path) {
+		int i = path.lastIndexOf('/');
+		return (i > 0) ? path.substring(i+1) : path;
+	}
+	
 	public static String toProperCase(String text) {
 		if ((text == null) || (text.length() == 0))
 			return null;

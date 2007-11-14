@@ -31,7 +31,6 @@ public class TestBean2Rdf {
 		bean.setId("kisv1.1");
 		bean.setValue(444);
 		writer.write(bean);
-		m.write(System.out);
 	}
 	
 	@Test

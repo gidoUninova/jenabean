@@ -4,6 +4,7 @@ import static thewebsemantic.PrimitiveWrapper.isPrimitive;
 import static thewebsemantic.TypeWrapper.ns;
 
 import java.beans.PropertyDescriptor;
+import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.util.Collection;
 
@@ -52,31 +53,41 @@ public class Base {
 	}
 
 	private Property createProperty(String ns, PropertyDescriptor p) {
-		OntProperty op  = m.createOntProperty(ns + toRDFPropertyName(p));
-		if ( isSymmetric(p))
+		OntProperty op = m.createOntProperty(ns + toRDFPropertyName(p));
+		if (isSymmetric(p))
 			op.convertToSymmetricProperty();
 		return op;
 	}
 
 	private boolean isSymmetric(PropertyDescriptor p) {
-		return p.getReadMethod().isAnnotationPresent(Semetric.class);
+		return (p.getReadMethod().isAnnotationPresent(Symmetric.class)) ? true
+				: isSymmetric(annotation(p));
+	}
+	
+	private boolean isSymmetric(RdfProperty a) {
+		return (a!= null && a.symmetric());	
 	}
 
 	protected boolean isCollection(PropertyDescriptor property) {
-		if (property.getPropertyType().equals(Collection.class)) {
-			Class<?> c = t(property);
-			return (c != null && (annotated(c) || isPrimitive(c)));
-		}
-		return false;
+		return (property.getPropertyType().equals(Collection.class)) ?
+			supportedType(t(property)) : false;
+	}
+	
+	protected boolean supportedType(Class<?> c) {
+		return ((annotated(c) || isPrimitive(c)));
 	}
 
 	protected Class<?> t(PropertyDescriptor propDesc) {
 		ParameterizedType type = (ParameterizedType) propDesc.getReadMethod()
 				.getGenericReturnType();
-		return (type == null) ? null
+		return (type == null) ? NullType.class
 				: (Class<?>) type.getActualTypeArguments()[0];
 	}
 
+	protected Property toRdfProperty(Object bean, Field f) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }
 
