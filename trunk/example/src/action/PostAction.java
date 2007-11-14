@@ -37,8 +37,8 @@ public class PostAction extends BaseAction {
 	}
 
 	@ValidateNestedProperties({
-        @Validate(field="title", required=true, maxlength=75, on = "login"),
-        @Validate(field="content", required=true, maxlength=5000, on = "login")
+        @Validate(field="title", required=true, maxlength=75, on = "post"),
+        @Validate(field="content", required=true, maxlength=5000, on = "post")
     })
 	public Post getPost() {
 		return post;
