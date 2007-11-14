@@ -9,6 +9,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME) 
 public @interface RdfProperty {
 	String value();
+	boolean symmetric() default false;
 }
 /*
 	Copyright (c) 2007 Taylor Cowan

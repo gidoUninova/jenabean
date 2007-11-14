@@ -5,7 +5,7 @@ import java.util.LinkedList;
 
 import thewebsemantic.Id;
 import thewebsemantic.Namespace;
-import thewebsemantic.Semetric;
+import thewebsemantic.Symmetric;
 
 @Namespace("http://example.org/")
 public class A {
@@ -28,7 +28,8 @@ public class A {
 	public void setId(String id) {
 		this.id = id;
 	}
-	@Semetric
+	
+	@Symmetric
 	public Collection<A> getFriends() {
 		return friends;
 	}

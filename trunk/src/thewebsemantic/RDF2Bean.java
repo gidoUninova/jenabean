@@ -1,8 +1,10 @@
 package thewebsemantic;
 
 import static thewebsemantic.JenaHelper.*;
+import static thewebsemantic.Util.last;
 import static thewebsemantic.TypeWrapper.get;
 import java.beans.PropertyDescriptor;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -82,11 +84,38 @@ public class RDF2Bean extends Base {
 	}
 
 	private <T> T applyProperties(Class<T> c, Individual source) throws InstantiationException, IllegalAccessException {
-		T target = c.newInstance();
+		T target = newInstance(c, source);
 		cycle.put(source.getURI(), target);
 		for (PropertyDescriptor property : TypeWrapper.get(c).descriptors())
 			apply(source, target, property);
 		return target;
+	}
+	
+	private <T> T newInstance(Class<T> c, Individual source) {
+		T o = null;
+		Constructor<T> m;
+		try {			
+			try {
+				m = c.getConstructor(String.class);
+				if (m != null) 
+					o = m.newInstance(last(source.getURI()));
+			} catch (NoSuchMethodException e) {
+				//so what?
+			}
+			if (o==null)
+				o = c.newInstance();
+		} catch (SecurityException e) {
+			e.printStackTrace();
+		} catch (InstantiationException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			e.printStackTrace();
+		}
+		return o;
 	}
 
 	public synchronized <T> Collection<T> loadAll(Class<T> c) {
@@ -122,7 +151,7 @@ public class RDF2Bean extends Base {
 		NodeIterator nodes = i.listPropertyValues(toRdfProperty(o, property));
 		if (nodes == null || !nodes.hasNext())
 			return;
-		if (isCollection(property))
+		else if (isCollection(property))
 			collection(o, property, nodes);
 		else if (annotated(property.getPropertyType()))
 			applyIndividual(o, property, asIndividual(nodes.nextNode()));

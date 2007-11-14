@@ -1,7 +1,11 @@
 package thewebsemantic;
 
+import static thewebsemantic.TypeWrapper.isMarked;
+import static thewebsemantic.TypeWrapper.type;
+
 import java.beans.PropertyDescriptor;
-import static thewebsemantic.TypeWrapper.*;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -84,24 +88,34 @@ public class Bean2RDF extends Base {
 
 	protected Resource write(Object bean, Resource subject) {
 		try {
-			for (PropertyDescriptor p : type(bean).descriptors()) {
-				if (p.getWriteMethod() == null )
-					continue;
-				Object o = p.getReadMethod().invoke(bean);
-				if (o == null)
-					continue;
-				Property property = toRdfProperty(bean, p);
-				if ( o instanceof Collection)
-					updateCollection(subject, property, (Collection<?>) o);
-				else if (isMarked(o))
-					updateOrAddBindable(subject, property, o);
-				else
-					getSaver(subject, property).write(o);
+			for (PropertyDescriptor p : type(bean).descriptors())
+				if (p.getWriteMethod() != null)
+					invokeGetter(bean, subject, p);
+			for (Field f : type(bean).fields()) {
+				//TODO:
+				Property rdfP = toRdfProperty(bean, f);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return subject;
+	}
+
+	private void invokeGetter(Object bean, Resource subject,
+			PropertyDescriptor p) throws IllegalAccessException,
+			InvocationTargetException {
+		Object o = p.getReadMethod().invoke(bean);
+		if (o != null)
+			saveOrUpdate(subject, o, toRdfProperty(bean, p));
+	}
+
+	private void saveOrUpdate(Resource subject, Object o, Property property) {
+		if ( o instanceof Collection)
+			updateCollection(subject, property, (Collection<?>) o);
+		else if (isMarked(o))
+			updateOrAddBindable(subject, property, o);
+		else
+			getSaver(subject, property).write(o);
 	}
 
 	/**
