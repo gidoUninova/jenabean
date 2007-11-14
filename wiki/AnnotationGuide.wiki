@@ -1,7 +1,7 @@
 #summary How to use annotations to persist your objects with jenabean.
 
 = Introduction =
-RDF/OWL individuals are identified by a URI.  jenabean annotations are primarily for the purpose of helping you tell jenabean how to map your object to a valid URI.
+RDF/OWL individuals are identified by a unique URI. *jenabean* uses annotations to allow developers to indicate how that URI is constucted for their classes.  
 
 = Details =
 There are three primary annotations:
@@ -10,7 +10,7 @@ There are three primary annotations:
   * @RdfProperty - allows you to override the default property naming convention of jenabean.
 
 ==thewebsemantic.Namespace( namespace )==
-This annotation is required and takes one argument.  Any object other than a primitive, primitive wrapper, or java.util.Data will be ignored by *jenabean* unless it has this annotation.  This annotation is applied to the class declaration.
+The @Namespace annotation is required and takes one argument.  Any object other than a primitive, primitive wrapper, or `java.util.Date` will be ignored by *jenabean* unless it has this annotation.  A good candidate for your namespace would be your domain name.  For practical purposes, you can consider the namespace value as similar to a java package.  
 
 {{{
 import thewebsematic.Namespace;
