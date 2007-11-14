@@ -1,7 +1,7 @@
 #summary How to use annotations to persist your objects with jenabean.
 
 = Introduction =
-RDF/OWL individuals are identified by a unique URI. *jenabean* uses annotations to allow developers to indicate how that URI is constucted for their classes.  
+RDF/OWL individuals are identified by a unique URI. *jenabean* consults code annotations to contruct an URI for your beans.
 
 = Details =
 There are three primary annotations:
