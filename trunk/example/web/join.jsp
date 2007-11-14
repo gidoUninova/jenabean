@@ -5,15 +5,14 @@
 <stripes:form action="/Join.action" method="post">
 <stripes:errors/>
 <label for="fScreenName">Screen name:</label>
-<stripes:text name="screenName" id="fScreenName" class="text"/>
+<stripes:text name="screenName" id="fScreenName" class="text"/><br/>
 <label for="fEmail">Email:</label>
-<stripes:text name="email" id="fEmail" class="text"/>
-
+<stripes:text name="email" id="fEmail" class="text"/><br/>
 <label for="fPassword">Password:</label>
-<stripes:password name="password" id="fPassword" class="text"/>
+<stripes:password name="password" id="fPassword" class="text"/><br/>
 <label for="fVerify">Verify:</label>
-<stripes:password name="verify" id="fVerify" class="text"/>
-<stripes:submit name="join" value="join"/>		
+<stripes:password name="verify" id="fVerify" class="text"/><br/>
+<label> </label><stripes:submit name="join" value="Join"/><br/>
 </stripes:form>
 
 </stripes:layout-component>

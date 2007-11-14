@@ -5,11 +5,11 @@
 <stripes:form action="/Post.action" method="post">
 <stripes:errors/>
 <label>Title:</label>
-<stripes:text name="post.title" class="text" size="60"/>
+<stripes:text name="post.title" class="text" size="60"/><br/>
 <label>Content:</label>
-<stripes:textarea name="post.content" class="text" rows="15" cols="60" />
+<stripes:textarea name="post.content" class="text" rows="15" cols="60" /><br/>
 <label></label>
-<stripes:submit name="post" value="post" />		
+<stripes:submit name="post" value="post" />
 </stripes:form>
 
 </stripes:layout-component>
