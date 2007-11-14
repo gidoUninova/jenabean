@@ -3,6 +3,9 @@ package example.model;
 import java.rmi.server.UID;
 import java.util.Date;
 
+import thewebsemantic.Namespace;
+
+@Namespace("http://example.org/")
 public class Comment {
 	private String content;
 	private Date createdAt;

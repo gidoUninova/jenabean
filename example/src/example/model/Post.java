@@ -80,7 +80,6 @@ public class Post {
 		this.content = content;
 	}
 	
-	
 	public Collection<Tag> getTags() {
 		return tags;
 	}
@@ -91,5 +90,12 @@ public class Post {
 	
 	public void addTag(Tag t) {
 		tags.add(t);
+	}
+	
+	public int getCommentsCount() {
+		if ( comments != null)
+			return comments.size();
+		else 
+			return 0;
 	}
 }

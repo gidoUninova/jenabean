@@ -1,5 +1,6 @@
 package example;
 
+import thewebsemantic.Base;
 import thewebsemantic.Bean2RDF;
 import thewebsemantic.RDF2Bean;
 import example.model.User;
