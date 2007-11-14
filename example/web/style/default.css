@@ -1,7 +1,47 @@
 label {
-    display: block;
+    width: 200px;
+	text-align:right;
+	float: left;
+}
+
+body {
+	font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	line-height: 2em;
+}
+
+h2 {
+	font-size:16px;
+	margin-bottom:0px;
+	margin-top:10px;
 }
 
 #header {
-	text-align: right;
+	
+}
+
+#content {
+	 clear:both;
+}
+
+a {
+	text-decoration:none
+}
+
+a:visited {
+	color: black	
+}
+
+a:link {
+	color:black;
+}
+
+a:hover {
+	border-bottom: dashed;
+	border-width: 1px;
+	color: red;
+}
+
+br{
+clear: left;
 }
