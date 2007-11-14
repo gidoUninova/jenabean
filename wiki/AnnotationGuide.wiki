@@ -1,7 +1,27 @@
 #summary How to use annotations to persist your objects with jenabean.
 
 = Introduction =
-RDF/OWL individuals are identified by a unique URI. *jenabean* consults code annotations to contruct an URI for your beans.
+RDF/OWL individuals are identified by a unique URI. *jenabean* consults code annotations to contruct an URI for your beans.  Here's a simple example of a basic bean annotated correctly:
+{{{
+@Namespace("http://example.org/")
+public class Book {
+  private String isbn;
+  private String title;
+
+  public Book(String isbn) {
+    this.isbn = isbn;
+  }
+
+  @Id
+  public String isbn() {return isbn;}
+  
+  public void setTitle(String s) {title = s;}
+  public String getTitle() { return title;}
+}
+}}}
+
+For a book the natural choice for an id is its ISBN number.  jenabean merely looks for any method marked with @Id.  The contract requires that your id method return a unique id within scope of the class and namespace you supplied.
+
 
 = Details =
 There are three primary annotations:
