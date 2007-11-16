@@ -10,6 +10,7 @@
     </head>
 
     <body>
+	<div id="page">
     <div id="header">
 	<div style="float:left"><h1><a href="${pageContext.request.contextPath}/">Jenabean Blog</a></h1></div>
 	<div style="float:right">
@@ -25,9 +26,10 @@
     </c:choose>
 	</div>
     </div>
-	  
+	<hr/>
     <div id="content">
     <stripes:layout-component name="contents"/>
+    </div>
     </div>
     </body>
   </html>
