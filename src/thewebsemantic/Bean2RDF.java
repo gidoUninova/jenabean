@@ -91,10 +91,6 @@ public class Bean2RDF extends Base {
 			for (PropertyDescriptor p : type(bean).descriptors())
 				if (p.getWriteMethod() != null)
 					invokeGetter(bean, subject, p);
-			for (Field f : type(bean).fields()) {
-				//TODO:
-				Property rdfP = toRdfProperty(bean, f);
-			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -11,7 +11,6 @@ class UpdateSaver extends Saver {
 		super(subject, property);
 	}
 
-
 	public void save(Literal l) {
 		s.removeAll(p);
 		s.addProperty(p, l);

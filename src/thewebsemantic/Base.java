@@ -41,19 +41,15 @@ public class Base {
 		return toRdfProperty(ns(o), p);
 	}
 
-	private Property toRdfProperty(String namespace, PropertyDescriptor p) {
-		if (isAnnotated(p))
-			return createProperty(p);
-		else
-			return createProperty(namespace, p);
+	private Property toRdfProperty(String ns, PropertyDescriptor p) {
+		return applyEntailments(p, m.createOntProperty(uri(p, ns)));
 	}
 
-	private OntProperty createProperty(PropertyDescriptor p) {
-		return m.createOntProperty(annotation(p).value());
+	private String uri(PropertyDescriptor p, String ns) {
+		return (isAnnotated(p)) ? annotation(p).value() : ns + toRDFPropertyName(p);
 	}
-
-	private Property createProperty(String ns, PropertyDescriptor p) {
-		OntProperty op = m.createOntProperty(ns + toRDFPropertyName(p));
+	
+	private Property applyEntailments(PropertyDescriptor p, OntProperty op) {
 		if (isSymmetric(p))
 			op.convertToSymmetricProperty();
 		return op;
@@ -82,11 +78,6 @@ public class Base {
 				.getGenericReturnType();
 		return (type == null) ? NullType.class
 				: (Class<?>) type.getActualTypeArguments()[0];
-	}
-
-	protected Property toRdfProperty(Object bean, Field f) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 }

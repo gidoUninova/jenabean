@@ -111,6 +111,30 @@ public class TestBean2Rdf {
 		
 		
 	}
+
+	
+	@Test
+	public void testSymmetric2() throws Exception {
+		OntModel m = ModelFactory.createOntologyModel(OntModelSpec.OWL_MEM_MICRO_RULE_INF);	
+		Bean2RDF writer = new Bean2RDF(m);
+		SymmetricBean bean1 = new SymmetricBean("bean1");
+		SymmetricBean adjacent1 = new SymmetricBean("adjacent1");
+		SymmetricBean adjacent2 = new SymmetricBean("adjacent2");
+		bean1.addAdjacent(adjacent1);
+		bean1.addAdjacent(adjacent2);
+		writer.write(bean1);
+		m.write(System.out);
+		RDF2Bean reader = new RDF2Bean(m);
+		Collection<SymmetricBean> things = reader.loadAll(SymmetricBean.class);
+		assertEquals(3, things.size());
+		
+		SymmetricBean b = reader.find(SymmetricBean.class, "adjacent1");
+		assertEquals(1, b.getAdjacent().size());
+		for (SymmetricBean symmetricBean : b.getAdjacent()) {
+			assertEquals("bean1", symmetricBean.getId());
+		}
+		
+	}
 	
 	@Test
 	public void testSymmetric() throws Exception {
