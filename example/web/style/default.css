@@ -5,15 +5,32 @@ label {
 }
 
 body {
-	font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+	color: #666666;
+	margin:50px 0px; padding:0px;
+	text-align:center;
+	font-family: Verdana,arial,sans-serif;
 	font-size: 12px;
 	line-height: 2em;
 }
 
-h2 {
+h1 a:visited {
+	color: #669900;
+}
+
+h2 a:visited {
 	font-size:16px;
 	margin-bottom:0px;
 	margin-top:10px;
+	color: #CC6600;
+}
+
+
+#page {
+	width:600px;
+	margin:0px auto;
+	text-align:left;
+	padding:15px;
+
 }
 
 #header {
@@ -28,20 +45,30 @@ a {
 	text-decoration:none
 }
 
-a:visited {
-	color: black	
-}
-
-a:link {
-	color:black;
-}
 
 a:hover {
 	border-bottom: dashed;
 	border-width: 1px;
-	color: red;
 }
 
+a:visited {
+	color: #669900;
+}
+
+a:active {
+	color: #669900;
+}
+
+
 br{
-clear: left;
+	clear: left;
+}
+
+hr {
+	clear: left;
+	color:#B2B2B2;
+    background-color: #B2B2B2;
+    height: 1px;
+	border: 0;
+	
 }
