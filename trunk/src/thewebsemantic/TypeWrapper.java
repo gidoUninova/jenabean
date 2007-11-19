@@ -19,11 +19,15 @@ public class TypeWrapper {
 
 	private Class<?> c;
 	private BeanInfo info;
+	private Method idMethod;
 	private static HashMap<Class<?>, TypeWrapper> cache = new HashMap<Class<?>, TypeWrapper>();
 
 	private <T> TypeWrapper(Class<T> c) {
 		this.c = c;
 		info = beanInfo(c);
+		for (MethodDescriptor md : info.getMethodDescriptors())
+			if (isId(md))
+				idMethod = md.getMethod();
 		cache.put(c, this);
 	}
 
@@ -72,10 +76,7 @@ public class TypeWrapper {
 	}
 
 	private String id(Object bean) {
-		for (MethodDescriptor md : info.getMethodDescriptors())
-			if (isId(md))
-				return invokeIdMethod(bean, md.getMethod());
-		return String.valueOf(bean.hashCode());
+		return ( idMethod != null) ? invokeIdMethod(bean, idMethod) : String.valueOf(bean.hashCode());
 	}
 
 	private BeanInfo beanInfo(Class<?> c) {

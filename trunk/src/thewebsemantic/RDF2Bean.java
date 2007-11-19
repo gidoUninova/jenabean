@@ -56,8 +56,7 @@ public class RDF2Bean extends Base {
 	}
 	
 	public boolean exists(Class<?> c, String id) {
-		String uri = get(c).uri(id);
-		return !(m.getIndividual(uri)==null);
+		return !(m.getIndividual(get(c).uri(id))==null);
 	}
 
 	private <T> T toObject(Class<T> c, Individual i) {
@@ -94,10 +93,10 @@ public class RDF2Bean extends Base {
 	private <T> T newInstance(Class<T> c, Individual source) {
 		T o = null;
 		Constructor<T> m;
-		try {			
+		try {
 			try {
 				m = c.getConstructor(String.class);
-				if (m != null) 
+				if (m != null)
 					o = m.newInstance(last(source.getURI()));
 			} catch (NoSuchMethodException e) {
 				//so what?
@@ -118,6 +117,12 @@ public class RDF2Bean extends Base {
 		return o;
 	}
 
+	/**
+	 * load all rdf entries that map to the bean.
+	 * @param <T>
+	 * @param c
+	 * @return
+	 */
 	public synchronized <T> Collection<T> loadAll(Class<T> c) {
 		cycle = new HashMap<String, Object>();
 		return (!annotated(c)) ? null : loadAll(c, new LinkedList<T>());
