@@ -4,18 +4,20 @@ import java.util.Collection;
 import java.util.LinkedList;
 
 import thewebsemantic.Id;
+import thewebsemantic.Namespace;
 
+@Namespace("http://example.org/")
 public class Tag {
 	private String name;
 	private Collection<Post> members = new LinkedList<Post>();
 
+	public Tag(String name) {
+		this.name = name;
+	}
+
 	@Id
 	public String getName() {
 		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
 	}
 
 	public Collection<Post> getMembers() {

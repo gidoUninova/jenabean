@@ -1,7 +1,6 @@
 package action;
 
 import java.rmi.server.UID;
-
 import net.sourceforge.stripes.action.Before;
 import net.sourceforge.stripes.action.DefaultHandler;
 import net.sourceforge.stripes.action.ForwardResolution;
@@ -16,6 +15,24 @@ import example.model.Post;
 public class PostAction extends BaseAction {
 
 	private Post post;
+	private String[] tags = new String[0];
+	private String tag;
+
+	public String getTag() {
+		return tag;
+	}
+
+	public void setTag(String tag) {
+		this.tag = tag;
+	}
+
+	public String[] getTags() {
+		return tags;
+	}
+
+	public void setTags(String[] tags) {
+		this.tags = tags;
+	}
 
 	@Before(LifecycleStage.EventHandling)
 	public Resolution secure() throws Exception {
@@ -23,15 +40,30 @@ public class PostAction extends BaseAction {
 			new RedirectResolution(LoginAction.class) : null;
 	}
 
+	@Before(LifecycleStage.BindingAndValidation)
+	public void rehydrate() {
+		String id = context.getRequest().getParameter("p");
+		if (id != null)
+			this.post = context.getReader().find(Post.class, id);
+	}
+
 	@DefaultHandler
 	public Resolution start() {
 		return new ForwardResolution("/post.jsp");
 	}
+	
+	@HandlesEvent("tag")
+	public Resolution addTag() {
+		
+		return new ForwardResolution("/post.jsp"); 
+	}
 
 	@HandlesEvent("post")
 	public Resolution post() {
-		post.setAuthor(context.getLogin());
-		post.setId(new UID().toString());
+		if ( post.getId() == null) {
+			post.setAuthor(context.getLogin());
+			post.setId(new UID().toString());
+		}
 		context.getWriter().write(post);
 		return new RedirectResolution(HubAction.class);
 	}
