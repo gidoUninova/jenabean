@@ -9,7 +9,8 @@
 <label for="fPassword">Password:</label>
 <stripes:password name="password" id="fPassword" class="text"/><br/>
 <label> </label>
-<stripes:submit name="login" value="login"/> <stripes:link beanclass="action.JoinAction">create account...</stripes:link><br/>	
+<stripes:submit name="login" value="login"/>
+<stripes:link beanclass="action.JoinAction">create account...</stripes:link><br/>	
 </stripes:form>
 </stripes:layout-component>
 </stripes:layout-render>

@@ -7,6 +7,8 @@
             type="text/css"
             href="${pageContext.request.contextPath}/style/default.css"/>
       <stripes:layout-component name="html-head"/>
+      
+      
     </head>
 
     <body>
@@ -24,9 +26,9 @@
     <stripes:link beanclass="action.LoginAction">sign in</stripes:link>
     </c:when>
     </c:choose>
+    
 	</div>
     </div>
-	<hr/>
     <div id="content">
     <stripes:layout-component name="contents"/>
     </div>
