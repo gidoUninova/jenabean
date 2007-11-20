@@ -17,7 +17,7 @@ public class BaseAction implements ActionBean {
 	}
 	
 	@Override
-	public ActionBeanContext getContext() {
+	public StripesContext getContext() {
 		return context;
 	}
 
