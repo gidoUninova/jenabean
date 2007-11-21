@@ -1,12 +1,12 @@
 package example.model;
 
-import java.rmi.server.UID;
 import java.util.Collection;
 import java.util.Date;
 import java.util.LinkedList;
 
 import thewebsemantic.Id;
 import thewebsemantic.Namespace;
+import thewebsemantic.RdfProperty;
 
 @Namespace("http://example.org/")
 public class Post {
@@ -20,11 +20,6 @@ public class Post {
 
 	public Post() {
 		createdAt = new Date();
-	}
-	
-	public Post(User u) {
-		author = u;
-		id = new UID().toString();
 	}
 
 	@Id

@@ -11,6 +11,8 @@ public class Tag {
 	private String name;
 	private Collection<Post> members = new LinkedList<Post>();
 
+	public Tag() {}
+	
 	public Tag(String name) {
 		this.name = name;
 	}
@@ -18,6 +20,10 @@ public class Tag {
 	@Id
 	public String getName() {
 		return name;
+	}
+	
+	public void setName(String s) {
+		name = s;
 	}
 
 	public Collection<Post> getMembers() {
