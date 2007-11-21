@@ -18,6 +18,7 @@ import com.hp.hpl.jena.ontology.OntClass;
 import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.rdf.model.Literal;
 import com.hp.hpl.jena.rdf.model.NodeIterator;
+import com.hp.hpl.jena.rdf.model.Property;
 import com.hp.hpl.jena.rdf.model.RDFNode;
 import com.hp.hpl.jena.shared.Lock;
 
@@ -85,8 +86,9 @@ public class RDF2Bean extends Base {
 	private <T> T applyProperties(Class<T> c, Individual source) throws InstantiationException, IllegalAccessException {
 		T target = newInstance(c, source);
 		cycle.put(source.getURI(), target);
-		for (PropertyDescriptor property : TypeWrapper.get(c).descriptors())
-			apply(source, target, property);
+		for (PropertyDescriptor p : TypeWrapper.get(c).descriptors())
+			if (p.getWriteMethod() != null)
+				apply(source, target, p);
 		return target;
 	}
 	
@@ -153,7 +155,13 @@ public class RDF2Bean extends Base {
 	 * @throws InvocationTargetException
 	 */
 	private void apply(Individual i, Object o, PropertyDescriptor property) {
-		NodeIterator nodes = i.listPropertyValues(toRdfProperty(o, property));
+		PropertyContext ctx = new PropertyContext(o, property);
+		Property p = m.getOntProperty(ctx.uri());
+		if (p!=null)
+			foo(o, property, i.listPropertyValues(p));
+	}
+
+	private void foo(Object o, PropertyDescriptor property, NodeIterator nodes) {
 		if (nodes == null || !nodes.hasNext())
 			return;
 		else if (isCollection(property))
