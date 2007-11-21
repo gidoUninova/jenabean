@@ -1,6 +1,9 @@
 package action;
 
 import java.rmi.server.UID;
+import java.util.LinkedList;
+import java.util.List;
+
 import net.sourceforge.stripes.action.Before;
 import net.sourceforge.stripes.action.DefaultHandler;
 import net.sourceforge.stripes.action.ForwardResolution;
@@ -11,11 +14,12 @@ import net.sourceforge.stripes.controller.LifecycleStage;
 import net.sourceforge.stripes.validation.Validate;
 import net.sourceforge.stripes.validation.ValidateNestedProperties;
 import example.model.Post;
+import example.model.Tag;
 
 public class PostAction extends BaseAction {
 
 	private Post post;
-	private String[] tags = new String[0];
+	private List<Tag> tags;
 	private String tag;
 
 	public String getTag() {
@@ -26,11 +30,11 @@ public class PostAction extends BaseAction {
 		this.tag = tag;
 	}
 
-	public String[] getTags() {
+	public List<Tag> getTags() {
 		return tags;
 	}
 
-	public void setTags(String[] tags) {
+	public void setTags(List<Tag> tags) {
 		this.tags = tags;
 	}
 
@@ -52,9 +56,8 @@ public class PostAction extends BaseAction {
 		return new ForwardResolution("/post.jsp");
 	}
 	
-	@HandlesEvent("tag")
+	@HandlesEvent("addTag")
 	public Resolution addTag() {
-		
 		return new ForwardResolution("/post.jsp"); 
 	}
 
@@ -64,6 +67,7 @@ public class PostAction extends BaseAction {
 			post.setAuthor(context.getLogin());
 			post.setId(new UID().toString());
 		}
+		post.setTags(tags);
 		context.getWriter().write(post);
 		return new RedirectResolution(HubAction.class);
 	}
