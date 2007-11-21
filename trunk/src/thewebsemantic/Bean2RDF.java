@@ -101,8 +101,9 @@ public class Bean2RDF extends Base {
 			PropertyDescriptor p) throws IllegalAccessException,
 			InvocationTargetException {
 		Object o = p.getReadMethod().invoke(bean);
+		PropertyContext pc = new PropertyContext(bean,p);
 		if (o != null)
-			saveOrUpdate(subject, o, toRdfProperty(bean, p));
+			saveOrUpdate(subject, o, toRdfProperty(pc));
 	}
 
 	private void saveOrUpdate(Resource subject, Object o, Property property) {

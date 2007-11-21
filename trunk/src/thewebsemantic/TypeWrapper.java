@@ -63,12 +63,18 @@ public class TypeWrapper {
 		return (Namespace) c.getAnnotation(Namespace.class);
 	}
 
-	private String namespace() {
+	public String namespace() {
 		return getNamespaceAnnotation().value();
 	}
 
 	public String uri(String id) {
 		return typeUri() + '/' + id;
+	}
+	
+	public String uri(PropertyDescriptor pd) {
+		RdfProperty rdf = pd.getReadMethod().getAnnotation(RdfProperty.class);
+		return (rdf!=null) ? rdf.value() : namespace() + "has" + Util.toProperCase(pd.getName());
+
 	}
 	
 	public String uri(Object bean) {

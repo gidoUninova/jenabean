@@ -90,7 +90,6 @@ public class TestBean2Rdf {
 			writer.write(new A("" + i));
 		
 		m.write(new FileWriter("tmp.rdf"));
-		
 
 		// read from file to ensure complete separation from first model
 		m = ModelFactory.createOntologyModel(OntModelSpec.OWL_MEM_MICRO_RULE_INF);
@@ -123,7 +122,6 @@ public class TestBean2Rdf {
 		bean1.addAdjacent(adjacent1);
 		bean1.addAdjacent(adjacent2);
 		writer.write(bean1);
-		m.write(System.out);
 		RDF2Bean reader = new RDF2Bean(m);
 		Collection<SymmetricBean> things = reader.loadAll(SymmetricBean.class);
 		assertEquals(3, things.size());
@@ -319,7 +317,7 @@ public class TestBean2Rdf {
 		for (DeepBean o : results)
 			assertNotNull(o.getSomeStringData());
 		assertEquals(6, results.size());
-		
+		m.write(System.out);
 	}
 	
 	@Test

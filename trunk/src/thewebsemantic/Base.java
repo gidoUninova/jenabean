@@ -1,7 +1,6 @@
 package thewebsemantic;
 
 import static thewebsemantic.PrimitiveWrapper.isPrimitive;
-import static thewebsemantic.TypeWrapper.ns;
 
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.ParameterizedType;
@@ -35,29 +34,45 @@ public class Base {
 	protected boolean annotated(Class<?> c) {
 		return c.isAnnotationPresent(Namespace.class);
 	}
-
-	protected Property toRdfProperty(Object o, PropertyDescriptor p) {
-		return toRdfProperty(ns(o), p);
-	}
-
-	private Property toRdfProperty(String ns, PropertyDescriptor p) {
-		return applyEntailments(p, m.createOntProperty(uri(p, ns)));
-	}
-
-	private String uri(PropertyDescriptor p, String ns) {
-		return (isAnnotated(p)) ? annotation(p).value() : ns + toRDFPropertyName(p);
+	
+	protected Property toRdfProperty(PropertyContext ctx) {
+		String uri = ctx.uri();
+		Property existingProperty = m.getOntProperty(uri);
+		if ( existingProperty != null)
+			return existingProperty;
+		else
+			return applyEntailments(ctx);
 	}
 	
-	private Property applyEntailments(PropertyDescriptor p, OntProperty op) {
-		if (isSymmetric(p))
+	private Property applyEntailments(PropertyContext ctx) {
+		OntProperty op = m.createOntProperty(ctx.uri());
+		if (isSymmetric(ctx.property))
 			op.convertToSymmetricProperty();
+		if (isInverse(ctx.property))
+			makeInverse(ctx.property, op);
 		return op;
+	}
+
+	private void makeInverse(PropertyDescriptor property, OntProperty op) {
+		Class<?> c = t(property);
+		if (c != NullType.class) {
+			TypeWrapper type = TypeWrapper.get(c);
+			Inverse i = property.getReadMethod().getAnnotation(Inverse.class);
+			for (PropertyDescriptor pd : type.descriptors())
+				if ( pd.getName().equals(i.value()))
+					op.setInverseOf(m.createProperty(type.uri(pd)));
+		}
+	}
+
+	private boolean isInverse(PropertyDescriptor p) {
+		return p.getReadMethod().isAnnotationPresent(Inverse.class);
 	}
 
 	private boolean isSymmetric(PropertyDescriptor p) {
 		return (p.getReadMethod().isAnnotationPresent(Symmetric.class)) ? true
 				: isSymmetric(annotation(p));
 	}
+	
 	
 	private boolean isSymmetric(RdfProperty a) {
 		return (a!= null && a.symmetric());	
