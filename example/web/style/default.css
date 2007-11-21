@@ -1,18 +1,22 @@
 label {
-    width: 100px;
+    width: 150px;
 	text-align:right;
 	float: left;
 }
 
 body {
 	color: #666666;
-	margin:50px 0px; padding:0px;
+	margin:0px 0px; padding:0px;
 	text-align:center;
 	font-family: Verdana,arial,sans-serif;
-	font-size: 12px;
+	font-size: 14px;
 	line-height: 2em;
 }
 
+h1 {
+	margin-top: 10px;
+	font-size:24px;
+}
 
 h1 a:visited {
 	color: #669900;
@@ -45,14 +49,14 @@ h2 a:link {
 
 #header {
 	width: 100%;
-	clear:both;
 	border-bottom: solid;
-	border-width: 1px;
-	
+	border-width: 1px;	
+	border-color: #B2B2B2;
+	min-height: 50px;
 }
 
 #content {
-	 clear:both;
+	margin-top:20px;
 }
 
 a {

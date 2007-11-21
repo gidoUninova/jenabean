@@ -25,9 +25,9 @@
     <c:when test="${empty login}">
     <stripes:link beanclass="action.LoginAction">sign in</stripes:link>
     </c:when>
-    </c:choose>
-    
+    </c:choose>   
 	</div>
+    <div class="br"> </div>
     </div>
     <div id="content">
     <stripes:layout-component name="contents"/>
