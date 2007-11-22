@@ -12,23 +12,14 @@ import com.hp.hpl.jena.rdf.model.Property;
 
 public class Base {
 
-	private static final String HAS = "has";
 	protected OntModel m;
 
 	protected Base(OntModel m) {
 		this.m = m;
 	}
 
-	protected String toRDFPropertyName(PropertyDescriptor p) {
-		return HAS + Util.toProperCase(p.getName());
-	}
-
-	protected RdfProperty annotation(PropertyDescriptor p) {
+	private RdfProperty annotation(PropertyDescriptor p) {
 		return (RdfProperty) p.getReadMethod().getAnnotation(RdfProperty.class);
-	}
-
-	protected boolean isAnnotated(PropertyDescriptor p) {
-		return p.getReadMethod().isAnnotationPresent(RdfProperty.class);
 	}
 
 	protected boolean annotated(Class<?> c) {
