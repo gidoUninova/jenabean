@@ -94,12 +94,10 @@ public class RDF2Bean extends Base {
 	
 	private <T> T newInstance(Class<T> c, Individual source) {
 		T o = null;
-		Constructor<T> m;
 		try {
 			try {
-				m = c.getConstructor(String.class);
-				if (m != null)
-					o = m.newInstance(last(source.getURI()));
+				Constructor<T> m = c.getConstructor(String.class);
+				o = m.newInstance(last(source.getURI()));
 			} catch (NoSuchMethodException e) {
 				//so what?
 			}
