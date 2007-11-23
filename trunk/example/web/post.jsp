@@ -2,20 +2,10 @@
 <stripes:layout-render name="/layout/default.jsp">
 
 <stripes:layout-component name="html-head">
-<!-- tinyMCE -->
-<script language="javascript" type="text/javascript" src="../tiny_mce/tiny_mce.js"></script>
-<script language="javascript" type="text/javascript">
-	// Notice: The simple theme does not use all options some of them are limited to the advanced theme
-	tinyMCE.init({
-		mode : "textareas",
-		theme : "simple"
-	});
-</script>
-<!-- /tinyMCE -->
 </stripes:layout-component>
 
 <stripes:layout-component name="contents">
-<stripes:form action="/Post.action" method="post">
+<stripes:form beanclass="action.PostAction" method="post">
 <stripes:errors/>
 <label>Title:</label>
 <stripes:text name="post.title" class="text" size="60"/><br/>

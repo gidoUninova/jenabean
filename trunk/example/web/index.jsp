@@ -1,4 +1,4 @@
 <%
-	String redirectURL = "/Hub.action";
+	String redirectURL = "/action/home";
 	pageContext.forward(redirectURL); 
 %>

@@ -2,7 +2,7 @@
 <stripes:layout-render name="/layout/default.jsp">
 <stripes:layout-component name="contents">
 
-<stripes:form action="/Join.action" method="post">
+<stripes:form beanclass="action.JoinAction" method="post">
 <stripes:errors/>
 <label for="fScreenName">Screen name:</label>
 <stripes:text name="screenName" id="fScreenName" class="text"/><br/>
