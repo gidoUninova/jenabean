@@ -6,9 +6,7 @@
       <link rel="stylesheet"
             type="text/css"
             href="${pageContext.request.contextPath}/style/default.css"/>
-      <stripes:layout-component name="html-head"/>
-      
-      
+      <stripes:layout-component name="html-head"/>     
     </head>
 
     <body>
