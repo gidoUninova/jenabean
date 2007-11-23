@@ -7,7 +7,9 @@ import example.model.Post;
 import net.sourceforge.stripes.action.DefaultHandler;
 import net.sourceforge.stripes.action.ForwardResolution;
 import net.sourceforge.stripes.action.Resolution;
+import net.sourceforge.stripes.action.UrlBinding;
 
+@UrlBinding("/action/home")
 public class HubAction extends BaseAction {
 	
 	private Collection<Post> posts;
@@ -22,7 +24,7 @@ public class HubAction extends BaseAction {
 			return new ForwardResolution("detail.jsp");
 		} else
 			posts = context.getReader().loadAll(Post.class);
-		return new ForwardResolution("hub.jsp");
+		return new ForwardResolution("/hub.jsp");
 	}
 
 	public Collection<Post> getPosts() {

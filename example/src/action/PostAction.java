@@ -1,7 +1,6 @@
 package action;
 
 import java.rmi.server.UID;
-import java.util.LinkedList;
 import java.util.List;
 
 import net.sourceforge.stripes.action.Before;
@@ -10,12 +9,14 @@ import net.sourceforge.stripes.action.ForwardResolution;
 import net.sourceforge.stripes.action.HandlesEvent;
 import net.sourceforge.stripes.action.RedirectResolution;
 import net.sourceforge.stripes.action.Resolution;
+import net.sourceforge.stripes.action.UrlBinding;
 import net.sourceforge.stripes.controller.LifecycleStage;
 import net.sourceforge.stripes.validation.Validate;
 import net.sourceforge.stripes.validation.ValidateNestedProperties;
 import example.model.Post;
 import example.model.Tag;
 
+@UrlBinding("/action/post")
 public class PostAction extends BaseAction {
 
 	private Post post;
