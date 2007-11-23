@@ -3,7 +3,9 @@ package action;
 import net.sourceforge.stripes.action.DefaultHandler;
 import net.sourceforge.stripes.action.RedirectResolution;
 import net.sourceforge.stripes.action.Resolution;
+import net.sourceforge.stripes.action.UrlBinding;
 
+@UrlBinding("/action/logout")
 public class LogoutAction extends BaseAction {
 
 	@DefaultHandler
