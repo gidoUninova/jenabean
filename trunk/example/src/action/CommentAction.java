@@ -37,7 +37,7 @@ public class CommentAction extends BaseAction {
 		Post p = context.getReader().find(Post.class, postid);
 		p.addComment(comment);
 		context.getWriter().write(p);
-		return new RedirectResolution("?p=" + p.getId());
+		return new RedirectResolution("/?p=" + p.getId());
 	}
 
 	@ValidateNestedProperties({
