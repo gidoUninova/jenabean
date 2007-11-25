@@ -6,7 +6,6 @@ import java.util.LinkedList;
 
 import thewebsemantic.Id;
 import thewebsemantic.Namespace;
-import thewebsemantic.RdfProperty;
 
 @Namespace("http://example.org/")
 public class Post {

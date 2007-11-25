@@ -21,7 +21,6 @@ public class HubAction extends BaseAction {
 			Post p = context.getReader().find(Post.class, postid);
 			posts = new LinkedList<Post>();
 			posts.add(p);
-			return new ForwardResolution("detail.jsp");
 		} else
 			posts = context.getReader().loadAll(Post.class);
 		return new ForwardResolution("/hub.jsp");
@@ -35,6 +34,6 @@ public class HubAction extends BaseAction {
 		postid = id;
 	}
 
-	public void getP() {}
+	public String getP() { return postid;}
 	
 }
