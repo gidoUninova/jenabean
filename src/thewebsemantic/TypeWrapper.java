@@ -77,8 +77,9 @@ public class TypeWrapper {
 
 	}
 	
-	public String uri(Object bean) {
-		return typeUri() + '/' + id(bean);
+	public static String uri(Object bean) {
+		TypeWrapper t = type(bean);
+		return t.uri(t.id(bean));
 	}
 
 	private String id(Object bean) {

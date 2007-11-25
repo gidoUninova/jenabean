@@ -2,13 +2,14 @@ package thewebsemantic;
 
 import static thewebsemantic.TypeWrapper.isMarked;
 import static thewebsemantic.TypeWrapper.type;
+import static thewebsemantic.TypeWrapper.uri;
 
 import java.beans.PropertyDescriptor;
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import com.hp.hpl.jena.ontology.OntClass;
 import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.rdf.model.Property;
 import com.hp.hpl.jena.rdf.model.RDFNode;
@@ -70,12 +71,17 @@ public class Bean2RDF extends Base {
 	}
 
 	private Resource _write(Object bean) {
-		Resource rdfType = m.createClass(type(bean).typeUri());
-		Resource rdfResource = findOrNew(rdfType, type(bean).uri(bean));
+		Resource rdfResource = findOrNew(getOntClass(bean), uri(bean));
 		if (cycle.contains(bean))
 			return rdfResource;
 		cycle.add(bean);
 		return write(bean, rdfResource);
+	}
+
+	private Resource getOntClass(Object bean) {
+		OntClass rdfType = m.createClass(type(bean).typeUri());
+		Property p = m.createAnnotationProperty(JAVACLASS);
+		return rdfType.addProperty(p, bean.getClass().getName());
 	}
 
 	private Resource findOrNew(Resource rdfType, String uri) {

@@ -1,8 +1,12 @@
 package thewebsemantic;
 
-import static thewebsemantic.JenaHelper.*;
-import static thewebsemantic.Util.last;
+import static thewebsemantic.JenaHelper.asIndividual;
+import static thewebsemantic.JenaHelper.asLiteral;
+import static thewebsemantic.JenaHelper.date;
+import static thewebsemantic.JenaHelper.listAllIndividuals;
 import static thewebsemantic.TypeWrapper.get;
+import static thewebsemantic.Util.last;
+
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -51,19 +55,21 @@ public class RDF2Bean extends Base {
 	public synchronized <T> T find(Class<T> c, String id) {
 		m.enterCriticalSection(Lock.READ);
 		cycle = new HashMap<String, Object>();
-		T result = (!annotated(c)) ? null : toObject(c, m.getIndividual(get(c).uri(id)));
+		T result = (!annotated(c)) ? null : toObject(c, m.getIndividual(get(c)
+				.uri(id)));
 		m.leaveCriticalSection();
 		return result;
 	}
-	
+
 	public boolean exists(Class<?> c, String id) {
-		return !(m.getIndividual(get(c).uri(id))==null);
+		return !(m.getIndividual(get(c).uri(id)) == null);
 	}
 
 	private <T> T toObject(Class<T> c, Individual i) {
 		try {
 			if (i != null)
-				return (isCycle(i)) ? (T)cycle.get(i.getURI()):applyProperties(c, i);
+				return (isCycle(i)) ? (T) cycle.get(i.getURI())
+						: (T) applyProperties(i);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -71,10 +77,10 @@ public class RDF2Bean extends Base {
 	}
 
 	private <T> T toObject(Class<T> c, RDFNode node) {
-		return (node.isLiteral()) ? (T)asLiteral(node).getValue() : toObject(
+		return (node.isLiteral()) ? (T) asLiteral(node).getValue() : toObject(
 				c, asIndividual(node));
 	}
-	
+
 	private Object toObject(PropertyDescriptor p, Individual i) {
 		return toObject(p.getPropertyType(), i);
 	}
@@ -83,25 +89,30 @@ public class RDF2Bean extends Base {
 		return cycle.containsKey(i.getURI());
 	}
 
-	private <T> T applyProperties(Class<T> c, Individual source) throws InstantiationException, IllegalAccessException {
-		T target = newInstance(c, source);
+	private Object applyProperties(Individual source)
+			throws InstantiationException, IllegalAccessException {
+		Object target = newInstance(source);
 		cycle.put(source.getURI(), target);
-		for (PropertyDescriptor p : TypeWrapper.get(c).descriptors())
+
+		for (PropertyDescriptor p : get(target.getClass())
+				.descriptors())
 			if (p.getWriteMethod() != null)
 				apply(source, target, p);
 		return target;
+
 	}
-	
-	private <T> T newInstance(Class<T> c, Individual source) {
-		T o = null;
+
+	private Object newInstance(Individual source) {
+		Object o = null;
 		try {
+			Class<?> c = getJavaclass(source);
 			try {
-				Constructor<T> m = c.getConstructor(String.class);
+				Constructor<?> m = c.getConstructor(String.class);
 				o = m.newInstance(last(source.getURI()));
 			} catch (NoSuchMethodException e) {
-				//so what?
+				// so what?
 			}
-			if (o==null)
+			if (o == null)
 				o = c.newInstance();
 		} catch (SecurityException e) {
 			e.printStackTrace();
@@ -113,12 +124,23 @@ public class RDF2Bean extends Base {
 			e.printStackTrace();
 		} catch (InvocationTargetException e) {
 			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
 		}
 		return o;
 	}
 
+	private Class<?> getJavaclass(Individual source)
+			throws ClassNotFoundException {
+		Property p = m.createAnnotationProperty(JAVACLASS);
+		OntClass r = (OntClass) source.getRDFType().as(OntClass.class);
+		Literal className = (Literal) r.getPropertyValue(p).as(Literal.class);
+		return Class.forName(className.getString());
+	}
+
 	/**
 	 * load all rdf entries that map to the bean.
+	 * 
 	 * @param <T>
 	 * @param c
 	 * @return
@@ -155,7 +177,7 @@ public class RDF2Bean extends Base {
 	private void apply(Individual i, Object o, PropertyDescriptor property) {
 		PropertyContext ctx = new PropertyContext(o, property);
 		Property p = m.getOntProperty(ctx.uri());
-		if (p!=null)
+		if (p != null)
 			foo(o, property, i.listPropertyValues(p));
 	}
 

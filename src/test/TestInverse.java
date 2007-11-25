@@ -17,6 +17,36 @@ import com.hp.hpl.jena.rdf.model.ModelFactory;
 public class TestInverse {
 	
 	@Test
+	public void testExtended() {
+		OntModel m = ModelFactory.createOntologyModel(OntModelSpec.OWL_MEM_MINI_RULE_INF);	
+		Bean2RDF writer = new Bean2RDF(m);
+		
+		Tag fun = new Tag("fun");
+		Tag run = new Tag("run");
+		Post p1 = new Post();
+		p1.setTitle("i like OWL");
+		p1.addTag(fun);
+		p1.addTag(run);
+		writer.write(p1); 
+		//m.writeAll(System.out, "RDF/XML-ABBREV", "http://foo/");
+		RDF2Bean reader = new RDF2Bean(m);
+		reader.find(Post.class, p1.hashCode());
+		Post test = reader.find(Post.class, p1.hashCode());
+		assertEquals(2, test.getTags().size());
+		
+		Tag funLoaded = reader.find(Tag.class, "fun");
+		Collection<Taggable> items = funLoaded.getItems();
+		for (Object o : items) {
+			assertTrue(o instanceof Post);
+			Post p = (Post)o;
+			assertEquals("i like OWL", p.getTitle());
+			assertEquals(p.getTags().size(), 2);
+		}
+		
+		
+	}
+	
+	@Test
 	public void testBasic() throws IOException {
 		OntModel m = ModelFactory.createOntologyModel(OntModelSpec.OWL_MEM_MINI_RULE_INF);	
 		Bean2RDF writer = new Bean2RDF(m);
@@ -32,6 +62,7 @@ public class TestInverse {
 		aprime.addOrange(o);
 		
 		writer.write(a);
+		//m.write(System.out);
 		RDF2Bean reader = new RDF2Bean(m);
 		Collection<Orange> oranges = reader.loadAll(Orange.class);
 		for (Orange orange : oranges)

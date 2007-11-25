@@ -12,6 +12,7 @@ import com.hp.hpl.jena.rdf.model.Property;
 
 public class Base {
 
+	protected static final String JAVACLASS = "http://thewebsemantic.com/javaclass";
 	protected OntModel m;
 
 	protected Base(OntModel m) {
