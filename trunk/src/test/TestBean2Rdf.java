@@ -317,7 +317,6 @@ public class TestBean2Rdf {
 		for (DeepBean o : results)
 			assertNotNull(o.getSomeStringData());
 		assertEquals(6, results.size());
-		m.write(System.out);
 	}
 	
 	@Test
