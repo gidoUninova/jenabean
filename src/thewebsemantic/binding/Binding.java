@@ -1,13 +1,11 @@
 package thewebsemantic.binding;
 
-import java.util.HashMap;
-
 import com.hp.hpl.jena.ontology.OntClass;
 
 public class Binding {
 
 	private OntClass ontClass;
-	private Class javaClass;
+	private Class<?> javaClass;
 	private Binder binder;
 	
 	public Binding(Binder b, OntClass c) {

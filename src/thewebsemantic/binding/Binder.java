@@ -11,6 +11,7 @@ public class Binder {
 	public Binder() {
 		bindings = new HashMap<Class<?>, OntClass>();
 	}
+	
 	public Binding bind(OntClass oc) {
 		return new Binding(this,oc);
 	}
@@ -19,7 +20,7 @@ public class Binder {
 		bindings.put(javaClass, ontClass);		
 	}
 	
-	protected String getUri(Class<?> c) {
+	public String getUri(Class<?> c) {
 		return bindings.get(c).getURI();
 	}
 }
