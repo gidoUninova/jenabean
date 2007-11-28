@@ -12,6 +12,8 @@
 	<property name="src" location="src" />
 	<property name="build" location="build" />
 	<property name="dist" location="dist" />
+    <property name="vocab.dir"       value="src/test"/>
+	<property name="vocab.tool"      value="jena.schemagen" />
 
 	<description>
     	library for saving and retrieving java beans from RDF.
@@ -42,4 +44,33 @@
 		<delete dir="${dist}" />
 	</target>	
 
+	  <!-- Section: vocabulary generation -->
+	  <target name="vocabularies" depends="schemagen" />
+
+	  <target name="schema.check">
+	    <uptodate
+	       property="schema.nobuild"
+	       srcFile="${vocab.dir}/ical.owl"
+	       targetFile="${vocab.dir}/Vocabulary.java" />
+	  </target>
+
+	  <target name="schemagen" depends="schema.check" unless="schema.nobuild">
+	    <java classname="${vocab.tool}" fork="yes">
+	  	  <classpath>
+	  	      <pathelement path="${classpath}"/>
+	  	      <fileset dir="jenalib">
+	  	        <include name="**/*.jar"/>
+	  	      </fileset>
+	  	  </classpath>
+	      <arg value="-i" />
+	      <arg value="file:${vocab.dir}/ical.owl" />
+	      <arg value="-o" />
+	      <arg value="${vocab.dir}" />
+	      <arg value="--package" />
+	      <arg value="test"/>
+          <arg value="--ontology" />
+      	  <arg value="-n"/>
+	      <arg value="Vocabulary"/>	
+	    </java>
+	  </target>
 </project>
