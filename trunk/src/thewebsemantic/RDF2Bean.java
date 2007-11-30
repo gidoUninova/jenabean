@@ -5,6 +5,7 @@ import static thewebsemantic.JenaHelper.asLiteral;
 import static thewebsemantic.JenaHelper.date;
 import static thewebsemantic.JenaHelper.listAllIndividuals;
 import static thewebsemantic.TypeWrapper.get;
+import static thewebsemantic.TypeWrapper.type;
 import static thewebsemantic.Util.last;
 
 import java.beans.PropertyDescriptor;
@@ -53,18 +54,23 @@ public class RDF2Bean extends Base {
 	}
 
 	public synchronized <T> T find(Class<T> c, String id) {
-		m.enterCriticalSection(Lock.READ);
 		cycle = new HashMap<String, Object>();
-		T result = (!annotated(c)) ? null : toObject(c, m.getIndividual(get(c)
-				.uri(id)));
-		m.leaveCriticalSection();
-		return result;
+		m.enterCriticalSection(Lock.READ);
+		try {
+			return (!annotated(c)) ? null : toObject(c, id);
+		} finally {
+			m.leaveCriticalSection();
+		}
 	}
 
 	public boolean exists(Class<?> c, String id) {
 		return !(m.getIndividual(get(c).uri(id)) == null);
 	}
 
+	private <T> T toObject(Class<T> c, String id) {
+		return toObject(c, m.getIndividual(get(c).uri(id)));
+	}
+	
 	private <T> T toObject(Class<T> c, Individual i) {
 		try {
 			if (i != null)
@@ -89,17 +95,13 @@ public class RDF2Bean extends Base {
 		return cycle.containsKey(i.getURI());
 	}
 
-	private Object applyProperties(Individual source)
-			throws InstantiationException, IllegalAccessException {
+	private Object applyProperties(Individual source) {
 		Object target = newInstance(source);
 		cycle.put(source.getURI(), target);
-
-		for (PropertyDescriptor p : get(target.getClass())
-				.descriptors())
+		for (PropertyDescriptor p : type(target).descriptors())
 			if (p.getWriteMethod() != null)
 				apply(source, target, p);
 		return target;
-
 	}
 
 	private Object newInstance(Individual source) {
