@@ -9,8 +9,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import thewebsemantic.binding.Binder;
-
 import com.hp.hpl.jena.ontology.OntClass;
 import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.rdf.model.Property;
@@ -58,26 +56,27 @@ public class Bean2RDF extends Base {
 
 	private ArrayList<Object> cycle;
 
-	
 	public Bean2RDF(OntModel m) {
-		super(m);
-		
+		super(m);		
 	}
 
 	public synchronized Resource write(Object bean) {
 		Resource r = null;
 		if (isMarked(bean) || isBound(bean)) {
-			m.enterCriticalSection(Lock.WRITE);
-			cycle = new ArrayList<Object>();
-			r = _write(bean);
-			m.leaveCriticalSection();
+			try {
+				m.enterCriticalSection(Lock.WRITE);
+				cycle = new ArrayList<Object>();
+				r = _write(bean);
+			} finally {
+				m.leaveCriticalSection();
+			}
 		}
 		return r;
 	}
 
 	private Resource _write(Object bean) {
 		Resource ontclass = getOntClass(bean);
-		Resource rdfResource = findOrNew(ontclass, instanceURI(bean));
+		Resource rdfResource = m.createResource(instanceURI(bean), ontclass);
 		if (cycle.contains(bean))
 			return rdfResource;
 		cycle.add(bean);
@@ -85,22 +84,13 @@ public class Bean2RDF extends Base {
 	}
 
 	private Resource getOntClass(Object bean) {
-		String uri = getURI(bean);
-		OntClass rdfType = m.createClass(uri);
+		OntClass rdfType = m.createClass(getURI(bean));
 		return rdfType.addProperty(javaclass, bean.getClass().getName());
 	}
 
 	private String getURI(Object bean) {
-		String uri;
-		if (isMarked(bean))
-			uri = type(bean).typeUri();
-		else
-			uri = binder.getUri(bean.getClass());
-		return uri;
-	}
-
-	private Resource findOrNew(Resource rdfType, String uri) {
-		return m.createResource(uri, rdfType);
+		return (isMarked(bean)) ? type(bean).typeUri() : 
+			binder.getUri(bean.getClass());
 	}
 
 	private Resource write(Object bean, RDFNode node) {
