@@ -132,9 +132,8 @@ public class RDF2Bean extends Base {
 
 	private Class<?> getJavaclass(Individual source)
 			throws ClassNotFoundException {
-		Property p = m.createAnnotationProperty(JAVACLASS);
 		OntClass r = (OntClass) source.getRDFType().as(OntClass.class);
-		Literal className = (Literal) r.getPropertyValue(p).as(Literal.class);
+		Literal className = (Literal) r.getPropertyValue(javaclass).as(Literal.class);
 		return Class.forName(className.getString());
 	}
 

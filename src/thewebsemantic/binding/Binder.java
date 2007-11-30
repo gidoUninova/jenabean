@@ -7,8 +7,14 @@ import com.hp.hpl.jena.ontology.OntClass;
 public class Binder {
 	
 	private HashMap<Class<?>, OntClass> bindings;
+	private static Binder myself;
 	
-	public Binder() {
+	public static synchronized Binder instance() {
+		if ( myself == null)
+			myself = new Binder();
+		return myself;
+	}
+	private Binder() {
 		bindings = new HashMap<Class<?>, OntClass>();
 	}
 	
@@ -20,7 +26,14 @@ public class Binder {
 		bindings.put(javaClass, ontClass);		
 	}
 	
+	public boolean isBound(Class<?> c) {
+		return bindings.containsKey(c);
+	}
+	
 	public String getUri(Class<?> c) {
-		return bindings.get(c).getURI();
+		if (bindings.containsKey(c))
+			return bindings.get(c).getURI();
+		else
+			return null;
 	}
 }

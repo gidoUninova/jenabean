@@ -6,6 +6,8 @@ import java.beans.PropertyDescriptor;
 import java.lang.reflect.ParameterizedType;
 import java.util.Collection;
 
+import thewebsemantic.binding.Binder;
+
 import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.ontology.OntProperty;
 import com.hp.hpl.jena.rdf.model.Property;
@@ -14,9 +16,13 @@ public class Base {
 
 	protected static final String JAVACLASS = "http://thewebsemantic.com/javaclass";
 	protected OntModel m;
+	protected Binder binder;
+	protected Property javaclass;
 
 	protected Base(OntModel m) {
 		this.m = m;
+		binder = Binder.instance();
+		javaclass = m.createAnnotationProperty(JAVACLASS);
 	}
 
 	private RdfProperty annotation(PropertyDescriptor p) {
@@ -26,16 +32,12 @@ public class Base {
 	protected boolean annotated(Class<?> c) {
 		return c.isAnnotationPresent(Namespace.class);
 	}
-	
+
 	protected Property toRdfProperty(PropertyContext ctx) {
-		String uri = ctx.uri();
-		Property existingProperty = m.getOntProperty(uri);
-		if ( existingProperty != null)
-			return existingProperty;
-		else
-			return applyEntailments(ctx);
+		return ctx.existsInModel(m) ? ctx.property(m)
+				: applyEntailments(ctx);
 	}
-	
+
 	private Property applyEntailments(PropertyContext ctx) {
 		OntProperty op = m.createOntProperty(ctx.uri());
 		if (isSymmetric(ctx.property))
@@ -51,7 +53,7 @@ public class Base {
 			TypeWrapper type = TypeWrapper.get(c);
 			Inverse i = property.getReadMethod().getAnnotation(Inverse.class);
 			for (PropertyDescriptor pd : type.descriptors())
-				if ( pd.getName().equals(i.value()))
+				if (pd.getName().equals(i.value()))
 					op.setInverseOf(m.createProperty(type.uri(pd)));
 		}
 	}
@@ -64,17 +66,16 @@ public class Base {
 		return (p.getReadMethod().isAnnotationPresent(Symmetric.class)) ? true
 				: isSymmetric(annotation(p));
 	}
-	
-	
+
 	private boolean isSymmetric(RdfProperty a) {
-		return (a!= null && a.symmetric());	
+		return (a != null && a.symmetric());
 	}
 
 	protected boolean isCollection(PropertyDescriptor property) {
-		return (property.getPropertyType().equals(Collection.class)) ?
-			supportedType(t(property)) : false;
+		return (property.getPropertyType().equals(Collection.class)) ? supportedType(t(property))
+				: false;
 	}
-	
+
 	protected boolean supportedType(Class<?> c) {
 		return ((annotated(c) || isPrimitive(c)));
 	}
@@ -82,8 +83,12 @@ public class Base {
 	protected Class<?> t(PropertyDescriptor propDesc) {
 		ParameterizedType type = (ParameterizedType) propDesc.getReadMethod()
 				.getGenericReturnType();
-		return (type == null) ? NullType.class
-				: (Class<?>) type.getActualTypeArguments()[0];
+		return (type == null) ? NullType.class : (Class<?>) type
+				.getActualTypeArguments()[0];
+	}
+
+	protected boolean isBound(Object o) {
+		return binder.isBound(o.getClass());
 	}
 
 }
