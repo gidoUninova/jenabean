@@ -17,5 +17,4 @@ public class Binding {
 		javaClass = c;
 		binder.save(javaClass, ontClass);
 	}
-
 }

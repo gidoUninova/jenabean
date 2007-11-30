@@ -11,7 +11,7 @@ public class TestBinding {
 	
 	@Test
 	public void testBinding() {
-		Binder b = new Binder();
+		Binder b = Binder.instance();
 		OntClass oc = Vocabulary.Vevent;
 		b.bind(oc).to(String.class);
 		

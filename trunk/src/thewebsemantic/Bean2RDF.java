@@ -2,12 +2,14 @@ package thewebsemantic;
 
 import static thewebsemantic.TypeWrapper.isMarked;
 import static thewebsemantic.TypeWrapper.type;
-import static thewebsemantic.TypeWrapper.uri;
+import static thewebsemantic.TypeWrapper.instanceURI;
 
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
+
+import thewebsemantic.binding.Binder;
 
 import com.hp.hpl.jena.ontology.OntClass;
 import com.hp.hpl.jena.ontology.OntModel;
@@ -56,22 +58,26 @@ public class Bean2RDF extends Base {
 
 	private ArrayList<Object> cycle;
 
+	
 	public Bean2RDF(OntModel m) {
 		super(m);
+		
 	}
 
 	public synchronized Resource write(Object bean) {
-		if (!isMarked(bean))
-			return null;
-		m.enterCriticalSection(Lock.WRITE);
-		cycle = new ArrayList<Object>();
-		Resource r = _write(bean);
-		m.leaveCriticalSection();
+		Resource r = null;
+		if (isMarked(bean) || isBound(bean)) {
+			m.enterCriticalSection(Lock.WRITE);
+			cycle = new ArrayList<Object>();
+			r = _write(bean);
+			m.leaveCriticalSection();
+		}
 		return r;
 	}
 
 	private Resource _write(Object bean) {
-		Resource rdfResource = findOrNew(getOntClass(bean), uri(bean));
+		Resource ontclass = getOntClass(bean);
+		Resource rdfResource = findOrNew(ontclass, instanceURI(bean));
 		if (cycle.contains(bean))
 			return rdfResource;
 		cycle.add(bean);
@@ -79,9 +85,18 @@ public class Bean2RDF extends Base {
 	}
 
 	private Resource getOntClass(Object bean) {
-		OntClass rdfType = m.createClass(type(bean).typeUri());
-		Property p = m.createAnnotationProperty(JAVACLASS);
-		return rdfType.addProperty(p, bean.getClass().getName());
+		String uri = getURI(bean);
+		OntClass rdfType = m.createClass(uri);
+		return rdfType.addProperty(javaclass, bean.getClass().getName());
+	}
+
+	private String getURI(Object bean) {
+		String uri;
+		if (isMarked(bean))
+			uri = type(bean).typeUri();
+		else
+			uri = binder.getUri(bean.getClass());
+		return uri;
 	}
 
 	private Resource findOrNew(Resource rdfType, String uri) {
