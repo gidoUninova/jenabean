@@ -25,6 +25,7 @@ import com.hp.hpl.jena.rdf.model.Literal;
 import com.hp.hpl.jena.rdf.model.NodeIterator;
 import com.hp.hpl.jena.rdf.model.Property;
 import com.hp.hpl.jena.rdf.model.RDFNode;
+import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.shared.Lock;
 
 /**
@@ -132,11 +133,26 @@ public class RDF2Bean extends Base {
 		return o;
 	}
 
+	/**
+	 * Given an Individual, return the appropriate class.
+	 * This could have been stored as an annotation if jenabean
+	 * was involved in writing the individual.  If not we'll use 
+	 * the binder.
+	 * @param source
+	 * @return
+	 * @throws ClassNotFoundException
+	 */
 	private Class<?> getJavaclass(Individual source)
 			throws ClassNotFoundException {
-		OntClass r = (OntClass) source.getRDFType().as(OntClass.class);
-		Literal className = (Literal) r.getPropertyValue(javaclass).as(Literal.class);
-		return Class.forName(className.getString());
+		OntClass oc = (OntClass) source.getRDFType().as(OntClass.class);
+		RDFNode node = oc.getPropertyValue(javaclass);
+		if ( node != null) {
+			Literal className = (Literal) node.as(Literal.class);
+			return Class.forName(className.getString());
+		} else { //try the binder
+			Resource type = source.getRDFType();
+			return binder.getClass(type.getURI());
+		}
 	}
 
 	/**
