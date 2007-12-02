@@ -19,6 +19,7 @@
     logged in as ${login.screenName} | 
     <stripes:link beanclass="action.PostAction">new post</stripes:link> |
     <stripes:link beanclass="action.LogoutAction">logout</stripes:link>
+    <a href="http://code.google.com/c/jenabean">Jena bean home</a>
     </c:when>
     <c:when test="${empty login}">
     <stripes:link beanclass="action.LoginAction">sign in</stripes:link>
