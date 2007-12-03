@@ -109,9 +109,13 @@ public class RDF2Bean extends Base {
 		Object o = null;
 		try {
 			Class<?> c = getJavaclass(source);
+			TypeWrapper type = TypeWrapper.get(c);
 			try {
 				Constructor<?> m = c.getConstructor(String.class);
-				o = m.newInstance(last(source.getURI()));
+				if (type.uriSupport())
+					o = m.newInstance(source.getURI());
+				else
+					o = m.newInstance(last(source.getURI()));
 			} catch (NoSuchMethodException e) {
 				// so what?
 			}
@@ -164,7 +168,11 @@ public class RDF2Bean extends Base {
 	 */
 	public synchronized <T> Collection<T> loadAll(Class<T> c) {
 		cycle = new HashMap<String, Object>();
-		return (!annotated(c)) ? null : loadAll(c, new LinkedList<T>());
+		return (isMappedToRdf(c)) ? loadAll(c, new LinkedList<T>()):null;
+	}
+
+	private <T> boolean isMappedToRdf(Class<T> c) {
+		return annotated(c) || binder.isBound(c);
 	}
 
 	private <T> Collection<T> loadAll(Class<T> c, LinkedList<T> list) {
@@ -176,7 +184,10 @@ public class RDF2Bean extends Base {
 	}
 
 	private OntClass getOntClass(Class<?> c) {
-		return m.getOntClass(TypeWrapper.get(c).typeUri());
+		if (binder.isBound(c))
+			return m.getOntClass(binder.getUri(c));
+		else
+			return m.getOntClass(TypeWrapper.get(c).typeUri());
 	}
 
 	/**
@@ -195,10 +206,10 @@ public class RDF2Bean extends Base {
 		PropertyContext ctx = new PropertyContext(o, property);
 		Property p = m.getOntProperty(ctx.uri());
 		if (p != null)
-			foo(o, property, i.listPropertyValues(p));
+			apply(o, property, i.listPropertyValues(p));
 	}
 
-	private void foo(Object o, PropertyDescriptor property, NodeIterator nodes) {
+	private void apply(Object o, PropertyDescriptor property, NodeIterator nodes) {
 		if (nodes == null || !nodes.hasNext())
 			return;
 		else if (isCollection(property))
