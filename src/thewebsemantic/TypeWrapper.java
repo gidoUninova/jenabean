@@ -17,9 +17,11 @@ import java.util.HashMap;
  */
 public class TypeWrapper {
 
+	private static final String HAS = "has";
 	private Class<?> c;
 	private BeanInfo info;
 	private Method idMethod;
+	private Method uriMethod;
 	private static HashMap<Class<?>, TypeWrapper> cache = new HashMap<Class<?>, TypeWrapper>();
 
 	private <T> TypeWrapper(Class<T> c) {
@@ -28,6 +30,8 @@ public class TypeWrapper {
 		for (MethodDescriptor md : info.getMethodDescriptors())
 			if (isId(md))
 				idMethod = md.getMethod();
+			else if (isUri(md))
+				uriMethod = md.getMethod();
 		cache.put(c, this);
 	}
 
@@ -71,19 +75,26 @@ public class TypeWrapper {
 		return typeUri() + '/' + id;
 	}
 	
+	public String uri(Object bean) {
+		return typeUri() + '/' + id(bean);
+	}
+	
 	public String uri(PropertyDescriptor pd) {
 		RdfProperty rdf = pd.getReadMethod().getAnnotation(RdfProperty.class);
-		return (rdf!=null) ? rdf.value() : namespace() + "has" + Util.toProperCase(pd.getName());
-
+		return (rdf!=null) ? rdf.value() : namespace() + HAS + Util.toProperCase(pd.getName());
 	}
 	
 	public static String instanceURI(Object bean) {
 		TypeWrapper t = type(bean);
-		return t.uri(t.id(bean));
+		return (t.uriSupport()) ? t.getUri(bean) : t.uri(bean);
 	}
 
 	private String id(Object bean) {
 		return ( idMethod != null) ? invokeIdMethod(bean, idMethod) : String.valueOf(bean.hashCode());
+	}
+	
+	private String getUri(Object bean) {
+		return ( uriMethod != null) ? invokeIdMethod(bean, uriMethod) : String.valueOf(bean.hashCode());
 	}
 
 	private BeanInfo beanInfo(Class<?> c) {
@@ -98,8 +109,7 @@ public class TypeWrapper {
 	private String invokeIdMethod(Object bean, Method me) {
 		try {
 			return me.invoke(bean).toString();
-		} catch (Exception e) {
-		}
+		} catch (Exception e) {}
 		return null;
 	}
 
@@ -110,7 +120,17 @@ public class TypeWrapper {
 	private boolean isId(MethodDescriptor md) {
 		return isId(md.getMethod());
 	}
-	
 
+	private boolean isUri(Method m) {
+		return m.isAnnotationPresent(Uri.class);
+	}
+
+	private boolean isUri(MethodDescriptor md) {
+		return isUri(md.getMethod());
+	}
+
+	public boolean uriSupport() {
+		return uriMethod != null;
+	}
 
 }

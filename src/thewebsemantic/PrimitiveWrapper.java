@@ -15,6 +15,7 @@ public class PrimitiveWrapper {
 		WRAPPERS.put(Float.class, Float.class);
 		WRAPPERS.put(Double.class, Double.class);
 		WRAPPERS.put(Boolean.class, Boolean.class);
+		WRAPPERS.put(String.class, String.class);
 	}
 
 	public static boolean isPrimitive(Class<?> c) {
