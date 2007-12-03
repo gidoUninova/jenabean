@@ -69,7 +69,10 @@ public class RDF2Bean extends Base {
 	}
 
 	private <T> T toObject(Class<T> c, String id) {
-		return toObject(c, m.getIndividual(get(c).uri(id)));
+		if (get(c).uriSupport())
+			return toObject(c, m.getIndividual(id));
+		else
+			return toObject(c, m.getIndividual(get(c).uri(id)));
 	}
 	
 	private <T> T toObject(Class<T> c, Individual i) {
