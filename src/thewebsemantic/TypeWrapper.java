@@ -38,11 +38,11 @@ public class TypeWrapper {
 	public static String ns(Object o) {
 		return type(o).namespace();
 	}
-	
+
 	public static boolean isMarked(Object o) {
 		return o.getClass().isAnnotationPresent(Namespace.class);
 	}
-	
+
 	public static synchronized TypeWrapper type(Object o) {
 		return get(o.getClass());
 	}
@@ -58,7 +58,7 @@ public class TypeWrapper {
 	public PropertyDescriptor[] descriptors() {
 		return info.getPropertyDescriptors();
 	}
-	
+
 	public Field[] fields() {
 		return c.getFields();
 	}
@@ -74,27 +74,44 @@ public class TypeWrapper {
 	public String uri(String id) {
 		return typeUri() + '/' + id;
 	}
-	
+
 	public String uri(Object bean) {
 		return typeUri() + '/' + id(bean);
 	}
-	
+
+	/**
+	 * returns a URI pointing to the rdf property resource. If the property
+	 * descriptor is annotated with an explicit uri, then we'll use the URI
+	 * specified in the annotation, otherwise a URI is created using the
+	 * following naming pattern. <br/><br/> If the property name is "age" and
+	 * the namespace for this type is http://example.org/, the resulting URI
+	 * will be <code>http://example.org/hasAge</code>.
+	 * 
+	 * @param pd
+	 * @return
+	 */
 	public String uri(PropertyDescriptor pd) {
 		RdfProperty rdf = pd.getReadMethod().getAnnotation(RdfProperty.class);
-		return (rdf!=null) ? rdf.value() : namespace() + HAS + Util.toProperCase(pd.getName());
+		return (rdf != null) ? rdf.value() : namingPatternUri(pd);
 	}
-	
+
+	private String namingPatternUri(PropertyDescriptor pd) {
+		return namespace() + HAS + Util.toProperCase(pd.getName());
+	}
+
 	public static String instanceURI(Object bean) {
 		TypeWrapper t = type(bean);
 		return (t.uriSupport()) ? t.getUri(bean) : t.uri(bean);
 	}
 
 	private String id(Object bean) {
-		return ( idMethod != null) ? invokeIdMethod(bean, idMethod) : String.valueOf(bean.hashCode());
+		return (idMethod != null) ? invokeIdMethod(bean, idMethod) : String
+				.valueOf(bean.hashCode());
 	}
-	
+
 	private String getUri(Object bean) {
-		return ( uriMethod != null) ? invokeIdMethod(bean, uriMethod) : String.valueOf(bean.hashCode());
+		return (uriMethod != null) ? invokeIdMethod(bean, uriMethod) : String
+				.valueOf(bean.hashCode());
 	}
 
 	private BeanInfo beanInfo(Class<?> c) {
@@ -109,7 +126,8 @@ public class TypeWrapper {
 	private String invokeIdMethod(Object bean, Method me) {
 		try {
 			return me.invoke(bean).toString();
-		} catch (Exception e) {}
+		} catch (Exception e) {
+		}
 		return null;
 	}
 
