@@ -18,6 +18,7 @@ import java.util.HashMap;
 public class TypeWrapper {
 
 	private static final String HAS = "has";
+	private String NS;
 	private Class<?> c;
 	private BeanInfo info;
 	private Method idMethod;
@@ -32,6 +33,11 @@ public class TypeWrapper {
 				idMethod = md.getMethod();
 			else if (isUri(md))
 				uriMethod = md.getMethod();
+		
+		Namespace nsa = getNamespaceAnnotation();
+		NS = (nsa!= null) ?getNamespaceAnnotation().value():
+			"http://" + c.getPackage().getName() + '/';
+			
 		cache.put(c, this);
 	}
 
@@ -68,7 +74,7 @@ public class TypeWrapper {
 	}
 
 	public String namespace() {
-		return getNamespaceAnnotation().value();
+		return NS;
 	}
 
 	public String uri(String id) {

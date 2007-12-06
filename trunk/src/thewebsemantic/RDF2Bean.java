@@ -6,6 +6,7 @@ import static thewebsemantic.JenaHelper.date;
 import static thewebsemantic.JenaHelper.listAllIndividuals;
 import static thewebsemantic.TypeWrapper.get;
 import static thewebsemantic.TypeWrapper.type;
+import static thewebsemantic.PrimitiveWrapper.isPrimitive;
 import static thewebsemantic.Util.last;
 
 import java.beans.PropertyDescriptor;
@@ -58,7 +59,7 @@ public class RDF2Bean extends Base {
 		cycle = new HashMap<String, Object>();
 		m.enterCriticalSection(Lock.READ);
 		try {
-			return (!annotated(c)) ? null : toObject(c, id);
+			return toObject(c, id);
 		} finally {
 			m.leaveCriticalSection();
 		}
@@ -171,11 +172,7 @@ public class RDF2Bean extends Base {
 	 */
 	public synchronized <T> Collection<T> loadAll(Class<T> c) {
 		cycle = new HashMap<String, Object>();
-		return (isMappedToRdf(c)) ? loadAll(c, new LinkedList<T>()):null;
-	}
-
-	private <T> boolean isMappedToRdf(Class<T> c) {
-		return annotated(c) || binder.isBound(c);
+		return loadAll(c, new LinkedList<T>());
 	}
 
 	private <T> Collection<T> loadAll(Class<T> c, LinkedList<T> list) {
@@ -217,10 +214,10 @@ public class RDF2Bean extends Base {
 			return;
 		else if (isCollection(property))
 			collection(o, property, nodes);
-		else if (annotated(property.getPropertyType()))
-			applyIndividual(o, property, asIndividual(nodes.nextNode()));
-		else
+		else if (isPrimitive(property.getPropertyType()))
 			applyLiteral(o, property, asLiteral(nodes.nextNode()));
+		else
+			applyIndividual(o, property, asIndividual(nodes.nextNode()));
 	}
 
 	private void collection(Object o, PropertyDescriptor property,
