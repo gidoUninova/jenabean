@@ -10,6 +10,7 @@ import java.lang.annotation.Target;
 public @interface RdfProperty {
 	String value();
 	boolean symmetric() default false;
+	boolean transitive() default false;
 }
 /*
 	Copyright (c) 2007 Taylor Cowan

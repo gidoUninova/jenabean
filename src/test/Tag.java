@@ -29,8 +29,5 @@ public class Tag {
 
 	public void setItems(Collection<Taggable> items) {
 		this.items = items;
-	}
-	
-	
-	
+	}	
 }

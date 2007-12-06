@@ -203,7 +203,8 @@ public class TestBean2Rdf {
 		Bean2RDF writer = new Bean2RDF(m);
 		writer.write(new Unannotated());
 		RDF2Bean reader = new RDF2Bean(m);
-		reader.loadAll(Unannotated.class);		
+		Collection<Unannotated> things = reader.loadAll(Unannotated.class);	
+		assertEquals(1, things.size());
 	}
 	
 	@Test

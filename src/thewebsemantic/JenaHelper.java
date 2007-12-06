@@ -17,6 +17,7 @@ public class JenaHelper {
 		return date.asCalendar().getTime();
 	}
 	
+	@SuppressWarnings("unchecked")
 	public static List<Individual> listAllIndividuals(OntClass c) {
 		return (c == null) ? new LinkedList<Individual>()
 				: (List<Individual>) c.listInstances().toList();

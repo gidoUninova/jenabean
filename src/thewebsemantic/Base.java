@@ -1,8 +1,7 @@
 package thewebsemantic;
 
-import static thewebsemantic.PrimitiveWrapper.isPrimitive;
-
 import java.beans.PropertyDescriptor;
+import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.util.Collection;
 
@@ -26,7 +25,12 @@ public class Base {
 	}
 
 	private RdfProperty annotation(PropertyDescriptor p) {
-		return (RdfProperty) p.getReadMethod().getAnnotation(RdfProperty.class);
+
+		Method m = p.getReadMethod();
+		if (m.isAnnotationPresent(RdfProperty.class))
+			return (RdfProperty) m.getAnnotation(RdfProperty.class);
+		else
+			return new NullRdfProperty();
 	}
 
 	protected boolean annotated(Class<?> c) {
@@ -42,8 +46,10 @@ public class Base {
 		OntProperty op = m.createOntProperty(ctx.uri());
 		if (isSymmetric(ctx.property))
 			op.convertToSymmetricProperty();
-		if (isInverse(ctx.property))
+		else if (isInverse(ctx.property))
 			makeInverse(ctx.property, op);
+		else if (isTransitive(ctx.property))
+			op.convertToTransitiveProperty();
 		return op;
 	}
 
@@ -64,20 +70,15 @@ public class Base {
 
 	private boolean isSymmetric(PropertyDescriptor p) {
 		return (p.getReadMethod().isAnnotationPresent(Symmetric.class)) ? true
-				: isSymmetric(annotation(p));
+				: annotation(p).symmetric();
 	}
-
-	private boolean isSymmetric(RdfProperty a) {
-		return (a != null && a.symmetric());
+	
+	private boolean isTransitive(PropertyDescriptor p) {
+		return annotation(p).transitive();
 	}
-
+	
 	protected boolean isCollection(PropertyDescriptor property) {
-		return (property.getPropertyType().equals(Collection.class)) ? supportedType(t(property))
-				: false;
-	}
-
-	protected boolean supportedType(Class<?> c) {
-		return ((annotated(c) || isPrimitive(c)));
+		return (property.getPropertyType().equals(Collection.class));
 	}
 
 	protected Class<?> t(PropertyDescriptor propDesc) {

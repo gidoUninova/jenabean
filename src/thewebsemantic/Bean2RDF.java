@@ -1,5 +1,6 @@
 package thewebsemantic;
 
+import static thewebsemantic.PrimitiveWrapper.isPrimitive;
 import static thewebsemantic.TypeWrapper.isMarked;
 import static thewebsemantic.TypeWrapper.type;
 import static thewebsemantic.TypeWrapper.instanceURI;
@@ -8,6 +9,7 @@ import java.beans.PropertyDescriptor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.logging.Logger;
 
 import com.hp.hpl.jena.ontology.OntClass;
 import com.hp.hpl.jena.ontology.OntModel;
@@ -55,42 +57,50 @@ import com.hp.hpl.jena.shared.Lock;
 public class Bean2RDF extends Base {
 
 	private ArrayList<Object> cycle;
-
+	private Logger logger = Logger.getLogger("thewebsemenatic", "thewebsemantic.messages");
 	public Bean2RDF(OntModel m) {
-		super(m);		
+		super(m);
 	}
 
+	/**
+	 * write a bean to the triple store
+	 * @param bean
+	 * @return
+	 */
 	public synchronized Resource write(Object bean) {
-		Resource r = null;
-		if (isMarked(bean) || isBound(bean)) {
-			try {
-				m.enterCriticalSection(Lock.WRITE);
-				cycle = new ArrayList<Object>();
-				r = _write(bean);
-			} finally {
-				m.leaveCriticalSection();
-			}
+		Resource r;
+		try {
+			m.enterCriticalSection(Lock.WRITE);
+			cycle = new ArrayList<Object>();
+			r = _write(bean);
+		} finally {
+			m.leaveCriticalSection();
 		}
 		return r;
 	}
 
 	private Resource _write(Object bean) {
 		Resource ontclass = getOntClass(bean);
-		Resource rdfResource = m.createResource(instanceURI(bean), ontclass);
+		Resource newResource = m.createResource(instanceURI(bean), ontclass);
 		if (cycle.contains(bean))
-			return rdfResource;
+			return newResource;
 		cycle.add(bean);
-		return write(bean, rdfResource);
+		return write(bean, newResource);
 	}
 
+	/**
+	 *  returns an existing OntClass or creates a new one
+	 * @param bean the bean we are saving or updating to the triple store
+	 * @return
+	 */
 	private Resource getOntClass(Object bean) {
 		OntClass rdfType = m.createClass(getURI(bean));
 		return rdfType.addProperty(javaclass, bean.getClass().getName());
 	}
 
 	private String getURI(Object bean) {
-		return (isMarked(bean)) ? type(bean).typeUri() : 
-			binder.getUri(bean.getClass());
+		return (isBound(bean)) ? 
+			binder.getUri(bean.getClass()): type(bean).typeUri();
 	}
 
 	private Resource write(Object bean, RDFNode node) {
@@ -138,7 +148,7 @@ public class Bean2RDF extends Base {
 		subject.removeAll(property);
 		AddSaver saver = new AddSaver(subject, property);
 		for (Object o : c)
-			if (isMarked(o))
+			if (!isPrimitive(o.getClass()))
 				subject.addProperty(property, _write(o)); //recursive
 			else
 				saver.write(o); //leaf

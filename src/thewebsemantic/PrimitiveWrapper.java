@@ -1,5 +1,6 @@
 package thewebsemantic;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,10 +17,12 @@ public class PrimitiveWrapper {
 		WRAPPERS.put(Double.class, Double.class);
 		WRAPPERS.put(Boolean.class, Boolean.class);
 		WRAPPERS.put(String.class, String.class);
+		WRAPPERS.put(Date.class, Date.class);
+		
 	}
 
 	public static boolean isPrimitive(Class<?> c) {
-		return WRAPPERS.containsKey(c);
+		return WRAPPERS.containsKey(c) || c.isPrimitive();
 	}
 
 }
