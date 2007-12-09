@@ -206,23 +206,23 @@ public class RDF2Bean extends Base {
 		PropertyContext ctx = new PropertyContext(o, property);
 		Property p = m.getOntProperty(ctx.uri());
 		if (p != null)
-			apply(o, property, i.listPropertyValues(p));
+			apply(ctx, i.listPropertyValues(p));
 	}
 
-	private void apply(Object o, PropertyDescriptor property, NodeIterator nodes) {
+	private void apply(PropertyContext ctx, NodeIterator nodes) {
 		if (nodes == null || !nodes.hasNext())
 			return;
-		else if (isCollection(property))
-			collection(o, property, nodes);
-		else if (isPrimitive(property.getPropertyType()))
-			applyLiteral(o, property, asLiteral(nodes.nextNode()));
+		else if (isCollection(ctx.property))
+			collection(ctx, ctx.property, nodes);
+		else if (isPrimitive(ctx.property.getPropertyType()))
+			applyLiteral(ctx, asLiteral(nodes.nextNode()));
 		else
-			applyIndividual(o, property, asIndividual(nodes.nextNode()));
+			applyIndividual(ctx, asIndividual(nodes.nextNode()));
 	}
 
-	private void collection(Object o, PropertyDescriptor property,
+	private void collection(PropertyContext ctx, PropertyDescriptor property,
 			NodeIterator nodes) {
-		invoke(property, o, fillCollection(t(property), nodes.toSet()));
+		ctx.invoke(fillCollection(t(property), nodes.toSet()));
 	}
 
 	private ArrayList<Object> fillCollection(Class<?> c, Set<RDFNode> nodes) {
@@ -232,23 +232,15 @@ public class RDF2Bean extends Base {
 		return results;
 	}
 
-	private void applyIndividual(Object o, PropertyDescriptor propDesc,
-			Individual i) {
-		invoke(propDesc, o, toObject(propDesc, i));
+	private void applyIndividual(PropertyContext ctx, Individual i) {
+		ctx.invoke(toObject(ctx.property, i));
 	}
 
-	private void applyLiteral(Object o, PropertyDescriptor propDesc, Literal l) {
-		if (propDesc.getPropertyType().equals(Date.class))
-			invoke(propDesc, o, date(l));
+	private void applyLiteral(PropertyContext ctx, Literal l) {
+		if (ctx.isDate())
+			ctx.invoke(date(l));
 		else
-			invoke(propDesc, o, l.getValue());
-	}
-
-	private void invoke(PropertyDescriptor p, Object o, Object v) {
-		try {
-			p.getWriteMethod().invoke(o, v);
-		} catch (Exception e) {
-		}
+			ctx.invoke(l.getValue());
 	}
 }
 /*
