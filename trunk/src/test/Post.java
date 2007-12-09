@@ -14,4 +14,8 @@ public class Post extends Taggable {
 	public void setTitle(String title) {
 		this.title = title;
 	}
+	
+	public int hashCode() {
+	   return title.hashCode();
+	}
 }
