@@ -6,7 +6,6 @@ import static thewebsemantic.JenaHelper.date;
 import static thewebsemantic.JenaHelper.listAllIndividuals;
 import static thewebsemantic.TypeWrapper.get;
 import static thewebsemantic.TypeWrapper.type;
-import static thewebsemantic.PrimitiveWrapper.isPrimitive;
 import static thewebsemantic.Util.last;
 
 import java.beans.PropertyDescriptor;
@@ -14,7 +13,6 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Set;
@@ -105,7 +103,7 @@ public class RDF2Bean extends Base {
 		cycle.put(source.getURI(), target);
 		for (PropertyDescriptor p : type(target).descriptors())
 			if (p.getWriteMethod() != null)
-				apply(source, target, p);
+				apply(source,new PropertyContext(target, p));
 		return target;
 	}
 
@@ -202,8 +200,7 @@ public class RDF2Bean extends Base {
 	 * @throws IllegalAccessException
 	 * @throws InvocationTargetException
 	 */
-	private void apply(Individual i, Object o, PropertyDescriptor property) {
-		PropertyContext ctx = new PropertyContext(o, property);
+	private void apply(Individual i, PropertyContext ctx) {
 		Property p = m.getOntProperty(ctx.uri());
 		if (p != null)
 			apply(ctx, i.listPropertyValues(p));
@@ -212,17 +209,16 @@ public class RDF2Bean extends Base {
 	private void apply(PropertyContext ctx, NodeIterator nodes) {
 		if (nodes == null || !nodes.hasNext())
 			return;
-		else if (isCollection(ctx.property))
-			collection(ctx, ctx.property, nodes);
-		else if (isPrimitive(ctx.property.getPropertyType()))
+		else if (ctx.isCollection())
+			collection(ctx, nodes);
+		else if (ctx.isPrimitive())
 			applyLiteral(ctx, asLiteral(nodes.nextNode()));
 		else
 			applyIndividual(ctx, asIndividual(nodes.nextNode()));
 	}
 
-	private void collection(PropertyContext ctx, PropertyDescriptor property,
-			NodeIterator nodes) {
-		ctx.invoke(fillCollection(t(property), nodes.toSet()));
+	private void collection(PropertyContext ctx, NodeIterator nodes) {
+		ctx.invoke(fillCollection(t(ctx.property), nodes.toSet()));
 	}
 
 	private ArrayList<Object> fillCollection(Class<?> c, Set<RDFNode> nodes) {
