@@ -106,7 +106,7 @@ public class TestBean2Rdf {
 		for (A a : friends)
 			assertTrue(a.getId().equals("taylor") || a.getId().equals("jay"));
 		
-		assertEquals(reader.loadAllDeep(A.class).size(), 104);
+		assertEquals(reader.load(A.class).size(), 104);
 		
 		
 	}
@@ -123,7 +123,7 @@ public class TestBean2Rdf {
 		bean1.addAdjacent(adjacent2);
 		writer.write(bean1);
 		RDF2Bean reader = new RDF2Bean(m);
-		Collection<SymmetricBean> things = reader.loadAllDeep(SymmetricBean.class);
+		Collection<SymmetricBean> things = reader.load(SymmetricBean.class);
 		assertEquals(3, things.size());
 		
 		SymmetricBean b = reader.loadDeep(SymmetricBean.class, "adjacent1");
@@ -147,7 +147,7 @@ public class TestBean2Rdf {
 		writer.write(bean1);
 		
 		RDF2Bean reader = new RDF2Bean(m);
-		Collection<A> friends = reader.loadAllDeep(A.class);
+		Collection<A> friends = reader.load(A.class);
 		assertEquals(2, friends.size());
 		for (A a : friends) {
 			assertEquals(1, a.getFriends().size());
@@ -172,7 +172,7 @@ public class TestBean2Rdf {
 		writer.write(bean);
 		
 		RDF2Bean reader = new RDF2Bean(m);
-		Collection<AutoBoxing> results = reader.loadAllDeep(AutoBoxing.class);
+		Collection<AutoBoxing> results = reader.load(AutoBoxing.class);
 		assertEquals(1, results.size());
 		for (AutoBoxing box : results) {
 			assertEquals(100, box.getFoo().size());
@@ -203,7 +203,7 @@ public class TestBean2Rdf {
 		Bean2RDF writer = new Bean2RDF(m);
 		writer.write(new Unannotated());
 		RDF2Bean reader = new RDF2Bean(m);
-		Collection<Unannotated> things = reader.loadAllDeep(Unannotated.class);	
+		Collection<Unannotated> things = reader.load(Unannotated.class);	
 		assertEquals(1, things.size());
 	}
 	
@@ -224,7 +224,7 @@ public class TestBean2Rdf {
 		RDF2Bean reader = new RDF2Bean(m);
 		IdTesterBean bean = reader.loadDeep(IdTesterBean.class, "example");
 		assertEquals(null, bean);
-		Collection<IdTesterBean> c = reader.loadAllDeep(IdTesterBean.class);
+		Collection<IdTesterBean> c = reader.load(IdTesterBean.class);
 		assertEquals(c.size(), 0);
 	}
 	
@@ -289,7 +289,7 @@ public class TestBean2Rdf {
 		assertEquals(bean.getMyInt(), bean2.getMyInt());
 		assertEquals(bean.getMyLong(), bean2.getMyLong());
 		assertEquals(bean.isMyBoolean(), bean2.isMyBoolean());
-		Collection<TypeTesterBean> results = reader.loadAllDeep(TypeTesterBean.class);
+		Collection<TypeTesterBean> results = reader.load(TypeTesterBean.class);
 		assertEquals(1, results.size());
 		for (TypeTesterBean b : results)
 			assertEquals(aDate, b.getMyDate());
@@ -314,7 +314,7 @@ public class TestBean2Rdf {
 		writer.write(bean);
 		
 		RDF2Bean reader = new RDF2Bean(m);
-		Collection<DeepBean> results = reader.loadAllDeep(DeepBean.class);
+		Collection<DeepBean> results = reader.load(DeepBean.class);
 		for (DeepBean o : results)
 			assertNotNull(o.getSomeStringData());
 		assertEquals(6, results.size());

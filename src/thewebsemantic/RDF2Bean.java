@@ -49,7 +49,7 @@ public class RDF2Bean extends Base {
     * @param c
     * @return
     */
-   public synchronized <T> Collection<T> loadAllDeep(Class<T> c) {
+   public synchronized <T> Collection<T> load(Class<T> c) {
       m.enterCriticalSection(Lock.READ);
       shallow = false;
       cycle = new HashMap<String, Object>();
