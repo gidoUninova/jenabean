@@ -1,6 +1,7 @@
 package thewebsemantic;
 
 import java.beans.PropertyDescriptor;
+import java.util.Collection;
 import java.util.Date;
 
 import com.hp.hpl.jena.ontology.OntModel;
@@ -38,5 +39,11 @@ class PropertyContext {
 	   return property.getPropertyType().equals(Date.class);
 	}
 	
+	public boolean isPrimitive() {
+	   return PrimitiveWrapper.isPrimitive(property.getPropertyType());
+	}
 	
+    public boolean isCollection() {
+       return property.getPropertyType().equals(Collection.class);
+   }	
 }

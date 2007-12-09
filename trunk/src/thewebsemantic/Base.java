@@ -3,7 +3,6 @@ package thewebsemantic;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
-import java.util.Collection;
 
 import thewebsemantic.binding.Binder;
 
@@ -75,10 +74,6 @@ public class Base {
 	
 	private boolean isTransitive(PropertyDescriptor p) {
 		return annotation(p).transitive();
-	}
-	
-	protected boolean isCollection(PropertyDescriptor property) {
-		return (property.getPropertyType().equals(Collection.class));
 	}
 
 	protected Class<?> t(PropertyDescriptor propDesc) {
