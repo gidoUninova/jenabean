@@ -43,7 +43,7 @@ public class TagPatternExample {
 		// jb and red both have two elements
 		// here we'll see the two elements tagged with red, one via inverse inference
 		RDF2Bean reader = new RDF2Bean(m);
-		Tag red2 = reader.find(Tag.class, red.getTerm());
+		Tag red2 = reader.loadDeep(Tag.class, red.getTerm());
 
 		for (Taggable element : red2.getElements()) {
 			System.out.println(element.getTags().size());

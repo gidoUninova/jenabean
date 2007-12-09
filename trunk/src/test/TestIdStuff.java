@@ -21,7 +21,7 @@ public class TestIdStuff {
 		writer.write(bean);
 		
 		RDF2Bean reader = new RDF2Bean(m);
-		TestIDBean bean2 = reader.find(TestIDBean.class, id);
+		TestIDBean bean2 = reader.loadDeep(TestIDBean.class, id);
 		assertEquals("123 Oak Circle", bean2.getAddress());
 		assertEquals(32, bean2.getAge());
 	}
