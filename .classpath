@@ -3,7 +3,6 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="jenalib/jena.jar" sourcepath="C:/opt/Jena-2.5.4/src"/>
-	<classpathentry kind="lib" path="C:/opt/eclipse/plugins/org.junit4_4.3.1/junit.jar"/>
 	<classpathentry kind="lib" path="jenalib/log4j-1.2.12.jar"/>
 	<classpathentry kind="lib" path="jenalib/commons-logging-1.1.jar"/>
 	<classpathentry kind="lib" path="jenalib/antlr-2.7.5.jar"/>
@@ -20,5 +19,6 @@
 	<classpathentry kind="lib" path="jenalib/wstx-asl-3.0.0.jar"/>
 	<classpathentry kind="lib" path="jenalib/xercesImpl.jar"/>
 	<classpathentry kind="lib" path="jenalib/xml-apis.jar"/>
+	<classpathentry kind="lib" path="junit-4.4.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
