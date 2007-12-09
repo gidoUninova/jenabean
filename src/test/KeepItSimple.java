@@ -1,8 +1,6 @@
 package test;
 import thewebsemantic.Id;
-import thewebsemantic.Namespace;
 
-@Namespace("http://example.org#")
 public class KeepItSimple {
 	private String id;
 	private int value;
