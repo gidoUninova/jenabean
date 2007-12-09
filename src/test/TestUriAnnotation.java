@@ -24,7 +24,7 @@ public class TestUriAnnotation {
 		writer.write(c);
 	
 		RDF2Bean reader = new RDF2Bean(m);
-		City boston = reader.find(City.class, "http://example.org/Boston");
+		City boston = reader.loadDeep(City.class, "http://example.org/Boston");
 		assertEquals(12345, boston.getPopulation());
 		assertEquals("Boston", boston.getName());
 	}

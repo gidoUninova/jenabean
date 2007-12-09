@@ -30,7 +30,7 @@ public class DCExample {
 		
 		// make sure we have one book by Shelley Powers
 		RDF2Bean reader = new RDF2Bean(m);
-		Collection<Book> books = reader.loadAll(Book.class);
+		Collection<Book> books = reader.loadAllDeep(Book.class);
 		for (Book book : books)
 			System.out.println(book.getCreator() + book.getIsbn());		
 	}

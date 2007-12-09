@@ -44,7 +44,7 @@ public class TestTransitive {
 		writer.write(p);
 		
 		RDF2Bean reader = new RDF2Bean(m);
-		Person q = reader.find(Person.class, p.uri());
+		Person q = reader.loadDeep(Person.class, p.uri());
 		System.out.println(q.getFirstName());
 		for (Person person : q.getAncestors()) {
 			System.out.println(person.uri());

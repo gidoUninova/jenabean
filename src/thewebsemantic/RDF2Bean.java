@@ -36,9 +36,34 @@ import com.hp.hpl.jena.shared.Lock;
 public class RDF2Bean extends Base {
 
    private HashMap<String, Object> cycle;
+   private boolean shallow = false;
 
    public RDF2Bean(OntModel m) {
       super(m);
+   }
+
+   /**
+    * load all rdf entries that map to the bean.
+    * 
+    * @param <T>
+    * @param c
+    * @return
+    */
+   public synchronized <T> Collection<T> loadAllDeep(Class<T> c) {
+      m.enterCriticalSection(Lock.READ);
+      shallow = false;
+      cycle = new HashMap<String, Object>();
+      try {
+         return loadAll(c, new LinkedList<T>());
+      } finally {
+         m.leaveCriticalSection();
+      }
+   }
+
+   private <T> Collection<T> loadAll(Class<T> c, LinkedList<T> list) {
+      for (Individual i : listAllIndividuals(getOntClass(c)))
+         list.add(toObject(c, i));   
+      return list;
    }
 
    /**
@@ -49,20 +74,34 @@ public class RDF2Bean extends Base {
     *            unique id of the bean to find
     * @return An instance of T, otherwise null
     */
-   public <T> T find(Class<T> c, int id) {
-      return find(c, Integer.toString(id));
+   public <T> T loadDeep(Class<T> c, int id) {
+      return load(c, Integer.toString(id), false);
    }
 
-   public synchronized <T> T find(Class<T> c, String id) {
+   public <T> T loadDeep(Class<T> c, String id) {
+      return load(c, id, false);
+   }
+
+   public <T> T load(Class<T> c, String id) {
+      return load(c, id, true);
+   }
+
+   
+   public synchronized <T> T load(Class<T> c, String id, boolean shallow) {
       m.enterCriticalSection(Lock.READ);
+      this.shallow = shallow;
       cycle = new HashMap<String, Object>();
       try {
          return toObject(c, id);
       } finally {
          m.leaveCriticalSection();
-      }
+      }      
    }
-
+   
+   public Filler load(Object o) {
+      return new Filler(this, o);
+   }
+   
    public boolean exists(Class<?> c, String id) {
       return !(m.getIndividual(get(c).uri(id)) == null);
    }
@@ -78,7 +117,7 @@ public class RDF2Bean extends Base {
       try {
          if (i != null)
             return (isCycle(i)) ? (T) cycle.get(i.getURI())
-                  : (T) applyProperties(i, false);
+                  : (T) applyProperties(i);
       } catch (Exception e) {
          e.printStackTrace();
       }
@@ -98,7 +137,7 @@ public class RDF2Bean extends Base {
       return cycle.containsKey(i.getURI());
    }
 
-   private Object applyProperties(Individual source, boolean shallow) {
+   private Object applyProperties(Individual source) {
       Object target = newInstance(source);
       cycle.put(source.getURI(), target);
       for (PropertyDescriptor p : type(target).descriptors()) {
@@ -164,26 +203,7 @@ public class RDF2Bean extends Base {
       }
    }
 
-   /**
-    * load all rdf entries that map to the bean.
-    * 
-    * @param <T>
-    * @param c
-    * @return
-    */
-   public synchronized <T> Collection<T> loadAll(Class<T> c) {
-      cycle = new HashMap<String, Object>();
-      return loadAll(c, new LinkedList<T>());
-   }
-
-   private <T> Collection<T> loadAll(Class<T> c, LinkedList<T> list) {
-      m.enterCriticalSection(Lock.READ);
-      for (Individual i : listAllIndividuals(getOntClass(c)))
-         list.add(toObject(c, i));
-      m.leaveCriticalSection();
-      return list;
-   }
-
+ 
    private OntClass getOntClass(Class<?> c) {
       if (binder.isBound(c))
          return m.getOntClass(binder.getUri(c));

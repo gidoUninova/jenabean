@@ -24,7 +24,7 @@ public class GeonamesExample {
 		Binder b = Binder.instance();
 		b.bind(GeonamesVocabulary.Feature).to(City.class);
 		RDF2Bean reader = new RDF2Bean(m);
-		Collection<City> cities = reader.loadAll(City.class);
+		Collection<City> cities = reader.loadAllDeep(City.class);
 		for (City city : cities) {
 			System.out.println(city.getName());
 			System.out.println(city.getUri());

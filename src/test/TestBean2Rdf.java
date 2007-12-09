@@ -95,18 +95,18 @@ public class TestBean2Rdf {
 		m = ModelFactory.createOntologyModel(OntModelSpec.OWL_MEM_MICRO_RULE_INF);
 		m.read("file:tmp.rdf");
 		RDF2Bean reader = new RDF2Bean(m);
-		bean1 = reader.find(A.class, "taylor");
+		bean1 = reader.loadDeep(A.class, "taylor");
 		assertEquals(2, bean1.getFriends().size());
 		Collection<A> friends = bean1.getFriends();
 		for (A a : friends)
 			assertTrue(a.getId().equals("lois") || a.getId().equals("mark"));
-		bean1 = reader.find(A.class, "lois");
+		bean1 = reader.loadDeep(A.class, "lois");
 		assertEquals(2, bean1.getFriends().size());
 		friends = bean1.getFriends();
 		for (A a : friends)
 			assertTrue(a.getId().equals("taylor") || a.getId().equals("jay"));
 		
-		assertEquals(reader.loadAll(A.class).size(), 104);
+		assertEquals(reader.loadAllDeep(A.class).size(), 104);
 		
 		
 	}
@@ -123,10 +123,10 @@ public class TestBean2Rdf {
 		bean1.addAdjacent(adjacent2);
 		writer.write(bean1);
 		RDF2Bean reader = new RDF2Bean(m);
-		Collection<SymmetricBean> things = reader.loadAll(SymmetricBean.class);
+		Collection<SymmetricBean> things = reader.loadAllDeep(SymmetricBean.class);
 		assertEquals(3, things.size());
 		
-		SymmetricBean b = reader.find(SymmetricBean.class, "adjacent1");
+		SymmetricBean b = reader.loadDeep(SymmetricBean.class, "adjacent1");
 		assertEquals(1, b.getAdjacent().size());
 		for (SymmetricBean symmetricBean : b.getAdjacent()) {
 			assertEquals("bean1", symmetricBean.getId());
@@ -147,7 +147,7 @@ public class TestBean2Rdf {
 		writer.write(bean1);
 		
 		RDF2Bean reader = new RDF2Bean(m);
-		Collection<A> friends = reader.loadAll(A.class);
+		Collection<A> friends = reader.loadAllDeep(A.class);
 		assertEquals(2, friends.size());
 		for (A a : friends) {
 			assertEquals(1, a.getFriends().size());
@@ -172,7 +172,7 @@ public class TestBean2Rdf {
 		writer.write(bean);
 		
 		RDF2Bean reader = new RDF2Bean(m);
-		Collection<AutoBoxing> results = reader.loadAll(AutoBoxing.class);
+		Collection<AutoBoxing> results = reader.loadAllDeep(AutoBoxing.class);
 		assertEquals(1, results.size());
 		for (AutoBoxing box : results) {
 			assertEquals(100, box.getFoo().size());
@@ -203,7 +203,7 @@ public class TestBean2Rdf {
 		Bean2RDF writer = new Bean2RDF(m);
 		writer.write(new Unannotated());
 		RDF2Bean reader = new RDF2Bean(m);
-		Collection<Unannotated> things = reader.loadAll(Unannotated.class);	
+		Collection<Unannotated> things = reader.loadAllDeep(Unannotated.class);	
 		assertEquals(1, things.size());
 	}
 	
@@ -222,9 +222,9 @@ public class TestBean2Rdf {
 	public void testNotFound() throws Exception {
 		OntModel m = ModelFactory.createOntologyModel(OntModelSpec.OWL_MEM_MICRO_RULE_INF);		
 		RDF2Bean reader = new RDF2Bean(m);
-		IdTesterBean bean = reader.find(IdTesterBean.class, "example");
+		IdTesterBean bean = reader.loadDeep(IdTesterBean.class, "example");
 		assertEquals(null, bean);
-		Collection<IdTesterBean> c = reader.loadAll(IdTesterBean.class);
+		Collection<IdTesterBean> c = reader.loadAllDeep(IdTesterBean.class);
 		assertEquals(c.size(), 0);
 	}
 	
@@ -247,12 +247,12 @@ public class TestBean2Rdf {
 		assertEquals(ns+"IdTesterBean/"+bean.getId(), i.getURI());
 		
 		RDF2Bean reader = new RDF2Bean(m);
-		IdTesterBean bean2 = reader.find(IdTesterBean.class, "example");
+		IdTesterBean bean2 = reader.loadDeep(IdTesterBean.class, "example");
 		assertEquals(bean.getValue(), bean2.getValue());
 		
 		bean.setValue(1);
 		writer.write(bean);
-		bean2 = reader.find(IdTesterBean.class, "example");
+		bean2 = reader.loadDeep(IdTesterBean.class, "example");
 		
 		assertEquals(bean.getValue(), bean2.getValue());
 		
@@ -281,7 +281,7 @@ public class TestBean2Rdf {
 		writer.write(bean);
 
 		RDF2Bean reader = new RDF2Bean(m);
-		TypeTesterBean bean2 = reader.find(TypeTesterBean.class, bean.hashCode());
+		TypeTesterBean bean2 = reader.loadDeep(TypeTesterBean.class, bean.hashCode());
 
 		assertEquals(bean.getMyDate(), bean2.getMyDate());
 		assertEquals(bean.getMyDouble(), bean2.getMyDouble());
@@ -289,7 +289,7 @@ public class TestBean2Rdf {
 		assertEquals(bean.getMyInt(), bean2.getMyInt());
 		assertEquals(bean.getMyLong(), bean2.getMyLong());
 		assertEquals(bean.isMyBoolean(), bean2.isMyBoolean());
-		Collection<TypeTesterBean> results = reader.loadAll(TypeTesterBean.class);
+		Collection<TypeTesterBean> results = reader.loadAllDeep(TypeTesterBean.class);
 		assertEquals(1, results.size());
 		for (TypeTesterBean b : results)
 			assertEquals(aDate, b.getMyDate());
@@ -314,7 +314,7 @@ public class TestBean2Rdf {
 		writer.write(bean);
 		
 		RDF2Bean reader = new RDF2Bean(m);
-		Collection<DeepBean> results = reader.loadAll(DeepBean.class);
+		Collection<DeepBean> results = reader.loadAllDeep(DeepBean.class);
 		for (DeepBean o : results)
 			assertNotNull(o.getSomeStringData());
 		assertEquals(6, results.size());
@@ -328,7 +328,7 @@ public class TestBean2Rdf {
 		Bean2RDF writer = new Bean2RDF(m);
 		writer.write(bean);	
 		RDF2Bean reader = new RDF2Bean(m);		
-		DeepBean bean2 = reader.find(DeepBean.class, bean.id());
+		DeepBean bean2 = reader.loadDeep(DeepBean.class, bean.id());
 		assertEquals(bean2.getSomeStringData(), bean.getSomeStringData());
 	}
 	
@@ -346,7 +346,7 @@ public class TestBean2Rdf {
 		
 		RDF2Bean reader = new RDF2Bean(m);
 		
-		MeanBean bean2 = reader.find(MeanBean.class, bean.id());
+		MeanBean bean2 = reader.loadDeep(MeanBean.class, bean.id());
 		assertEquals(bean.getAge(), bean2.getAge());
 		assertEquals(bean.getSalary(), bean2.getSalary());
 		assertEquals(bean.getCreated(), bean2.getCreated());
@@ -365,7 +365,7 @@ public class TestBean2Rdf {
 		Bean2RDF writer = new Bean2RDF(m);
 		writer.write(u);	
 		RDF2Bean reader = new RDF2Bean(m);		
-		User u2 = reader.find(User.class, "tcowan");
+		User u2 = reader.loadDeep(User.class, "tcowan");
 		assertEquals(u.getEmail(), u2.getEmail());
 		assertEquals(u.getEncryptedPassword(), u2.getEncryptedPassword());
 		assertEquals(u.getScreenName(), u2.getScreenName());

@@ -30,11 +30,11 @@ public class TestInverse {
 		writer.write(p1); 
 		//m.writeAll(System.out, "RDF/XML-ABBREV", "http://foo/");
 		RDF2Bean reader = new RDF2Bean(m);
-		reader.find(Post.class, p1.hashCode());
-		Post test = reader.find(Post.class, p1.hashCode());
+		reader.loadDeep(Post.class, p1.hashCode());
+		Post test = reader.loadDeep(Post.class, p1.hashCode());
 		assertEquals(2, test.getTags().size());
 		
-		Tag funLoaded = reader.find(Tag.class, "fun");
+		Tag funLoaded = reader.loadDeep(Tag.class, "fun");
 		Collection<Taggable> items = funLoaded.getItems();
 		for (Object o : items) {
 			assertTrue(o instanceof Post);
@@ -64,7 +64,7 @@ public class TestInverse {
 		writer.write(a);
 		//m.write(System.out);
 		RDF2Bean reader = new RDF2Bean(m);
-		Collection<Orange> oranges = reader.loadAll(Orange.class);
+		Collection<Orange> oranges = reader.loadAllDeep(Orange.class);
 		for (Orange orange : oranges)
 			assertEquals(1, orange.getApples().size());
 
@@ -73,14 +73,14 @@ public class TestInverse {
 		m = ModelFactory.createOntologyModel(OntModelSpec.OWL_MEM_MINI_RULE_INF);
 		reader = new RDF2Bean(m);
 		m.read("file:tmp.rdf");
-		o = reader.find(Orange.class, rememberedId);
+		o = reader.loadDeep(Orange.class, rememberedId);
 		assertEquals(2, o.getApples().size());
 		
 		//without reasoner, it's back to none
 		m = ModelFactory.createOntologyModel();
 		reader = new RDF2Bean(m);
 		m.read("file:tmp.rdf");
-		o = reader.find(Orange.class, rememberedId);
+		o = reader.loadDeep(Orange.class, rememberedId);
 		assertEquals(0, o.getApples().size());
 		
 	}
