@@ -86,6 +86,10 @@ public class RDF2Bean extends Base {
       return load(c, id, true);
    }
 
+   public <T> T load(Class<T> c, int id) {
+      return load(c, Integer.toString(id), true);
+   }
+
    
    public synchronized <T> T load(Class<T> c, String id, boolean shallow) {
       m.enterCriticalSection(Lock.READ);
@@ -100,6 +104,16 @@ public class RDF2Bean extends Base {
    
    public Filler load(Object o) {
       return new Filler(this, o);
+   }
+   
+   public synchronized <T> T load(Object o, String propertyName) {  
+      m.enterCriticalSection(Lock.READ);
+      this.shallow = true;
+      try {
+         return (T)applyProperty(o, propertyName);
+      } finally {
+         m.leaveCriticalSection();
+      }
    }
    
    public boolean exists(Class<?> c, String id) {
@@ -137,6 +151,19 @@ public class RDF2Bean extends Base {
       return cycle.containsKey(i.getURI());
    }
 
+   private Object applyProperty(Object target, String propertyName) {
+      //cycle.put(source.getURI(), target);
+      String uri = TypeWrapper.instanceURI(target);
+      Individual source = m.getIndividual(uri);
+      for (PropertyDescriptor p : type(target).descriptors()) {
+         if (p.getName().equals(propertyName)) {
+            if (p.getPropertyType().equals(Collection.class))
+               apply(source, new PropertyContext(target, p));
+         }
+      }
+      return target;     
+   }
+   
    private Object applyProperties(Individual source) {
       Object target = newInstance(source);
       cycle.put(source.getURI(), target);
