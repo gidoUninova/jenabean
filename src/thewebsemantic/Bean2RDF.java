@@ -58,6 +58,7 @@ public class Bean2RDF extends Base {
 
 	private ArrayList<Object> cycle;
 	private Logger logger = Logger.getLogger("thewebsemenatic", "thewebsemantic.messages");
+	
 	public Bean2RDF(OntModel m) {
 		super(m);
 	}
@@ -72,20 +73,20 @@ public class Bean2RDF extends Base {
 		try {
 			m.enterCriticalSection(Lock.WRITE);
 			cycle = new ArrayList<Object>();
-			r = _write(bean);
+			r = _write(bean, false);
 		} finally {
 			m.leaveCriticalSection();
 		}
 		return r;
 	}
 
-	private Resource _write(Object bean) {
+	private Resource _write(Object bean, boolean shallow) {
 		Resource ontclass = getOntClass(bean);
 		Resource newResource = m.createResource(instanceURI(bean), ontclass);
 		if (cycle.contains(bean))
 			return newResource;
 		cycle.add(bean);
-		return write(bean, newResource);
+		return write(bean, newResource, shallow);
 	}
 
 	/**
@@ -103,15 +104,18 @@ public class Bean2RDF extends Base {
 			binder.getUri(bean.getClass()): type(bean).typeUri();
 	}
 
-	private Resource write(Object bean, RDFNode node) {
-		return write(bean, (Resource) node.as(Resource.class));
+	private Resource write(Object bean, RDFNode node, boolean shallow) {
+		return write(bean, (Resource) node.as(Resource.class), shallow);
 	}
 
-	protected Resource write(Object bean, Resource subject) {
+	protected Resource write(Object bean, Resource subject, boolean shallow) {
 		try {
-			for (PropertyDescriptor p : type(bean).descriptors())
+			for (PropertyDescriptor p : type(bean).descriptors()) {
+				if (shallow && p.getPropertyType().equals(Collection.class))
+					continue;
 				if (p.getWriteMethod() != null)
 					invokeGetter(bean, subject, p);
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -130,10 +134,11 @@ public class Bean2RDF extends Base {
 	private void saveOrUpdate(Resource subject, Object o, Property property) {
 		if ( o instanceof Collection)
 			updateCollection(subject, property, (Collection<?>) o);
-		else if (isMarked(o))
-			updateOrAddBindable(subject, property, o);
-		else
+		else if (isPrimitive(o.getClass()))
 			getSaver(subject, property).write(o);
+		else
+			updateOrCreate(subject, property, o);
+
 	}
 
 	/**
@@ -144,12 +149,12 @@ public class Bean2RDF extends Base {
 	 * @param c
 	 */
 	private void updateCollection(Resource subject, Property property,
-			Collection<?> c) {
+			Collection<?> c) {		
 		subject.removeAll(property);
 		AddSaver saver = new AddSaver(subject, property);
 		for (Object o : c)
 			if (!isPrimitive(o.getClass()))
-				subject.addProperty(property, _write(o)); //recursive
+				subject.addProperty(property, _write(o,true)); //recursive
 			else
 				saver.write(o); //leaf
 	}
@@ -169,20 +174,20 @@ public class Bean2RDF extends Base {
 	}
 
 	/**
-	 * Update or persist non-JDK Object to RDF. This would be any domain object
+	 * Update or persist a domain object
 	 * outside String, Date, and the usual primitive types.
 	 * 
 	 * @param subject
 	 * @param property
 	 * @param o
 	 */
-	protected void updateOrAddBindable(Resource subject, Property property,
+	private void updateOrCreate(Resource subject, Property property,
 			Object o) {
 		Statement existingRelation = subject.getProperty(property);
 		if (existingRelation != null)
-			write(o, existingRelation.getObject());
+			write(o, existingRelation.getObject(), true);
 		else
-			subject.addProperty(property, _write(o));
+			subject.addProperty(property, _write(o, true));
 	}
 }
 
