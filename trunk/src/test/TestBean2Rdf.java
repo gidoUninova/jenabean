@@ -87,6 +87,10 @@ public class TestBean2Rdf {
 		bean3.addFriend(bean4);
 		bean4.addFriend(bean1);
 		writer.write(bean1);
+		writer.write(bean2);
+		writer.write(bean3);
+		writer.write(bean4);
+		
 		for (int i=0; i<100; i++)
 			writer.write(new A("" + i));
 		

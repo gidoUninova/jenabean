@@ -1,5 +1,7 @@
 package test;
 
+import java.util.Collection;
+
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -18,45 +20,85 @@ public class TestIdStuff {
 		TestIDBean bean = new TestIDBean(id);
 		bean.setAddress("123 Oak Circle");
 		bean.setAge(32);
-		OntModel m = ModelFactory.createOntologyModel();	
+		OntModel m = ModelFactory.createOntologyModel();
 		Bean2RDF writer = new Bean2RDF(m);
 		writer.write(bean);
-		
 		RDF2Bean reader = new RDF2Bean(m);
 		TestIDBean bean2 = reader.load(TestIDBean.class, id);
 		assertEquals("123 Oak Circle", bean2.getAddress());
 		assertEquals(32, bean2.getAge());
 	}
-	
+
 	class Flute {
-	   private String id;
-	   public int i = 0;
-	   public Flute(String id) {
-	      this.id = id;
-	      i++;
-	   }
-	   
-	   @Id
-	   public String getMyId() {
-	      return id;
-	   }
+		private String id;
+
+		public int i = 0;
+
+		public Flute(String id) {
+			this.id = id;
+			i++;
+		}
+
+		@Id
+		public String getMyId() {
+			return id;
+		}
 	}
-	
+
 	/**
-	 * jenabean should apply the id to the 
-	 * constructor.
+	 * jenabean should apply the id to the constructor.
 	 */
 	public void testConstructor() {
-       OntModel m = ModelFactory.createOntologyModel();    
-       Bean2RDF writer = new Bean2RDF(m);
-       writer.write( new Flute("a"));
-    
-       RDF2Bean reader = new RDF2Bean(m);
-       Flute a = reader.load(Flute.class, "a");
-       assertEquals("a", a.getMyId());
-       assertEquals(1, a.i);
-       // its uri should be http://package/classname/id
-       Individual i = m.getIndividual("http://test/Flute/a");
-       assertNotNull(i);
+		OntModel m = ModelFactory.createOntologyModel();
+		Bean2RDF writer = new Bean2RDF(m);
+		writer.write(new Flute("a"));
+		RDF2Bean reader = new RDF2Bean(m);
+		Flute a = reader.load(Flute.class, "a");
+		assertEquals("a", a.getMyId());
+		assertEquals(1, a.i);
+		// its uri should be http://package/classname/id
+		Individual i = m.getIndividual("http://test/Flute/a");
+		assertNotNull(i);
+		writer.write(a);
+	}
+
+	class Trumpet {
+		private String id;
+
+		public Trumpet() {
+		}
+
+		public int hashCode() {
+			return id.hashCode();
+		}
+		@Id
+		public String getId() {
+			return id;
+		}
+
+		public void setId(String id) {
+			this.id = id;
+		}
+	}
+
+	public void testHashCode() {
+		OntModel m = ModelFactory.createOntologyModel();
+		Bean2RDF writer = new Bean2RDF(m);
+		Trumpet t = new Trumpet();
+		t.setId("bach");
+		writer.write(t);
+		RDF2Bean reader = new RDF2Bean(m);
+		Collection<Trumpet> trumpets = reader.load(Trumpet.class);
+		assertEquals(1, trumpets.size());
+		writer.write(t);
+		trumpets = reader.load(Trumpet.class);
+		assertEquals(1, trumpets.size());
+		t.setId("conn");
+		writer.write(t);
+		trumpets = reader.load(Trumpet.class);
+		assertEquals(2, trumpets.size());	
+		
+		Individual i = Vocabulary.Vevent.createIndividual();
+	
 	}
 }

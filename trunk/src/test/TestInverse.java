@@ -62,9 +62,12 @@ public class TestInverse {
 		aprime.addOrange(o);
 		
 		writer.write(a);
+		writer.write(o);
+
 		//m.write(System.out);
 		RDF2Bean reader = new RDF2Bean(m);
 		Collection<Orange> oranges = reader.load(Orange.class);
+		m.write(System.out);
 		for (Orange orange : oranges)
 			assertEquals(1, orange.getApples().size());
 
