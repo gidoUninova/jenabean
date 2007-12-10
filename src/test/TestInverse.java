@@ -66,7 +66,7 @@ public class TestInverse {
 
 		//m.write(System.out);
 		RDF2Bean reader = new RDF2Bean(m);
-		Collection<Orange> oranges = reader.load(Orange.class);
+		Collection<Orange> oranges = reader.loadDeep(Orange.class);
 
 		for (Orange orange : oranges)
 			assertEquals(1, orange.getApples().size());

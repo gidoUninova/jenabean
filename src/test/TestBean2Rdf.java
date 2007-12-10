@@ -152,7 +152,7 @@ public class TestBean2Rdf {
 		writer.write(bean1);
 		
 		RDF2Bean reader = new RDF2Bean(m);
-		Collection<A> friends = reader.load(A.class);
+		Collection<A> friends = reader.loadDeep(A.class);
 		assertEquals(2, friends.size());
 		for (A a : friends) {
 			assertEquals(1, a.getFriends().size());
@@ -177,7 +177,7 @@ public class TestBean2Rdf {
 		writer.write(bean);
 		
 		RDF2Bean reader = new RDF2Bean(m);
-		Collection<AutoBoxing> results = reader.load(AutoBoxing.class);
+		Collection<AutoBoxing> results = reader.loadDeep(AutoBoxing.class);
 		assertEquals(1, results.size());
 		for (AutoBoxing box : results) {
 			assertEquals(100, box.getFoo().size());

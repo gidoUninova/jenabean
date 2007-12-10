@@ -42,6 +42,16 @@ public class RDF2Bean extends Base {
 		super(m);
 	}
 
+	
+	public <T> Collection<T> loadDeep(Class<T> c) {
+		return load(c, false);
+	}
+
+	public <T> Collection<T> load(Class<T> c) {
+		return load(c, true);
+	}
+	
+	
 	/**
 	 * load all rdf entries that map to the bean.
 	 * 
@@ -49,9 +59,9 @@ public class RDF2Bean extends Base {
 	 * @param c
 	 * @return
 	 */
-	public synchronized <T> Collection<T> load(Class<T> c) {
+	public synchronized <T> Collection<T> load(Class<T> c, boolean shallow) {
 		m.enterCriticalSection(Lock.READ);
-		shallow = false;
+		this.shallow = shallow;
 		cycle = new HashMap<String, Object>();
 		try {
 			return loadAll(c, new LinkedList<T>());
