@@ -110,9 +110,8 @@ public class Bean2RDF extends Base {
 		try {
 			for (PropertyDescriptor p : type(bean).descriptors()) {
 				PropertyContext pc = new PropertyContext(bean,p);
-				if (shallow && pc.isCollection())
-					continue;
-				invokeGetter(subject, pc);
+				if (! (shallow&&pc.isCollection()))
+					invokeGetter(subject, pc);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
