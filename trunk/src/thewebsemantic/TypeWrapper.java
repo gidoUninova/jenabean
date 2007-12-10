@@ -7,7 +7,9 @@ import java.beans.MethodDescriptor;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.LinkedList;
 
 /**
  * Retrieves annotation information as well as other type related operations on
@@ -62,7 +64,12 @@ public class TypeWrapper {
 	}
 
 	public PropertyDescriptor[] descriptors() {
-		return info.getPropertyDescriptors();
+		Collection<PropertyDescriptor> results = new LinkedList<PropertyDescriptor>();
+		for (PropertyDescriptor p : info.getPropertyDescriptors())
+			if (p.getWriteMethod() != null)
+				results.add(p);
+
+		return results.toArray(new PropertyDescriptor[0]);
 	}
 
 	public Field[] fields() {

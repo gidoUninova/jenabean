@@ -29,6 +29,13 @@ class PropertyContext {
 		return property(m) != null;
 	}
 	
+	public Object invokeGetter() {
+		try {
+			return property.getReadMethod().invoke(subject);
+		} catch (Exception e) {}
+		return null;
+	}
+	
 	public void invoke(Object v) {
 	   try {
          property.getWriteMethod().invoke(subject, v);

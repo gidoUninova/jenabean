@@ -1,12 +1,10 @@
 package thewebsemantic;
 
 import static thewebsemantic.PrimitiveWrapper.isPrimitive;
-import static thewebsemantic.TypeWrapper.isMarked;
-import static thewebsemantic.TypeWrapper.type;
 import static thewebsemantic.TypeWrapper.instanceURI;
+import static thewebsemantic.TypeWrapper.type;
 
 import java.beans.PropertyDescriptor;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.logging.Logger;
@@ -111,10 +109,10 @@ public class Bean2RDF extends Base {
 	protected Resource write(Object bean, Resource subject, boolean shallow) {
 		try {
 			for (PropertyDescriptor p : type(bean).descriptors()) {
-				if (shallow && p.getPropertyType().equals(Collection.class))
+				PropertyContext pc = new PropertyContext(bean,p);
+				if (shallow && pc.isCollection())
 					continue;
-				if (p.getWriteMethod() != null)
-					invokeGetter(bean, subject, p);
+				invokeGetter(subject, pc);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -122,11 +120,8 @@ public class Bean2RDF extends Base {
 		return subject;
 	}
 
-	private void invokeGetter(Object bean, Resource subject,
-			PropertyDescriptor p) throws IllegalAccessException,
-			InvocationTargetException {
-		Object o = p.getReadMethod().invoke(bean);
-		PropertyContext pc = new PropertyContext(bean,p);
+	private void invokeGetter( Resource subject, PropertyContext pc) {
+		Object o = pc.invokeGetter();
 		if (o != null)
 			saveOrUpdate(subject, o, toRdfProperty(pc));
 	}
