@@ -1,7 +1,6 @@
 package thewebsemantic;
 
 import java.beans.PropertyDescriptor;
-import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 
 import thewebsemantic.binding.Binder;
@@ -23,27 +22,17 @@ public class Base {
 		javaclass = m.createAnnotationProperty(JAVACLASS);
 	}
 
-	private RdfProperty annotation(PropertyDescriptor p) {
-		Method m = p.getReadMethod();
-		return (m.isAnnotationPresent(RdfProperty.class)) ? (RdfProperty) m
-				.getAnnotation(RdfProperty.class) : new NullRdfProperty();
-	}
-
-	protected boolean annotated(Class<?> c) {
-		return c.isAnnotationPresent(Namespace.class);
-	}
-
 	protected Property toRdfProperty(PropertyContext ctx) {
 		return ctx.existsInModel(m) ? ctx.property(m) : applyEntailments(ctx);
 	}
 
 	private Property applyEntailments(PropertyContext ctx) {
 		OntProperty op = m.createOntProperty(ctx.uri());
-		if (isSymmetric(ctx.property))
+		if (ctx.isSymmetric())
 			op.convertToSymmetricProperty();
-		else if (isInverse(ctx.property))
+		else if (ctx.isInverse())
 			makeInverse(ctx.property, op);
-		else if (isTransitive(ctx.property))
+		else if (ctx.isTransitive())
 			op.convertToTransitiveProperty();
 		return op;
 	}
@@ -56,18 +45,7 @@ public class Base {
 				op.setInverseOf(m.createProperty(type.uri(pd)));
 	}
 
-	private boolean isInverse(PropertyDescriptor p) {
-		return p.getReadMethod().isAnnotationPresent(Inverse.class);
-	}
-
-	private boolean isSymmetric(PropertyDescriptor p) {
-		return (p.getReadMethod().isAnnotationPresent(Symmetric.class)) ? true
-				: annotation(p).symmetric();
-	}
-
-	private boolean isTransitive(PropertyDescriptor p) {
-		return annotation(p).transitive();
-	}
+	
 
 	protected Class<?> t(PropertyDescriptor propDesc) {
 		ParameterizedType type = (ParameterizedType) propDesc.getReadMethod()

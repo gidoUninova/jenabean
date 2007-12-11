@@ -103,8 +103,15 @@ public class TypeWrapper {
 	 * @return
 	 */
 	public String uri(PropertyDescriptor pd) {
-		RdfProperty rdf = pd.getReadMethod().getAnnotation(RdfProperty.class);
-		return (rdf != null) ? rdf.value() : namingPatternUri(pd);
+		RdfProperty rdf = getAnnotation(pd.getReadMethod());
+		return ("".equals(rdf.value())) ? rdf.value() : namingPatternUri(pd);
+	}
+	
+	public RdfProperty getAnnotation(Method m) {
+		if (m.isAnnotationPresent(RdfProperty.class))
+			return m.getAnnotation(RdfProperty.class);
+		else
+			return new NullRdfProperty();
 	}
 
 	private String namingPatternUri(PropertyDescriptor pd) {
@@ -161,6 +168,11 @@ public class TypeWrapper {
 
 	public boolean uriSupport() {
 		return uriMethod != null;
+	}
+
+	public boolean isSymmetric(PropertyDescriptor p) {
+		return (p.getReadMethod().isAnnotationPresent(Symmetric.class)) ? true
+				: getAnnotation(p.getReadMethod()).symmetric();
 	}
 
 }

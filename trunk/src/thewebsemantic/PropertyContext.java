@@ -11,14 +11,28 @@ class PropertyContext {
 
 	Object subject;
 	PropertyDescriptor property;
+	TypeWrapper type;
 
 	public PropertyContext(Object bean, PropertyDescriptor p) {
 		subject = bean;
 		property = p;
+		type = TypeWrapper.type(bean);
 	}
 	
 	public String uri() {
-		return TypeWrapper.type(subject).uri(property);
+		return type.uri(property);
+	}
+	
+	public boolean isSymmetric() {
+		return type.isSymmetric(property);
+	}
+
+	public boolean isInverse() {
+		return property.getReadMethod().isAnnotationPresent(Inverse.class);
+	}
+	
+	public boolean isTransitive() {
+		return type.getAnnotation(property.getReadMethod()).transitive();
 	}
 	
 	public OntProperty property(OntModel m) {
