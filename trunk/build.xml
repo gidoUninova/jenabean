@@ -36,7 +36,8 @@
 	</target>
 
 	<target name="jar" depends="default">
-		<jar destfile="${dist}/jenabean.jar" basedir="${build}" excludes="**/test/*.class" />
+		<jar destfile="${dist}/jenabean.jar" basedir="${build}" 
+			excludes="**/test/*.class **/example/*.class" />
 	</target>
 
 	<target name="clean">
