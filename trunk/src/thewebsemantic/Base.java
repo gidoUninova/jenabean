@@ -24,12 +24,9 @@ public class Base {
 	}
 
 	private RdfProperty annotation(PropertyDescriptor p) {
-
 		Method m = p.getReadMethod();
-		if (m.isAnnotationPresent(RdfProperty.class))
-			return (RdfProperty) m.getAnnotation(RdfProperty.class);
-		else
-			return new NullRdfProperty();
+		return (m.isAnnotationPresent(RdfProperty.class)) ? (RdfProperty) m
+				.getAnnotation(RdfProperty.class) : new NullRdfProperty();
 	}
 
 	protected boolean annotated(Class<?> c) {
@@ -37,8 +34,7 @@ public class Base {
 	}
 
 	protected Property toRdfProperty(PropertyContext ctx) {
-		return ctx.existsInModel(m) ? ctx.property(m)
-				: applyEntailments(ctx);
+		return ctx.existsInModel(m) ? ctx.property(m) : applyEntailments(ctx);
 	}
 
 	private Property applyEntailments(PropertyContext ctx) {
@@ -53,14 +49,11 @@ public class Base {
 	}
 
 	private void makeInverse(PropertyDescriptor property, OntProperty op) {
-		Class<?> c = t(property);
-		if (c != NullType.class) {
-			TypeWrapper type = TypeWrapper.get(c);
-			Inverse i = property.getReadMethod().getAnnotation(Inverse.class);
-			for (PropertyDescriptor pd : type.descriptors())
-				if (pd.getName().equals(i.value()))
-					op.setInverseOf(m.createProperty(type.uri(pd)));
-		}
+		TypeWrapper type = TypeWrapper.get(t(property));
+		Inverse i = property.getReadMethod().getAnnotation(Inverse.class);
+		for (PropertyDescriptor pd : type.descriptors())
+			if (pd.getName().equals(i.value()))
+				op.setInverseOf(m.createProperty(type.uri(pd)));
 	}
 
 	private boolean isInverse(PropertyDescriptor p) {
@@ -71,7 +64,7 @@ public class Base {
 		return (p.getReadMethod().isAnnotationPresent(Symmetric.class)) ? true
 				: annotation(p).symmetric();
 	}
-	
+
 	private boolean isTransitive(PropertyDescriptor p) {
 		return annotation(p).transitive();
 	}
@@ -85,6 +78,10 @@ public class Base {
 
 	protected boolean isBound(Object o) {
 		return binder.isBound(o.getClass());
+	}
+
+	class NullType {
+
 	}
 
 }
