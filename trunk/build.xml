@@ -12,7 +12,7 @@
 	<property name="src" location="src" />
 	<property name="build" location="build" />
 	<property name="dist" location="dist" />
-    <property name="vocab.dir"       value="src/test"/>
+    <property name="vocab.dir"       value="src/example"/>
 	<property name="vocab.tool"      value="jena.schemagen" />
 
 	<description>
@@ -51,7 +51,7 @@
 	  <target name="schema.check">
 	    <uptodate
 	       property="schema.nobuild"
-	       srcFile="${vocab.dir}/ical.owl"
+	       srcFile="${vocab.dir}/geonames.owl"
 	       targetFile="${vocab.dir}/Vocabulary.java" />
 	  </target>
 
@@ -64,7 +64,7 @@
 	  	      </fileset>
 	  	  </classpath>
 	      <arg value="-i" />
-	      <arg value="file:${vocab.dir}/ical.owl" />
+	      <arg value="file:${vocab.dir}/geonames.owl" />
 	      <arg value="-o" />
 	      <arg value="${vocab.dir}" />
 	      <arg value="--package" />
