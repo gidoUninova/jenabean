@@ -25,4 +25,7 @@ public class PrimitiveWrapper {
 		return WRAPPERS.containsKey(c) || c.isPrimitive();
 	}
 
+	public static boolean isPrimitive(Object o) {
+		return isPrimitive(o.getClass());
+	}
 }

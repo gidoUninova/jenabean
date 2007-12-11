@@ -24,28 +24,27 @@ import com.hp.hpl.jena.shared.Lock;
  * properties are converted to rdf properties by appending "has" and proper
  * casing the property name. For example, a bean with methods getName() and
  * setName() would result in the RDF property "hasName", with the namespace
- * given in the classes Namespace annotation.
- * <br/><br/>
- * The default behavior for rdf property naming is overridden by using the
- * RdfProperty annotation along with the getter method. The value supplied to
- * the RdfProperty annotation is taken as the full RDF property URI.
- * <br/><br/>
- * The bean itself is typed using the Namespace annotation along with the bean name, for
+ * given in the classes Namespace annotation. <br/><br/> The default behavior
+ * for rdf property naming is overridden by using the RdfProperty annotation
+ * along with the getter method. The value supplied to the RdfProperty
+ * annotation is taken as the full RDF property URI. <br/><br/> The bean itself
+ * is typed using the Namespace annotation along with the bean name, for
  * example, Book.class with namespace "http://example.org/" becomes rdf type
- * "http://example.org/Book".
- * <br/><br/>
- * Here's a simple example of a bean that's ready to be saved:
+ * "http://example.org/Book". <br/><br/> Here's a simple example of a bean
+ * that's ready to be saved:
+ * 
  * <pre>
  * <code>
- * &#64;Namespace("http://example.org/")
+ * package org.example;
+ * import thewebsemantic.Id;
  * public Book {
  *    private String name;
  *    public void setName(String s) { name=s;}
+ *    &#064;Id
  *    public String getName() {return name;}
  * }
  * </code>
  * </pre>
- * It uses the Namespace annotation.  Bean2RDF takes care of the rest.
  * 
  * @author Taylor Cowan
  * @see Namespace
@@ -53,65 +52,75 @@ import com.hp.hpl.jena.shared.Lock;
  * @see RdfProperty
  */
 public class Bean2RDF extends Base {
-
 	private ArrayList<Object> cycle;
-	private Logger logger = Logger.getLogger("thewebsemenatic", "thewebsemantic.messages");
-	
+
+	private Logger logger = Logger.getLogger("thewebsemenatic",
+			"thewebsemantic.messages");
+
 	public Bean2RDF(OntModel m) {
 		super(m);
 	}
 
 	/**
 	 * write a bean to the triple store
+	 * 
 	 * @param bean
 	 * @return
 	 */
 	public synchronized Resource write(Object bean) {
-		Resource r;
 		try {
 			m.enterCriticalSection(Lock.WRITE);
 			cycle = new ArrayList<Object>();
-			r = _write(bean, false);
+			return _write(bean, false);
 		} finally {
 			m.leaveCriticalSection();
 		}
-		return r;
 	}
 
 	private Resource _write(Object bean, boolean shallow) {
-		Resource ontclass = getOntClass(bean);
-		Resource newResource = m.createResource(instanceURI(bean), ontclass);
-		if (cycle.contains(bean))
-			return newResource;
-		cycle.add(bean);
-		return write(bean, newResource, shallow);
+		return (cycle.contains(bean)) ? existing(bean) : write(bean,
+				toResource(bean), shallow);
+	}
+
+	private Resource toResource(Object bean) {
+		return m.createResource(instanceURI(bean), getOntClass(bean));
+	}
+	
+	private Resource existing(Object bean) {
+		return m.createResource(instanceURI(bean));
 	}
 
 	/**
-	 *  returns an existing OntClass or creates a new one
-	 * @param bean the bean we are saving or updating to the triple store
+	 * returns an existing OntClass or creates a new one adding an important
+	 * annotation indicating the original java class.
+	 * 
+	 * @param bean
+	 *            the bean we are saving or updating to the triple store
 	 * @return
 	 */
 	private Resource getOntClass(Object bean) {
-		OntClass rdfType = m.createClass(getURI(bean));
-		return rdfType.addProperty(javaclass, bean.getClass().getName());
+		return ontClass(bean).addProperty(javaclass, bean.getClass().getName());
+	}
+
+	private OntClass ontClass(Object bean) {
+		return m.createClass(getURI(bean));
 	}
 
 	private String getURI(Object bean) {
-		return (isBound(bean)) ? 
-			binder.getUri(bean.getClass()): type(bean).typeUri();
+		return (isBound(bean)) ? binder.getUri(bean) : type(bean).typeUri();
 	}
 
 	private Resource write(Object bean, RDFNode node, boolean shallow) {
 		return write(bean, (Resource) node.as(Resource.class), shallow);
 	}
 
-	protected Resource write(Object bean, Resource subject, boolean shallow) {
+	private Resource write(Object bean, Resource subject, boolean shallow) {
 		try {
+			cycle.add(bean);
 			for (PropertyDescriptor p : type(bean).descriptors()) {
-				PropertyContext pc = new PropertyContext(bean,p);
-				if (! (shallow&&pc.isCollection()))
-					invokeGetter(subject, pc);
+				PropertyContext pc = new PropertyContext(bean, p);
+				if (!(shallow && pc.isCollection()))
+					saveOrUpdate(subject, pc.invokeGetter(), toRdfProperty(pc));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -119,20 +128,13 @@ public class Bean2RDF extends Base {
 		return subject;
 	}
 
-	private void invokeGetter( Resource subject, PropertyContext pc) {
-		Object o = pc.invokeGetter();
-		if (o != null)
-			saveOrUpdate(subject, o, toRdfProperty(pc));
-	}
-
 	private void saveOrUpdate(Resource subject, Object o, Property property) {
-		if ( o instanceof Collection)
+		if (o instanceof Collection)
 			updateCollection(subject, property, (Collection<?>) o);
 		else if (isPrimitive(o.getClass()))
 			getSaver(subject, property).write(o);
-		else
+		else if (!o.getClass().isArray())
 			updateOrCreate(subject, property, o);
-
 	}
 
 	/**
@@ -143,20 +145,20 @@ public class Bean2RDF extends Base {
 	 * @param c
 	 */
 	private void updateCollection(Resource subject, Property property,
-			Collection<?> c) {		
+			Collection<?> c) {
 		subject.removeAll(property);
 		AddSaver saver = new AddSaver(subject, property);
 		for (Object o : c)
-			if (!isPrimitive(o.getClass()))
-				subject.addProperty(property, _write(o,true)); //recursive
+			if (isPrimitive(o))
+				saver.write(o); // leaf
 			else
-				saver.write(o); //leaf
+				subject.addProperty(property, _write(o, true)); // recursive
 	}
 
 	/**
 	 * To simplify the type switch above, return a specialized helper either for
-	 * updating an existing relation, or adding a new relation, depending on 
-	 * the existence of property on resource s.
+	 * updating an existing relation, or adding a new relation, depending on the
+	 * existence of property on resource s.
 	 * 
 	 * @param s
 	 * @param property
@@ -168,15 +170,14 @@ public class Bean2RDF extends Base {
 	}
 
 	/**
-	 * Update or persist a domain object
-	 * outside String, Date, and the usual primitive types.
+	 * Update or persist a domain object outside String, Date, and the usual
+	 * primitive types.
 	 * 
 	 * @param subject
 	 * @param property
 	 * @param o
 	 */
-	private void updateOrCreate(Resource subject, Property property,
-			Object o) {
+	private void updateOrCreate(Resource subject, Property property, Object o) {
 		Statement existingRelation = subject.getProperty(property);
 		if (existingRelation != null)
 			write(o, existingRelation.getObject(), true);
@@ -184,7 +185,6 @@ public class Bean2RDF extends Base {
 			subject.addProperty(property, _write(o, true));
 	}
 }
-
 /*
  * Copyright (c) 2007 Taylor Cowan
  * 

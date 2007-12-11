@@ -30,10 +30,13 @@ class PropertyContext {
 	}
 	
 	public Object invokeGetter() {
+		Object result=null;
 		try {
-			return property.getReadMethod().invoke(subject);
+			result = property.getReadMethod().invoke(subject);
+			if ( result == null)
+				result = new int[0];
 		} catch (Exception e) {}
-		return null;
+		return result;
 	}
 	
 	public void invoke(Object v) {
