@@ -8,7 +8,7 @@ import java.lang.annotation.Target;
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME) 
 public @interface RdfProperty {
-	String value();
+	String value() default "";
 	boolean symmetric() default false;
 	boolean transitive() default false;
 }
