@@ -193,21 +193,11 @@ public class RDF2Bean extends Base {
 				else
 					o = m.newInstance(last(source.getURI()));
 			} catch (NoSuchMethodException e) {
-				// so what?
+				// this is expected, we'll use default constructor
 			}
 			if (o == null)
 				o = c.newInstance();
-		} catch (SecurityException e) {
-			e.printStackTrace();
-		} catch (InstantiationException e) {
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			e.printStackTrace();
-		} catch (IllegalArgumentException e) {
-			e.printStackTrace();
-		} catch (InvocationTargetException e) {
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return o;
