@@ -45,6 +45,10 @@ public class Binder {
 			return null;
 	}
 	
+	public String getUri(Object bean) {
+		return getUri(bean.getClass());
+	}
+	
 	public Class<?> getClass(String uri) {
 		if (url2class.containsKey(uri))
 			return url2class.get(uri);
