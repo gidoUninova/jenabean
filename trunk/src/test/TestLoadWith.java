@@ -29,12 +29,12 @@ public class TestLoadWith {
       
       Post shallow = reader.load(Post.class, p1.hashCode());     
       assertEquals(0, shallow.getTags().size());
-      reader.load(shallow, "tags");
+      reader.fill(shallow, "tags");
       assertEquals(2, shallow.getTags().size());
       
       shallow = reader.load(Post.class, p1.hashCode());     
       assertEquals(0, shallow.getTags().size());
-      reader.load(shallow).with("tags");
+      reader.fill(shallow).with("tags");
       assertEquals(2, shallow.getTags().size());
 
    }

@@ -111,15 +111,15 @@ public class RDF2Bean extends Base {
 		}
 	}
 
-	public Filler load(Object o) {
+	public Filler fill(Object o) {
 		return new Filler(this, o);
 	}
 
-	public synchronized <T> T load(Object o, String propertyName) {
+	public synchronized void fill(Object o, String propertyName) {
 		m.enterCriticalSection(Lock.READ);
 		this.shallow = true;
 		try {
-			return (T) applyProperty(o, propertyName);
+			applyProperty(o, propertyName);
 		} finally {
 			m.leaveCriticalSection();
 		}

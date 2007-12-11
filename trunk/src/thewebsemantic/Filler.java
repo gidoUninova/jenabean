@@ -10,8 +10,8 @@ public class Filler {
       target = o;
    }
    
-   public <T> T with(String propertyName) {
-      return writer.load(target, propertyName);
+   public void with(String propertyName) {
+      writer.fill(target, propertyName);
    }
 
 }
