@@ -9,13 +9,12 @@ public class Binder {
 	private HashMap<Class<?>, String> class2url;
 	private HashMap<String, Class<?>> url2class;
 
-	private static Binder myself;
+	private static Binder myself = new Binder();
 	
 	public static synchronized Binder instance() {
-		if ( myself == null)
-			myself = new Binder();
 		return myself;
 	}
+
 	private Binder() {
 		class2url = new HashMap<Class<?>, String>();
 		url2class = new HashMap<String, Class<?>>();
