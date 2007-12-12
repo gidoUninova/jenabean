@@ -20,7 +20,7 @@ public class TestUriAnnotation {
 		
 		OntModel m = ModelFactory.createOntologyModel(OntModelSpec.OWL_MEM_RDFS_INF);	
 		Bean2RDF writer = new Bean2RDF(m);
-		writer.write(c);
+		writer.save(c);
 	
 		RDF2Bean reader = new RDF2Bean(m);
 		City boston = reader.load(City.class, "http://example.org/Boston");

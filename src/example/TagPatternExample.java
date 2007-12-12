@@ -36,7 +36,7 @@ public class TagPatternExample {
 
 		// jb will persist all objects because...
 		// jb has element p, which has tag red, which has element i
-		writer.writeDeep(jb);
+		writer.saveDeep(jb);
 		m.write(System.out, "N3");
 		
 		// now image and post both have two tags

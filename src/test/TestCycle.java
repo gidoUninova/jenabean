@@ -20,7 +20,7 @@ public class TestCycle {
 		
 		yin.setYang(yang);
 		yang.setYin(yin);
-		writer.write(yin);
+		writer.save(yin);
 		
 		
 	}

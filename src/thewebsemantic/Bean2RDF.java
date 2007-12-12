@@ -62,11 +62,11 @@ public class Bean2RDF extends Base {
 		super(m);
 	}
 
-	public Resource write(Object bean) {
+	public Resource save(Object bean) {
 		return write(bean, false);
 	}
 	
-	public Resource writeDeep(Object bean) {
+	public Resource saveDeep(Object bean) {
 		return write(bean, true);
 	}
 	

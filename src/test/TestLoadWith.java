@@ -23,7 +23,7 @@ public class TestLoadWith {
       p1.setTitle("i like OWL");
       p1.addTag(fun);
       p1.addTag(run);
-      writer.write(p1); 
+      writer.save(p1); 
   
       RDF2Bean reader = new RDF2Bean(m);
       

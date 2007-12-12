@@ -18,7 +18,7 @@ public class DCExample {
 		bean.setIsbn("0596002637");
 		bean.setCreator("Shelley Powers");
 		bean.setSubject("RDF, semantic web, xml");
-		writer.write(bean);
+		writer.save(bean);
 		m.write(System.out);
 		
 		//write to a file

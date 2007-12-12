@@ -27,7 +27,7 @@ public class TestInverse {
 		p1.setTitle("i like OWL");
 		p1.addTag(fun);
 		p1.addTag(run);
-		writer.write(p1); 
+		writer.save(p1); 
 		//m.writeAll(System.out, "RDF/XML-ABBREV", "http://foo/");
 		RDF2Bean reader = new RDF2Bean(m);
 		reader.loadDeep(Post.class, p1.hashCode());
@@ -61,8 +61,8 @@ public class TestInverse {
 		a.addOrange(o);
 		aprime.addOrange(o);
 		
-		writer.write(a);
-		writer.write(o);
+		writer.save(a);
+		writer.save(o);
 
 		//m.write(System.out);
 		RDF2Bean reader = new RDF2Bean(m);
@@ -71,7 +71,7 @@ public class TestInverse {
 		for (Orange orange : oranges)
 			assertEquals(1, orange.getApples().size());
 
-		writer.write(aprime);
+		writer.save(aprime);
 		m.write(new FileWriter("tmp.rdf"));
 		m = ModelFactory.createOntologyModel(OntModelSpec.OWL_MEM_MINI_RULE_INF);
 		reader = new RDF2Bean(m);

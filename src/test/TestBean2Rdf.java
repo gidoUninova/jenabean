@@ -30,7 +30,7 @@ public class TestBean2Rdf {
 		KeepItSimple bean = new KeepItSimple();
 		bean.setId("kisv1.1");
 		bean.setValue(444);
-		writer.write(bean);
+		writer.save(bean);
 
 	}
 	
@@ -39,7 +39,7 @@ public class TestBean2Rdf {
 		OntModel m = ModelFactory.createOntologyModel(OntModelSpec.OWL_MEM_RDFS_INF);	
 		final Bean2RDF writer = new Bean2RDF(m);
 		final User u = new User();
-		writer.write(u);		
+		writer.save(u);		
 		RDF2Bean reader = new RDF2Bean(m);
 		assertTrue(reader.exists(User.class, u.getScreenName()));
 		assertFalse(reader.exists(User.class, "not there"));
@@ -64,7 +64,7 @@ public class TestBean2Rdf {
 			public void run() {
 				for(int i=0; i<100; i++) {
 					u.setScreenName(i + "");
-					writer.write(u);
+					writer.save(u);
 				}
 			}
 		};		
@@ -86,13 +86,13 @@ public class TestBean2Rdf {
 		bean2.addFriend(bean3);
 		bean3.addFriend(bean4);
 		bean4.addFriend(bean1);
-		writer.write(bean1);
-		writer.write(bean2);
-		writer.write(bean3);
-		writer.write(bean4);
+		writer.save(bean1);
+		writer.save(bean2);
+		writer.save(bean3);
+		writer.save(bean4);
 		
 		for (int i=0; i<100; i++)
-			writer.write(new A("" + i));
+			writer.save(new A("" + i));
 		
 		m.write(new FileWriter("tmp.rdf"));
 
@@ -126,7 +126,7 @@ public class TestBean2Rdf {
 		SymmetricBean adjacent2 = new SymmetricBean("adjacent2");
 		bean1.addAdjacent(adjacent1);
 		bean1.addAdjacent(adjacent2);
-		writer.write(bean1);
+		writer.save(bean1);
 		RDF2Bean reader = new RDF2Bean(m);
 		Collection<SymmetricBean> things = reader.load(SymmetricBean.class);
 		assertEquals(3, things.size());
@@ -149,7 +149,7 @@ public class TestBean2Rdf {
 		bean1.setName("Taylor");
 		bean2.setName("Lois");
 		bean2.setSalary(777.77f);
-		writer.write(bean1);
+		writer.save(bean1);
 		
 		RDF2Bean reader = new RDF2Bean(m);
 		Collection<A> friends = reader.loadDeep(A.class);
@@ -174,7 +174,7 @@ public class TestBean2Rdf {
 			bean.addFoo(i);
 			bean.addBar((char)i);
 		}
-		writer.write(bean);
+		writer.save(bean);
 		
 		RDF2Bean reader = new RDF2Bean(m);
 		Collection<AutoBoxing> results = reader.loadDeep(AutoBoxing.class);
@@ -197,7 +197,7 @@ public class TestBean2Rdf {
 		p.addChild(new Unannotated());
 		p.addThing("thing one");
 		p.addThing("thing two");
-		writer.write(p);
+		writer.save(p);
 		
 		
 	}
@@ -206,7 +206,7 @@ public class TestBean2Rdf {
 	public void testUnannotated() throws Exception {
 		OntModel m = ModelFactory.createOntologyModel(OntModelSpec.OWL_MEM_MICRO_RULE_INF);
 		Bean2RDF writer = new Bean2RDF(m);
-		writer.write(new Unannotated());
+		writer.save(new Unannotated());
 		RDF2Bean reader = new RDF2Bean(m);
 		Collection<Unannotated> things = reader.load(Unannotated.class);	
 		assertEquals(1, things.size());
@@ -219,7 +219,7 @@ public class TestBean2Rdf {
 		AnnotationTester bean = new AnnotationTester();
 		bean.setFullName("Jerry the Bee");
 		bean.setEmail("an@email.com");
-		writer.write(bean);
+		writer.save(bean);
 		
 	}
 	
@@ -243,7 +243,7 @@ public class TestBean2Rdf {
 		
 		OntModel m = ModelFactory.createOntologyModel(OntModelSpec.OWL_MEM_MICRO_RULE_INF);
 		Bean2RDF writer = new Bean2RDF(m);
-		writer.write(bean);
+		writer.save(bean);
 		
 		Individual i = m.getIndividual(ns + "bogus");
 		assertEquals(null, i);
@@ -256,7 +256,7 @@ public class TestBean2Rdf {
 		assertEquals(bean.getValue(), bean2.getValue());
 		
 		bean.setValue(1);
-		writer.write(bean);
+		writer.save(bean);
 		bean2 = reader.loadDeep(IdTesterBean.class, "example");
 		
 		assertEquals(bean.getValue(), bean2.getValue());
@@ -283,7 +283,7 @@ public class TestBean2Rdf {
 
 		OntModel m = ModelFactory.createOntologyModel();
 		Bean2RDF writer = new Bean2RDF(m);
-		writer.write(bean);
+		writer.save(bean);
 
 		RDF2Bean reader = new RDF2Bean(m);
 		TypeTesterBean bean2 = reader.loadDeep(TypeTesterBean.class, bean.hashCode());
@@ -315,8 +315,8 @@ public class TestBean2Rdf {
 		//b.addChildren(bean);
 		OntModel m = ModelFactory.createOntologyModel();
 		Bean2RDF writer = new Bean2RDF(m);
-		writer.write(bean);
-		writer.write(bean);
+		writer.save(bean);
+		writer.save(bean);
 		
 		RDF2Bean reader = new RDF2Bean(m);
 		Collection<DeepBean> results = reader.load(DeepBean.class);
@@ -331,7 +331,7 @@ public class TestBean2Rdf {
 		bean.setSomeStringData("method annotation holds my > rdf property &");		
 		OntModel m = ModelFactory.createOntologyModel();
 		Bean2RDF writer = new Bean2RDF(m);
-		writer.write(bean);	
+		writer.save(bean);	
 		RDF2Bean reader = new RDF2Bean(m);		
 		DeepBean bean2 = reader.loadDeep(DeepBean.class, bean.id());
 		assertEquals(bean2.getSomeStringData(), bean.getSomeStringData());
@@ -347,7 +347,7 @@ public class TestBean2Rdf {
 		
 		OntModel m = ModelFactory.createOntologyModel();
 		Bean2RDF writer = new Bean2RDF(m);
-		writer.write(bean);	
+		writer.save(bean);	
 		
 		RDF2Bean reader = new RDF2Bean(m);
 		
@@ -368,7 +368,7 @@ public class TestBean2Rdf {
 		
 		OntModel m = ModelFactory.createOntologyModel();
 		Bean2RDF writer = new Bean2RDF(m);
-		writer.write(u);	
+		writer.save(u);	
 		RDF2Bean reader = new RDF2Bean(m);		
 		User u2 = reader.loadDeep(User.class, "tcowan");
 		assertEquals(u.getEmail(), u2.getEmail());
@@ -390,7 +390,7 @@ public class TestBean2Rdf {
 		
 		OntModel m = ModelFactory.createOntologyModel();
 		Bean2RDF writer = new Bean2RDF(m);
-		writer.write(u);
+		writer.save(u);
 		Individual i = m.getIndividual("http://test#User/" + u.getScreenName());
 		
 		Property p = m.getProperty("http://test#" + "hasProfile");
@@ -404,12 +404,12 @@ public class TestBean2Rdf {
 		assertEquals(value.getString(), "Cowan");
 
 		
-		writer.write(u);
-		writer.write(u);
+		writer.save(u);
+		writer.save(u);
 		
 		//update profile and expect the name to change when I save the User
 		profile.setLastName("Smith");
-		writer.write(u);
+		writer.save(u);
 		
 		i = m.getIndividual("http://test#User/" + u.getScreenName());
 		assertNotNull(i);
@@ -431,7 +431,7 @@ public class TestBean2Rdf {
 		assertEquals("Smith", value.getString());
 		
 		u = new User("password", "b@email.com", "lcowan");
-		writer.write(u);
+		writer.save(u);
 		
 	}
 }
