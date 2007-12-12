@@ -5,6 +5,7 @@ import java.beans.IntrospectionException;
 import java.beans.Introspector;
 import java.beans.MethodDescriptor;
 import java.beans.PropertyDescriptor;
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Collection;
@@ -18,8 +19,8 @@ import java.util.LinkedList;
  * @author Taylor Cowan
  */
 public class TypeWrapper {
-
 	private static final String HAS = "has";
+
 	private String NS;
 	private Class<?> c;
 	private BeanInfo info;
@@ -35,11 +36,9 @@ public class TypeWrapper {
 				idMethod = md.getMethod();
 			else if (isUri(md))
 				uriMethod = md.getMethod();
-		
 		Namespace nsa = getNamespaceAnnotation();
-		NS = (nsa!= null) ?getNamespaceAnnotation().value():
-			"http://" + c.getPackage().getName() + '/';
-			
+		NS = (nsa != null) ? getNamespaceAnnotation().value() : "http://"
+				+ c.getPackage().getName() + '/';
 		cache.put(c, this);
 	}
 
@@ -106,7 +105,7 @@ public class TypeWrapper {
 		RdfProperty rdf = getAnnotation(pd.getReadMethod());
 		return ("".equals(rdf.value())) ? rdf.value() : namingPatternUri(pd);
 	}
-	
+
 	public RdfProperty getAnnotation(Method m) {
 		if (m.isAnnotationPresent(RdfProperty.class))
 			return m.getAnnotation(RdfProperty.class);
@@ -175,4 +174,25 @@ public class TypeWrapper {
 				: getAnnotation(p.getReadMethod()).symmetric();
 	}
 
+	class NullRdfProperty implements RdfProperty {
+		@Override
+		public boolean symmetric() {
+			return false;
+		}
+
+		@Override
+		public boolean transitive() {
+			return false;
+		}
+
+		@Override
+		public String value() {
+			return null;
+		}
+
+		@Override
+		public Class<? extends Annotation> annotationType() {
+			return null;
+		}
+	}
 }
