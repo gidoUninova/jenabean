@@ -14,6 +14,6 @@ public class TestErrors {
 	public void testBasic() {
 		OntModel m = ModelFactory.createOntologyModel(OntModelSpec.OWL_MEM_MINI_RULE_INF);	
 		Bean2RDF writer = new Bean2RDF(m);
-		writer.write("hello");
+		writer.save("hello");
 	}
 }

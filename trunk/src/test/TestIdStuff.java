@@ -22,7 +22,7 @@ public class TestIdStuff {
 		bean.setAge(32);
 		OntModel m = ModelFactory.createOntologyModel();
 		Bean2RDF writer = new Bean2RDF(m);
-		writer.write(bean);
+		writer.save(bean);
 		RDF2Bean reader = new RDF2Bean(m);
 		TestIDBean bean2 = reader.load(TestIDBean.class, id);
 		assertEquals("123 Oak Circle", bean2.getAddress());
@@ -51,7 +51,7 @@ public class TestIdStuff {
 	public void testConstructor() {
 		OntModel m = ModelFactory.createOntologyModel();
 		Bean2RDF writer = new Bean2RDF(m);
-		writer.write(new Flute("a"));
+		writer.save(new Flute("a"));
 		RDF2Bean reader = new RDF2Bean(m);
 		Flute a = reader.load(Flute.class, "a");
 		assertEquals("a", a.getMyId());
@@ -59,7 +59,7 @@ public class TestIdStuff {
 		// its uri should be http://package/classname/id
 		Individual i = m.getIndividual("http://test/Flute/a");
 		assertNotNull(i);
-		writer.write(a);
+		writer.save(a);
 	}
 
 	class Trumpet {
@@ -86,15 +86,15 @@ public class TestIdStuff {
 		Bean2RDF writer = new Bean2RDF(m);
 		Trumpet t = new Trumpet();
 		t.setId("bach");
-		writer.write(t);
+		writer.save(t);
 		RDF2Bean reader = new RDF2Bean(m);
 		Collection<Trumpet> trumpets = reader.load(Trumpet.class);
 		assertEquals(1, trumpets.size());
-		writer.write(t);
+		writer.save(t);
 		trumpets = reader.load(Trumpet.class);
 		assertEquals(1, trumpets.size());
 		t.setId("conn");
-		writer.write(t);
+		writer.save(t);
 		trumpets = reader.load(Trumpet.class);
 		assertEquals(2, trumpets.size());	
 		

@@ -42,8 +42,8 @@ public class TestTransitive {
 		
 		OntModel m = ModelFactory.createOntologyModel(OntModelSpec.OWL_MEM_MINI_RULE_INF);	
 		Bean2RDF writer = new Bean2RDF(m);
-		writer.write(p);
-		writer.write(b);
+		writer.save(p);
+		writer.save(b);
 		
 		RDF2Bean reader = new RDF2Bean(m);
 		Person q = reader.loadDeep(Person.class, p.uri());

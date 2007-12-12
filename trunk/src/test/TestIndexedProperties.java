@@ -17,6 +17,6 @@ public class TestIndexedProperties {
 		bean.setTags(tags);
 		OntModel m = ModelFactory.createOntologyModel(OntModelSpec.OWL_MEM_RDFS_INF);	
 		Bean2RDF writer = new Bean2RDF(m);
-		writer.write(bean);
+		writer.save(bean);
 	}
 }
