@@ -4,8 +4,7 @@ import static thewebsemantic.JenaHelper.asIndividual;
 import static thewebsemantic.JenaHelper.asLiteral;
 import static thewebsemantic.JenaHelper.date;
 import static thewebsemantic.JenaHelper.listAllIndividuals;
-import static thewebsemantic.TypeWrapper.wrap;
-import static thewebsemantic.TypeWrapper.type;
+import static thewebsemantic.TypeWrapper.*;
 
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.InvocationTargetException;
@@ -160,9 +159,7 @@ public class RDF2Bean extends Base {
 	}
 
 	private Object applyProperty(Object target, String propertyName) {
-		// cycle.put(source.getURI(), target);
-		String uri = TypeWrapper.instanceURI(target);
-		Individual source = m.getIndividual(uri);
+		Individual source = m.getIndividual(instanceURI(target));
 		for (PropertyDescriptor p : type(target).descriptors())
 			if (p.getName().equals(propertyName)
 					&& p.getPropertyType().equals(Collection.class))
