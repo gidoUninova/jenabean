@@ -53,6 +53,7 @@ import com.hp.hpl.jena.shared.Lock;
  */
 public class Bean2RDF extends Base {
 	private ArrayList<Object> cycle;
+	private boolean forceDeep = false;
 
 	private Logger logger = Logger.getLogger("thewebsemenatic",
 			"thewebsemantic.messages");
@@ -61,15 +62,24 @@ public class Bean2RDF extends Base {
 		super(m);
 	}
 
+	public Resource write(Object bean) {
+		return write(bean, false);
+	}
+	
+	public Resource writeDeep(Object bean) {
+		return write(bean, true);
+	}
+	
 	/**
 	 * write a bean to the triple store
 	 * 
 	 * @param bean
 	 * @return
 	 */
-	public synchronized Resource write(Object bean) {
+	private synchronized Resource write(Object bean, boolean forceDeep) {
 		try {
 			m.enterCriticalSection(Lock.WRITE);
+			this.forceDeep = forceDeep;
 			cycle = new ArrayList<Object>();
 			return _write(bean, false);
 		} finally {
@@ -117,18 +127,18 @@ public class Bean2RDF extends Base {
 	private Resource write(Object bean, Resource subject, boolean shallow) {
 		try {
 			cycle.add(bean);
-			for (PropertyDescriptor p : type(bean).descriptors()) {
-				PropertyContext pc = new PropertyContext(bean, p);
-				if (!(shallow && pc.isCollection()))
-					saveOrUpdate(subject, pc.invokeGetter(), toRdfProperty(pc));
-			}
+			for (PropertyDescriptor p : type(bean).descriptors())
+				if (!(shallow && p.getPropertyType().equals(Collection.class)) || forceDeep)
+					saveOrUpdate(subject, new PropertyContext(bean, p));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return subject;
 	}
 
-	private void saveOrUpdate(Resource subject, Object o, Property property) {
+	private void saveOrUpdate(Resource subject, PropertyContext pc) {
+		Object o = pc.invokeGetter();
+		Property property = toRdfProperty(pc);
 		if (o instanceof Collection)
 			updateCollection(subject, property, (Collection<?>) o);
 		else if (isPrimitive(o.getClass()))
@@ -171,7 +181,8 @@ public class Bean2RDF extends Base {
 
 	/**
 	 * Update or persist a domain object outside String, Date, and the usual
-	 * primitive types.
+	 * primitive types.  We set the write style to shallow=true,
+	 * causing an end of recursive traversal of the object graph.
 	 * 
 	 * @param subject
 	 * @param property

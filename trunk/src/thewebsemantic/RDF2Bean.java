@@ -41,7 +41,6 @@ public class RDF2Bean extends Base {
 	public RDF2Bean(OntModel m) {
 		super(m);
 	}
-
 	
 	public <T> Collection<T> loadDeep(Class<T> c) {
 		return load(c, false);
@@ -176,7 +175,7 @@ public class RDF2Bean extends Base {
 		Object target = newInstance(source);
 		cycle.put(source.getURI(), target);
 		for (PropertyDescriptor p : type(target).descriptors())
-			if (!shallow || !p.getPropertyType().equals(Collection.class))
+			if (!(shallow && p.getPropertyType().equals(Collection.class)))
 				apply(source, new PropertyContext(target, p));
 		return target;
 	}
