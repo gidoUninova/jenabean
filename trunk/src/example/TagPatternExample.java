@@ -9,6 +9,8 @@ import com.hp.hpl.jena.rdf.model.ModelFactory;
 
 public class TagPatternExample {
 	public static void main(String[] args) {
+		OntModel m = ModelFactory.createOntologyModel(OntModelSpec.OWL_MEM_MINI_RULE_INF);	
+		Bean2RDF writer = new Bean2RDF(m);
 		
 		// two tags
 		Tag jb = new Tag();
@@ -31,8 +33,6 @@ public class TagPatternExample {
 		p.addTag(red);
 		red.addElement(i);
 		
-		OntModel m = ModelFactory.createOntologyModel(OntModelSpec.OWL_MEM_MINI_RULE_INF);	
-		Bean2RDF writer = new Bean2RDF(m);
 
 		// jb will persist all objects because...
 		// jb has element p, which has tag red, which has element i
