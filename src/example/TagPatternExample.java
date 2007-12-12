@@ -8,7 +8,7 @@ import com.hp.hpl.jena.ontology.OntModelSpec;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 
 public class TagPatternExample {
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 		OntModel m = ModelFactory.createOntologyModel(OntModelSpec.OWL_MEM_MINI_RULE_INF);	
 		Bean2RDF writer = new Bean2RDF(m);
 		

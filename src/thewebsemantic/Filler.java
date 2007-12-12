@@ -10,7 +10,7 @@ public class Filler {
       target = o;
    }
    
-   public void with(String propertyName) {
+   public void with(String propertyName) throws NotFoundException {
       writer.fill(target, propertyName);
    }
 

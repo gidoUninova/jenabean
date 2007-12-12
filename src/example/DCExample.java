@@ -11,7 +11,7 @@ import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 
 public class DCExample {
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) throws Exception {
 		OntModel m = ModelFactory.createOntologyModel();
 		Bean2RDF writer = new Bean2RDF(m);		
 		Book bean = new Book();

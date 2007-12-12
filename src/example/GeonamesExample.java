@@ -16,7 +16,7 @@ public class GeonamesExample {
 	 * 
 	 * @param args
 	 */
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception{
 		OntModel m = ModelFactory.createOntologyModel();
 		m.read("file:src/example/geonames.owl");
 		m.read("file:src/example/capitals.rdf");

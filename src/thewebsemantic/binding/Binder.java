@@ -2,13 +2,20 @@ package thewebsemantic.binding;
 
 import java.util.HashMap;
 
+import thewebsemantic.Bean2RDF;
+import thewebsemantic.RDF2Bean;
+
 import com.hp.hpl.jena.ontology.OntClass;
+import com.hp.hpl.jena.ontology.OntModel;
 
 public class Binder {
 	
 	private HashMap<Class<?>, String> class2url;
 	private HashMap<String, Class<?>> url2class;
-
+	private OntModel model;
+	private Bean2RDF writer;
+	private RDF2Bean reader;
+	
 	private static Binder myself = new Binder();
 	
 	public static synchronized Binder instance() {
@@ -19,6 +26,25 @@ public class Binder {
 		class2url = new HashMap<Class<?>, String>();
 		url2class = new HashMap<String, Class<?>>();
 	}
+	
+	public void bind(OntModel m) {
+		model = m;
+		reader = new RDF2Bean(m);
+		writer = new Bean2RDF(m);
+	}
+	
+	public OntModel model() {
+		return model;
+	}
+	
+	public Bean2RDF writer() {
+		return writer;
+	}
+	
+	public RDF2Bean reader() {
+		return reader;
+	}
+	
 	
 	public Binding bind(OntClass oc) {
 		return new Binding(this,oc);

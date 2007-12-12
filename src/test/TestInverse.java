@@ -17,7 +17,7 @@ import com.hp.hpl.jena.rdf.model.ModelFactory;
 public class TestInverse {
 	
 	@Test
-	public void testExtended() {
+	public void testExtended()  throws Exception {
 		OntModel m = ModelFactory.createOntologyModel(OntModelSpec.OWL_MEM_MINI_RULE_INF);	
 		Bean2RDF writer = new Bean2RDF(m);
 		
@@ -47,7 +47,7 @@ public class TestInverse {
 	}
 	
 	@Test
-	public void testBasic() throws IOException {
+	public void testBasic() throws Exception {
 		OntModel m = ModelFactory.createOntologyModel(OntModelSpec.OWL_MEM_MINI_RULE_INF);	
 		Bean2RDF writer = new Bean2RDF(m);
 		Apple a = new Apple();

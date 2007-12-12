@@ -11,6 +11,7 @@ import org.junit.Test;
 
 import thewebsemantic.Bean2RDF;
 import thewebsemantic.Namespace;
+import thewebsemantic.NotFoundException;
 import thewebsemantic.RDF2Bean;
 
 import com.hp.hpl.jena.ontology.Individual;
@@ -227,8 +228,14 @@ public class TestBean2Rdf {
 	public void testNotFound() throws Exception {
 		OntModel m = ModelFactory.createOntologyModel(OntModelSpec.OWL_MEM_MICRO_RULE_INF);		
 		RDF2Bean reader = new RDF2Bean(m);
-		IdTesterBean bean = reader.loadDeep(IdTesterBean.class, "example");
-		assertEquals(null, bean);
+		boolean caught = false;
+		try {
+			IdTesterBean bean = reader.loadDeep(IdTesterBean.class, "example");
+		} catch (NotFoundException e) {
+			caught = true;
+		} finally {
+			assertTrue(caught);
+		}
 		Collection<IdTesterBean> c = reader.load(IdTesterBean.class);
 		assertEquals(c.size(), 0);
 	}
