@@ -189,10 +189,8 @@ public class TypeWrapper {
 		try {
 		try {
 			Constructor<?> m = c.getConstructor(String.class);
-			if (uriSupport())
-				return m.newInstance(source.getURI());
-			else
-				return m.newInstance(last(source.getURI()));
+			return (uriSupport()) ? m.newInstance(source.getURI()):
+				m.newInstance(last(source.getURI()));
 		} catch (NoSuchMethodException e) {
 			// this is expected, we'll use default constructor
 		}
