@@ -117,7 +117,7 @@ public class RDF2Bean extends Base {
 		m.enterCriticalSection(Lock.READ);
 		this.shallow = true;
 		try {
-			applyProperty(o, propertyName);
+			fillWithChildren(o, propertyName);
 		} finally {
 			m.leaveCriticalSection();
 		}
@@ -157,12 +157,12 @@ public class RDF2Bean extends Base {
 		return cycle.containsKey(i.getURI());
 	}
 
-	private Object applyProperty(Object target, String propertyName) {
+	private Object fillWithChildren(Object target, String propertyName) {
 		Individual source = m.getIndividual(instanceURI(target));
 		for (PropertyDescriptor p : type(target).descriptors())
 			if (p.getName().equals(propertyName)
 					&& p.getPropertyType().equals(Collection.class))
-				apply(source, new PropertyContext(target, p));
+				fill(source, new PropertyContext(target, p));
 		return target;
 	}
 
@@ -170,8 +170,7 @@ public class RDF2Bean extends Base {
 		Object target = newInstance(source);
 		cycle.put(source.getURI(), target);
 		for (PropertyDescriptor p : type(target).descriptors())
-			if (!(shallow && p.getPropertyType().equals(Collection.class)))
-				apply(source, new PropertyContext(target, p));
+			apply(source, new PropertyContext(target, p));
 		return target;
 	}
 
@@ -231,23 +230,38 @@ public class RDF2Bean extends Base {
 			apply(ctx, i.listPropertyValues(p));
 	}
 
+	private void fill(Individual i, PropertyContext ctx) {
+		Property p = m.getOntProperty(ctx.uri());
+		if (p != null)
+			ctx.invoke(fillCollection(t(ctx.property), i.listPropertyValues(p).toSet()));
+	}
+	
 	private void apply(PropertyContext ctx, NodeIterator nodes) {
-		if (nodes == null || !nodes.hasNext())
+		if (nodes == null)
 			return;
 		else if (ctx.isCollection())
-			collection(ctx, nodes);
+			collection(ctx, nodes.toSet());
+		else if (!nodes.hasNext())
+			return;
 		else if (ctx.isPrimitive())
 			applyLiteral(ctx, asLiteral(nodes.nextNode()));
 		else
 			applyIndividual(ctx, asIndividual(nodes.nextNode()));
 	}
 
-	private void collection(PropertyContext ctx, NodeIterator nodes) {
-		ctx.invoke(fillCollection(t(ctx.property), nodes.toSet()));
+	private void collection(PropertyContext ctx, Set<RDFNode> nodes) {
+		if (shallow)
+			ctx.invoke(newCollection());
+		else
+			ctx.invoke(fillCollection(t(ctx.property), nodes));
+	}
+
+	private ArrayList<Object> newCollection() {
+		return new ArrayList<Object>();
 	}
 
 	private ArrayList<Object> fillCollection(Class<?> c, Set<RDFNode> nodes) {
-		ArrayList<Object> results = new ArrayList<Object>();
+		ArrayList<Object> results = newCollection();
 		for (RDFNode node : nodes)
 			results.add(toObject(c, node));
 		return results;

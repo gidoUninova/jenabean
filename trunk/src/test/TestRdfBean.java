@@ -8,7 +8,7 @@ import com.hp.hpl.jena.rdf.model.ModelFactory;
 
 import thewebsemantic.binding.Binder;
 import static thewebsemantic.RdfBean.*;
-
+import static org.junit.Assert.*;
 
 public class TestRdfBean {
 	
@@ -25,6 +25,7 @@ public class TestRdfBean {
 		a.save();		
 		Article b = load(Article.class, "a1");
 		b.fill().with("authors");
+		assertEquals(0, b.getAuthors().size());
 
 	}
 }
