@@ -103,8 +103,7 @@ public class RDF2Bean extends Base {
 		cycle = new HashMap<String, Object>();
 		try {
 			T result = toObject(c, id);
-			if (result != null)
-				return result;
+			if (result != null)	return result;
 			throw new NotFoundException();
 		} finally {
 			m.leaveCriticalSection();
