@@ -18,13 +18,13 @@ public class TestRdfBean {
 		OntModel m = ModelFactory.createOntologyModel();
 		Binder.instance().bind(m);
 	}
-
 	
 	@Test
 	public void testBasic() throws Exception {
-		Article a = new Article();
+		Article a = new Article("a1");
 		a.save();		
-		Article b = load(Article.class, a.hashCode());
+		Article b = load(Article.class, "a1");
+		b.fill().with("authors");
 
 	}
 }

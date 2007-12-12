@@ -128,10 +128,9 @@ public class RDF2Bean extends Base {
 	}
 
 	private <T> T toObject(Class<T> c, String id) {
-		if (wrap(c).uriSupport())
-			return toObject(c, m.getIndividual(id));
-		else
-			return toObject(c, m.getIndividual(wrap(c).uri(id)));
+		return (wrap(c).uriSupport()) ?
+			toObject(c, m.getIndividual(id)):
+			toObject(c, m.getIndividual(wrap(c).uri(id)));
 	}
 
 	private <T> T toObject(Class<T> c, Individual i) {
@@ -178,7 +177,7 @@ public class RDF2Bean extends Base {
 
 	private Object newInstance(Individual source) {
 		try {
-			return wrap(javaclass(source)).shin(source);
+			return wrap(javaclass(source)).toBean(source);
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}

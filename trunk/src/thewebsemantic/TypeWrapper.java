@@ -185,7 +185,7 @@ public class TypeWrapper {
 	 * @return
 	 * @throws Exception
 	 */
-	public Object shin(Individual source) {
+	public Object toBean(Individual source) {
 		try {
 		try {
 			Constructor<?> m = c.getConstructor(String.class);
