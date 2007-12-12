@@ -1,16 +1,21 @@
 package thewebsemantic;
 
+import static thewebsemantic.Util.last;
+
 import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
 import java.beans.MethodDescriptor;
 import java.beans.PropertyDescriptor;
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
+
+import com.hp.hpl.jena.ontology.Individual;
 
 /**
  * Retrieves annotation information as well as other type related operations on
@@ -51,10 +56,10 @@ public class TypeWrapper {
 	}
 
 	public static synchronized TypeWrapper type(Object o) {
-		return get(o.getClass());
+		return wrap(o.getClass());
 	}
 
-	public static synchronized TypeWrapper get(Class<?> c) {
+	public static synchronized TypeWrapper wrap(Class<?> c) {
 		return (cache.containsKey(c)) ? cache.get(c) : new TypeWrapper(c);
 	}
 
@@ -172,6 +177,28 @@ public class TypeWrapper {
 	public boolean isSymmetric(PropertyDescriptor p) {
 		return (p.getReadMethod().isAnnotationPresent(Symmetric.class)) ? true
 				: getAnnotation(p.getReadMethod()).symmetric();
+	}
+	
+	/**
+	 * shin means new in Japanese
+	 * @param source
+	 * @return
+	 * @throws Exception
+	 */
+	public Object shin(Individual source) {
+		try {
+		try {
+			Constructor<?> m = c.getConstructor(String.class);
+			if (uriSupport())
+				return m.newInstance(source.getURI());
+			else
+				return m.newInstance(last(source.getURI()));
+		} catch (NoSuchMethodException e) {
+			// this is expected, we'll use default constructor
+		}
+		return c.newInstance();
+		} catch (Exception e) {}
+		return null;
 	}
 
 	class NullRdfProperty implements RdfProperty {

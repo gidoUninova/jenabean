@@ -4,12 +4,10 @@ import static thewebsemantic.JenaHelper.asIndividual;
 import static thewebsemantic.JenaHelper.asLiteral;
 import static thewebsemantic.JenaHelper.date;
 import static thewebsemantic.JenaHelper.listAllIndividuals;
-import static thewebsemantic.TypeWrapper.get;
+import static thewebsemantic.TypeWrapper.wrap;
 import static thewebsemantic.TypeWrapper.type;
-import static thewebsemantic.Util.last;
 
 import java.beans.PropertyDescriptor;
-import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -41,7 +39,7 @@ public class RDF2Bean extends Base {
 	public RDF2Bean(OntModel m) {
 		super(m);
 	}
-	
+
 	public <T> Collection<T> loadDeep(Class<T> c) {
 		return load(c, false);
 	}
@@ -49,8 +47,7 @@ public class RDF2Bean extends Base {
 	public <T> Collection<T> load(Class<T> c) {
 		return load(c, true);
 	}
-	
-	
+
 	/**
 	 * load all rdf entries that map to the bean.
 	 * 
@@ -83,28 +80,32 @@ public class RDF2Bean extends Base {
 	 *            unique id of the bean to find
 	 * @return An instance of T, otherwise null
 	 */
-	public <T> T loadDeep(Class<T> c, int id) {
+	public <T> T loadDeep(Class<T> c, int id) throws NotFoundException {
 		return load(c, Integer.toString(id), false);
 	}
 
-	public <T> T loadDeep(Class<T> c, String id) {
+	public <T> T loadDeep(Class<T> c, String id) throws NotFoundException {
 		return load(c, id, false);
 	}
 
-	public <T> T load(Class<T> c, String id) {
+	public <T> T load(Class<T> c, String id) throws NotFoundException {
 		return load(c, id, true);
 	}
 
-	public <T> T load(Class<T> c, int id) {
+	public <T> T load(Class<T> c, int id) throws NotFoundException {
 		return load(c, Integer.toString(id), true);
 	}
 
-	public synchronized <T> T load(Class<T> c, String id, boolean shallow) {
+	public synchronized <T> T load(Class<T> c, String id, boolean shallow)
+			throws NotFoundException {
 		m.enterCriticalSection(Lock.READ);
 		this.shallow = shallow;
 		cycle = new HashMap<String, Object>();
 		try {
-			return toObject(c, id);
+			T result = toObject(c, id);
+			if (result != null)
+				return result;
+			throw new NotFoundException();
 		} finally {
 			m.leaveCriticalSection();
 		}
@@ -125,14 +126,14 @@ public class RDF2Bean extends Base {
 	}
 
 	public boolean exists(Class<?> c, String id) {
-		return !(m.getIndividual(get(c).uri(id)) == null);
+		return !(m.getIndividual(wrap(c).uri(id)) == null);
 	}
 
 	private <T> T toObject(Class<T> c, String id) {
-		if (get(c).uriSupport())
+		if (wrap(c).uriSupport())
 			return toObject(c, m.getIndividual(id));
 		else
-			return toObject(c, m.getIndividual(get(c).uri(id)));
+			return toObject(c, m.getIndividual(wrap(c).uri(id)));
 	}
 
 	private <T> T toObject(Class<T> c, Individual i) {
@@ -163,11 +164,10 @@ public class RDF2Bean extends Base {
 		// cycle.put(source.getURI(), target);
 		String uri = TypeWrapper.instanceURI(target);
 		Individual source = m.getIndividual(uri);
-		for (PropertyDescriptor p : type(target).descriptors()) {
-			if (p.getName().equals(propertyName) && 
-					p.getPropertyType().equals(Collection.class))
-					apply(source, new PropertyContext(target, p));
-		}
+		for (PropertyDescriptor p : type(target).descriptors())
+			if (p.getName().equals(propertyName)
+					&& p.getPropertyType().equals(Collection.class))
+				apply(source, new PropertyContext(target, p));
 		return target;
 	}
 
@@ -181,25 +181,12 @@ public class RDF2Bean extends Base {
 	}
 
 	private Object newInstance(Individual source) {
-		Object o = null;
 		try {
-			Class<?> c = getJavaclass(source);
-			TypeWrapper type = TypeWrapper.get(c);
-			try {
-				Constructor<?> m = c.getConstructor(String.class);
-				if (type.uriSupport())
-					o = m.newInstance(source.getURI());
-				else
-					o = m.newInstance(last(source.getURI()));
-			} catch (NoSuchMethodException e) {
-				// this is expected, we'll use default constructor
-			}
-			if (o == null)
-				o = c.newInstance();
-		} catch (Exception e) {
+			return wrap(javaclass(source)).shin(source);
+		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
-		return o;
+		return null;
 	}
 
 	/**
@@ -211,7 +198,7 @@ public class RDF2Bean extends Base {
 	 * @return
 	 * @throws ClassNotFoundException
 	 */
-	private Class<?> getJavaclass(Individual source)
+	private Class<?> javaclass(Individual source)
 			throws ClassNotFoundException {
 		OntClass oc = (OntClass) source.getRDFType().as(OntClass.class);
 		RDFNode node = oc.getPropertyValue(javaclass);
@@ -228,7 +215,7 @@ public class RDF2Bean extends Base {
 		if (binder.isBound(c))
 			return m.getOntClass(binder.getUri(c));
 		else
-			return m.getOntClass(TypeWrapper.get(c).typeUri());
+			return m.getOntClass(TypeWrapper.wrap(c).typeUri());
 	}
 
 	/**

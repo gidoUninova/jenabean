@@ -15,7 +15,7 @@ import com.hp.hpl.jena.rdf.model.ModelFactory;
 
 public class TestIdStuff {
 	@Test
-	public void testId() {
+	public void testId() throws Exception {
 		String id = "myuniqueid";
 		TestIDBean bean = new TestIDBean(id);
 		bean.setAddress("123 Oak Circle");
@@ -48,7 +48,7 @@ public class TestIdStuff {
 	/**
 	 * jenabean should apply the id to the constructor.
 	 */
-	public void testConstructor() {
+	public void testConstructor()  throws Exception {
 		OntModel m = ModelFactory.createOntologyModel();
 		Bean2RDF writer = new Bean2RDF(m);
 		writer.save(new Flute("a"));
@@ -81,7 +81,7 @@ public class TestIdStuff {
 		}
 	}
 
-	public void testHashCode() {
+	public void testHashCode() throws Exception  {
 		OntModel m = ModelFactory.createOntologyModel();
 		Bean2RDF writer = new Bean2RDF(m);
 		Trumpet t = new Trumpet();

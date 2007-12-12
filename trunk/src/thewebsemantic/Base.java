@@ -38,7 +38,7 @@ public class Base {
 	}
 
 	private void makeInverse(PropertyDescriptor property, OntProperty op) {
-		TypeWrapper type = TypeWrapper.get(t(property));
+		TypeWrapper type = TypeWrapper.wrap(t(property));
 		Inverse i = property.getReadMethod().getAnnotation(Inverse.class);
 		for (PropertyDescriptor pd : type.descriptors())
 			if (pd.getName().equals(i.value()))

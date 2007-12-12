@@ -17,7 +17,7 @@ import static org.junit.Assert.*;
 public class TestTransitive {
 	
 	@Test
-	public void testBasic() {
+	public void testBasic()  throws Exception {
 
 		Person a = new Person();
 		a.setAge(18);

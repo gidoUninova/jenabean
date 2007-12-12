@@ -13,7 +13,7 @@ import com.hp.hpl.jena.rdf.model.ModelFactory;
 public class TestUriAnnotation {
 	
 	@Test
-	public void testBasic() {
+	public void testBasic()  throws Exception {
 		City c = new City("http://example.org/Boston");		
 		c.setName("Boston");
 		c.setPopulation(12345);
