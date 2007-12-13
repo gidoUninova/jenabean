@@ -85,7 +85,7 @@ public class TestLoadWith {
 		p2.setFirstName("Dan");
 		p2.save();
 		
-		p.load();
+		p.refresh();
 		assertEquals("Dan", p.getFirstName());
 
 	
