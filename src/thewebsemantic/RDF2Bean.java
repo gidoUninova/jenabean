@@ -239,12 +239,14 @@ public class RDF2Bean extends Base {
 	 */
 	private void apply(Individual i, PropertyContext ctx) {
 		Property p = m.getOntProperty(ctx.uri());
+		System.out.println(ctx.uri());
 		if (p != null)
 			apply(ctx, i.listPropertyValues(p));
 	}
 
 	private void fill(Individual i, PropertyContext ctx) {
 		Property p = m.getOntProperty(ctx.uri());
+		System.out.println(ctx.uri());
 		if (p != null)
 			ctx.invoke(fillCollection(t(ctx.property), i.listPropertyValues(p)
 					.toSet()));

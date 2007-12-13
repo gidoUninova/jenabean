@@ -66,7 +66,7 @@ public class Person extends RdfBean<Person> {
 		this.birthday = birthday;
 	}
 	
-	@RdfProperty(transitive=true, value = "hasAncestor")
+	@RdfProperty(transitive=true)
 	public Collection<Person> getAncestors() {
 		return ancestors;
 	}
@@ -80,7 +80,7 @@ public class Person extends RdfBean<Person> {
 		ancestors.add(p);
 	}
 
-	@RdfProperty(symmetric=true, value = "hasFriend")
+	@RdfProperty(symmetric=true)
 	public Collection<Person> getFriends() {
 		return friends;
 	}

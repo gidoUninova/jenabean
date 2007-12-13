@@ -7,6 +7,13 @@ import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.ontology.OntModelSpec;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 
+/**
+ * Tags describe many taggable things.  Things have many tags.
+ * This example shows how OWL inverse properties allow 
+ * the inferencer to add new information.
+ * @author SG0897954
+ *
+ */
 public class TagPatternExample {
 	public static void main(String[] args) throws Exception {
 		OntModel m = ModelFactory.createOntologyModel(OntModelSpec.OWL_MEM_MINI_RULE_INF);	
