@@ -8,10 +8,6 @@ public class Tag {
 	private Collection<Taggable> elements = new LinkedHashSet<Taggable>();
 	private String term;
 
-
-	public Tag() {
-	}
-
 	public Collection<Taggable> getElements() {
 		return elements;
 	}
