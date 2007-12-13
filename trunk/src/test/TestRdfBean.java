@@ -24,8 +24,19 @@ public class TestRdfBean {
 		Article a = new Article("a1");
 		a.save();		
 		Article b = load(Article.class, "a1");
-		b.fill().with("authors");
 		assertEquals(0, b.getAuthors().size());
+		b.fill("authors");
+		assertEquals(0, b.getAuthors().size());
+		
+		b.getAuthors().add("Vox Day");
+		b.getAuthors().add("Dino");
+		b.getAuthors().add("Daddy G");
+		b.save();
+		
+		a = load(Article.class, "a1");
+		assertEquals(0, a.getAuthors().size());
+		a.fill("authors");
+		assertEquals(3, a.getAuthors().size());
 
 	}
 }

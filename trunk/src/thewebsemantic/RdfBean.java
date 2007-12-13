@@ -1,5 +1,13 @@
 package thewebsemantic;
 
+import java.beans.PropertyDescriptor;
+import java.util.Collection;
+
+import com.hp.hpl.jena.ontology.Individual;
+
+import static thewebsemantic.TypeWrapper.instanceURI;
+import static thewebsemantic.TypeWrapper.wrap;
+
 import thewebsemantic.binding.Binder;
 
 public class RdfBean<T> {
@@ -8,6 +16,10 @@ public class RdfBean<T> {
 	
 	public RdfBean() {
 		binder = Binder.instance();
+	}
+	
+	public <T> T load() throws NotFoundException {
+		return binder.reader().load(this);
 	}
 	
 	public static <E> E load(Class<E> c, String id) throws NotFoundException{
@@ -22,8 +34,21 @@ public class RdfBean<T> {
 		binder.writer().save(this);
 	}
 	
-	public Filler fill() {
-		return binder.reader().fill(this);
+	public <T> T fill(String s) {
+		binder.reader().fill(this, s);
+		return (T)this;
+	}
+	
+	public <T> T fill() {
+		for (PropertyDescriptor pd : wrap(this.getClass()).collections()) {
+			if ( pd.getReadMethod().getReturnType().equals(Collection.class))
+				binder.reader().fill(this, pd.getName());
+		}
+		return (T)this;
+	}
+	
+	public Individual asIndividual() {
+		return binder.model().getIndividual(instanceURI(this));
 	}
 	
 }
