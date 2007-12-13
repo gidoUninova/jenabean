@@ -47,14 +47,6 @@ public class TypeWrapper {
 		cache.put(c, this);
 	}
 
-	public static String ns(Object o) {
-		return type(o).namespace();
-	}
-
-	public static boolean isMarked(Object o) {
-		return o.getClass().isAnnotationPresent(Namespace.class);
-	}
-
 	public static synchronized TypeWrapper type(Object o) {
 		return wrap(o.getClass());
 	}

@@ -1,22 +1,22 @@
 package thewebsemantic;
 
 public class Util {
-	public static String className(Object bean) {
-		return className(bean.getClass());
-	}
 
 	public static String className(Class<?> c) {
 		return className(c.getName());
 	}
 
 	private static String className(String type) {
-		int i = type.lastIndexOf('.');
-		return (i > 0) ? type.substring(i + 1) : type;
+		return end(type, '.');
 	}
 	
 	public static String last(String path) {
-		int i = path.lastIndexOf('/');
-		return (i > 0) ? path.substring(i+1) : path;
+		return end(path, '/');
+	}
+	
+	private static String end(String s, char c) {
+		int i = s.lastIndexOf(c);
+		return (i > 0) ? s.substring(i+1) : s;
 	}
 	
 	public static String toProperCase(String text) {

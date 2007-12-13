@@ -150,13 +150,9 @@ public class RDF2Bean extends Base {
 	}
 
 	private <T> T toObject(Class<T> c, Individual i) {
-		try {
-			if (i != null)
-				return (isCycle(i)) ? (T) cycle.get(i.getURI())
-						: (T) applyProperties(i);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		if (i != null)
+			return (isCycle(i)) ? (T) cycle.get(i.getURI())
+					: (T) applyProperties(i);
 		return null;
 	}
 
