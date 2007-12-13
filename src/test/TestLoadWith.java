@@ -52,7 +52,6 @@ public class TestLoadWith {
 
 	@Test
 	public void testPeople() throws Exception {
-
 		Person p = new Person();
 		p.setFirstName("Joe");
 		p.setLastName("Joe");
