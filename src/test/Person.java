@@ -1,23 +1,28 @@
-package example;
+package test;
 
+import java.rmi.server.UID;
 import java.util.Collection;
 import java.util.Date;
 import java.util.LinkedList;
 
 import thewebsemantic.Namespace;
+import thewebsemantic.RdfBean;
 import thewebsemantic.RdfProperty;
 import thewebsemantic.Uri;
 
-@Namespace("http://thewebsemantic.com/")
-public class Person {
+public class Person extends RdfBean<Person> {
 	private String firstName;
 	private String lastName;
 	private int age;
 	private Date birthday;
 	private Collection<Person> ancestors;
+	private Collection<Person> friends;
+	private Collection<Person> colleagues;
+	
 	private String uri;
 	
 	public Person() {
+		uri = new UID().toString();
 		ancestors = new LinkedList<Person>();
 	}
 	
@@ -28,10 +33,9 @@ public class Person {
 
 	@Uri
 	public String uri() {
-		return (uri != null) ? uri:	
-			Person.class.getAnnotation(Namespace.class).value() + firstName + lastName;
+		return uri;
 	}
-	
+		
 	public String getFirstName() {
 		return firstName;
 	}
@@ -69,11 +73,28 @@ public class Person {
 		return ancestors;
 	}
 	
+	
 	public void setAncestors(Collection<Person> ancestors) {
 		this.ancestors = ancestors;
 	}
 	
 	public void addAncestor(Person p) {
 		ancestors.add(p);
+	}
+
+	public Collection<Person> getFriends() {
+		return friends;
+	}
+
+	public void setFriends(Collection<Person> friends) {
+		this.friends = friends;
+	}
+
+	public Collection<Person> getColleagues() {
+		return colleagues;
+	}
+
+	public void setColleagues(Collection<Person> colleagues) {
+		this.colleagues = colleagues;
 	}
 }

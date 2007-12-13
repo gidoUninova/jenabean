@@ -75,6 +75,14 @@ public class TypeWrapper {
 		return results.toArray(new PropertyDescriptor[0]);
 	}
 
+	public PropertyDescriptor[] collections() {
+		Collection<PropertyDescriptor> results = new LinkedList<PropertyDescriptor>();
+		for (PropertyDescriptor p : info.getPropertyDescriptors())
+			if (p.getWriteMethod() != null && p.getPropertyType().equals(Collection.class))
+				results.add(p);
+		return results.toArray(new PropertyDescriptor[0]);
+	}
+	
 	public Field[] fields() {
 		return c.getFields();
 	}

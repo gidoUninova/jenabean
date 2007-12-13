@@ -102,7 +102,24 @@ public class RDF2Bean extends Base {
 		cycle = new HashMap<String, Object>();
 		try {
 			T result = toObject(c, id);
-			if (result != null)	return result;
+			if (result != null)
+				return result;
+			throw new NotFoundException();
+		} finally {
+			m.leaveCriticalSection();
+		}
+	}
+
+	public synchronized <T> T load(Object target)
+			throws NotFoundException {
+		m.enterCriticalSection(Lock.READ);
+		this.shallow = true;
+		cycle = new HashMap<String, Object>();
+		try {
+			Individual source = m.getIndividual(instanceURI(target));
+			T result = (T)applyProperties(source, target);
+			if (result != null)
+				return result;
 			throw new NotFoundException();
 		} finally {
 			m.leaveCriticalSection();
@@ -128,9 +145,9 @@ public class RDF2Bean extends Base {
 	}
 
 	private <T> T toObject(Class<T> c, String id) {
-		return (wrap(c).uriSupport()) ?
-			toObject(c, m.getIndividual(id)):
-			toObject(c, m.getIndividual(wrap(c).uri(id)));
+		return (wrap(c).uriSupport()) ? 
+				toObject(c, m.getIndividual(id)): 
+				toObject(c, m.getIndividual(wrap(c).uri(id)));
 	}
 
 	private <T> T toObject(Class<T> c, Individual i) {
@@ -167,7 +184,10 @@ public class RDF2Bean extends Base {
 	}
 
 	private Object applyProperties(Individual source) {
-		Object target = newInstance(source);
+		return applyProperties(source, newInstance(source));
+	}
+
+	private Object applyProperties(Individual source, Object target) {
 		cycle.put(source.getURI(), target);
 		for (PropertyDescriptor p : type(target).descriptors())
 			apply(source, new PropertyContext(target, p));
@@ -192,8 +212,7 @@ public class RDF2Bean extends Base {
 	 * @return
 	 * @throws ClassNotFoundException
 	 */
-	private Class<?> javaclass(Individual source)
-			throws ClassNotFoundException {
+	private Class<?> javaclass(Individual source) throws ClassNotFoundException {
 		OntClass oc = (OntClass) source.getRDFType().as(OntClass.class);
 		RDFNode node = oc.getPropertyValue(javaclass);
 		if (node != null) {
@@ -233,9 +252,10 @@ public class RDF2Bean extends Base {
 	private void fill(Individual i, PropertyContext ctx) {
 		Property p = m.getOntProperty(ctx.uri());
 		if (p != null)
-			ctx.invoke(fillCollection(t(ctx.property), i.listPropertyValues(p).toSet()));
+			ctx.invoke(fillCollection(t(ctx.property), i.listPropertyValues(p)
+					.toSet()));
 	}
-	
+
 	private void apply(PropertyContext ctx, NodeIterator nodes) {
 		if (nodes == null)
 			return;

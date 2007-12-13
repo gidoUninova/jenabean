@@ -1,41 +1,94 @@
 package test;
 
+import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import static thewebsemantic.RdfBean.*;
 
 import thewebsemantic.Bean2RDF;
 import thewebsemantic.RDF2Bean;
+import thewebsemantic.binding.Binder;
 
+import com.hp.hpl.jena.ontology.Individual;
 import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.ontology.OntModelSpec;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 
-public class TestLoadWith {
-   
-   @Test
-   public void testBasic()  throws Exception {
-      OntModel m = ModelFactory.createOntologyModel(OntModelSpec.OWL_MEM_MINI_RULE_INF);  
-      Bean2RDF writer = new Bean2RDF(m);
-      
-      Tag fun = new Tag("fun");
-      Tag run = new Tag("run");
-      Post p1 = new Post();
-      p1.setTitle("i like OWL");
-      p1.addTag(fun);
-      p1.addTag(run);
-      writer.save(p1); 
-  
-      RDF2Bean reader = new RDF2Bean(m);
-      
-      Post shallow = reader.load(Post.class, p1.hashCode());     
-      assertEquals(0, shallow.getTags().size());
-      reader.fill(shallow, "tags");
-      assertEquals(2, shallow.getTags().size());
-      
-      shallow = reader.load(Post.class, p1.hashCode());     
-      assertEquals(0, shallow.getTags().size());
-      reader.fill(shallow).with("tags");
-      assertEquals(2, shallow.getTags().size());
 
-   }
+public class TestLoadWith {
+
+	@BeforeClass
+	public static void setUpBeforeClass() throws Exception {
+		OntModel m = ModelFactory.createOntologyModel();
+		Binder.instance().bind(m);
+	}
+	
+	@Test
+	public void testBasic() throws Exception {
+		OntModel m = ModelFactory
+				.createOntologyModel(OntModelSpec.OWL_MEM_MINI_RULE_INF);
+		Bean2RDF writer = new Bean2RDF(m);
+
+		Tag fun = new Tag("fun");
+		Tag run = new Tag("run");
+		Post p1 = new Post();
+		p1.setTitle("i like OWL");
+		p1.addTag(fun);
+		p1.addTag(run);
+		writer.save(p1);
+
+		RDF2Bean reader = new RDF2Bean(m);
+
+		Post shallow = reader.load(Post.class, p1.hashCode());
+		assertEquals(0, shallow.getTags().size());
+		reader.fill(shallow, "tags");
+		assertEquals(2, shallow.getTags().size());
+
+		shallow = reader.load(Post.class, p1.hashCode());
+		assertEquals(0, shallow.getTags().size());
+		reader.fill(shallow).with("tags");
+		assertEquals(2, shallow.getTags().size());
+	}
+
+	@Test
+	public void testPeople() throws Exception {
+
+		Person p = new Person();
+		p.setFirstName("Joe");
+		p.setLastName("Joe");
+
+		Binder jenabean = Binder.instance();
+		jenabean.writer().save(p);	
+		p = load(Person.class, p.uri());
+		//Jenabean initiates collections to zero length for you
+		assertEquals(0, p.getFriends().size());
+		assertEquals(0, p.getAncestors().size());
+		assertEquals(0, p.getColleagues().size());
+		assertEquals("Joe", p.getFirstName());
+
+		for(int i=0; i<10; i++)
+			p.getFriends().add(new Person());
+
+		for(int i=0; i<101; i++)
+			p.getColleagues().add(new Person());
+
+		jenabean.writer().save(p);
+		p = load(Person.class, p.uri()).fill();
+		Person p2 = load(Person.class, p.uri()).fill();
+
+		assertEquals(10, p.getFriends().size());
+		assertEquals(0, p.getAncestors().size());
+		assertEquals(101, p.getColleagues().size());
+		
+		// let's dink with the model directly, reload and test
+		Individual i = p.asIndividual();
+		assertEquals(i.getURI(), p.uri());
+		p2.setFirstName("Dan");
+		p2.save();
+		
+		p.load();
+		assertEquals("Dan", p.getFirstName());
+
+	
+	}
 }
