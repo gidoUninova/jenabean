@@ -116,14 +116,13 @@ public class TypeWrapper {
 	 */
 	public String uri(PropertyDescriptor pd) {
 		RdfProperty rdf = getAnnotation(pd.getReadMethod());
-		return ("".equals(rdf.value())) ? rdf.value() : namingPatternUri(pd);
+		return ("".equals(rdf.value())) ? namingPatternUri(pd) : rdf.value();
 	}
 
 	public RdfProperty getAnnotation(Method m) {
-		if (m.isAnnotationPresent(RdfProperty.class))
-			return m.getAnnotation(RdfProperty.class);
-		else
-			return new NullRdfProperty();
+		return (m.isAnnotationPresent(RdfProperty.class)) ?
+			m.getAnnotation(RdfProperty.class):
+			new NullRdfProperty();
 	}
 
 	private String namingPatternUri(PropertyDescriptor pd) {
@@ -218,7 +217,7 @@ public class TypeWrapper {
 		}
 		@Override
 		public String value() {
-			return null;
+			return "";
 		}
 		@Override
 		public Class<? extends Annotation> annotationType() {

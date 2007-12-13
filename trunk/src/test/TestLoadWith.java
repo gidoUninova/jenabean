@@ -79,7 +79,6 @@ public class TestLoadWith {
 		assertEquals(0, p.getAncestors().size());
 		assertEquals(101, p.getColleagues().size());
 		
-		// let's dink with the model directly, reload and test
 		Individual i = p.asIndividual();
 		assertEquals(i.getURI(), p.uri());
 		p2.setFirstName("Dan");
