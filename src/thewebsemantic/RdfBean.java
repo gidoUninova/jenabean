@@ -18,14 +18,18 @@ public class RdfBean<T> {
 		binder = Binder.instance();
 	}
 	
-	public <T> T load() throws NotFoundException {
+	public <T> T refresh() throws NotFoundException {
 		return binder.reader().load(this);
 	}
 	
 	public static <E> E load(Class<E> c, String id) throws NotFoundException{
 		return Binder.instance().reader().load(c, id);
 	}
-		
+
+	public static <E> Collection<E> load(Class<E> c) throws NotFoundException{
+		return Binder.instance().reader().load(c);
+	}
+	
 	public static <E> E load(Class<E> c, int id) throws NotFoundException {
 		return Binder.instance().reader().load(c, id);
 	}

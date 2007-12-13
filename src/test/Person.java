@@ -4,8 +4,6 @@ import java.rmi.server.UID;
 import java.util.Collection;
 import java.util.Date;
 import java.util.LinkedList;
-
-import thewebsemantic.Namespace;
 import thewebsemantic.RdfBean;
 import thewebsemantic.RdfProperty;
 import thewebsemantic.Uri;
@@ -82,6 +80,7 @@ public class Person extends RdfBean<Person> {
 		ancestors.add(p);
 	}
 
+	@RdfProperty(symmetric=true, value = "hasFriend")
 	public Collection<Person> getFriends() {
 		return friends;
 	}
