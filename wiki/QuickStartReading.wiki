@@ -1,0 +1,24 @@
+#summary Quick start guide for reading existing RDF documents with jenabean.
+
+= Introduction =
+This guide demonstrates how to read pre-existing RDF data into java objects.
+
+
+= Details =
+
+Add your content here.  Format your content with:
+  * Text in *bold* or _italic_
+  * Headings, paragraphs, and lists
+  * Automatic links to other wiki pages
+
+First, using Jena as usual, read the OWL ontology along with any data.  This example uses the geonames.org ontology.  [http://jenabean.googlecode.com/svn/trunk/src/example/capitals.rdf capitals.rdf]
+[http://jenabean.googlecode.com/svn/trunk/src/example/geonames.owl geonames.owl]
+
+{{{
+		//prepare the jena model
+		OntModel m = ModelFactory.createOntologyModel();
+		m.read("file:src/example/geonames.owl");
+		m.read("file:src/example/capitals.rdf");
+
+}}}
+
