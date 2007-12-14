@@ -109,7 +109,7 @@ public class RDF2Bean extends Base {
 		}
 	}
 
-	public synchronized <T> T load(Object target)
+	public synchronized Object load(Object target)
 			throws NotFoundException {
 		m.enterCriticalSection(Lock.READ);
 		this.shallow = true;
@@ -118,8 +118,7 @@ public class RDF2Bean extends Base {
 			Individual source = m.getIndividual(instanceURI(target));
 			if (source == null)
 				throw new NotFoundException();
-			T result = (T)applyProperties(source, target);
-			return result;
+			return applyProperties(source, target);
 		} finally {
 			m.leaveCriticalSection();
 		}
