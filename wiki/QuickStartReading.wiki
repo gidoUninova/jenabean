@@ -60,7 +60,7 @@ Properties are bound in a similar way.  We need to tell Jenabean the full URI of
 }}}
 
 
-Back to main()...we can now iterate over the collection of cities read out of RDF.  One challenge in binding Objects is figuring out how much of the graph to read in.  If we were to read a dense graph, we'd most likely read the entire think into our Object graph.  Jenabean is therefore conservative, and refuses to load collections unless told to do so.  For each city we need to ask Jenabean to fill it with all its translations. (see loadDeep if you really want to recursively load the object graph).
+Back to main()...we can now iterate over the collection of cities read out of RDF.  One challenge in binding Objects is figuring out how much of the graph to read in.  If we were to read a dense graph, we'd most likely read the entire think into our Object graph.  Jenabean is therefore conservative, and refuses to load collections unless told to do so.  For each city we need to ask Jenabean to fill it with all its translations.  There is no easy way to refer to a java bean property other than it's name as a string.  Remember, with Jenabean we are mostly java focused, so the property reflects the Java bean, not the RDF property we are binding to.  (see loadDeep if you really want to recursively load the object graph).
 
 {{{
 		for (City city : cities) {
