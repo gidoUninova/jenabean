@@ -67,3 +67,4 @@ Back to main()...we can now iterate over the collection of cities read out of RD
 			city.fill("alternateNames");
 
 }}}
+One final note.  You are not required to extend RdfBean, however, it has some convenient features, and made the code for this example shorter.  The test suite is full of more verbose examples with beans that are completely raw, having no interfaces or super types.
