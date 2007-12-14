@@ -1,10 +1,9 @@
 package example;
 
+import static java.lang.System.out;
+import static thewebsemantic.RdfBean.load;
 import java.util.Collection;
-
-import thewebsemantic.RDF2Bean;
 import thewebsemantic.binding.Jenabean;
-
 import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 
@@ -16,23 +15,25 @@ public class GeonamesExample {
 	 * 
 	 * @param args
 	 */
-	public static void main(String[] args) throws Exception{
+	public static void main(String[] args) throws Exception {
+		
+		//prepare the jena model
 		OntModel m = ModelFactory.createOntologyModel();
 		m.read("file:src/example/geonames.owl");
 		m.read("file:src/example/capitals.rdf");
 		
+		//setup binding
 		Jenabean b = Jenabean.instance();
+		b.bind(m);
 		b.bind(GeonamesVocabulary.Feature).to(City.class);
-		RDF2Bean reader = new RDF2Bean(m);
-		Collection<City> cities = reader.load(City.class);
-		
+		Collection<City> cities = load(City.class);
+		out.println("Cities in rdf triple store: " + cities.size());
 		for (City city : cities) {
-			reader.fill(city).with("alternateNames");
-			System.out.println(city.getName());
-			System.out.println(city.getUri());
-			for (String name : city.getAlternateNames()) {
-				System.out.println("\t" + name);
-			}
+			city.fill("alternateNames");
+			out.println('\n' + city.getName() + " pop. " + city.getPopulation());
+			out.println("\turi: " + city.getUri());
+			out.println("\tnumber of translations: " + 
+					city.getAlternateNames().size());
 		}
 	}
 }
