@@ -33,6 +33,7 @@ public class Jenabean {
 		writer = new Bean2RDF(m);
 	}
 	
+	
 	public OntModel model() {
 		return model;
 	}
