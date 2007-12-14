@@ -2,8 +2,7 @@
 #labels Featured
 
 
-=== 1. Download jenabean.jar (jena too!)
-
+=== 1. Download jenabean.jar (jena too!)===
 jenabean uses Jena which can be downloaded [http://jena.sourceforge.net/downloads.html here]
 
-=== 2. 
+=== 2. ===
