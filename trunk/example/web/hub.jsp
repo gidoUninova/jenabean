@@ -3,6 +3,7 @@
 <stripes:layout-component name="contents">
 
 <c:forEach items="${actionBean.posts}" var="row" varStatus="loop">
+
 <div class="entry">
 <h2><a href="?p=${row.id}">${row.title}</a></h2> 
 <span>${row.createdAt} : </span>
