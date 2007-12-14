@@ -1,8 +1,10 @@
 package thewebsemantic.binding;
 
+import java.util.Collection;
 import java.util.HashMap;
 
 import thewebsemantic.Bean2RDF;
+import thewebsemantic.NotFoundException;
 import thewebsemantic.RDF2Bean;
 
 import com.hp.hpl.jena.ontology.OntClass;
@@ -80,5 +82,9 @@ public class Jenabean {
 			return url2class.get(uri);
 		else
 			return null;		
+	}
+	
+	public static <E> Collection<E> load(Class<E> c) throws NotFoundException{
+		return myself.reader().load(c);
 	}
 }

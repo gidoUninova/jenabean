@@ -1,7 +1,7 @@
 package example;
 
 import static java.lang.System.out;
-import static thewebsemantic.RdfBean.load;
+import static thewebsemantic.binding.Jenabean.*;
 import java.util.Collection;
 import thewebsemantic.binding.Jenabean;
 import com.hp.hpl.jena.ontology.OntModel;
@@ -30,7 +30,7 @@ public class GeonamesExample {
 		out.println("Cities in rdf triple store: " + cities.size());
 		for (City city : cities) {
 			city.fill("alternateNames");
-			out.println('\n' + city.getName() + " pop. " + city.getPopulation());
+			out.println('\n' + city.getName() + ", pop. " + city.getPopulation());
 			out.println("\turi: " + city.getUri());
 			out.println("\tnumber of translations: " + 
 					city.getAlternateNames().size());
