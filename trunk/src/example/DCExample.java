@@ -1,7 +1,6 @@
 package example;
 
 import java.io.FileWriter;
-import java.io.IOException;
 import java.util.Collection;
 
 import thewebsemantic.Bean2RDF;
@@ -18,7 +17,9 @@ public class DCExample {
 		bean.setIsbn("0596002637");
 		bean.setCreator("Shelley Powers");
 		bean.setSubject("RDF, semantic web, xml");
-		writer.save(bean);
+
+		for (int i=0; i<100; i++)
+			writer.save(bean);
 		m.write(System.out);
 		
 		//write to a file
