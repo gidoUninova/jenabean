@@ -3,12 +3,9 @@ package example.model;
 import java.util.Collection;
 import java.util.Date;
 import java.util.LinkedList;
-
 import thewebsemantic.Id;
-import thewebsemantic.Namespace;
 import thewebsemantic.RdfBean;
 
-@Namespace("http://example.org/")
 public class Post extends RdfBean<Post>{
 	private Collection<Comment> comments = new LinkedList<Comment>();
 	private Collection<Tag> tags = new LinkedList<Tag>();
@@ -16,7 +13,6 @@ public class Post extends RdfBean<Post>{
 	private Date createdAt;
 	private String title;
 	private String content;
-	private String id;
 
 	public Post() {
 		createdAt = new Date();
