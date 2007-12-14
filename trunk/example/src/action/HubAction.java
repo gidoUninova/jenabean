@@ -32,6 +32,6 @@ public class HubAction extends BaseAction {
 		return new ForwardResolution("/hub.jsp");
 	}
 	public Collection<Post> getPosts() {return posts;}
-	public String getP() { return postid;}
+	public String getP() {return postid;}
 	
 }
