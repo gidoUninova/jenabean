@@ -26,7 +26,7 @@ public class RdfBean<T> {
 		return Jenabean.instance().reader().load(c, id);
 	}
 
-	public static <E> Collection<E> load(Class<E> c) throws NotFoundException{
+	public static <E> Collection<E> load(Class<E> c) {
 		return Jenabean.instance().reader().load(c);
 	}
 	
