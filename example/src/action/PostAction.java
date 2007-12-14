@@ -3,6 +3,9 @@ package action;
 import java.rmi.server.UID;
 import java.util.List;
 
+import thewebsemantic.NotFoundException;
+import static thewebsemantic.RdfBean.*;
+
 import net.sourceforge.stripes.action.Before;
 import net.sourceforge.stripes.action.DefaultHandler;
 import net.sourceforge.stripes.action.ForwardResolution;
@@ -46,10 +49,10 @@ public class PostAction extends BaseAction {
 	}
 
 	@Before(LifecycleStage.BindingAndValidation)
-	public void rehydrate() {
+	public void rehydrate() throws NotFoundException {
 		String id = context.getRequest().getParameter("p");
 		if (id != null)
-			this.post = context.getReader().find(Post.class, id);
+			this.post = load(Post.class, id);
 	}
 
 	@DefaultHandler
@@ -64,12 +67,9 @@ public class PostAction extends BaseAction {
 
 	@HandlesEvent("post")
 	public Resolution post() {
-		if ( post.getId() == null) {
-			post.setAuthor(context.getLogin());
-			post.setId(new UID().toString());
-		}
+		post.setAuthor(context.getLogin());
 		post.setTags(tags);
-		context.getWriter().write(post);
+		post.save();
 		return new RedirectResolution(HubAction.class);
 	}
 

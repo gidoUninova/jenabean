@@ -2,6 +2,8 @@ package action;
 
 import java.rmi.server.UID;
 
+import thewebsemantic.NotFoundException;
+import static thewebsemantic.RdfBean.*;
 import net.sourceforge.stripes.action.Before;
 import net.sourceforge.stripes.action.DefaultHandler;
 import net.sourceforge.stripes.action.ForwardResolution;
@@ -32,11 +34,11 @@ public class CommentAction extends BaseAction {
 	}
 
 	@HandlesEvent("comment")
-	public Resolution post() {
+	public Resolution post() throws NotFoundException {
 		comment.setId(new UID().toString());
-		Post p = context.getReader().find(Post.class, postid);
+		Post p = load(Post.class, postid);
 		p.addComment(comment);
-		context.getWriter().write(p);
+		p.save();
 		return new RedirectResolution("/?p=" + p.getId());
 	}
 

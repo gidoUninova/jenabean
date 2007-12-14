@@ -5,9 +5,9 @@ import java.util.LinkedList;
 
 import thewebsemantic.Id;
 import thewebsemantic.Namespace;
+import thewebsemantic.RdfBean;
 
-@Namespace("http://example.org/")
-public class User {
+public class User extends RdfBean<User>{
 	private String screenName;
 	private String encryptedPassword;
 	private String email;
