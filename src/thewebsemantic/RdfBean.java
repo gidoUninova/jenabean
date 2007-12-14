@@ -17,6 +17,10 @@ public class RdfBean<T> {
 	public RdfBean() {
 		binder = Jenabean.instance();
 	}
+
+	public static boolean exists(Class<?> c, String id) {
+		return Jenabean.instance().reader().exists(c, id);
+	}
 	
 	public T refresh() throws NotFoundException {
 		return (T)binder.reader().load(this);

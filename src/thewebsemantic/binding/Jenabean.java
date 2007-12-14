@@ -67,10 +67,7 @@ public class Jenabean {
 	}
 	
 	public String getUri(Class<?> c) {
-		if (class2url.containsKey(c))
-			return class2url.get(c);
-		else
-			return null;
+		return (class2url.containsKey(c)) ? class2url.get(c) : null;
 	}
 	
 	public String getUri(Object bean) {
@@ -78,10 +75,7 @@ public class Jenabean {
 	}
 	
 	public Class<?> getClass(String uri) {
-		if (url2class.containsKey(uri))
-			return url2class.get(uri);
-		else
-			return null;		
+		return (url2class.containsKey(uri)) ? url2class.get(uri):null;		
 	}
 	
 	public static <E> Collection<E> load(Class<E> c) throws NotFoundException{
