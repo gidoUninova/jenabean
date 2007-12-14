@@ -18,10 +18,9 @@ public class DCExample {
 		bean.setCreator("Shelley Powers");
 		bean.setSubject("RDF, semantic web, xml");
 
-		for (int i=0; i<100; i++)
-			writer.save(bean);
+		writer.save(bean);
 		m.write(System.out);
-		
+
 		//write to a file
 		m.write(new FileWriter("book.rdf"));
 		//create a new empty model
