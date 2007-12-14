@@ -1,4 +1,5 @@
 #summary Quick start guide for reading existing RDF documents with jenabean.
+#labels Featured
 
 = Introduction =
 This guide demonstrates how to read pre-existing RDF data into java objects.  This slightly more complicated (just a tiny bit) because Jenabean isn't in control of the URI's.  We are taking something created by somebody else, and mapping it to our objects.  Most of you may just want to read the code, so here it is:
