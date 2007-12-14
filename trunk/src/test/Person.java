@@ -20,12 +20,11 @@ public class Person extends RdfBean<Person> {
 	private String uri;
 	
 	public Person() {
-		uri = new UID().toString();
+		uri = "http://example.org/" + new UID().toString();
 		ancestors = new LinkedList<Person>();
 	}
 	
 	public Person(String uri) {
-		this();
 		this.uri = uri;
 	}
 

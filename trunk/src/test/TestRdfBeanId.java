@@ -7,7 +7,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import thewebsemantic.NotFoundException;
-import thewebsemantic.binding.Binder;
+import thewebsemantic.binding.Jenabean;
 
 import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
@@ -21,7 +21,7 @@ public class TestRdfBeanId {
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 		OntModel m = ModelFactory.createOntologyModel();
-		Binder.instance().bind(m);
+		Jenabean.instance().bind(m);
 		
 		Company c = new Company();
 		c.setEmployees(1023);

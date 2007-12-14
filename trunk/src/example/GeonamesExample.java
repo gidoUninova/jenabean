@@ -3,7 +3,7 @@ package example;
 import java.util.Collection;
 
 import thewebsemantic.RDF2Bean;
-import thewebsemantic.binding.Binder;
+import thewebsemantic.binding.Jenabean;
 
 import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
@@ -21,7 +21,7 @@ public class GeonamesExample {
 		m.read("file:src/example/geonames.owl");
 		m.read("file:src/example/capitals.rdf");
 		
-		Binder b = Binder.instance();
+		Jenabean b = Jenabean.instance();
 		b.bind(GeonamesVocabulary.Feature).to(City.class);
 		RDF2Bean reader = new RDF2Bean(m);
 		Collection<City> cities = reader.load(City.class);

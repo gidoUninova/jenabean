@@ -8,37 +8,37 @@ import com.hp.hpl.jena.ontology.Individual;
 import static thewebsemantic.TypeWrapper.instanceURI;
 import static thewebsemantic.TypeWrapper.wrap;
 
-import thewebsemantic.binding.Binder;
+import thewebsemantic.binding.Jenabean;
 
 public class RdfBean<T> {
 
-	private Binder binder;
+	private Jenabean binder;
 	
 	public RdfBean() {
-		binder = Binder.instance();
+		binder = Jenabean.instance();
 	}
 	
-	public <T> T refresh() throws NotFoundException {
+	public T refresh() throws NotFoundException {
 		return binder.reader().load(this);
 	}
 	
 	public static <E> E load(Class<E> c, String id) throws NotFoundException{
-		return Binder.instance().reader().load(c, id);
+		return Jenabean.instance().reader().load(c, id);
 	}
 
 	public static <E> Collection<E> load(Class<E> c) throws NotFoundException{
-		return Binder.instance().reader().load(c);
+		return Jenabean.instance().reader().load(c);
 	}
 	
 	public static <E> E load(Class<E> c, int id) throws NotFoundException {
-		return Binder.instance().reader().load(c, id);
+		return Jenabean.instance().reader().load(c, id);
 	}
 	
 	public void save() {
 		binder.writer().save(this);
 	}
 	
-	public <T> T fill(String s) {
+	public T fill(String s) {
 		binder.reader().fill(this, s);
 		return (T)this;
 	}
