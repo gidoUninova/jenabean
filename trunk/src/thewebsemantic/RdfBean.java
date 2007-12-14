@@ -19,7 +19,7 @@ public class RdfBean<T> {
 	}
 	
 	public T refresh() throws NotFoundException {
-		return binder.reader().load(this);
+		return (T)binder.reader().load(this);
 	}
 	
 	public static <E> E load(Class<E> c, String id) throws NotFoundException{
