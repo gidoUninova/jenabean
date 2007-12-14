@@ -4,15 +4,13 @@ import java.util.Date;
 
 import static example.DublinCore.*;
 import thewebsemantic.Id;
-import thewebsemantic.Namespace;
 import thewebsemantic.RdfProperty;
 
 /**
  * Example domain object for storing book info.
  * 
  * RdfProperty annotations are used to indicate the Dublin Core property to bean
- * property bindings. The class itself is given a required namespace of
- * "http://example.org/".
+ * property bindings. 
  * 
  * Note, all properties need not be bound via the RdfProperty annotation. Take
  * for example the isbn property of this bean, which is mapped as part of the
@@ -23,7 +21,6 @@ import thewebsemantic.RdfProperty;
  * 
  * @author Taylor Cowan
  */
-@Namespace("http://example.org/")
 public class Book {
 	private String contributor;
 	private String coverage;
