@@ -116,10 +116,10 @@ public class RDF2Bean extends Base {
 		cycle = new HashMap<String, Object>();
 		try {
 			Individual source = m.getIndividual(instanceURI(target));
+			if (source == null)
+				throw new NotFoundException();
 			T result = (T)applyProperties(source, target);
-			if (result != null)
-				return result;
-			throw new NotFoundException();
+			return result;
 		} finally {
 			m.leaveCriticalSection();
 		}
@@ -235,14 +235,12 @@ public class RDF2Bean extends Base {
 	 */
 	private void apply(Individual i, PropertyContext ctx) {
 		Property p = m.getOntProperty(ctx.uri());
-		System.out.println(ctx.uri());
 		if (p != null)
 			apply(ctx, i.listPropertyValues(p));
 	}
 
 	private void fill(Individual i, PropertyContext ctx) {
 		Property p = m.getOntProperty(ctx.uri());
-		System.out.println(ctx.uri());
 		if (p != null)
 			ctx.invoke(fillCollection(t(ctx.property), i.listPropertyValues(p)
 					.toSet()));
@@ -284,10 +282,8 @@ public class RDF2Bean extends Base {
 	}
 
 	private void applyLiteral(PropertyContext ctx, Literal l) {
-		if (ctx.isDate())
-			ctx.invoke(date(l));
-		else
-			ctx.invoke(l.getValue());
+		if (ctx.isDate()) ctx.invoke(date(l));
+		else ctx.invoke(l.getValue());
 	}
 }
 /*

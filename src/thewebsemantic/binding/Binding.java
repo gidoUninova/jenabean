@@ -6,9 +6,9 @@ public class Binding {
 
 	private OntClass ontClass;
 	private Class<?> javaClass;
-	private Binder binder;
+	private Jenabean binder;
 	
-	public Binding(Binder b, OntClass c) {
+	public Binding(Jenabean b, OntClass c) {
 		ontClass = c;
 		binder = b;
 	}

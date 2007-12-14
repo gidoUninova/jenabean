@@ -7,7 +7,7 @@ import static thewebsemantic.RdfBean.*;
 
 import thewebsemantic.Bean2RDF;
 import thewebsemantic.RDF2Bean;
-import thewebsemantic.binding.Binder;
+import thewebsemantic.binding.Jenabean;
 
 import com.hp.hpl.jena.ontology.Individual;
 import com.hp.hpl.jena.ontology.OntModel;
@@ -20,7 +20,7 @@ public class TestLoadWith {
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 		OntModel m = ModelFactory.createOntologyModel();
-		Binder.instance().bind(m);
+		Jenabean.instance().bind(m);
 	}
 	
 	@Test
@@ -55,10 +55,10 @@ public class TestLoadWith {
 		Person p = new Person();
 		p.setFirstName("Joe");
 		p.setLastName("Joe");
+		p.save();
+		p.refresh();
+		assertEquals(0, p.getFriends().size());
 
-		Binder jenabean = Binder.instance();
-		jenabean.writer().save(p);	
-		p = load(Person.class, p.uri());
 		//Jenabean initiates collections to zero length for you
 		assertEquals(0, p.getFriends().size());
 		assertEquals(0, p.getAncestors().size());
@@ -71,13 +71,12 @@ public class TestLoadWith {
 		for(int i=0; i<101; i++)
 			p.getColleagues().add(new Person());
 
-		jenabean.writer().save(p);
-		p = load(Person.class, p.uri()).fill();
+		p.save();
 		Person p2 = load(Person.class, p.uri()).fill();
 
-		assertEquals(10, p.getFriends().size());
-		assertEquals(0, p.getAncestors().size());
-		assertEquals(101, p.getColleagues().size());
+		assertEquals(10, p2.getFriends().size());
+		assertEquals(0, p2.getAncestors().size());
+		assertEquals(101, p2.getColleagues().size());
 		
 		Individual i = p.asIndividual();
 		assertEquals(i.getURI(), p.uri());
@@ -88,5 +87,16 @@ public class TestLoadWith {
 		assertEquals("Dan", p.getFirstName());
 
 	
+	}
+	
+	@Test
+	public void testOther() throws Exception {
+		Person p = new Person();
+		p.setFirstName("Guru");
+		p.setLastName("Matahandrashingaranthanonan");
+		p.save();
+		p.refresh();
+		System.out.println(p.asIndividual().getURI());
+		assertEquals(0, p.getAncestors().size());
 	}
 }

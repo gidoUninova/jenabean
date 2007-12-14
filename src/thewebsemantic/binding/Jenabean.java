@@ -8,7 +8,7 @@ import thewebsemantic.RDF2Bean;
 import com.hp.hpl.jena.ontology.OntClass;
 import com.hp.hpl.jena.ontology.OntModel;
 
-public class Binder {
+public class Jenabean {
 	
 	private HashMap<Class<?>, String> class2url;
 	private HashMap<String, Class<?>> url2class;
@@ -16,13 +16,13 @@ public class Binder {
 	private Bean2RDF writer;
 	private RDF2Bean reader;
 	
-	private static Binder myself = new Binder();
+	private static Jenabean myself = new Jenabean();
 	
-	public static synchronized Binder instance() {
+	public static synchronized Jenabean instance() {
 		return myself;
 	}
 
-	private Binder() {
+	private Jenabean() {
 		class2url = new HashMap<Class<?>, String>();
 		url2class = new HashMap<String, Class<?>>();
 	}
