@@ -1,7 +1,9 @@
 #summary Quick start guide for reading existing RDF documents with jenabean.
 
 = Introduction =
-This guide demonstrates how to read pre-existing RDF data into java objects.  This slightly more complicated (just a tiny bit) because Jenabean isn't in control of the URI's.  We are taking something created by somebody else, and mapping it to our objects.
+This guide demonstrates how to read pre-existing RDF data into java objects.  This slightly more complicated (just a tiny bit) because Jenabean isn't in control of the URI's.  We are taking something created by somebody else, and mapping it to our objects.  Most of you may just want to read the code, so here it is:
+* [http://jenabean.googlecode.com/svn/trunk/src/example/City.java City bean]
+* [http://jenabean.googlecode.com/svn/trunk/src/example/GeonamesExample.java main() example]
 
 
 = Details =
@@ -51,6 +53,8 @@ import static thewebsemantic.binding.Jenabean.*;
 	@Uri
 	public String getUri() {return id;}
 }}}
+[http://jenabean.googlecode.com/svn/trunk/src/example/GeonamesExample.java see City.java]
+
 
 Properties are bound in a similar way.  We need to tell Jenabean the full URI of the property it reflects.  (Note: I'm aware that schemagen creates static OntProperty instances.  Unfortunately, java annotations do not allow classes outsite the usual primitive types.  You can use the static namespace string from schemangen + the RDF property name) 
 {{{
@@ -58,4 +62,13 @@ Properties are bound in a similar way.  We need to tell Jenabean the full URI of
 	public String getName() {
 		return name;
 	}
+}}}
+
+
+Back to main()...we can now iterate over the collection of cities read out of RDF.  One challenge in binding Objects is figuring out how much of the graph to read in.  If we were to read a dense graph, we'd most likely read the entire think into our Object graph.  Jenabean is therefore conservative, and refuses to load collections unless told to do so.  For each city we need to ask Jenabean to fill it with all its translations. (see loadDeep if you really want to recursively load the object graph).
+
+{{{
+		for (City city : cities) {
+			city.fill("alternateNames");
+
 }}}
