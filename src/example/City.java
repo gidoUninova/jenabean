@@ -1,15 +1,18 @@
 package example;
 
 import java.util.Collection;
+
+import thewebsemantic.RdfBean;
 import thewebsemantic.RdfProperty;
 import thewebsemantic.Uri;
-import static example.GeonamesVocabulary.NS;
 
-public class City {
+public class City extends RdfBean<City>{
 
+    public static final String NS = "http://www.geonames.org/ontology#";
 	private Collection<String> alternateNames;
 	private String name;
 	private String id;
+	private String population;
 	
 	public City(String uri) {
 		id = uri;
@@ -36,6 +39,15 @@ public class City {
 
 	public void setAlternateNames(Collection<String> alternateNames) {
 		this.alternateNames = alternateNames;
+	}
+
+	@RdfProperty(NS + "population")
+	public String getPopulation() {
+		return population;
+	}
+
+	public void setPopulation(String population) {
+		this.population = population;
 	}
 	
 }
