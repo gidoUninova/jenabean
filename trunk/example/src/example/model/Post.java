@@ -6,9 +6,10 @@ import java.util.LinkedList;
 
 import thewebsemantic.Id;
 import thewebsemantic.Namespace;
+import thewebsemantic.RdfBean;
 
 @Namespace("http://example.org/")
-public class Post {
+public class Post extends RdfBean<Post>{
 	private Collection<Comment> comments = new LinkedList<Comment>();
 	private Collection<Tag> tags = new LinkedList<Tag>();
 	private User author;
@@ -23,11 +24,7 @@ public class Post {
 
 	@Id
 	public String getId() {
-		return id;
-	}
-	
-	public void setId(String id) {
-		this.id = id;
+		return author.getScreenName() + '/' + title;
 	}
 	
 	public Collection<Comment> getComments() {

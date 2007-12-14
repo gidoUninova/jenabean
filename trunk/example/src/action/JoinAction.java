@@ -2,9 +2,7 @@ package action;
 
 import java.security.NoSuchAlgorithmException;
 
-import thewebsemantic.Bean2RDF;
-import thewebsemantic.RDF2Bean;
-
+import static thewebsemantic.RdfBean.*;
 import example.model.User;
 
 
@@ -38,8 +36,7 @@ public class JoinAction extends BaseAction {
 	public void validateRegistration(ValidationErrors errors) {
 		if ( !password.equals(verify) )
 			errors.add("password", new LocalizableError("verifymatch"));
-		RDF2Bean reader = new RDF2Bean(m());
-		if (reader.exists(User.class, screenName))
+		if (exists(User.class, screenName))
 			errors.addGlobalError(new LocalizableError("userexists"));
 	}
 	
@@ -50,13 +47,11 @@ public class JoinAction extends BaseAction {
 	
 	@HandlesEvent("join")
 	public Resolution join() throws NoSuchAlgorithmException {
-		Bean2RDF writer = new Bean2RDF(m());
 		User u = new User();
-		u = new User();
 		u.setScreenName(screenName);
 		u.setEmail(email);
 		u.setEncryptedPassword(hashPassword(password));
-		writer.write(u);
+		u.save();
 		context.setLogin(u);
 		return new RedirectResolution(HubAction.class);
 	}
@@ -92,6 +87,4 @@ public class JoinAction extends BaseAction {
 	public void setVerify(String verify) {
 		this.verify = verify;
 	}
-
-
 }

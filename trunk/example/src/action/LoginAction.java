@@ -3,7 +3,8 @@ package action;
 import java.security.NoSuchAlgorithmException;
 
 import example.model.User;
-import thewebsemantic.RDF2Bean;
+import thewebsemantic.NotFoundException;
+import static thewebsemantic.RdfBean.*;
 import net.sourceforge.stripes.action.DefaultHandler;
 import net.sourceforge.stripes.action.ForwardResolution;
 import net.sourceforge.stripes.action.HandlesEvent;
@@ -25,18 +26,13 @@ public class LoginAction extends BaseAction {
 	private String password;
 	
 	@ValidationMethod(on = "login")
-	public void validateLogin(ValidationErrors errors) throws NoSuchAlgorithmException {
+	public void validateLogin(ValidationErrors errors) throws NoSuchAlgorithmException, NotFoundException {
 		String e = hashPassword(password);
-		User u = findUser();
+		User u = load(User.class, screenName);
 		if (u == null || !e.equals(u.getEncryptedPassword()) )
 			errors.addGlobalError(new LocalizableError("loginmsg"));
 		else
 			context.setLogin(u);
-	}
-
-	private User findUser() {
-		RDF2Bean reader = context.getReader();
-		return reader.find(User.class, screenName);
 	}
 	
 	@DefaultHandler
