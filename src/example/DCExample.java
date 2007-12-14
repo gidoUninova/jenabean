@@ -17,21 +17,23 @@ public class DCExample {
 		bean.setIsbn("0596002637");
 		bean.setCreator("Shelley Powers");
 		bean.setSubject("RDF, semantic web, xml");
-
 		writer.save(bean);
 		m.write(System.out);
-
-		//write to a file
 		m.write(new FileWriter("book.rdf"));
-		//create a new empty model
+
+		//create a new empty model and load 
 		m = ModelFactory.createOntologyModel();
-		// read in rdf 
 		m.read("file:book.rdf");
 		
 		// make sure we have one book by Shelley Powers
 		RDF2Bean reader = new RDF2Bean(m);
 		Collection<Book> books = reader.load(Book.class);
-		for (Book book : books)
-			System.out.println(book.getCreator() + book.getIsbn());		
+		assert( books.size() == 1);
+		Book book = books.iterator().next();
+		System.out.println(book.getCreator() + book.getIsbn());	
+		
+		//and here's how we'd find it by id
+		book = reader.load(Book.class, "0596002637");
+		System.out.println(book.getCreator() + book.getIsbn());	
 	}
 }
