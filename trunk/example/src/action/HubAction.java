@@ -17,18 +17,14 @@ public class HubAction extends BaseAction {
 	
 	private Collection<Post> posts;
 	private String postid;
-
+	
 	@DefaultHandler
 	public Resolution show() throws NotFoundException {
-		//home/user/title
 		String pathInfo = context.getRequest().getPathInfo();
-		if ( pathInfo.length() > 6) 
-			postid = pathInfo.substring(6);
-		
-		if (postid != null) {
-			Post p = load(Post.class, postid);
+		if ( pathInfo.length() > 6) {
+			postid = pathInfo.substring(6);		
 			posts = new LinkedList<Post>();
-			posts.add(p);
+			posts.add(load(Post.class, postid));
 		} else {
 			posts = load(Post.class);
 			for (Post post : posts) post.fill();
