@@ -1,6 +1,5 @@
 package action;
 
-import java.rmi.server.UID;
 import java.util.List;
 
 import thewebsemantic.NotFoundException;
