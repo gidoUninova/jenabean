@@ -25,6 +25,10 @@ public class SimpleExample {
 		s2.save();
 
 		Collection<Song> songs = load(Song.class);
+		assert(songs.size()==2);
 		
+		for (Song song : songs)
+			System.out.println(song.getTitle() + ":" + 
+					song.getGenre().getName());		
 	}
 }
