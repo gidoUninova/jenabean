@@ -5,7 +5,7 @@
 <c:forEach items="${actionBean.posts}" var="row" varStatus="loop">
 
 <div class="entry">
-<h2><a href="?p=${row.id}">${row.title}</a></h2> 
+<h2><a href="/action/home/${row.id}">${row.title}</a></h2> 
 <span>${row.createdAt} : </span>
 ${row.content}<br/>
 - ${row.author.screenName} ${row.commentsCount} comments | Filed Under:
