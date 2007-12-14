@@ -7,9 +7,9 @@
 <stripes:layout-component name="contents">
 <stripes:form beanclass="action.PostAction" method="post">
 <stripes:errors/>
-<label>Title:</label>
-<stripes:text name="post.title" class="text" size="60"/><br/>
-<label>Content:</label>
+Post Title:<br/>
+<stripes:text name="post.title" class="text" size="80"/><br/>
+Content:<br/>
 <stripes:textarea name="post.content" class="text" rows="15" cols="60" /><br/>
 <stripes:submit name="post" value="post" />
 <stripes:submit name="addTag" value="add tag" />
