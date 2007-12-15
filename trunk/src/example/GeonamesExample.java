@@ -16,12 +16,10 @@ public class GeonamesExample {
 	 * @param args
 	 */
 	public static void main(String[] args) throws Exception {
-		
 		//prepare the jena model
 		OntModel m = ModelFactory.createOntologyModel();
 		m.read("file:src/example/geonames.owl");
 		m.read("file:src/example/capitals.rdf");
-		
 		//setup binding
 		Jenabean b = Jenabean.instance();
 		b.bind(m);
