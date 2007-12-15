@@ -3,12 +3,10 @@ package test;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import static thewebsemantic.RdfBean.*;
-
+import static thewebsemantic.binding.Jenabean.*;
 import thewebsemantic.Bean2RDF;
 import thewebsemantic.RDF2Bean;
 import thewebsemantic.binding.Jenabean;
-
 import com.hp.hpl.jena.ontology.Individual;
 import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.ontology.OntModelSpec;
