@@ -11,7 +11,7 @@ import thewebsemantic.binding.Jenabean;
 
 import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
-import static thewebsemantic.RdfBean.*;
+import static thewebsemantic.binding.Jenabean.*;
 import static org.junit.Assert.*;
 
 public class TestRdfBeanId {

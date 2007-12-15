@@ -26,10 +26,9 @@ public class GeonamesExample {
 		Jenabean b = Jenabean.instance();
 		b.bind(m);
 		b.bind(GeonamesVocabulary.Feature).to(City.class);
-		Collection<City> cities = load(City.class);
+		Collection<City> cities =  include("alternateNames").load(City.class);
 		out.println("Cities in rdf triple store: " + cities.size());
 		for (City city : cities) {
-			city.fill("alternateNames");
 			out.println('\n' + city.getName() + ", pop. " + city.getPopulation());
 			out.println("\turi: " + city.getUri());
 			out.println("\tnumber of translations: " + 

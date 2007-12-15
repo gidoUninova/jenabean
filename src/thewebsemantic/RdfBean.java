@@ -2,12 +2,9 @@ package thewebsemantic;
 
 import java.beans.PropertyDescriptor;
 import java.util.Collection;
-
 import com.hp.hpl.jena.ontology.Individual;
-
 import static thewebsemantic.TypeWrapper.instanceURI;
 import static thewebsemantic.TypeWrapper.wrap;
-
 import thewebsemantic.binding.Jenabean;
 
 public class RdfBean<T> {
@@ -18,24 +15,8 @@ public class RdfBean<T> {
 		binder = Jenabean.instance();
 	}
 
-	public static boolean exists(Class<?> c, String id) {
-		return Jenabean.instance().reader().exists(c, id);
-	}
-	
 	public T refresh() throws NotFoundException {
 		return (T)binder.reader().load(this);
-	}
-	
-	public static <E> E load(Class<E> c, String id) throws NotFoundException{
-		return Jenabean.instance().reader().load(c, id);
-	}
-
-	public static <E> Collection<E> load(Class<E> c) {
-		return Jenabean.instance().reader().load(c);
-	}
-	
-	public static <E> E load(Class<E> c, int id) throws NotFoundException {
-		return Jenabean.instance().reader().load(c, id);
 	}
 	
 	public void save() {

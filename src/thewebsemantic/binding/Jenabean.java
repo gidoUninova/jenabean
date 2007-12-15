@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.HashMap;
 
 import thewebsemantic.Bean2RDF;
+import thewebsemantic.Includer;
 import thewebsemantic.NotFoundException;
 import thewebsemantic.RDF2Bean;
 
@@ -78,7 +79,22 @@ public class Jenabean {
 		return (url2class.containsKey(uri)) ? url2class.get(uri):null;		
 	}
 	
-	public static <E> Collection<E> load(Class<E> c) throws NotFoundException{
+	public static boolean exists(Class<?> c, String id) {
+		return instance().reader().exists(c, id);
+	}
+
+	public static <E> E load(Class<E> c, String id) throws NotFoundException{
+		return myself.reader().load(c, id);
+	}
+	
+	public static <E> Collection<E> load(Class<E> c) {
 		return myself.reader().load(c);
+	}
+	
+	public static <E> E load(Class<E> c, int id) throws NotFoundException {
+		return myself.reader().load(c, id);
+	}	
+	public static Includer include(String s) {
+		return new Includer(s, myself.reader());
 	}
 }
