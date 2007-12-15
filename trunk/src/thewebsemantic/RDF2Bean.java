@@ -11,6 +11,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Set;
 
@@ -33,19 +34,25 @@ public class RDF2Bean extends Base {
 	private HashMap<String, Object> cycle;
 
 	private boolean shallow = false;
-
+	private Set<String> myIncludes = new HashSet<String>();
+	private static final String[] none = new String[0];
+	
 	public RDF2Bean(OntModel m) {
 		super(m);
 	}
 
 	public <T> Collection<T> loadDeep(Class<T> c) {
-		return load(c, false);
+		return load(c, false, none);
 	}
 
 	public <T> Collection<T> load(Class<T> c) {
-		return load(c, true);
+		return load(c, true, none);
 	}
 
+	public <T> Collection<T> load(Class<T> c, String[] includes) {
+		return load(c, true, includes);
+	}
+	
 	/**
 	 * load all rdf entries that map to the bean.
 	 * 
@@ -53,9 +60,8 @@ public class RDF2Bean extends Base {
 	 * @param c
 	 * @return
 	 */
-	public synchronized <T> Collection<T> load(Class<T> c, boolean shallow) {
-		m.enterCriticalSection(Lock.READ);
-		this.shallow = shallow;
+	public synchronized <T> Collection<T> load(Class<T> c, boolean shallow, String[] includes) {
+		init(shallow, includes);
 		cycle = new HashMap<String, Object>();
 		try {
 			return loadAll(c, new LinkedList<T>());
@@ -64,12 +70,19 @@ public class RDF2Bean extends Base {
 		}
 	}
 
+	private void init(boolean shallow, String[] includes) {
+		m.enterCriticalSection(Lock.READ);
+		this.shallow = shallow;
+		this.myIncludes.clear();
+		for (String s : includes) myIncludes.add(s);
+	}
+
 	private <T> Collection<T> loadAll(Class<T> c, LinkedList<T> list) {
 		for (Individual i : listAllIndividuals(getOntClass(c)))
 			list.add(toObject(c, i));
 		return list;
 	}
-
+	
 	/**
 	 * 
 	 * @param c
@@ -94,10 +107,13 @@ public class RDF2Bean extends Base {
 		return load(c, Integer.toString(id), true);
 	}
 
-	public synchronized <T> T load(Class<T> c, String id, boolean shallow)
+	public <T> T load(Class<T> c, String id, boolean shallow) throws NotFoundException {
+		return load(c,id,shallow, new String[0]);
+	}
+	
+	private synchronized <T> T load(Class<T> c, String id, boolean shallow, String[] includes)
 			throws NotFoundException {
-		m.enterCriticalSection(Lock.READ);
-		this.shallow = shallow;
+		init(shallow, includes);
 		cycle = new HashMap<String, Object>();
 		try {
 			T result = toObject(c, id);
@@ -111,8 +127,7 @@ public class RDF2Bean extends Base {
 
 	public synchronized Object load(Object target)
 			throws NotFoundException {
-		m.enterCriticalSection(Lock.READ);
-		this.shallow = true;
+		init(shallow, none);
 		cycle = new HashMap<String, Object>();
 		try {
 			Individual source = m.getIndividual(instanceURI(target));
@@ -129,8 +144,7 @@ public class RDF2Bean extends Base {
 	}
 
 	public synchronized void fill(Object o, String propertyName) {
-		m.enterCriticalSection(Lock.READ);
-		this.shallow = true;
+		init(shallow, none);
 		try {
 			fillWithChildren(o, propertyName);
 		} finally {
@@ -149,15 +163,17 @@ public class RDF2Bean extends Base {
 	}
 
 	private <T> T toObject(Class<T> c, Individual i) {
-		if (i != null)
-			return (isCycle(i)) ? (T) cycle.get(i.getURI())
-					: (T) applyProperties(i);
-		return null;
+		return (i!=null)?(T)testCycle(i):null;
+	}
+
+	private Object testCycle(Individual i) {
+		return (isCycle(i))?cycle.get(i.getURI()):applyProperties(i);
 	}
 
 	private <T> T toObject(Class<T> c, RDFNode node) {
-		return (node.isLiteral()) ? (T) asLiteral(node).getValue() : toObject(
-				c, asIndividual(node));
+		return (node.isLiteral()) ? 
+				(T) asLiteral(node).getValue() : 
+				toObject(c, asIndividual(node));
 	}
 
 	private Object toObject(PropertyDescriptor p, Individual i) {
@@ -234,8 +250,7 @@ public class RDF2Bean extends Base {
 	 */
 	private void apply(Individual i, PropertyContext ctx) {
 		Property p = m.getOntProperty(ctx.uri());
-		if (p != null)
-			apply(ctx, i.listPropertyValues(p));
+		if (p != null) apply(ctx, i.listPropertyValues(p));
 	}
 
 	private void fill(Individual i, PropertyContext ctx) {
@@ -259,10 +274,14 @@ public class RDF2Bean extends Base {
 	}
 
 	private void collection(PropertyContext ctx, Set<RDFNode> nodes) {
-		if (shallow)
+		if (shallow && !included(ctx.property))
 			ctx.invoke(newCollection());
 		else
 			ctx.invoke(fillCollection(t(ctx.property), nodes));
+	}
+
+	private boolean included(PropertyDescriptor property) {
+		return myIncludes.contains(property.getName());
 	}
 
 	private ArrayList<Object> newCollection() {
