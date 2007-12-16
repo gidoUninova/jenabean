@@ -102,7 +102,11 @@ public class RDF2Bean extends Base {
 	public <T> T load(Class<T> c, String id) throws NotFoundException {
 		return load(c, id, true);
 	}
-
+	
+	public <T> T load(Class<T> c, String id, String[] includes) throws NotFoundException {
+		return load(c, id, true, includes);
+	}
+	
 	public <T> T load(Class<T> c, int id) throws NotFoundException {
 		return load(c, Integer.toString(id), true);
 	}
@@ -275,7 +279,7 @@ public class RDF2Bean extends Base {
 
 	private void collection(PropertyContext ctx, Set<RDFNode> nodes) {
 		if (shallow && !included(ctx.property))
-			ctx.invoke(newCollection());
+			ctx.invoke(nullCollection());
 		else
 			ctx.invoke(fillCollection(t(ctx.property), nodes));
 	}
@@ -284,12 +288,12 @@ public class RDF2Bean extends Base {
 		return myIncludes.contains(property.getName());
 	}
 
-	private ArrayList<Object> newCollection() {
-		return new ArrayList<Object>();
+	private ArrayList<Object> nullCollection() {
+		return new NullArrayList<Object>();
 	}
 
 	private ArrayList<Object> fillCollection(Class<?> c, Set<RDFNode> nodes) {
-		ArrayList<Object> results = newCollection();
+		ArrayList<Object> results = new ArrayList<Object>();
 		for (RDFNode node : nodes)
 			results.add(toObject(c, node));
 		return results;

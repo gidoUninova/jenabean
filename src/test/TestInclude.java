@@ -28,10 +28,12 @@ public class TestInclude {
 		FatBean fat = new FatBean();
 		fat.save();
 		
-		fat = load(FatBean.class, fat.id());
+		fat = include("hamburgers").load(FatBean.class, fat.id());
 		fat.getBeers().add("Carona");
 		fat.getFries().add("french");
 		fat.getHamburgers().add("double");
+		fat.getHamburgers().add("single");
+		fat.getHamburgers().add("cheeze");
 		fat.getShakes().add("chocolate");
 		fat.getSteaks().add("t-bone");
 		fat.save();
@@ -39,11 +41,14 @@ public class TestInclude {
 		Collection<FatBean> beans = include("beers").include("shakes").load(FatBean.class);
 		fat = beans.iterator().next();
 		assertEquals(0, fat.getHamburgers().size());
-		assertEquals(1, fat.getShakes().size());
-		assertEquals(1, fat.getBeers().size());
+		assertEquals(0, fat.getShakes().size());
+		assertEquals(0, fat.getBeers().size());
 		assertEquals(0, fat.getFries().size());
 		
-
+		fat.save();
+		beans = include("hamburgers").load(FatBean.class);
+		fat = beans.iterator().next();
+		assertEquals(3, fat.getHamburgers().size());
 		
 	}
 }

@@ -139,12 +139,16 @@ public class Bean2RDF extends Base {
 	private void saveOrUpdate(Resource subject, PropertyContext pc) {
 		Object o = pc.invokeGetter();
 		Property property = toRdfProperty(pc);
-		if (o instanceof Collection)
+		if (validCollection(o))
 			updateCollection(subject, property, (Collection<?>) o);
 		else if (isPrimitive(o.getClass()))
 			getSaver(subject, property).write(o);
-		else if (!o.getClass().isArray())
+		else if (!o.getClass().isArray() && !(o instanceof Collection))
 			updateOrCreate(subject, property, o);
+	}
+
+	private boolean validCollection(Object o) {
+		return o instanceof Collection && !(o instanceof NullArrayList);
 	}
 
 	/**
