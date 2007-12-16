@@ -3,7 +3,7 @@ package action;
 import java.rmi.server.UID;
 
 import thewebsemantic.NotFoundException;
-import static thewebsemantic.RdfBean.*;
+import static thewebsemantic.binding.Jenabean.*;
 import net.sourceforge.stripes.action.Before;
 import net.sourceforge.stripes.action.DefaultHandler;
 import net.sourceforge.stripes.action.ForwardResolution;

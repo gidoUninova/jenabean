@@ -4,7 +4,7 @@ import java.security.NoSuchAlgorithmException;
 
 import example.model.User;
 import thewebsemantic.NotFoundException;
-import static thewebsemantic.RdfBean.*;
+import static thewebsemantic.binding.Jenabean.*;
 import net.sourceforge.stripes.action.DefaultHandler;
 import net.sourceforge.stripes.action.ForwardResolution;
 import net.sourceforge.stripes.action.HandlesEvent;

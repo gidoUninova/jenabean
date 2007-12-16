@@ -3,7 +3,7 @@ package action;
 import java.util.List;
 
 import thewebsemantic.NotFoundException;
-import static thewebsemantic.RdfBean.*;
+import static thewebsemantic.binding.Jenabean.*;
 
 import net.sourceforge.stripes.action.Before;
 import net.sourceforge.stripes.action.DefaultHandler;
