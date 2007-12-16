@@ -2,7 +2,7 @@ package action;
 
 import java.security.NoSuchAlgorithmException;
 
-import static thewebsemantic.RdfBean.*;
+import static thewebsemantic.binding.Jenabean.*;
 import example.model.User;
 
 
