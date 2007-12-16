@@ -143,8 +143,12 @@ public class Bean2RDF extends Base {
 			updateCollection(subject, property, (Collection<?>) o);
 		else if (isPrimitive(o.getClass()))
 			getSaver(subject, property).write(o);
-		else if (!o.getClass().isArray() && !(o instanceof Collection))
+		else if (isNormalObject(o))
 			updateOrCreate(subject, property, o);
+	}
+
+	private boolean isNormalObject(Object o) {
+		return !o.getClass().isArray() && !(o instanceof Collection);
 	}
 
 	private boolean validCollection(Object o) {
