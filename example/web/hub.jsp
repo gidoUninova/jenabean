@@ -15,8 +15,6 @@ ${row.content}<br/>
 <c:forEach items="${row.comments}" var="comment">${comment.content}<br/></c:forEach>
 </c:if>
 </div>
-</c:forEach>
-
 <c:if test="${! empty(actionBean.p)}">
 <stripes:form beanclass="action.CommentAction" method="post">
 Comments:<br/>
@@ -25,5 +23,8 @@ Comments:<br/>
 <stripes:submit name="comment" value="comment"/>
 </stripes:form>
 </c:if>
+</c:forEach>
+
+
 </stripes:layout-component>
 </stripes:layout-render>
