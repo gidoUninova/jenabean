@@ -288,7 +288,7 @@ public class RDF2Bean extends Base {
 		return myIncludes.contains(property.getName());
 	}
 
-	private ArrayList<Object> nullCollection() {
+	private Collection<Object> nullCollection() {
 		return new NullArrayList<Object>();
 	}
 
