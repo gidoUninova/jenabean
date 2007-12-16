@@ -10,6 +10,12 @@ public class FatBean extends RdfBeanId<FatBean> {
 	private Collection<String> steaks;
 	private Collection<String> fries;
 	private Collection<String> beers;
+	
+	public FatBean() {super();}
+	
+	public FatBean(String s) {
+		super(s);
+	}
 	public Collection<String> getHamburgers() {
 		return hamburgers;
 	}

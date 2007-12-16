@@ -21,4 +21,8 @@ public class Includer {
 	public <T> Collection<T> load(Class<T> c) {
 		return reader.load(c, true, includes.toArray(none));
 	}
+	
+	public <T> T load(Class<T> c, String id) throws NotFoundException {
+		return reader.load(c, id, includes.toArray(none));
+	}
 }
