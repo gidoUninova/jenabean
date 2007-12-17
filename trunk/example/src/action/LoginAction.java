@@ -16,7 +16,7 @@ import net.sourceforge.stripes.validation.Validate;
 import net.sourceforge.stripes.validation.ValidationErrors;
 import net.sourceforge.stripes.validation.ValidationMethod;
 
-@UrlBinding("/action/login")
+@UrlBinding("/blog/login")
 public class LoginAction extends BaseAction {
 	
 	@Validate(required = true, minlength = 1, maxlength = 255, on = "login")
