@@ -18,7 +18,7 @@ import net.sourceforge.stripes.validation.ValidateNestedProperties;
 import example.model.Post;
 import example.model.Tag;
 
-@UrlBinding("/action/post")
+@UrlBinding("/blog/post")
 public class PostAction extends BaseAction {
 
 	private Post post;

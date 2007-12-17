@@ -13,7 +13,7 @@ import net.sourceforge.stripes.action.ForwardResolution;
 import net.sourceforge.stripes.action.Resolution;
 import net.sourceforge.stripes.action.UrlBinding;
 
-@UrlBinding("/action/home")
+@UrlBinding("/blog/home")
 public class HubAction extends BaseAction {
 	
 	private Collection<Post> posts;

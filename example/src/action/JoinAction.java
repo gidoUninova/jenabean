@@ -17,7 +17,7 @@ import net.sourceforge.stripes.validation.Validate;
 import net.sourceforge.stripes.validation.ValidationErrors;
 import net.sourceforge.stripes.validation.ValidationMethod;
 
-@UrlBinding("/action/join")
+@UrlBinding("/blog/join")
 public class JoinAction extends BaseAction {
 
 	@Validate(required = true, minlength = 1, maxlength = 255, on = "join")

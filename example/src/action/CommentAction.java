@@ -17,7 +17,7 @@ import net.sourceforge.stripes.validation.ValidateNestedProperties;
 import example.model.Comment;
 import example.model.Post;
 
-@UrlBinding("/action/comment")
+@UrlBinding("/blog/comment")
 public class CommentAction extends BaseAction {
 	private Comment comment;
 	private String postid;
@@ -39,7 +39,7 @@ public class CommentAction extends BaseAction {
 		Post p = include("comments").load(Post.class, postid);
 		p.addComment(comment);
 		p.save();
-		return new RedirectResolution("/?p=" + p.getId());
+		return new RedirectResolution("/blog/home/" + p.getId());
 	}
 
 	@ValidateNestedProperties({
