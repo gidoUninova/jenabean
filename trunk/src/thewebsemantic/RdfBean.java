@@ -9,12 +9,17 @@ import thewebsemantic.binding.Jenabean;
 
 public class RdfBean<T> {
 
+	private static final Class<? extends RdfBean> T = null;
 	private Jenabean binder;
 	
 	public RdfBean() {
 		binder = Jenabean.instance();
 	}
 
+	public T load(String id) throws NotFoundException {
+		return (T)binder.load(getClass(), id);
+	}
+	
 	public T refresh() throws NotFoundException {
 		return (T)binder.reader().load(this);
 	}
