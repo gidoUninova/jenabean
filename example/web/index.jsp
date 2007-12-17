@@ -1,4 +1,4 @@
 <%
-	String redirectURL = "/action/home";
+	String redirectURL = "/blog/home";
 	pageContext.forward(redirectURL); 
 %>
