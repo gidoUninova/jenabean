@@ -19,7 +19,6 @@ import thewebsemantic.RdfProperty;
  * would use the beans hashCode() method instead...which is not ideal since the
  * default hashCode() isn't guaranteed to return a unique integer. own.
  * 
- * @author Taylor Cowan
  */
 public class Book {
 	private String contributor;

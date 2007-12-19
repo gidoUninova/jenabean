@@ -2,7 +2,6 @@ package example;
 
 /**
  * Holds URI constants for dublin core.
- * @author Taylor Cowan
  */
 public class DublinCore {
 	public static final String CONTRIBUTOR = "http://purl.org/dc/elements/1.1/contributor";  
