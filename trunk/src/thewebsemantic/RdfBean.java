@@ -33,7 +33,7 @@ public class RdfBean<T> {
 		return (T)this;
 	}
 	
-	public <T> T fill() {
+	public T fill() {
 		for (PropertyDescriptor pd : wrap(this.getClass()).collections())
 			if ( pd.getPropertyType().equals(Collection.class))
 				binder.reader().fill(this, pd.getName());
