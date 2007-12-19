@@ -31,8 +31,8 @@ public class Post extends RdfBean<Post>{
 		this.comments = comments;
 	}
 	
-	public void addComment(Comment c) {
-		comments.add(c);
+	public Post add(Comment c) {
+		comments.add(c); return this;
 	}
 	
 	public User getAuthor() {

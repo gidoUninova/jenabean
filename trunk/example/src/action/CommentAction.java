@@ -36,9 +36,7 @@ public class CommentAction extends BaseAction {
 	@HandlesEvent("comment")
 	public Resolution post() throws NotFoundException {
 		comment.setId(new UID().toString());
-		Post p = include("comments").load(Post.class, postid);
-		p.addComment(comment);
-		p.save();
+		Post p = load(Post.class, postid).add(comment).save();
 		return new RedirectResolution("/blog/home/" + p.getId());
 	}
 
