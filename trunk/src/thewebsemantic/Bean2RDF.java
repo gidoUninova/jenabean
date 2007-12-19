@@ -46,7 +46,6 @@ import com.hp.hpl.jena.shared.Lock;
  * </code>
  * </pre>
  * 
- * @author Taylor Cowan
  * @see Namespace
  * @see Id
  * @see RdfProperty

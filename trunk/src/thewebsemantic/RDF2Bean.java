@@ -27,7 +27,7 @@ import com.hp.hpl.jena.shared.Lock;
 /**
  * RDF2Bean converts one or more RDF nodes into java beans. Normally these are
  * nodes created by the Bean2RDF class. <code>@Namespace</code> annotation value of the Class.
- * @author Taylor Cowan
+ * 
  * @see Bean2RDF
  */
 public class RDF2Bean extends Base {

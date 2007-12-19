@@ -21,7 +21,6 @@ import com.hp.hpl.jena.ontology.Individual;
  * Retrieves annotation information as well as other type related operations on
  * Classes. Keeps cached versions to minimize introspection work.
  * 
- * @author Taylor Cowan
  */
 public class TypeWrapper {
 	private static final String HAS = "has";

@@ -9,7 +9,6 @@ import thewebsemantic.binding.Jenabean;
 
 public class RdfBean<T> {
 
-	private static final Class<? extends RdfBean> T = null;
 	private Jenabean binder;
 	
 	public RdfBean() {
