@@ -41,8 +41,8 @@ public class TestInclude {
 		Collection<FatBean> beans = include("beers").include("shakes").load(FatBean.class);
 		fat = beans.iterator().next();
 		assertEquals(0, fat.getHamburgers().size());
-		assertEquals(0, fat.getShakes().size());
-		assertEquals(0, fat.getBeers().size());
+		assertEquals(1, fat.getShakes().size());
+		assertEquals(1, fat.getBeers().size());
 		assertEquals(0, fat.getFries().size());
 		
 		fat.save();
