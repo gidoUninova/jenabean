@@ -260,7 +260,7 @@ public class RDF2Bean extends Base {
 	private void fill(Individual i, PropertyContext ctx) {
 		Property p = m.getOntProperty(ctx.uri());
 		if (p != null)
-			ctx.invoke(fillCollection(t(ctx.property), i.listPropertyValues(p)
+			ctx.setProperty(fillCollection(t(ctx.property), i.listPropertyValues(p)
 					.toSet()));
 	}
 
@@ -279,17 +279,17 @@ public class RDF2Bean extends Base {
 
 	private void collection(PropertyContext ctx, Set<RDFNode> nodes) {
 		if (shallow && !included(ctx.property))
-			ctx.invoke(nullCollection());
+			ctx.setProperty(addOnlyCollection());
 		else
-			ctx.invoke(fillCollection(t(ctx.property), nodes));
+			ctx.setProperty(fillCollection(t(ctx.property), nodes));
 	}
 
 	private boolean included(PropertyDescriptor property) {
 		return myIncludes.contains(property.getName());
 	}
 
-	private Collection<Object> nullCollection() {
-		return new NullArrayList<Object>();
+	private Collection<Object> addOnlyCollection() {
+		return new AddOnlyArrayList<Object>();
 	}
 
 	private ArrayList<Object> fillCollection(Class<?> c, Set<RDFNode> nodes) {
@@ -300,12 +300,12 @@ public class RDF2Bean extends Base {
 	}
 
 	private void applyIndividual(PropertyContext ctx, Individual i) {
-		ctx.invoke(toObject(ctx.property, i));
+		ctx.setProperty(toObject(ctx.property, i));
 	}
 
 	private void applyLiteral(PropertyContext ctx, Literal l) {
-		if (ctx.isDate()) ctx.invoke(date(l));
-		else ctx.invoke(l.getValue());
+		if (ctx.isDate()) ctx.setProperty(date(l));
+		else ctx.setProperty(l.getValue());
 	}
 }
 /*

@@ -53,7 +53,7 @@ class PropertyContext {
 		return result;
 	}
 	
-	public void invoke(Object v) {
+	public void setProperty(Object v) {
 	   try {
          property.getWriteMethod().invoke(subject, v);
       } catch (Exception e) {}

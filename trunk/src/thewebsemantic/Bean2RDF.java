@@ -138,7 +138,7 @@ public class Bean2RDF extends Base {
 	private void saveOrUpdate(Resource subject, PropertyContext pc) {
 		Object o = pc.invokeGetter();
 		Property property = toRdfProperty(pc);
-		if (validCollection(o))
+		if (o instanceof Collection)
 			updateCollection(subject, property, (Collection<?>) o);
 		else if (isPrimitive(o.getClass()))
 			getSaver(subject, property).write(o);
@@ -150,10 +150,6 @@ public class Bean2RDF extends Base {
 		return !o.getClass().isArray() && !(o instanceof Collection);
 	}
 
-	private boolean validCollection(Object o) {
-		return o instanceof Collection && !(o instanceof NullArrayList);
-	}
-
 	/**
 	 * update a one to many property.
 	 * 
@@ -163,13 +159,18 @@ public class Bean2RDF extends Base {
 	 */
 	private void updateCollection(Resource subject, Property property,
 			Collection<?> c) {
-		subject.removeAll(property);
+		if (supportsDelete(c))
+			subject.removeAll(property);
 		AddSaver saver = new AddSaver(subject, property);
 		for (Object o : c)
 			if (isPrimitive(o))
 				saver.write(o); // leaf
 			else
 				subject.addProperty(property, _write(o, true)); // recursive
+	}
+
+	private boolean supportsDelete(Collection<?> c) {
+		return ! (c instanceof AddOnlyArrayList);
 	}
 
 	/**
