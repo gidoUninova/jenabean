@@ -23,8 +23,9 @@ public class RdfBean<T> {
 		return (T)binder.reader().load(this);
 	}
 	
-	public void save() {
+	public T save() {
 		binder.writer().save(this);
+		return (T)this;
 	}
 	
 	public T fill(String s) {
