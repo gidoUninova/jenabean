@@ -24,7 +24,7 @@ public class SimpleExample {
 		s2.setGenre(Genre.ROCK);
 		s2.save();
 
-		Collection<Song> songs = load(Song.class);
+		Collection<Song> songs = Song.load();
 		assert(songs.size()==2);
 		
 		for (Song song : songs)
