@@ -1,12 +1,20 @@
 package example;
 
+import java.util.Collection;
+
 import thewebsemantic.Id;
 import thewebsemantic.RdfBean;
+import thewebsemantic.binding.Jenabean;
 
 public class Song extends RdfBean<Song>{
 	private String composer;
 	private Genre genre; 
 	private String title;
+	
+	public static Collection<Song> load() {
+		return Jenabean.load(Song.class);
+	}
+	
 	
 	@Id
 	public String getTitle() {
