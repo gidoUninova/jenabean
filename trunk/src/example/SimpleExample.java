@@ -30,6 +30,5 @@ public class SimpleExample {
 			System.out.println(song.getTitle() + ":" + 
 					song.getGenre().getName());			
 		m.write(System.out);
-	
 	}
 }
