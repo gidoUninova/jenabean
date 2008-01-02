@@ -22,7 +22,7 @@ public class PrimitiveWrapper {
 	}
 
 	public static boolean isPrimitive(Class<?> c) {
-		return WRAPPERS.containsKey(c) || c.isPrimitive();
+		return c.isPrimitive() || WRAPPERS.containsKey(c); 
 	}
 
 	public static boolean isPrimitive(Object o) {
