@@ -59,7 +59,7 @@ public class TypeWrapper {
 	}
 
 	public String typeUri() {
-		return namespace() + Util.className(c);
+		return NS + c.getSimpleName();
 	}
 
 	public PropertyDescriptor[] descriptors() {
@@ -182,7 +182,7 @@ public class TypeWrapper {
 	}
 	
 	/**
-	 * shin means new in Japanese
+	 * 
 	 * @param source
 	 * @return
 	 * @throws Exception

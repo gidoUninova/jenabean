@@ -1,15 +1,6 @@
 package thewebsemantic;
 
 public class Util {
-
-	public static String className(Class<?> c) {
-		return className(c.getName());
-	}
-
-	private static String className(String type) {
-		return end(type, '.');
-	}
-	
 	public static String last(String path) {
 		return end(path, '/');
 	}
@@ -21,12 +12,14 @@ public class Util {
 	
 	public static String toProperCase(String text) {
 		if ((text == null) || (text.length() == 0))
-			return null;
-		if (text.length() == 1)
+			return text;
+		else if (text.length() == 1)
 			return text.toUpperCase();
-		StringBuilder sb = new StringBuilder();
-		sb.append(text.substring(0, 1).toUpperCase());
-		return sb.append(text.substring(1)).toString();
+		else
+			return new StringBuilder().
+			append(text.substring(0, 1).toUpperCase()).
+			append(text.substring(1)).
+			toString();
 	}
 }
 /*

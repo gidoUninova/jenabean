@@ -181,8 +181,7 @@ public class Bean2RDF extends Base {
 	 * @return appropriate saver implementation
 	 */
 	private Saver getSaver(Resource s, Property property) {
-		return (s.getProperty(property) == null) ? new CreateSaver(s, property)
-				: new UpdateSaver(s, property);
+		return new UpdateSaver(s, property);
 	}
 
 	/**
