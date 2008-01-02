@@ -3,6 +3,7 @@ package thewebsemantic;
 import static thewebsemantic.PrimitiveWrapper.isPrimitive;
 import static thewebsemantic.TypeWrapper.instanceURI;
 import static thewebsemantic.TypeWrapper.type;
+import static thewebsemantic.TypeWrapper.descriptors;
 
 import java.beans.PropertyDescriptor;
 import java.util.ArrayList;
@@ -64,11 +65,11 @@ public class Bean2RDF extends Base {
 	public Resource save(Object bean) {
 		return write(bean, false);
 	}
-	
+
 	public Resource saveDeep(Object bean) {
 		return write(bean, true);
 	}
-	
+
 	/**
 	 * write a bean to the triple store
 	 * 
@@ -94,7 +95,7 @@ public class Bean2RDF extends Base {
 	private Resource toResource(Object bean) {
 		return m.createResource(instanceURI(bean), getOntClass(bean));
 	}
-	
+
 	private Resource existing(Object bean) {
 		return m.createResource(instanceURI(bean));
 	}
@@ -124,14 +125,11 @@ public class Bean2RDF extends Base {
 	}
 
 	private Resource write(Object bean, Resource subject, boolean shallow) {
-		try {
-			cycle.add(bean);
-			for (PropertyDescriptor p : type(bean).descriptors())
-				if (!(shallow && p.getPropertyType().equals(Collection.class)) || forceDeep)
-					saveOrUpdate(subject, new PropertyContext(bean, p));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		cycle.add(bean);
+		for (PropertyDescriptor p : descriptors(bean))
+			if (!(shallow && p.getPropertyType().equals(Collection.class))
+					|| forceDeep)
+				saveOrUpdate(subject, new PropertyContext(bean, p));
 		return subject;
 	}
 
@@ -170,7 +168,7 @@ public class Bean2RDF extends Base {
 	}
 
 	private boolean supportsDelete(Collection<?> c) {
-		return ! (c instanceof AddOnlyArrayList);
+		return !(c instanceof AddOnlyArrayList);
 	}
 
 	/**
@@ -189,8 +187,8 @@ public class Bean2RDF extends Base {
 
 	/**
 	 * Update or persist a domain object outside String, Date, and the usual
-	 * primitive types.  We set the write style to shallow=true,
-	 * causing an end of recursive traversal of the object graph.
+	 * primitive types. We set the write style to shallow=true, causing an end
+	 * of recursive traversal of the object graph.
 	 * 
 	 * @param subject
 	 * @param property
@@ -205,7 +203,7 @@ public class Bean2RDF extends Base {
 	}
 }
 /*
- * Copyright (c) 2007 
+ * Copyright (c) 2007
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal

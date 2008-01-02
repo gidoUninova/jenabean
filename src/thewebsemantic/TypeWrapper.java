@@ -49,6 +49,10 @@ public class TypeWrapper {
 	public static synchronized TypeWrapper type(Object o) {
 		return wrap(o.getClass());
 	}
+	
+	public static synchronized PropertyDescriptor[] descriptors(Object o) {
+		return type(o).descriptors();
+	}
 
 	public static synchronized TypeWrapper wrap(Class<?> c) {
 		return (cache.containsKey(c)) ? cache.get(c) : new TypeWrapper(c);
