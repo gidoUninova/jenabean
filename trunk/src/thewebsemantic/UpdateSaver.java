@@ -12,8 +12,7 @@ class UpdateSaver extends Saver {
 	}
 
 	public void save(Literal l) {
-		s.removeAll(p);
-		s.addProperty(p, l);
+		s.removeAll(p).addProperty(p, l);
 	}
 }
 /*
