@@ -36,23 +36,88 @@ public class RDF2Bean extends Base {
 	private boolean shallow = false;
 	private Set<String> myIncludes = new HashSet<String>();
 	private static final String[] none = new String[0];
-	
-	public RDF2Bean(OntModel m) {
-		super(m);
+
+	/**
+	 * Constructs and instance of RDF2Bean bound to a particular ontology model.
+	 * Operations have potential to modify the model.
+	 * @param model a Jena Ontology Model instance
+	 */
+	public RDF2Bean(OntModel model) {
+		super(model);
 	}
 
+	/**
+	 * Deeply loads all individuals having RDF type which matches Class <tt>c</tt>.
+	 * Depending on the density of your model this method has the potential to load
+	 * the entire graph into memory as Java beans.  For example, if you been has a
+	 * <tt>hasFriends</tt> property, <tt>loadDeep()</tt> will load each friend, 
+	 * each friend's friends, and so on.  Every reachable property that maps to a 
+	 * corresponing bean property will be loaded recursively.
+	 * 
+	 * @param <T>
+	 * @param c a java class which maps to individuals in your ontology.
+	 * @return collection of java beans, all instances of Class <tt>c</tt>.
+	 */
 	public <T> Collection<T> loadDeep(Class<T> c) {
 		return load(c, false, none);
 	}
 
+	
+	/**
+	 * Loads all individuals having RDF type which maps to Class <tt>c</tt>.
+	 * Mappings are either based on Class annotations or bindings given at VM startup.
+	 * <tt>load()</tt> is safe for dense graphs as it has a conservative or shallow 
+	 * policy.  It loads all functional properties (where there is only one) but ignores
+	 * bean properties of type <tt>Collection</tt>.  All returned bean's Collection
+	 * properties are initialized to size 0.  
+	 * 
+	 * Once loaded you may add to Collection properties and save. This will result in addition
+	 * assertions being made in your jena ontology model, however, saving will not delete 
+	 * assertions unless the property is fully loaded.  Consider the common customer/order 
+	 * scenario.  We can load a customer, and fill the orders, leaving other properties alone:
+	 * 
+	 * <code>
+	 * Collection<Customer> customers = myRDF2Bean.load(Customer.class)
+	 * ...
+	 * myRDF2Bean.fill(aCustomer).with("orders");
+	 * foreach(Order o: aCustomer.getOrders())...
+	 * </code>
+	 * 
+	 * You may also use this alternate method to fill collection properties:
+	 * 
+	 * <code>
+	 * myRDF2Bean.fill(aCustomer, "orders");
+	 * </code>
+	 * 
+	 * @see binding.Jenabean
+	 * @see Namespace
+	 * @param <T>
+	 * @param c
+	 * @return
+	 */
 	public <T> Collection<T> load(Class<T> c) {
 		return load(c, true, none);
 	}
 
+	
+	/**
+	 * Similar to <tt>load(Class<T> c)</tt> except that you may include an array 
+	 * of property names to "include".  The properties should be of type Collection.
+	 * This allows you to be specific about wich children you want unmarshalled from
+	 * the ontology model into java objects.  For instance, you may just need a customer,
+	 * their outstanding orders, and their recent addresses.  Assuming your ontology relates 
+	 * customers to many more non-functional properties, it'd save time to just load exacly
+	 * what you need.
+	 * 
+	 * @param <T>
+	 * @param c
+	 * @param includes
+	 * @return
+	 */
 	public <T> Collection<T> load(Class<T> c, String[] includes) {
 		return load(c, true, includes);
 	}
-	
+
 	/**
 	 * load all rdf entries that map to the bean.
 	 * 
@@ -60,7 +125,8 @@ public class RDF2Bean extends Base {
 	 * @param c
 	 * @return
 	 */
-	public synchronized <T> Collection<T> load(Class<T> c, boolean shallow, String[] includes) {
+	protected synchronized <T> Collection<T> load(Class<T> c, boolean shallow,
+			String[] includes) {
 		init(shallow, includes);
 		cycle = new HashMap<String, Object>();
 		try {
@@ -74,7 +140,8 @@ public class RDF2Bean extends Base {
 		m.enterCriticalSection(Lock.READ);
 		this.shallow = shallow;
 		this.myIncludes.clear();
-		for (String s : includes) myIncludes.add(s);
+		for (String s : includes)
+			myIncludes.add(s);
 	}
 
 	private <T> Collection<T> loadAll(Class<T> c, LinkedList<T> list) {
@@ -82,41 +149,79 @@ public class RDF2Bean extends Base {
 			list.add(toObject(c, i));
 		return list;
 	}
-	
+
 	/**
+	 * <tt>loadDeep</tt> will load a particular individual and all it's properties,
+	 * recursively.  <em>Beware</em>, this could result in loading the entire 
+	 * model into memory 
+	 * as java objects depending on the density of your graph.  Therefore
+	 * use this method with care knowing that it's purpose is to load all
+	 * information reachable via properties that bind to your objects.
 	 * 
 	 * @param c
-	 *            java class of the bean
+	 *            java class of the bean.  The class is converted to a URI
+	 *            based on its annotations or bindings.
 	 * @param id
 	 *            unique id of the bean to find
 	 * @return An instance of T, otherwise null
+	 * @see binding.Jenabean
+	 * @see Namespace
 	 */
 	public <T> T loadDeep(Class<T> c, int id) throws NotFoundException {
 		return load(c, Integer.toString(id), false);
 	}
 
+	/**
+	 * Same as loadDeep(Class, String) overloaded for id's of type integer.
+	 * 
+	 * @param <T>
+	 * @param c
+	 * @param id
+	 * @return
+	 * @throws NotFoundException
+	 */
 	public <T> T loadDeep(Class<T> c, String id) throws NotFoundException {
 		return load(c, id, false);
 	}
 
+	/**
+	 * Loads an ontology individual as a java bean, based on annotations
+	 * or bindings applied to Class <tt>c</tt>.
+	 * 
+	 * @param <T>
+	 * @param c
+	 * @param id
+	 * @return
+	 * @throws NotFoundException
+	 */
 	public <T> T load(Class<T> c, String id) throws NotFoundException {
 		return load(c, id, true);
 	}
-	
-	public <T> T load(Class<T> c, String id, String[] includes) throws NotFoundException {
+
+	public <T> T load(Class<T> c, String id, String[] includes)
+			throws NotFoundException {
 		return load(c, id, true, includes);
 	}
-	
+
+	/**
+	 * same as <tt>load(String)</tt> overloaded for id's of type integer.
+	 * @param <T>
+	 * @param c
+	 * @param id
+	 * @return
+	 * @throws NotFoundException
+	 */
 	public <T> T load(Class<T> c, int id) throws NotFoundException {
 		return load(c, Integer.toString(id), true);
 	}
 
-	public <T> T load(Class<T> c, String id, boolean shallow) throws NotFoundException {
-		return load(c,id,shallow, new String[0]);
-	}
-	
-	private synchronized <T> T load(Class<T> c, String id, boolean shallow, String[] includes)
+	protected <T> T load(Class<T> c, String id, boolean shallow)
 			throws NotFoundException {
+		return load(c, id, shallow, new String[0]);
+	}
+
+	private synchronized <T> T load(Class<T> c, String id, boolean shallow,
+			String[] includes) throws NotFoundException {
 		init(shallow, includes);
 		cycle = new HashMap<String, Object>();
 		try {
@@ -129,8 +234,13 @@ public class RDF2Bean extends Base {
 		}
 	}
 
-	public synchronized Object load(Object target)
-			throws NotFoundException {
+	/**
+	 * 
+	 * @param target
+	 * @return
+	 * @throws NotFoundException
+	 */
+	protected synchronized Object load(Object target) throws NotFoundException {
 		init(shallow, none);
 		cycle = new HashMap<String, Object>();
 		try {
@@ -143,6 +253,22 @@ public class RDF2Bean extends Base {
 		}
 	}
 
+	/**
+	 * Returns a <tt>Filler</tt> for this bean.  When beans are loaded
+	 * they are normally shallow, ie, their Collections are still empty.
+	 * This allows the client to decide which lists (sometimes large) they'd
+	 * like to work with.
+	 * 
+	 * This provides a certain type 
+	 * of calling style:
+	 * 
+	 * RDF2Bean rdf2bean = new RDF2Bean(model);
+	 * ...
+	 * rdf2bean.fill(myBean).with("children");
+	 * 
+	 * @param o
+	 * @return
+	 */
 	public Filler fill(Object o) {
 		return new Filler(this, o);
 	}
@@ -161,23 +287,21 @@ public class RDF2Bean extends Base {
 	}
 
 	private <T> T toObject(Class<T> c, String id) {
-		return (wrap(c).uriSupport()) ? 
-				toObject(c, m.getIndividual(id)): 
-				toObject(c, m.getIndividual(wrap(c).uri(id)));
+		return (wrap(c).uriSupport()) ? toObject(c, m.getIndividual(id))
+				: toObject(c, m.getIndividual(wrap(c).uri(id)));
 	}
 
 	private <T> T toObject(Class<T> c, Individual i) {
-		return (i!=null)?(T)testCycle(i):null;
+		return (i != null) ? (T) testCycle(i) : null;
 	}
 
 	private Object testCycle(Individual i) {
-		return (isCycle(i))?cycle.get(i.getURI()):applyProperties(i);
+		return (isCycle(i)) ? cycle.get(i.getURI()) : applyProperties(i);
 	}
 
 	private <T> T toObject(Class<T> c, RDFNode node) {
-		return (node.isLiteral()) ? 
-				(T) asLiteral(node).getValue() : 
-				toObject(c, asIndividual(node));
+		return (node.isLiteral()) ? (T) asLiteral(node).getValue() : toObject(
+				c, asIndividual(node));
 	}
 
 	private Object toObject(PropertyDescriptor p, Individual i) {
@@ -229,15 +353,13 @@ public class RDF2Bean extends Base {
 	private Class<?> javaclass(Individual source) throws ClassNotFoundException {
 		OntClass oc = (OntClass) source.getRDFType().as(OntClass.class);
 		RDFNode node = oc.getPropertyValue(javaclass);
-		return (node != null) ?
-			Class.forName(asLiteral(node).getString()):
-			binder.getClass(oc.getURI());
+		return (node != null) ? Class.forName(asLiteral(node).getString())
+				: binder.getClass(oc.getURI());
 	}
 
 	private OntClass getOntClass(Class<?> c) {
-		return (binder.isBound(c)) ?
-			m.getOntClass(binder.getUri(c)):
-			m.getOntClass(wrap(c).typeUri());
+		return (binder.isBound(c)) ? m.getOntClass(binder.getUri(c)) : m
+				.getOntClass(wrap(c).typeUri());
 	}
 
 	/**
@@ -254,14 +376,15 @@ public class RDF2Bean extends Base {
 	 */
 	private void apply(Individual i, PropertyContext ctx) {
 		Property p = m.getOntProperty(ctx.uri());
-		if (p != null) apply(ctx, i.listPropertyValues(p));
+		if (p != null)
+			apply(ctx, i.listPropertyValues(p));
 	}
 
 	private void fill(Individual i, PropertyContext ctx) {
 		Property p = m.getOntProperty(ctx.uri());
 		if (p != null)
-			ctx.setProperty(fillCollection(t(ctx.property), i.listPropertyValues(p)
-					.toSet()));
+			ctx.setProperty(fillCollection(t(ctx.property), i
+					.listPropertyValues(p).toSet()));
 	}
 
 	private void apply(PropertyContext ctx, NodeIterator nodes) {
@@ -304,12 +427,14 @@ public class RDF2Bean extends Base {
 	}
 
 	private void applyLiteral(PropertyContext ctx, Literal l) {
-		if (ctx.isDate()) ctx.setProperty(date(l));
-		else ctx.setProperty(l.getValue());
+		if (ctx.isDate())
+			ctx.setProperty(date(l));
+		else
+			ctx.setProperty(l.getValue());
 	}
 }
 /*
- * Copyright (c) 2007 
+ * Copyright (c) 2007
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
