@@ -11,7 +11,7 @@ public class AssemblerVocabulary {
     private static Model m_model = ModelFactory.createDefaultModel();
     
     /** <p>The namespace of the vocabulary as a string</p> */
-    public static final String NS = "http://jena.hpl.hp.com/2005/11/Assembler";
+    public static final String NS = "http://jena.hpl.hp.com/2005/11/Assembler#";
     
     /** <p>The namespace of the vocabulary as a string</p>
      *  @see #NS */
