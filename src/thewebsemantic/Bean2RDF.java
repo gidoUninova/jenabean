@@ -58,14 +58,31 @@ public class Bean2RDF extends Base {
 	private Logger logger = Logger.getLogger("thewebsemenatic",
 			"thewebsemantic.messages");
 
+	/**
+	 * construct a new instance bound to OntModel <tt>m</tt>.
+	 * @param m Jena OntModel instance
+	 */
 	public Bean2RDF(OntModel m) {
 		super(m);
 	}
 
+	/**
+	 * Saves <tt>bean</tt> to jena model.
+	 * 
+	 * @param bean
+	 * @return jena resource representing <tt>bean</tt> within the model
+	 */
 	public Resource save(Object bean) {
 		return write(bean, false);
 	}
-
+	
+	
+	/**
+	 * Saves the entire object graph starting with <tt>bean</tt>.
+	 * 
+	 * @param bean
+	 * @return
+	 */
 	public Resource saveDeep(Object bean) {
 		return write(bean, true);
 	}

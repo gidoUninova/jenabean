@@ -5,6 +5,35 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+/**
+ * &#064;Uri indicates which property (via its getter method) 
+ * provides the beans URI.  Use this annotation when you want to 
+ * handle beans in a more RDF centric way.  This requires you
+ * to construct your own uri's in the method annoated with &#064;Uri.
+ * 
+ * Normally beans using this pattern will take a single string as the
+ * uri in their constructor.
+ * 
+ * <code>
+ * 
+ * public class ExampleBean {
+ * 
+ *   private String uri;
+ *   
+ *   public ExampleBean(String uri) {
+ *     this.uri = uri;
+ *   }
+ *   
+ *   &#064;Uri public uri() {
+ *     return this.uri;
+ *   }
+ *   
+ *   // other properties follow
+ * 
+ * }
+ * </code>
+ * 
+ */
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME) 
 public @interface Uri {

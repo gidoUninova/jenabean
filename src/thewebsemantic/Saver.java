@@ -62,6 +62,10 @@ abstract class Saver {
 		c.setTime(d);
 		save(m.createTypedLiteral(c));	
 	}
+
+	public void save(Calendar c) {
+		save(m.createTypedLiteral(c));	
+	}
 	
 	public void write(Object o) {	
 		if (o instanceof String)
@@ -80,6 +84,8 @@ abstract class Saver {
 			save((Character) o);
 		else if (o instanceof Boolean)
 			save((Boolean) o);
+		else if (o instanceof Calendar)
+			save((Calendar) o);
 	}
 }
 /*

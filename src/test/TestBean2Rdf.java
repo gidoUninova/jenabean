@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 
 import java.io.FileWriter;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 
@@ -44,11 +45,9 @@ public class TestBean2Rdf {
 		RDF2Bean reader = new RDF2Bean(m);
 		assertTrue(reader.exists(User.class, u.getScreenName()));
 		assertFalse(reader.exists(User.class, "not there"));
-		
-		
 	}
-	@Test
-	public void testThreads() throws Exception {
+
+	@Test public void testThreads() throws Exception {
 		OntModel m = ModelFactory.createOntologyModel(OntModelSpec.OWL_MEM_RDFS_INF);	
 		final Bean2RDF writer = new Bean2RDF(m);
 		
@@ -73,8 +72,7 @@ public class TestBean2Rdf {
 		new Thread(t).run();
 	}
 	
-	@Test
-	public void testCycle() throws Exception {
+	@Test public void testCycle() throws Exception {
 		OntModel m = ModelFactory.createOntologyModel();	
 		Bean2RDF writer = new Bean2RDF(m);
 		A bean1 = new A("taylor");
@@ -118,8 +116,7 @@ public class TestBean2Rdf {
 	}
 
 	
-	@Test
-	public void testSymmetric2() throws Exception {
+	@Test public void testSymmetric2() throws Exception {
 		OntModel m = ModelFactory.createOntologyModel(OntModelSpec.OWL_MEM_MICRO_RULE_INF);	
 		Bean2RDF writer = new Bean2RDF(m);
 		SymmetricBean bean1 = new SymmetricBean("bean1");
@@ -140,8 +137,7 @@ public class TestBean2Rdf {
 		
 	}
 	
-	@Test
-	public void testSymmetric() throws Exception {
+	@Test public void testSymmetric() throws Exception {
 		OntModel m = ModelFactory.createOntologyModel(OntModelSpec.OWL_MEM_MICRO_RULE_INF);	
 		Bean2RDF writer = new Bean2RDF(m);
 		A bean1 = new A("taylor");
@@ -287,6 +283,7 @@ public class TestBean2Rdf {
 		bean.setMyLong(aLong);
 		bean.setMyChar('c');
 		bean.setMyBoolean(true);
+		bean.setMyCalendar(Calendar.getInstance());
 
 		OntModel m = ModelFactory.createOntologyModel();
 		Bean2RDF writer = new Bean2RDF(m);
@@ -296,6 +293,8 @@ public class TestBean2Rdf {
 		TypeTesterBean bean2 = reader.loadDeep(TypeTesterBean.class, bean.hashCode());
 
 		assertEquals(bean.getMyDate(), bean2.getMyDate());
+		assertEquals(bean.getMyChar(), bean2.getMyChar());
+		assertEquals(bean.getMyCalendar().getTime(), bean2.getMyCalendar().getTime());
 		assertEquals(bean.getMyDouble(), bean2.getMyDouble());
 		assertEquals(bean.getMyFloat(), bean2.getMyFloat());
 		assertEquals(bean.getMyInt(), bean2.getMyInt());

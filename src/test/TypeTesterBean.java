@@ -1,5 +1,6 @@
 package test;
 
+import java.util.Calendar;
 import java.util.Date;
 
 import thewebsemantic.Namespace;
@@ -14,6 +15,7 @@ public class TypeTesterBean {
 	private Date myDate;
 	private char myChar;
 	private boolean myBoolean;
+	private Calendar calendar;
 	
 	public char getMyChar() {
 		return myChar;
@@ -62,6 +64,14 @@ public class TypeTesterBean {
 
 	public boolean isMyBoolean() {
 		return myBoolean;
+	}
+	
+	public void setMyCalendar(Calendar c) {
+		this.calendar = c;
+	}
+	
+	public Calendar getMyCalendar() {
+		return calendar;
 	}
 
 	public void setMyBoolean(boolean myBoolean) {

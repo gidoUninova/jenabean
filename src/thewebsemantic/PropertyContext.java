@@ -69,5 +69,10 @@ class PropertyContext {
 	
     public boolean isCollection() {
        return property.getPropertyType().equals(Collection.class);
-   }	
+    }
+    
+    public boolean isArray() {
+    	return property.getPropertyType().isArray();
+    }
+    
 }
