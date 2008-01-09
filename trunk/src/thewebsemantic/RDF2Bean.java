@@ -140,8 +140,7 @@ public class RDF2Bean extends Base {
 		m.enterCriticalSection(Lock.READ);
 		this.shallow = shallow;
 		this.myIncludes.clear();
-		for (String s : includes)
-			myIncludes.add(s);
+		for (String s:includes) myIncludes.add(s);
 	}
 
 	private <T> Collection<T> loadAll(Class<T> c, LinkedList<T> list) {
