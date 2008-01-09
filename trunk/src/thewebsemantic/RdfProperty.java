@@ -5,6 +5,17 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+/**
+ * &#064;RdfProperty is usefull when you need to map a bean property
+ * to a particular RDF property.  It is used to annotate java bean properties
+ * via their getter method.
+ * 
+ * <code>
+ * &#064;RdfBean("http://example.org/demo#hasFriend")
+ * public getFriends() { ...
+ * </code>
+ *
+ */
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME) 
 public @interface RdfProperty {

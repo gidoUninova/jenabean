@@ -43,7 +43,7 @@ public class RDF2Bean extends Base {
 	 * @param model a Jena Ontology Model instance
 	 */
 	public RDF2Bean(OntModel model) {
-		super(model);
+		super(model); 
 	}
 
 	/**
@@ -190,13 +190,33 @@ public class RDF2Bean extends Base {
 	 * @param <T>
 	 * @param c
 	 * @param id
-	 * @return
+	 * @return instance of Class<tt>c</tt> matching <tt>id</tt> from model, if
+	 * one exists.
 	 * @throws NotFoundException
 	 */
 	public <T> T load(Class<T> c, String id) throws NotFoundException {
 		return load(c, id, true);
 	}
 
+	/**
+	 * Similar to load(Class, String), with the ability to include
+	 * non-functional Collection based properties.  <tt>includes</tt> should be
+	 * an array of property names, for example, if you want to load a customer with 
+	 * their orders and  recent purchases...
+	 * 
+	 * <code>
+	 * RDF2Bean reader = new RDF2Bean(model);
+	 * String[] includes = {"orders","recentPurchases"};
+	 * reader.load(Customer.class, "cust#2", includes);
+	 * </code>
+	 * 
+	 * @param <T>
+	 * @param c
+	 * @param id
+	 * @param includes
+	 * @return
+	 * @throws NotFoundException
+	 */
 	public <T> T load(Class<T> c, String id, String[] includes)
 			throws NotFoundException {
 		return load(c, id, true, includes);
@@ -234,12 +254,13 @@ public class RDF2Bean extends Base {
 	}
 
 	/**
+	 * Loads an object from model with the same identifier as <tt>target</tt>.
 	 * 
 	 * @param target
 	 * @return
 	 * @throws NotFoundException
 	 */
-	protected synchronized Object load(Object target) throws NotFoundException {
+	public synchronized Object load(Object target) throws NotFoundException {
 		init(shallow, none);
 		cycle = new HashMap<String, Object>();
 		try {
@@ -253,6 +274,22 @@ public class RDF2Bean extends Base {
 	}
 
 	/**
+	 * returns true if target exists in the model
+	 * 
+	 * @param target
+	 * @return
+	 * @throws NotFoundException
+	 */
+	public synchronized Object exists(Object target) throws NotFoundException {
+		init(shallow, none);
+		try {
+			return m.getIndividual(instanceURI(target)) != null;
+		} finally {
+			m.leaveCriticalSection();
+		}
+	}
+	
+	/**
 	 * Returns a <tt>Filler</tt> for this bean.  When beans are loaded
 	 * they are normally shallow, ie, their Collections are still empty.
 	 * This allows the client to decide which lists (sometimes large) they'd
@@ -261,9 +298,11 @@ public class RDF2Bean extends Base {
 	 * This provides a certain type 
 	 * of calling style:
 	 * 
+	 * <code>
 	 * RDF2Bean rdf2bean = new RDF2Bean(model);
 	 * ...
 	 * rdf2bean.fill(myBean).with("children");
+	 * </code>
 	 * 
 	 * @param o
 	 * @return
@@ -272,6 +311,24 @@ public class RDF2Bean extends Base {
 		return new Filler(this, o);
 	}
 
+	/**
+	 * fill or reload a non-functional property with values from the model.
+	 * This is usefull when you've recently shallow loaded a bean from the 
+	 * triple store.  non-funtional properties can contain unlimited 
+	 * elements, so your app will need to be carefull regarding when it loads
+	 * them.
+	 * 
+	 * in Jenabean, non-functional properties are represented as properties
+	 * of type java.util.Collection.
+	 * 
+  	 * <code>
+	 * RDF2Bean rdf2bean = new RDF2Bean(model);
+	 * ...
+	 * rdf2bean.fill(myBean,"children");
+	 * </code>
+	 * @param o
+	 * @param propertyName
+	 */
 	public synchronized void fill(Object o, String propertyName) {
 		init(shallow, none);
 		try {
@@ -281,6 +338,12 @@ public class RDF2Bean extends Base {
 		}
 	}
 
+	/**
+	 * returns true if matching individual is found in the model.
+	 * @param c
+	 * @param id
+	 * @return
+	 */
 	public boolean exists(Class<?> c, String id) {
 		return !(m.getIndividual(wrap(c).uri(id)) == null);
 	}
@@ -395,8 +458,15 @@ public class RDF2Bean extends Base {
 			return;
 		else if (ctx.isPrimitive())
 			applyLiteral(ctx, asLiteral(nodes.nextNode()));
+		else if (ctx.isArray())
+			array(ctx, nodes.nextNode());
 		else
 			applyIndividual(ctx, asIndividual(nodes.nextNode()));
+	}
+
+	private void array(PropertyContext ctx, RDFNode nextNode) {
+		// TODO Auto-generated method stub
+		
 	}
 
 	private void collection(PropertyContext ctx, Set<RDFNode> nodes) {
