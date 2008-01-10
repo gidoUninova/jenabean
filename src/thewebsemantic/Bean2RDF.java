@@ -8,11 +8,14 @@ import static thewebsemantic.TypeWrapper.descriptors;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
+import java.util.Date;
 import java.util.logging.Logger;
 
 import com.hp.hpl.jena.ontology.OntClass;
 import com.hp.hpl.jena.ontology.OntModel;
+import com.hp.hpl.jena.rdf.model.Literal;
 import com.hp.hpl.jena.rdf.model.Property;
 import com.hp.hpl.jena.rdf.model.RDFNode;
 import com.hp.hpl.jena.rdf.model.Resource;
@@ -166,20 +169,47 @@ public class Bean2RDF extends Base {
 	}
 
 	private void updateArray(Resource subject, Property property, Object array) {
-
-		Statement existingRelation = subject.getProperty(property);
-		Seq s = (existingRelation != null) ?
-			existingRelation.getSeq():m.createSeq();
-			
-		AddSaver saver = new AddSaver(subject, property);
+		Seq s = getSeq(subject, property);
 		for (int i=0; i<Array.getLength(array); i++) {
 			Object o = Array.get(array, i);
+			// sometign like saver here
 			if (isPrimitive(o))
-				saver.write(o); // leaf
+				s.add(toLiteral(o));
 			else
-				subject.addProperty(property, _write(o, true)); // recursive
+				s.add(_write(o,true));
 		}
+		subject.removeAll(property);
+		subject.addProperty(property, s);
 		
+	}
+
+	private Literal toLiteral(Object o) {	
+		if (o instanceof String)
+			return m.createTypedLiteral(o.toString());
+		else if (o instanceof Date) {
+			Calendar c = Calendar.getInstance();
+			c.setTime((Date)o);
+			return m.createTypedLiteral(c);
+		} else if (o instanceof Integer)
+			return m.createTypedLiteral(((Integer) o).intValue());
+		else if (o instanceof Long)
+			return m.createTypedLiteral(((Long) o).longValue());
+		else if (o instanceof Float)
+			return m.createTypedLiteral(((Float) o).floatValue());
+		else if (o instanceof Double)
+			return m.createTypedLiteral(((Double) o).doubleValue());
+		else if (o instanceof Character)
+			return m.createTypedLiteral((Character) o);
+		else if (o instanceof Boolean)
+			return m.createTypedLiteral((Boolean) o);
+		else if (o instanceof Calendar)
+			return m.createTypedLiteral((Calendar) o);
+		return null;
+	}
+
+	private Seq getSeq(Resource subject, Property property) {
+		Statement s = subject.getProperty(property);
+		return (s != null) ? s.getSeq():m.createSeq();
 	}
 
 	private boolean isNormalObject(Object o) {

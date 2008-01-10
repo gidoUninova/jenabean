@@ -1,21 +1,21 @@
 package thewebsemantic;
 
-import static thewebsemantic.JenaHelper.asIndividual;
-import static thewebsemantic.JenaHelper.asLiteral;
-import static thewebsemantic.JenaHelper.date;
-import static thewebsemantic.JenaHelper.listAllIndividuals;
+import static thewebsemantic.JenaHelper.*;
 import static thewebsemantic.TypeWrapper.*;
 
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Array;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Set;
 
+import com.hp.hpl.jena.datatypes.xsd.XSDDateTime;
 import com.hp.hpl.jena.ontology.Individual;
 import com.hp.hpl.jena.ontology.OntClass;
 import com.hp.hpl.jena.ontology.OntModel;
@@ -364,10 +364,10 @@ public class RDF2Bean extends Base {
 	}
 
 	private <T> T toObject(Class<T> c, RDFNode node) {
-		return (node.isLiteral()) ? (T) asLiteral(node).getValue() : toObject(
-				c, asIndividual(node));
+		return (node.isLiteral()) ? (T)convertLiteral(node,c): 
+			toObject(c, asIndividual(node));
 	}
-
+	
 	private Object toObject(PropertyDescriptor p, Individual i) {
 		return toObject(p.getPropertyType(), i);
 	}
@@ -379,10 +379,15 @@ public class RDF2Bean extends Base {
 	private Object fillWithChildren(Object target, String propertyName) {
 		Individual source = m.getIndividual(instanceURI(target));
 		for (PropertyDescriptor p : type(target).descriptors())
-			if (p.getName().equals(propertyName)
-					&& p.getPropertyType().equals(Collection.class))
+			if (match(propertyName, p))
 				fill(source, new PropertyContext(target, p));
 		return target;
+	}
+
+	private boolean match(String propertyName, PropertyDescriptor p) {
+		return p.getName().equals(propertyName) &&
+			   (p.getPropertyType().equals(Collection.class) ||
+			   p.getPropertyType().isArray());
 	}
 
 	private Object applyProperties(Individual source) {
@@ -446,9 +451,18 @@ public class RDF2Bean extends Base {
 
 	private void fill(Individual i, PropertyContext ctx) {
 		Property p = m.getOntProperty(ctx.uri());
-		if (p != null)
-			ctx.setProperty(fillCollection(t(ctx.property), i
-					.listPropertyValues(p).toSet()));
+		if (p == null) return;
+		Set<RDFNode> values = i.listPropertyValues(p).toSet();
+		Object o;
+		if (ctx.type().isArray()) {
+			Seq s = (Seq)values.iterator().next().as(Seq.class);
+			Class<?> type = ctx.type().getComponentType();
+			o = fillArray(type, s);			
+		} else {
+			o = fillCollection(t(ctx.property), values);
+		}
+		
+		ctx.setProperty(o);
 	}
 
 	private void apply(PropertyContext ctx, NodeIterator nodes) {
@@ -468,20 +482,21 @@ public class RDF2Bean extends Base {
 
 	private void array(PropertyContext ctx, RDFNode nextNode) {
 		Seq s = (Seq)nextNode.as(Seq.class);
+		Class<?> type = ctx.type().getComponentType();
 		if (shallow && !included(ctx.property))
-			ctx.setProperty( Array.newInstance(ctx.type(), 0));
+			ctx.setProperty( Array.newInstance(type, 0));
 		else
-			ctx.setProperty(fillArray(ctx.type().getComponentType(), s));
+			ctx.setProperty(fillArray(type, s));
 		
 	}
 
-	private Object[] fillArray(Class<?> type, Seq s) {
-		Object[] result = (Object[])Array.newInstance(type, s.size());
-		for (int i=0; i<s.size(); i++)
-			result[i] = toObject(type, s.getResource(i));
-		return result;
+	private Object fillArray(Class<?> type, Seq s) {
+		Object array = Array.newInstance(type, s.size());
+		for (int i=0; i<Array.getLength(array); i++)
+			Array.set(array,i,toObject(type, s.getLiteral(i+1) ));
+		return array;
 	}
-
+	
 	private void collection(PropertyContext ctx, Set<RDFNode> nodes) {
 		if (shallow && !included(ctx.property))
 			ctx.setProperty(addOnlyCollection());
@@ -509,10 +524,7 @@ public class RDF2Bean extends Base {
 	}
 
 	private void applyLiteral(PropertyContext ctx, Literal l) {
-		if (ctx.isDate())
-			ctx.setProperty(date(l));
-		else
-			ctx.setProperty(l.getValue());
+		ctx.setProperty(convertLiteral(l, ctx.type()));
 	}
 }
 /*
