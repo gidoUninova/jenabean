@@ -75,4 +75,8 @@ class PropertyContext {
     	return property.getPropertyType().isArray();
     }
     
+    public Class<?> type() {
+    	return property.getPropertyType();
+    }
+    
 }

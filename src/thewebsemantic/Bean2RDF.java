@@ -6,6 +6,7 @@ import static thewebsemantic.TypeWrapper.type;
 import static thewebsemantic.TypeWrapper.descriptors;
 
 import java.beans.PropertyDescriptor;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.logging.Logger;
@@ -15,6 +16,7 @@ import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.rdf.model.Property;
 import com.hp.hpl.jena.rdf.model.RDFNode;
 import com.hp.hpl.jena.rdf.model.Resource;
+import com.hp.hpl.jena.rdf.model.Seq;
 import com.hp.hpl.jena.rdf.model.Statement;
 import com.hp.hpl.jena.shared.Lock;
 
@@ -157,8 +159,27 @@ public class Bean2RDF extends Base {
 			updateCollection(subject, property, (Collection<?>) o);
 		else if (isPrimitive(o.getClass()))
 			getSaver(subject, property).write(o);
+		else if (pc.isArray())
+			updateArray(subject, property, o);
 		else if (isNormalObject(o))
 			updateOrCreate(subject, property, o);
+	}
+
+	private void updateArray(Resource subject, Property property, Object array) {
+
+		Statement existingRelation = subject.getProperty(property);
+		Seq s = (existingRelation != null) ?
+			existingRelation.getSeq():m.createSeq();
+			
+		AddSaver saver = new AddSaver(subject, property);
+		for (int i=0; i<Array.getLength(array); i++) {
+			Object o = Array.get(array, i);
+			if (isPrimitive(o))
+				saver.write(o); // leaf
+			else
+				subject.addProperty(property, _write(o, true)); // recursive
+		}
+		
 	}
 
 	private boolean isNormalObject(Object o) {
