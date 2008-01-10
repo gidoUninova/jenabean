@@ -7,9 +7,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 import thewebsemantic.Bean2RDF;
 import thewebsemantic.RDF2Bean;
-
 import com.hp.hpl.jena.ontology.OntModel;
-import com.hp.hpl.jena.ontology.OntModelSpec;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 
 public class TestArrays {
@@ -31,10 +29,22 @@ public class TestArrays {
 		writer.save(bean);
 		
 		
-		m.write(System.out, "N3");
+		//m.write(System.out, "N3");
 		
 		RDF2Bean reader = new RDF2Bean(m);
 		Collection<TestArraysBean>  beans = reader.load(TestArraysBean.class);
 		assertEquals(1, beans.size());
+		
+		TestArraysBean loadedBean = beans.iterator().next();
+		assertEquals(0, loadedBean.getAges().length);
+		reader.fill(loadedBean).with("ages");
+		assertEquals(5, loadedBean.getAges().length);
+		for (int s: loadedBean.getAges()) {
+			System.out.println(s);
+		}
+		reader.fill(loadedBean).with("times");
+		for (Date d : loadedBean.getTimes()) {
+			System.out.println(d);
+		}
 	}
 }
