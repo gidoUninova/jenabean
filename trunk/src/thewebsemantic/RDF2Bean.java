@@ -7,6 +7,7 @@ import static thewebsemantic.JenaHelper.listAllIndividuals;
 import static thewebsemantic.TypeWrapper.*;
 
 import java.beans.PropertyDescriptor;
+import java.lang.reflect.Array;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -22,6 +23,7 @@ import com.hp.hpl.jena.rdf.model.Literal;
 import com.hp.hpl.jena.rdf.model.NodeIterator;
 import com.hp.hpl.jena.rdf.model.Property;
 import com.hp.hpl.jena.rdf.model.RDFNode;
+import com.hp.hpl.jena.rdf.model.Seq;
 import com.hp.hpl.jena.shared.Lock;
 
 /**
@@ -465,8 +467,19 @@ public class RDF2Bean extends Base {
 	}
 
 	private void array(PropertyContext ctx, RDFNode nextNode) {
-		// TODO Auto-generated method stub
+		Seq s = (Seq)nextNode.as(Seq.class);
+		if (shallow && !included(ctx.property))
+			ctx.setProperty( Array.newInstance(ctx.type(), 0));
+		else
+			ctx.setProperty(fillArray(ctx.type().getComponentType(), s));
 		
+	}
+
+	private Object[] fillArray(Class<?> type, Seq s) {
+		Object[] result = (Object[])Array.newInstance(type, s.size());
+		for (int i=0; i<s.size(); i++)
+			result[i] = toObject(type, s.getResource(i));
+		return result;
 	}
 
 	private void collection(PropertyContext ctx, Set<RDFNode> nodes) {
