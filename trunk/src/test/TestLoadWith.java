@@ -83,7 +83,8 @@ public class TestLoadWith {
 		
 		p.refresh();
 		assertEquals("Dan", p.getFirstName());
-
+		p.delete();
+		p2.delete();
 	
 	}
 	

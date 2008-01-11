@@ -1,21 +1,23 @@
 package thewebsemantic;
 
-import static thewebsemantic.JenaHelper.*;
-import static thewebsemantic.TypeWrapper.*;
+import static thewebsemantic.JenaHelper.asIndividual;
+import static thewebsemantic.JenaHelper.asLiteral;
+import static thewebsemantic.JenaHelper.convertLiteral;
+import static thewebsemantic.JenaHelper.listAllIndividuals;
+import static thewebsemantic.TypeWrapper.instanceURI;
+import static thewebsemantic.TypeWrapper.type;
+import static thewebsemantic.TypeWrapper.wrap;
 
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Array;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collection;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Set;
 
-import com.hp.hpl.jena.datatypes.xsd.XSDDateTime;
 import com.hp.hpl.jena.ontology.Individual;
 import com.hp.hpl.jena.ontology.OntClass;
 import com.hp.hpl.jena.ontology.OntModel;

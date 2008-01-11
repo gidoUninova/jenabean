@@ -13,6 +13,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.logging.Logger;
 
+import com.hp.hpl.jena.ontology.Individual;
 import com.hp.hpl.jena.ontology.OntClass;
 import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.rdf.model.Literal;
@@ -82,6 +83,11 @@ public class Bean2RDF extends Base {
 	}
 	
 	
+	public void delete(Object bean) {
+		Individual i = m.getIndividual(instanceURI(bean));
+		if (i!=null) i.remove();
+	}
+	
 	/**
 	 * Saves the entire object graph starting with <tt>bean</tt>.
 	 * 
@@ -149,8 +155,7 @@ public class Bean2RDF extends Base {
 	private Resource write(Object bean, Resource subject, boolean shallow) {
 		cycle.add(bean);
 		for (PropertyDescriptor p : descriptors(bean))
-			if (!(shallow && p.getPropertyType().equals(Collection.class))
-					|| forceDeep)
+			if (!(shallow && p.getPropertyType().equals(Collection.class)) || forceDeep)
 				saveOrUpdate(subject, new PropertyContext(bean, p));
 		return subject;
 	}
@@ -163,24 +168,21 @@ public class Bean2RDF extends Base {
 		else if (isPrimitive(o.getClass()))
 			getSaver(subject, property).write(o);
 		else if (pc.isArray())
-			updateArray(subject, property, o);
+			updateArray(getSeq(subject, property), o);
 		else if (isNormalObject(o))
 			updateOrCreate(subject, property, o);
 	}
 
-	private void updateArray(Resource subject, Property property, Object array) {
-		Seq s = getSeq(subject, property);
-		for (int i=0; i<Array.getLength(array); i++) {
-			Object o = Array.get(array, i);
-			// sometign like saver here
-			if (isPrimitive(o))
-				s.add(toLiteral(o));
-			else
-				s.add(_write(o,true));
-		}
-		subject.removeAll(property);
-		subject.addProperty(property, s);
-		
+	private void updateArray(Seq s, Object array) {
+		int len = Array.getLength(array);
+		for (int i=0; i<len; i++) {
+			if (i >= s.size()) s.add(true);
+			s.set(i+1, toNode(Array.get(array, i)));
+		}		
+	}
+	
+	private RDFNode toNode(Object o) {
+		return (isPrimitive(o)) ? toLiteral(o):_write(o,true);
 	}
 
 	private Literal toLiteral(Object o) {	
@@ -209,7 +211,13 @@ public class Bean2RDF extends Base {
 
 	private Seq getSeq(Resource subject, Property property) {
 		Statement s = subject.getProperty(property);
-		return (s != null) ? s.getSeq():m.createSeq();
+		if (s != null) 
+			return s.getSeq();
+		else {
+			Seq seq = m.createSeq();
+			subject.addProperty(property, seq);
+			return seq;
+		}
 	}
 
 	private boolean isNormalObject(Object o) {
