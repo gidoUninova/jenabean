@@ -28,6 +28,10 @@ public class RdfBean<T> {
 		return (T)this;
 	}
 	
+	public void delete() {
+		binder.writer().delete(this);
+	}
+	
 	public T fill(String s) {
 		binder.reader().fill(this, s);
 		return (T)this;

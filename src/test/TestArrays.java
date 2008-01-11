@@ -46,5 +46,9 @@ public class TestArrays {
 		for (Date d : loadedBean.getTimes()) {
 			System.out.println(d);
 		}
+		
+		bean.getAges()[0] = 100;
+		writer.save(bean);
+		m.write(System.out, "N3");
 	}
 }
