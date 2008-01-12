@@ -19,7 +19,7 @@ public class TestArrays {
 		Date d2 = new Date();
 		Date d3 = new Date();
 		
-		bean.setAges( new int[] {1,2,3,4,5} );
+		bean.setAges(new int[] {1,2,3,4,5} );
 		bean.setNames(new String[] {"bob", "sarah", "jimmy"});
 		bean.setTimes(new Date[] {d1, d2, d3});
 		

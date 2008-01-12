@@ -36,7 +36,6 @@ public class TestLoadWith {
 		writer.save(p1);
 
 		RDF2Bean reader = new RDF2Bean(m);
-
 		Post shallow = reader.load(Post.class, p1.hashCode());
 		assertEquals(0, shallow.getTags().size());
 		reader.fill(shallow, "tags");
@@ -80,7 +79,7 @@ public class TestLoadWith {
 		assertEquals(i.getURI(), p.uri());
 		p2.setFirstName("Dan");
 		p2.save();
-		
+
 		p.refresh();
 		assertEquals("Dan", p.getFirstName());
 		p.delete();
