@@ -30,6 +30,7 @@ public class TypeWrapper {
 	private BeanInfo info;
 	private Method idMethod;
 	private Method uriMethod;
+	private Constructor<?> constructor;
 	private static HashMap<Class<?>, TypeWrapper> cache = new HashMap<Class<?>, TypeWrapper>();
 
 	private <T> TypeWrapper(Class<T> c) {
@@ -43,13 +44,17 @@ public class TypeWrapper {
 		Namespace nsa = getNamespaceAnnotation();
 		NS = (nsa != null) ? getNamespaceAnnotation().value() : "http://"
 				+ c.getPackage().getName() + '/';
+		try {
+			constructor = c.getConstructor(String.class);
+		} catch (Exception e) {
+		}
 		cache.put(c, this);
 	}
 
 	public static synchronized TypeWrapper type(Object o) {
 		return wrap(o.getClass());
 	}
-	
+
 	public static synchronized PropertyDescriptor[] descriptors(Object o) {
 		return type(o).descriptors();
 	}
@@ -73,11 +78,12 @@ public class TypeWrapper {
 	public PropertyDescriptor[] collections() {
 		Collection<PropertyDescriptor> results = new LinkedList<PropertyDescriptor>();
 		for (PropertyDescriptor p : info.getPropertyDescriptors())
-			if (p.getWriteMethod() != null && p.getPropertyType().equals(Collection.class))
+			if (p.getWriteMethod() != null
+					&& p.getPropertyType().equals(Collection.class))
 				results.add(p);
 		return results.toArray(new PropertyDescriptor[0]);
 	}
-	
+
 	public Field[] fields() {
 		return c.getFields();
 	}
@@ -115,9 +121,8 @@ public class TypeWrapper {
 	}
 
 	public RdfProperty getAnnotation(Method m) {
-		return (m.isAnnotationPresent(RdfProperty.class)) ?
-			m.getAnnotation(RdfProperty.class):
-			new NullRdfProperty();
+		return (m.isAnnotationPresent(RdfProperty.class)) ? m
+				.getAnnotation(RdfProperty.class) : new NullRdfProperty();
 	}
 
 	private String namingPatternUri(PropertyDescriptor pd) {
@@ -180,7 +185,7 @@ public class TypeWrapper {
 		return (p.getReadMethod().isAnnotationPresent(Symmetric.class)) ? true
 				: getAnnotation(p.getReadMethod()).symmetric();
 	}
-	
+
 	/**
 	 * 
 	 * @param source
@@ -189,15 +194,13 @@ public class TypeWrapper {
 	 */
 	public Object toBean(Individual source) {
 		try {
-		try {
-			Constructor<?> m = c.getConstructor(String.class);
-			return (uriSupport()) ? m.newInstance(source.getURI()):
-				m.newInstance(last(source.getURI()));
-		} catch (NoSuchMethodException e) {
-			// this is expected, we'll use default constructor
+			Constructor<?> m = constructor;
+			if (m != null)
+				return (uriSupport()) ? m.newInstance(source.getURI()) : m
+						.newInstance(last(source.getURI()));
+			return c.newInstance();
+		} catch (Exception e) {
 		}
-		return c.newInstance();
-		} catch (Exception e) {}
 		return null;
 	}
 
@@ -206,14 +209,17 @@ public class TypeWrapper {
 		public boolean symmetric() {
 			return false;
 		}
+
 		@Override
 		public boolean transitive() {
 			return false;
 		}
+
 		@Override
 		public String value() {
 			return "";
 		}
+
 		@Override
 		public Class<? extends Annotation> annotationType() {
 			return null;
