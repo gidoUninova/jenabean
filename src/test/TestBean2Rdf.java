@@ -59,8 +59,7 @@ public class TestBean2Rdf {
 		p.setLastName("LastLastLast");
 		u.setProfile(p);
 		u.setScreenName("tcowan");
-		Runnable t = new Runnable() {		
-			@Override
+		Runnable t = new Runnable() {
 			public void run() {
 				for(int i=0; i<100; i++) {
 					u.setScreenName(i + "");

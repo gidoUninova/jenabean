@@ -446,7 +446,7 @@ public class RDF2Bean extends Base {
 	 * @throws InvocationTargetException
 	 */
 	private void apply(Individual i, PropertyContext ctx) {
-		Property p = m.getOntProperty(ctx.uri());
+		Property p = m.getProperty(ctx.uri());
 		if (p != null)
 			apply(ctx, i.listPropertyValues(p));
 	}
@@ -500,10 +500,8 @@ public class RDF2Bean extends Base {
 	}
 	
 	private void collection(PropertyContext ctx, Set<RDFNode> nodes) {
-		if (shallow && !included(ctx.property))
-			ctx.setProperty(addOnlyCollection());
-		else
-			ctx.setProperty(fillCollection(t(ctx.property), nodes));
+		ctx.setProperty(
+				(shallow && !included(ctx.property)) ? addOnlyCollection():fillCollection(t(ctx.property), nodes));
 	}
 
 	private boolean included(PropertyDescriptor property) {
