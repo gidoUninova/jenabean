@@ -11,7 +11,6 @@ import thewebsemantic.RDF2Bean;
 
 public class SessionListener implements HttpSessionListener {
 
-	@Override
 	public void sessionCreated(HttpSessionEvent e) {
 		ServletContext ctx = e.getSession().getServletContext();
 		OntModel m = (OntModel)ctx.getAttribute("model");
@@ -19,7 +18,6 @@ public class SessionListener implements HttpSessionListener {
 		e.getSession().setAttribute(Constants.READER, new RDF2Bean(m));
 	}
 
-	@Override
 	public void sessionDestroyed(HttpSessionEvent e) {
 
 	}

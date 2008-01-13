@@ -16,12 +16,10 @@ public class BaseAction implements ActionBean {
 		return (OntModel)context.getServletContext().getAttribute("model");
 	}
 	
-	@Override
 	public StripesContext getContext() {
 		return context;
 	}
 
-	@Override
 	public void setContext(ActionBeanContext c) {
 		context = (StripesContext)c;
 	}
