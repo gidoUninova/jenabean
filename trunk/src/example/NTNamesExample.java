@@ -40,7 +40,7 @@ public class NTNamesExample {
 		if (man.getDescription() == null)
 			return "";
 		String desc = man.getDescription();
-		if (desc.length()>=19)
+		if (desc.length()>=20)
 			return man.getDescription().substring(0,20);
 		else
 			return desc;
