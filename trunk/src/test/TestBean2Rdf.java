@@ -226,6 +226,7 @@ public class TestBean2Rdf {
 		boolean caught = false;
 		try {
 			IdTesterBean bean = reader.loadDeep(IdTesterBean.class, "example");
+			System.out.println(bean);
 		} catch (NotFoundException e) {
 			caught = true;
 		} finally {
