@@ -3,7 +3,6 @@ package thewebsemantic;
 import static thewebsemantic.JenaHelper.asInd;
 import static thewebsemantic.JenaHelper.asLiteral;
 import static thewebsemantic.JenaHelper.convertLiteral;
-import static thewebsemantic.JenaHelper.listAllIndividuals;
 import static thewebsemantic.TypeWrapper.instanceURI;
 import static thewebsemantic.TypeWrapper.type;
 import static thewebsemantic.TypeWrapper.wrap;
@@ -31,7 +30,6 @@ import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.rdf.model.Seq;
 import com.hp.hpl.jena.rdf.model.Statement;
 import com.hp.hpl.jena.shared.Lock;
-import com.hp.hpl.jena.util.iterator.ExtendedIterator;
 import com.hp.hpl.jena.vocabulary.RDF;
 
 /**
