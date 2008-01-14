@@ -41,8 +41,9 @@ public class TypeWrapper {
 				idMethod = md.getMethod();
 			else if (isUri(md))
 				uriMethod = md.getMethod();
-		Namespace nsa = getNamespaceAnnotation();
-		NS = (nsa != null) ? getNamespaceAnnotation().value() : "http://"
+		
+		Namespace nsa = c.getAnnotation(Namespace.class);
+		NS = (nsa != null) ? nsa.value() : "http://"
 				+ c.getPackage().getName() + '/';
 		try {
 			constructor = c.getConstructor(String.class);
@@ -86,10 +87,6 @@ public class TypeWrapper {
 
 	public Field[] fields() {
 		return c.getFields();
-	}
-
-	private Namespace getNamespaceAnnotation() {
-		return (Namespace) c.getAnnotation(Namespace.class);
 	}
 
 	public String namespace() {

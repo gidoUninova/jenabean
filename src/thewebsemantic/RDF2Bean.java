@@ -16,6 +16,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.Map;
 import java.util.Set;
 
 import com.hp.hpl.jena.ontology.Individual;
@@ -25,7 +26,9 @@ import com.hp.hpl.jena.rdf.model.Literal;
 import com.hp.hpl.jena.rdf.model.NodeIterator;
 import com.hp.hpl.jena.rdf.model.Property;
 import com.hp.hpl.jena.rdf.model.RDFNode;
+import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.rdf.model.Seq;
+import com.hp.hpl.jena.rdf.model.Statement;
 import com.hp.hpl.jena.shared.Lock;
 
 /**
@@ -39,6 +42,7 @@ public class RDF2Bean extends Base {
 
 	private boolean shallow = false;
 	private Set<String> myIncludes = new HashSet<String>();
+	private Map<String, Class> bindings = new HashMap<String, Class>();
 	private static final String[] none = new String[0];
 
 	/**
@@ -177,7 +181,6 @@ public class RDF2Bean extends Base {
 	/**
 	 * Same as loadDeep(Class, String) overloaded for id's of type integer.
 	 * 
-	 * @param <T>
 	 * @param c
 	 * @param id
 	 * @return
@@ -284,7 +287,7 @@ public class RDF2Bean extends Base {
 	 * @return
 	 * @throws NotFoundException
 	 */
-	public synchronized Object exists(Object target) throws NotFoundException {
+	public synchronized Object exists(Object target) {
 		init(shallow, none);
 		try {
 			return m.getIndividual(instanceURI(target)) != null;
@@ -422,10 +425,17 @@ public class RDF2Bean extends Base {
 	 * @throws ClassNotFoundException
 	 */
 	private Class<?> javaclass(Individual source) throws ClassNotFoundException {
-		OntClass oc = (OntClass) source.getRDFType().as(OntClass.class);
-		RDFNode node = oc.getPropertyValue(javaclass);
-		return (node != null) ? Class.forName(asLiteral(node).getString())
-				: binder.getClass(oc.getURI());
+		Resource oc = source.getRDFType();
+		if ( binder.getClass(oc.getURI()) != null)
+			return binder.getClass(oc.getURI());
+		else if (bindings.containsKey(oc.getURI()))
+			return bindings.get(oc.getURI());
+		else {
+			Statement node = oc.getProperty(javaclass);
+			Class<?> c = Class.forName(node.getLiteral().getString());
+			bindings.put(oc.getURI(), c);
+			return c;
+		}
 	}
 
 	private OntClass getOntClass(Class<?> c) {
