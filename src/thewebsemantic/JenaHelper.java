@@ -46,7 +46,7 @@ public class JenaHelper {
 		return (Literal) n.as(Literal.class);
 	}
 
-	public static Individual asIndividual(RDFNode n) {
+	public static Individual asInd(RDFNode n) {
 		return (Individual) n.as(Individual.class);
 	}
 }
