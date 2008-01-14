@@ -218,4 +218,13 @@ public class TypeWrapper {
 			return null;
 		}
 	}
+	
+	public String inspect() {
+		StringBuilder buffer = new StringBuilder();
+		buffer.append(typeUri() + "\n");
+		for (PropertyDescriptor d : this.descriptors()) {
+			buffer.append("\t" + uri(d) + "\n");
+		}
+		return buffer.toString();
+	}
 }

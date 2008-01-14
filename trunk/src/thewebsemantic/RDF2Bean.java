@@ -30,7 +30,6 @@ import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.rdf.model.Seq;
 import com.hp.hpl.jena.rdf.model.Statement;
 import com.hp.hpl.jena.shared.Lock;
-import com.hp.hpl.jena.util.iterator.ExtendedIterator;
 
 /**
  * RDF2Bean converts one or more RDF nodes into java beans. Normally these are
