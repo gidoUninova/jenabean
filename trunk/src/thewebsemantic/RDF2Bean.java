@@ -1,6 +1,6 @@
 package thewebsemantic;
 
-import static thewebsemantic.JenaHelper.asIndividual;
+import static thewebsemantic.JenaHelper.asInd;
 import static thewebsemantic.JenaHelper.asLiteral;
 import static thewebsemantic.JenaHelper.convertLiteral;
 import static thewebsemantic.JenaHelper.listAllIndividuals;
@@ -26,10 +26,13 @@ import com.hp.hpl.jena.rdf.model.Literal;
 import com.hp.hpl.jena.rdf.model.NodeIterator;
 import com.hp.hpl.jena.rdf.model.Property;
 import com.hp.hpl.jena.rdf.model.RDFNode;
+import com.hp.hpl.jena.rdf.model.ResIterator;
 import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.rdf.model.Seq;
 import com.hp.hpl.jena.rdf.model.Statement;
 import com.hp.hpl.jena.shared.Lock;
+import com.hp.hpl.jena.util.iterator.ExtendedIterator;
+import com.hp.hpl.jena.vocabulary.RDF;
 
 /**
  * RDF2Bean converts one or more RDF nodes into java beans. Normally these are
@@ -138,7 +141,7 @@ public class RDF2Bean extends Base {
 		init(shallow, includes);
 		cycle = new HashMap<String, Object>();
 		try {
-			return loadAll(c, new LinkedList<T>());
+			return loadAll(c);
 		} finally {
 			m.leaveCriticalSection();
 		}
@@ -151,9 +154,16 @@ public class RDF2Bean extends Base {
 		for (String s:includes) myIncludes.add(s);
 	}
 
-	private <T> Collection<T> loadAll(Class<T> c, LinkedList<T> list) {
-		for (Individual i : listAllIndividuals(getOntClass(c)))
-			list.add(toObject(c, i));
+	private <T> Collection<T> loadAll(Class<T> c) {
+		OntClass a = getOntClass(c);
+		return (a!=null) ? loadIndividuals(c, m.listSubjectsWithProperty(RDF.type, a)):
+			new LinkedList<T>();
+
+	}
+
+	private <T> Collection<T> loadIndividuals(Class<T> c, ResIterator it) {
+		Collection<T> list =  new LinkedList<T>();
+		while(it.hasNext()) list.add(toObject(c, asInd(it.nextResource())));
 		return list;
 	}
 
@@ -370,7 +380,7 @@ public class RDF2Bean extends Base {
 
 	private <T> T toObject(Class<T> c, RDFNode node) {
 		return (node.isLiteral()) ? (T)convertLiteral(node,c): 
-			toObject(c, asIndividual(node));
+			toObject(c, asInd(node));
 	}
 	
 	private Object toObject(PropertyDescriptor p, Individual i) {
@@ -489,7 +499,7 @@ public class RDF2Bean extends Base {
 		else if (ctx.isArray())
 			array(ctx, nodes.nextNode());
 		else
-			applyIndividual(ctx, asIndividual(nodes.nextNode()));
+			applyIndividual(ctx, asInd(nodes.nextNode()));
 	}
 
 	private void array(PropertyContext ctx, RDFNode nextNode) {
