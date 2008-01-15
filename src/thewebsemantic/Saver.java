@@ -1,12 +1,16 @@
 package thewebsemantic;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Calendar;
 import java.util.Date;
 
+import com.hp.hpl.jena.datatypes.xsd.XSDDatatype;
 import com.hp.hpl.jena.rdf.model.Literal;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.Property;
 import com.hp.hpl.jena.rdf.model.Resource;
+
 
 abstract class Saver {
 	
@@ -56,6 +60,13 @@ abstract class Saver {
 		save(m.createTypedLiteral(s));	
 	}
 
+	public void save(BigInteger v) {
+		save(m.createTypedLiteral(v));
+	}
+	
+	public void save(BigDecimal v) {
+		save(m.createTypedLiteral(v, XSDDatatype.XSDdecimal));
+	}
 	
 	public void save(Date d) {
 		Calendar c = Calendar.getInstance();
@@ -86,6 +97,10 @@ abstract class Saver {
 			save((Boolean) o);
 		else if (o instanceof Calendar)
 			save((Calendar) o);
+		else if (o instanceof BigInteger)
+			save((BigInteger) o);
+		else if (o instanceof BigDecimal)
+			save((BigDecimal) o);
 	}
 }
 /*

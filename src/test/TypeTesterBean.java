@@ -1,8 +1,8 @@
 package test;
 
+import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Date;
-
 import thewebsemantic.Namespace;
 
 @Namespace("http://test#")
@@ -16,7 +16,16 @@ public class TypeTesterBean {
 	private char myChar;
 	private boolean myBoolean;
 	private Calendar calendar;
+	private BigDecimal myBigDecimal;
 	
+	public BigDecimal getMyBigDecimal() {
+		return myBigDecimal;
+	}
+
+	public void setMyBigDecimal(BigDecimal myBigDecimal) {
+		this.myBigDecimal = myBigDecimal;
+	}
+
 	public char getMyChar() {
 		return myChar;
 	}
@@ -65,6 +74,10 @@ public class TypeTesterBean {
 	public boolean isMyBoolean() {
 		return myBoolean;
 	}
+
+	public void setMyBoolean(boolean myBoolean) {
+		this.myBoolean = myBoolean;
+	}
 	
 	public void setMyCalendar(Calendar c) {
 		this.calendar = c;
@@ -74,7 +87,5 @@ public class TypeTesterBean {
 		return calendar;
 	}
 
-	public void setMyBoolean(boolean myBoolean) {
-		this.myBoolean = myBoolean;
-	}
+
 }
