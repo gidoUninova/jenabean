@@ -10,6 +10,7 @@ import com.hp.hpl.jena.ontology.Individual;
 import com.hp.hpl.jena.ontology.OntClass;
 import com.hp.hpl.jena.rdf.model.Literal;
 import com.hp.hpl.jena.rdf.model.RDFNode;
+import com.ibm.icu.math.BigDecimal;
 
 public class JenaHelper {
 
@@ -18,10 +19,13 @@ public class JenaHelper {
 	}
 
 	public static Object convertLiteral(Literal l, Class<?> c) {
+		System.out.println(l.getValue().getClass());
 		if (c.equals(Date.class)) {
 			return date(l);
 		} else if ( c.equals(Calendar.class)) {
 			return calendar(l);
+		} else if (c.equals(BigDecimal.class)) {
+			return bigDecimal(l);
 		} else
 			return l.getValue();
 	}
@@ -29,6 +33,12 @@ public class JenaHelper {
 	public static Date date(Literal l) {
 		XSDDateTime date = (XSDDateTime) l.getValue();
 		return date.asCalendar().getTime();
+	}
+	
+	public static Object bigDecimal(Literal l) {
+		Object o = l.getValue();
+		System.out.println(o.getClass());
+		return null;
 	}
 	
 	public static Calendar calendar(Literal l) {

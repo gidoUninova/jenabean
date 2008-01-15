@@ -162,6 +162,7 @@ public class RDF2Bean extends Base {
 	private <T> Collection<T> loadIndividuals(Class<T> c, ResIterator it) {
 		Collection<T> list =  new LinkedList<T>();
 		while(it.hasNext()) list.add(toObject(c, asInd(it.nextResource())));
+		it.close();
 		return list;
 	}
 

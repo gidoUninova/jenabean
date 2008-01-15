@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 
 import java.io.FileWriter;
+import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
@@ -275,7 +276,9 @@ public class TestBean2Rdf {
 		float aFloat = 10.0987654321f;
 		int aInt = Integer.MAX_VALUE;
 		long aLong = Long.MAX_VALUE;
-		
+		BigDecimal bd = new BigDecimal("1115.37");
+
+
 		bean.setMyDate(aDate);
 		bean.setMyDouble(aDouble);
 		bean.setMyFloat(aFloat);
@@ -284,11 +287,12 @@ public class TestBean2Rdf {
 		bean.setMyChar('c');
 		bean.setMyBoolean(true);
 		bean.setMyCalendar(Calendar.getInstance());
+		bean.setMyBigDecimal(bd);
 
 		OntModel m = ModelFactory.createOntologyModel();
 		Bean2RDF writer = new Bean2RDF(m);
 		writer.save(bean);
-
+		m.write(System.out, "N3");
 		RDF2Bean reader = new RDF2Bean(m);
 		TypeTesterBean bean2 = reader.loadDeep(TypeTesterBean.class, bean.hashCode());
 
@@ -300,6 +304,8 @@ public class TestBean2Rdf {
 		assertEquals(bean.getMyInt(), bean2.getMyInt());
 		assertEquals(bean.getMyLong(), bean2.getMyLong());
 		assertEquals(bean.isMyBoolean(), bean2.isMyBoolean());
+		assertEquals(bean.getMyBigDecimal(), bean2.getMyBigDecimal());
+		
 		Collection<TypeTesterBean> results = reader.load(TypeTesterBean.class);
 		assertEquals(1, results.size());
 		for (TypeTesterBean b : results)

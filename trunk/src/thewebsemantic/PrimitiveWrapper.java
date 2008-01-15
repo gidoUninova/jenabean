@@ -1,28 +1,34 @@
 package thewebsemantic;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.HashSet;
+import java.util.Set;
+
 
 public class PrimitiveWrapper {
-	private static final Map<Class<?>, Class<?>> WRAPPERS = new HashMap<Class<?>, Class<?>>();
+	private static final Set<Class<?>> WRAPPERS = new HashSet<Class<?>>();
 
 	static {
-		WRAPPERS.put(Byte.class, Byte.class);
-		WRAPPERS.put(Short.class, Short.class);
-		WRAPPERS.put(Character.class, Character.class);
-		WRAPPERS.put(Integer.class, Integer.class);
-		WRAPPERS.put(Long.class, Long.class);
-		WRAPPERS.put(Float.class, Float.class);
-		WRAPPERS.put(Double.class, Double.class);
-		WRAPPERS.put(Boolean.class, Boolean.class);
-		WRAPPERS.put(String.class, String.class);
-		WRAPPERS.put(Date.class, Date.class);
-		
+		WRAPPERS.add(Byte.class);
+		WRAPPERS.add(Short.class);
+		WRAPPERS.add(Character.class);
+		WRAPPERS.add(Integer.class);
+		WRAPPERS.add(Long.class);
+		WRAPPERS.add(Float.class);
+		WRAPPERS.add(Double.class);
+		WRAPPERS.add(Boolean.class);
+		WRAPPERS.add(String.class);
+		WRAPPERS.add(Date.class);
+		WRAPPERS.add(Calendar.class);
+		WRAPPERS.add(BigDecimal.class);
+		WRAPPERS.add(BigInteger.class);
 	}
 
 	public static boolean isPrimitive(Class<?> c) {
-		return c.isPrimitive() || WRAPPERS.containsKey(c); 
+		return c.isPrimitive() || WRAPPERS.contains(c) || WRAPPERS.contains(c.getSuperclass());
 	}
 
 	public static boolean isPrimitive(Object o) {

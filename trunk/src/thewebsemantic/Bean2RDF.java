@@ -7,12 +7,12 @@ import static thewebsemantic.TypeWrapper.descriptors;
 
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Array;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.logging.Logger;
-
 import com.hp.hpl.jena.ontology.Individual;
 import com.hp.hpl.jena.ontology.OntClass;
 import com.hp.hpl.jena.ontology.OntModel;
@@ -23,6 +23,7 @@ import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.rdf.model.Seq;
 import com.hp.hpl.jena.rdf.model.Statement;
 import com.hp.hpl.jena.shared.Lock;
+import com.ibm.icu.math.BigDecimal;
 
 /**
  * Converts a simple java bean to RDF, provided it's annotated with
@@ -206,6 +207,10 @@ public class Bean2RDF extends Base {
 			return m.createTypedLiteral((Boolean) o);
 		else if (o instanceof Calendar)
 			return m.createTypedLiteral((Calendar) o);
+		else if (o instanceof BigDecimal)
+			return m.createTypedLiteral(o);
+		else if (o instanceof BigInteger)
+			return m.createTypedLiteral(o);
 		return null;
 	}
 
