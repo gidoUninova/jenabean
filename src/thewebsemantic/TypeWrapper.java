@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 
 import com.hp.hpl.jena.ontology.Individual;
+import com.hp.hpl.jena.rdf.model.Resource;
 
 /**
  * Retrieves annotation information as well as other type related operations on
@@ -94,7 +95,7 @@ public class TypeWrapper {
 	}
 
 	public String uri(String id) {
-		return typeUri() + '/' + id;
+		return (uriSupport()) ? id:typeUri() + '/' + id;
 	}
 
 	public String uri(Object bean) {
@@ -189,7 +190,7 @@ public class TypeWrapper {
 	 * @return
 	 * @throws Exception
 	 */
-	public Object toBean(Individual source) {
+	public Object toBean(Resource source) {
 		try {
 			Constructor<?> m = constructor;
 			if (m != null)

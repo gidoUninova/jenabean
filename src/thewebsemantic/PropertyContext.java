@@ -4,8 +4,11 @@ import java.beans.PropertyDescriptor;
 import java.util.Collection;
 import java.util.Date;
 
+import com.hp.hpl.jena.graph.Node;
 import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.ontology.OntProperty;
+import com.hp.hpl.jena.rdf.model.Model;
+import com.hp.hpl.jena.rdf.model.Property;
 
 class PropertyContext {
 
@@ -35,13 +38,14 @@ class PropertyContext {
 		return type.getAnnotation(property.getReadMethod()).transitive();
 	}
 	
-	public OntProperty property(OntModel m) {
-		return m.getOntProperty(uri());
+	public Property property(Model m) { 
+		return (existsInModel(m)) ? m.getProperty(uri()): null;
+	}
+
+	public boolean existsInModel(Model m) {
+		return m.getGraph().contains( Node.createURI( uri() ), Node.ANY, Node.ANY );
 	}
 	
-	public boolean existsInModel(OntModel m) {
-		return property(m) != null;
-	}
 	
 	public Object invokeGetter() {
 		Object result=null;

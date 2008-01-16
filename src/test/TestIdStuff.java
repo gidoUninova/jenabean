@@ -6,7 +6,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 import thewebsemantic.Bean2RDF;
-import thewebsemantic.Id;
+import thewebsemantic.NotFoundException;
 import thewebsemantic.RDF2Bean;
 
 import com.hp.hpl.jena.ontology.Individual;
@@ -29,25 +29,7 @@ public class TestIdStuff {
 		assertEquals(32, bean2.getAge());
 	}
 
-	class Flute {
-		private String id;
-
-		public int i = 0;
-
-		public Flute(String id) {
-			this.id = id;
-			i++;
-		}
-
-		@Id
-		public String getMyId() {
-			return id;
-		}
-	}
-
-	/**
-	 * jenabean should apply the id to the constructor.
-	 */
+	@Test
 	public void testConstructor()  throws Exception {
 		OntModel m = ModelFactory.createOntologyModel();
 		Bean2RDF writer = new Bean2RDF(m);
@@ -62,25 +44,7 @@ public class TestIdStuff {
 		writer.save(a);
 	}
 
-	class Trumpet {
-		private String id;
-
-		public Trumpet() {
-		}
-
-		public int hashCode() {
-			return id.hashCode();
-		}
-		@Id
-		public String getId() {
-			return id;
-		}
-
-		public void setId(String id) {
-			this.id = id;
-		}
-	}
-
+	@Test
 	public void testHashCode() throws Exception  {
 		OntModel m = ModelFactory.createOntologyModel();
 		Bean2RDF writer = new Bean2RDF(m);
@@ -98,7 +62,33 @@ public class TestIdStuff {
 		trumpets = reader.load(Trumpet.class);
 		assertEquals(2, trumpets.size());	
 		
-		Individual i = Vocabulary.Vevent.createIndividual();
-	
 	}
+	
+	@Test
+	public void testDelete()  {
+		OntModel m = ModelFactory.createOntologyModel();
+		Bean2RDF writer = new Bean2RDF(m);
+		Trumpet t = new Trumpet();
+		t.setId("conn");
+		writer.save(t);
+		RDF2Bean reader = new RDF2Bean(m);
+		Collection<Trumpet> brass = reader.load(Trumpet.class);
+		assertEquals(1, brass.size());
+		
+		writer.delete(t);
+  	    brass = reader.load(Trumpet.class);
+  	    assertEquals(0, brass.size());
+  	    
+  	    boolean found = false;
+  	    try {
+  	    	reader.load(Trumpet.class, "connss");
+  	    } catch (NotFoundException e) {
+  	    	found = true;
+  	    }
+  	    assertTrue(found);
+		
+		
+	}
+	
+	
 }

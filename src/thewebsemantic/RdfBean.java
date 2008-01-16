@@ -3,6 +3,8 @@ package thewebsemantic;
 import java.beans.PropertyDescriptor;
 import java.util.Collection;
 import com.hp.hpl.jena.ontology.Individual;
+import com.hp.hpl.jena.rdf.model.Resource;
+
 import static thewebsemantic.TypeWrapper.instanceURI;
 import static thewebsemantic.TypeWrapper.wrap;
 import thewebsemantic.binding.Jenabean;
@@ -44,8 +46,8 @@ public class RdfBean<T> {
 		return (T)this;
 	}
 	
-	public Individual asIndividual() {
-		return binder.model().getIndividual(instanceURI(this));
+	public Resource asIndividual() {
+		return binder.model().getResource(instanceURI(this));
 	}
 	
 }

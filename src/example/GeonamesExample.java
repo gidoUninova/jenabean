@@ -4,7 +4,7 @@ import static java.lang.System.out;
 import static thewebsemantic.binding.Jenabean.*;
 import java.util.Collection;
 import thewebsemantic.binding.Jenabean;
-import com.hp.hpl.jena.ontology.OntModel;
+import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 
 public class GeonamesExample {
@@ -17,7 +17,7 @@ public class GeonamesExample {
 	 */
 	public static void main(String[] args) throws Exception {
 		//prepare the jena model
-		OntModel m = ModelFactory.createOntologyModel();
+		Model m = ModelFactory.createDefaultModel();
 		m.read("file:src/example/geonames.owl");
 		m.read("file:src/example/capitals.rdf");
 		//setup binding

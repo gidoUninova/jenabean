@@ -19,7 +19,6 @@ public class JenaHelper {
 	}
 
 	public static Object convertLiteral(Literal l, Class<?> c) {
-		System.out.println(l.getValue().getClass());
 		if (c.equals(Date.class)) {
 			return date(l);
 		} else if ( c.equals(Calendar.class)) {
