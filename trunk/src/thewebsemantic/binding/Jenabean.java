@@ -9,13 +9,13 @@ import thewebsemantic.NotFoundException;
 import thewebsemantic.RDF2Bean;
 
 import com.hp.hpl.jena.ontology.OntClass;
-import com.hp.hpl.jena.ontology.OntModel;
+import com.hp.hpl.jena.rdf.model.Model;
 
 public class Jenabean {
 	
 	private HashMap<Class<?>, String> class2url;
 	private HashMap<String, Class<?>> url2class;
-	private OntModel model;
+	private Model model;
 	private Bean2RDF writer;
 	private RDF2Bean reader;
 	
@@ -30,14 +30,14 @@ public class Jenabean {
 		url2class = new HashMap<String, Class<?>>();
 	}
 	
-	public void bind(OntModel m) {
+	public void bind(Model m) {
 		model = m;
 		reader = new RDF2Bean(m);
 		writer = new Bean2RDF(m);
 	}
 	
 	
-	public OntModel model() {
+	public Model model() {
 		return model;
 	}
 	

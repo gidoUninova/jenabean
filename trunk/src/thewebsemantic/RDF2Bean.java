@@ -1,7 +1,8 @@
 package thewebsemantic;
 
+import static com.hp.hpl.jena.graph.Node.ANY;
+import static com.hp.hpl.jena.graph.Node.createURI;
 import static thewebsemantic.JenaHelper.asInd;
-import static thewebsemantic.JenaHelper.asLiteral;
 import static thewebsemantic.JenaHelper.convertLiteral;
 import static thewebsemantic.TypeWrapper.instanceURI;
 import static thewebsemantic.TypeWrapper.type;
@@ -18,17 +19,16 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.Set;
 
-import com.hp.hpl.jena.ontology.Individual;
-import com.hp.hpl.jena.ontology.OntClass;
 import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.rdf.model.Literal;
-import com.hp.hpl.jena.rdf.model.NodeIterator;
+import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.Property;
 import com.hp.hpl.jena.rdf.model.RDFNode;
 import com.hp.hpl.jena.rdf.model.ResIterator;
 import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.rdf.model.Seq;
 import com.hp.hpl.jena.rdf.model.Statement;
+import com.hp.hpl.jena.rdf.model.StmtIterator;
 import com.hp.hpl.jena.shared.Lock;
 import com.hp.hpl.jena.vocabulary.RDF;
 
@@ -51,7 +51,7 @@ public class RDF2Bean extends Base {
 	 * Operations have potential to modify the model.
 	 * @param model a Jena Ontology Model instance
 	 */
-	public RDF2Bean(OntModel model) {
+	public RDF2Bean(Model model) {
 		super(model); 
 	}
 
@@ -153,7 +153,7 @@ public class RDF2Bean extends Base {
 	}
 
 	private <T> Collection<T> loadAll(Class<T> c) {
-		OntClass a = getOntClass(c);
+		Resource a = getRdfType(c);
 		return (a!=null) ? loadIndividuals(c, m.listSubjectsWithProperty(RDF.type, a)):
 			new LinkedList<T>();
 
@@ -280,7 +280,7 @@ public class RDF2Bean extends Base {
 		init(shallow, none);
 		cycle = new HashMap<String, Object>();
 		try {
-			Individual source = m.getIndividual(instanceURI(target));
+			Resource source = m.getResource(instanceURI(target));
 			if (source == null)
 				throw new NotFoundException();
 			return applyProperties(source, target);
@@ -299,7 +299,7 @@ public class RDF2Bean extends Base {
 	public synchronized Object exists(Object target) {
 		init(shallow, none);
 		try {
-			return m.getIndividual(instanceURI(target)) != null;
+			return exists(instanceURI(target));
 		} finally {
 			m.leaveCriticalSection();
 		}
@@ -361,19 +361,23 @@ public class RDF2Bean extends Base {
 	 * @return
 	 */
 	public boolean exists(Class<?> c, String id) {
-		return !(m.getIndividual(wrap(c).uri(id)) == null);
+		return exists(wrap(c).uri(id));
 	}
 
+	public boolean exists(String uri) {
+		return m.getGraph().contains(createURI(uri),ANY,ANY);
+	}
+	
 	private <T> T toObject(Class<T> c, String id) {
-		return (wrap(c).uriSupport()) ? toObject(c, m.getIndividual(id))
-				: toObject(c, m.getIndividual(wrap(c).uri(id)));
+		return (!exists(c,id)) ? null :
+			toObject(c, m.getResource(wrap(c).uri(id)));
 	}
 
-	private <T> T toObject(Class<T> c, Individual i) {
+	private <T> T toObject(Class<T> c, Resource i) {
 		return (i != null) ? (T) testCycle(i) : null;
 	}
 
-	private Object testCycle(Individual i) {
+	private Object testCycle(Resource i) {
 		return (isCycle(i)) ? cycle.get(i.getURI()) : applyProperties(i);
 	}
 
@@ -382,16 +386,16 @@ public class RDF2Bean extends Base {
 			toObject(c, asInd(node));
 	}
 	
-	private Object toObject(PropertyDescriptor p, Individual i) {
+	private Object toObject(PropertyDescriptor p, Resource i) {
 		return toObject(p.getPropertyType(), i);
 	}
 
-	private boolean isCycle(Individual i) {
+	private boolean isCycle(Resource i) {
 		return cycle.containsKey(i.getURI());
 	}
 
 	private Object fillWithChildren(Object target, String propertyName) {
-		Individual source = m.getIndividual(instanceURI(target));
+		Resource source = m.getResource(instanceURI(target));
 		for (PropertyDescriptor p : type(target).descriptors())
 			if (match(propertyName, p))
 				fill(source, new PropertyContext(target, p));
@@ -404,18 +408,18 @@ public class RDF2Bean extends Base {
 			   p.getPropertyType().isArray());
 	}
 
-	private Object applyProperties(Individual source) {
+	private Object applyProperties(Resource source) {
 		return applyProperties(source, newInstance(source));
 	}
 
-	private Object applyProperties(Individual source, Object target) {
+	private Object applyProperties(Resource source, Object target) {
 		cycle.put(source.getURI(), target);
 		for (PropertyDescriptor p : type(target).descriptors())
 			apply(source, new PropertyContext(target, p));
 		return target;
 	}
 
-	private Object newInstance(Individual source) {
+	private Object newInstance(Resource source) {
 		try {
 			return wrap(javaclass(source)).toBean(source);
 		} catch (ClassNotFoundException e) {
@@ -433,8 +437,8 @@ public class RDF2Bean extends Base {
 	 * @return
 	 * @throws ClassNotFoundException
 	 */
-	private Class<?> javaclass(Individual source) throws ClassNotFoundException {
-		Resource oc = source.getRDFType();
+	private Class<?> javaclass(Resource source) throws ClassNotFoundException {
+		Resource oc = source.getProperty(RDF.type).getResource();
 		if ( binder.getClass(oc.getURI()) != null)
 			return binder.getClass(oc.getURI());
 		else if (bindings.containsKey(oc.getURI()))
@@ -447,9 +451,8 @@ public class RDF2Bean extends Base {
 		}
 	}
 
-	private OntClass getOntClass(Class<?> c) {
-		return (binder.isBound(c)) ? m.getOntClass(binder.getUri(c)) : m
-				.getOntClass(wrap(c).typeUri());
+	private Resource getRdfType(Class<?> c) {
+		return ontClass( (binder.isBound(c)) ? binder.getUri(c) : wrap(c).typeUri() );
 	}
 
 	/**
@@ -464,19 +467,19 @@ public class RDF2Bean extends Base {
 	 * @throws IllegalAccessException
 	 * @throws InvocationTargetException
 	 */
-	private void apply(Individual i, PropertyContext ctx) {
+	private void apply(Resource i, PropertyContext ctx) {
 		Property p = m.getProperty(ctx.uri());
 		if (p != null)
-			apply(ctx, i.listPropertyValues(p));
+			apply(ctx, i.listProperties(p));
 	}
 
-	private void fill(Individual i, PropertyContext ctx) {
-		Property p = m.getOntProperty(ctx.uri());
+	private void fill(Resource i, PropertyContext ctx) {
+		Property p = m.getProperty(ctx.uri());
 		if (p == null) return;
-		Set<RDFNode> values = i.listPropertyValues(p).toSet();
+		StmtIterator values = i.listProperties(p);
 		Object o;
 		if (ctx.type().isArray()) {
-			Seq s = (Seq)values.iterator().next().as(Seq.class);
+			Seq s = values.nextStatement().getSeq();
 			Class<?> type = ctx.type().getComponentType();
 			o = fillArray(type, s);			
 		} else {
@@ -486,19 +489,19 @@ public class RDF2Bean extends Base {
 		ctx.setProperty(o);
 	}
 
-	private void apply(PropertyContext ctx, NodeIterator nodes) {
+	private void apply(PropertyContext ctx, StmtIterator nodes) {
 		if (nodes == null)
 			return;
 		else if (ctx.isCollection())
-			collection(ctx, nodes.toSet());
+			collection(ctx, nodes);
 		else if (!nodes.hasNext())
 			return;
 		else if (ctx.isPrimitive())
-			applyLiteral(ctx, asLiteral(nodes.nextNode()));
+			applyLiteral(ctx, nodes.nextStatement().getLiteral());
 		else if (ctx.isArray())
-			array(ctx, nodes.nextNode());
+			array(ctx, nodes.nextStatement().getResource());
 		else
-			applyIndividual(ctx, asInd(nodes.nextNode()));
+			applyIndividual(ctx, nodes.nextStatement().getResource());
 	}
 
 	private void array(PropertyContext ctx, RDFNode nextNode) {
@@ -518,9 +521,9 @@ public class RDF2Bean extends Base {
 		return array;
 	}
 	
-	private void collection(PropertyContext ctx, Set<RDFNode> nodes) {
-		ctx.setProperty(
-				(shallow && !included(ctx.property)) ? addOnlyCollection():fillCollection(t(ctx.property), nodes));
+	private void collection(PropertyContext ctx, StmtIterator nodes) {
+		ctx.setProperty( (shallow && !included(ctx.property)) ? 
+				addOnlyCollection():fillCollection(t(ctx.property), nodes));
 	}
 
 	private boolean included(PropertyDescriptor property) {
@@ -531,14 +534,14 @@ public class RDF2Bean extends Base {
 		return new AddOnlyArrayList<Object>();
 	}
 
-	private ArrayList<Object> fillCollection(Class<?> c, Set<RDFNode> nodes) {
+	private ArrayList<Object> fillCollection(Class<?> c, StmtIterator nodes) {
 		ArrayList<Object> results = new ArrayList<Object>();
-		for (RDFNode node : nodes)
-			results.add(toObject(c, node));
+		while(nodes.hasNext())
+			results.add(toObject(c,nodes.nextStatement().getObject()));
 		return results;
 	}
 
-	private void applyIndividual(PropertyContext ctx, Individual i) {
+	private void applyIndividual(PropertyContext ctx, Resource i) {
 		ctx.setProperty(toObject(ctx.property, i));
 	}
 

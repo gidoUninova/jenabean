@@ -1,9 +1,9 @@
 package thewebsemantic;
 
 import static thewebsemantic.PrimitiveWrapper.isPrimitive;
+import static thewebsemantic.TypeWrapper.descriptors;
 import static thewebsemantic.TypeWrapper.instanceURI;
 import static thewebsemantic.TypeWrapper.type;
-import static thewebsemantic.TypeWrapper.descriptors;
 
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Array;
@@ -13,10 +13,9 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.logging.Logger;
-import com.hp.hpl.jena.ontology.Individual;
-import com.hp.hpl.jena.ontology.OntClass;
-import com.hp.hpl.jena.ontology.OntModel;
+
 import com.hp.hpl.jena.rdf.model.Literal;
+import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.Property;
 import com.hp.hpl.jena.rdf.model.RDFNode;
 import com.hp.hpl.jena.rdf.model.Resource;
@@ -69,7 +68,7 @@ public class Bean2RDF extends Base {
 	 * construct a new instance bound to OntModel <tt>m</tt>.
 	 * @param m Jena OntModel instance
 	 */
-	public Bean2RDF(OntModel m) {
+	public Bean2RDF(Model m) {
 		super(m);
 	}
 
@@ -85,8 +84,9 @@ public class Bean2RDF extends Base {
 	
 	
 	public void delete(Object bean) {
-		Individual i = m.getIndividual(instanceURI(bean));
-		if (i!=null) i.remove();
+		Resource i = m.getResource(instanceURI(bean));
+		m.removeAll(null, null, i);
+		m.removeAll(i, null, null);
 	}
 	
 	/**
@@ -141,9 +141,10 @@ public class Bean2RDF extends Base {
 		return ontClass(bean).addProperty(javaclass, bean.getClass().getName());
 	}
 
-	private OntClass ontClass(Object bean) {
-		return m.createClass(getURI(bean));
+	private Resource ontClass(Object bean) {
+	   return ontClass(getURI(bean));
 	}
+
 
 	private String getURI(Object bean) {
 		return (isBound(bean)) ? binder.getUri(bean) : type(bean).typeUri();

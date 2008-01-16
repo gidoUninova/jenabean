@@ -11,6 +11,7 @@ import com.hp.hpl.jena.ontology.Individual;
 import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.ontology.OntModelSpec;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
+import com.hp.hpl.jena.rdf.model.Resource;
 
 
 public class TestLoadWith {
@@ -75,7 +76,7 @@ public class TestLoadWith {
 		assertEquals(0, p2.getAncestors().size());
 		assertEquals(101, p2.getColleagues().size());
 		
-		Individual i = p.asIndividual();
+		Resource i = p.asIndividual();
 		assertEquals(i.getURI(), p.uri());
 		p2.setFirstName("Dan");
 		p2.save();

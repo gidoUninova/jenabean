@@ -7,19 +7,33 @@ import thewebsemantic.binding.Jenabean;
 
 import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.ontology.OntProperty;
+import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.Property;
+import com.hp.hpl.jena.rdf.model.Resource;
+import com.hp.hpl.jena.vocabulary.OWL;
+import com.hp.hpl.jena.vocabulary.RDF;
 
 public class Base {
 
 	protected static final String JAVACLASS = "http://thewebsemantic.com/javaclass";
-	protected OntModel m;
+	protected OntModel om;
+	protected Model m;
 	protected Jenabean binder;
 	protected Property javaclass;
 
-	protected Base(OntModel m) {
+	protected Resource ontClass(String uri) {
+		   return m.getResource(uri).addProperty(RDF.type, OWL.Class);
+	}
+		
+	protected Base(Model m) {
 		this.m = m;
 		binder = Jenabean.instance();
-		javaclass = m.createAnnotationProperty(JAVACLASS);
+		
+		if ( m instanceof OntModel) {
+			om = (OntModel)m;
+			javaclass = om.createAnnotationProperty(JAVACLASS);
+			
+		}
 	}
 
 	protected Property toRdfProperty(PropertyContext ctx) {
@@ -27,7 +41,9 @@ public class Base {
 	}
 
 	private Property applyEntailments(PropertyContext ctx) {
-		OntProperty op = m.createOntProperty(ctx.uri());
+		if (om == null) return m.getProperty(ctx.uri());
+		
+		OntProperty op = om.createOntProperty(ctx.uri());
 		if (ctx.isSymmetric())
 			op.convertToSymmetricProperty();
 		else if (ctx.isInverse())

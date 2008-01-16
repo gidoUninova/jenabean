@@ -29,6 +29,6 @@ public class SimpleExample {
 		for (Song song : songs)
 			System.out.println(song.getTitle() + ":" + 
 					song.getGenre().getName());			
-		m.write(System.out);
+		m.write(System.out, "N3");
 	}
 }
