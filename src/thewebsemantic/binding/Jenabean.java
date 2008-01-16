@@ -54,9 +54,13 @@ public class Jenabean {
 		return new Binding(this,oc);
 	}
 
-	protected void save(Class<?> javaClass, OntClass ontClass) {
-		class2url.put(javaClass, ontClass.getURI());
-		url2class.put(ontClass.getURI(), javaClass);
+	public Binding bind(String ontClassUri) {
+		return new Binding(this,ontClassUri);
+	}
+	
+	protected void save(Class<?> javaClass, String ontClass) {
+		class2url.put(javaClass, ontClass);
+		url2class.put(ontClass, javaClass);
 	}
 	
 	public boolean isBound(Class<?> c) {

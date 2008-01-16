@@ -1,12 +1,15 @@
 package test;
 
+import static org.junit.Assert.assertEquals;
+
 import java.util.Collection;
 import java.util.Date;
 
 import org.junit.Test;
-import static org.junit.Assert.*;
+
 import thewebsemantic.Bean2RDF;
 import thewebsemantic.RDF2Bean;
+
 import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 
@@ -27,8 +30,8 @@ public class TestArrays {
 		m.setNsPrefix("xsd", "http://www.w3.org/2001/XMLSchema#");
 		Bean2RDF writer = new Bean2RDF(m);
 		writer.save(bean);
-		
-		
+
+	
 		//m.write(System.out, "N3");
 		
 		RDF2Bean reader = new RDF2Bean(m);

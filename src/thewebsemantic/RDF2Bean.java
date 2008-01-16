@@ -19,7 +19,6 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.Set;
 
-import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.rdf.model.Literal;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.Property;
@@ -43,7 +42,7 @@ public class RDF2Bean extends Base {
 
 	private boolean shallow = false;
 	private Set<String> myIncludes = new HashSet<String>();
-	private Map<String, Class> bindings = new HashMap<String, Class>();
+	private Map<String, Class> bindingsCache = new HashMap<String, Class>();
 	private static final String[] none = new String[0];
 
 	/**
@@ -374,11 +373,11 @@ public class RDF2Bean extends Base {
 	}
 
 	private <T> T toObject(Class<T> c, Resource i) {
-		return (i != null) ? (T) testCycle(i) : null;
+		return (i != null) ? (T) testCycle(i,c) : null;
 	}
 
-	private Object testCycle(Resource i) {
-		return (isCycle(i)) ? cycle.get(i.getURI()) : applyProperties(i);
+	private Object testCycle(Resource i, Class<?> c) {
+		return (isCycle(i)) ? cycle.get(i.getURI()) : applyProperties(i,c);
 	}
 
 	private <T> T toObject(Class<T> c, RDFNode node) {
@@ -408,8 +407,8 @@ public class RDF2Bean extends Base {
 			   p.getPropertyType().isArray());
 	}
 
-	private Object applyProperties(Resource source) {
-		return applyProperties(source, newInstance(source));
+	private Object applyProperties(Resource source, Class c) {
+		return applyProperties(source, newInstance(source,c));
 	}
 
 	private Object applyProperties(Resource source, Object target) {
@@ -419,9 +418,9 @@ public class RDF2Bean extends Base {
 		return target;
 	}
 
-	private Object newInstance(Resource source) {
+	private Object newInstance(Resource source, Class c) {
 		try {
-			return wrap(javaclass(source)).toBean(source);
+			return wrap(javaclass(source,c)).toBean(source);
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
@@ -437,18 +436,19 @@ public class RDF2Bean extends Base {
 	 * @return
 	 * @throws ClassNotFoundException
 	 */
-	private Class<?> javaclass(Resource source) throws ClassNotFoundException {
+	private Class<?> javaclass(Resource source, Class c) throws ClassNotFoundException {
 		Resource oc = source.getProperty(RDF.type).getResource();
 		if ( binder.getClass(oc.getURI()) != null)
 			return binder.getClass(oc.getURI());
-		else if (bindings.containsKey(oc.getURI()))
-			return bindings.get(oc.getURI());
-		else {
+		else if (bindingsCache.containsKey(oc.getURI()))
+			return bindingsCache.get(oc.getURI());
+		else if (oc.getProperty(javaclass) != null){
 			Statement node = oc.getProperty(javaclass);
-			Class<?> c = Class.forName(node.getLiteral().getString());
-			bindings.put(oc.getURI(), c);
-			return c;
-		}
+			Class<?> klass = Class.forName(node.getLiteral().getString());
+			bindingsCache.put(oc.getURI(), klass);
+			return klass;
+		} 
+		return c;
 	}
 
 	private Resource getRdfType(Class<?> c) {

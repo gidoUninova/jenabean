@@ -20,23 +20,31 @@ public class NTNamesExample {
 		OntDocumentManager.getInstance().addAltEntry(
 				"http://www.semanticbible.org/2006/11/NTNames.owl",
 				"file:src/example/NTNames.owl");
-		
 		m.read("file:src/example/NTN-individuals.owl");
-
-		Jenabean.instance().bind(m);
-		Jenabean.instance().bind(m.getOntClass(NTNames.Man_CLASS)).to(Man.class);
+		Jenabean J = Jenabean.instance();
+		J.bind(m);
+		J.bind(NTNames.Man_CLASS).to(Man.class);
+		J.bind(NTNames.Woman_CLASS).to(Woman.class);
+		J.bind(NTNames.Human_CLASS).to(Human.class);
 		long t1 = System.currentTimeMillis();
+		Collection<Human> humans = load(Human.class);
+		Collection<Woman> women = load(Woman.class);
 		Collection<Man> men = load(Man.class);
 		long t2 = System.currentTimeMillis();
 		System.out.println(t2-t1);
-		System.out.println(men.size());
-		for (Man man : men) {
-			System.out.println(man.uri() + " : " + tickler(man));
-		}
+		System.out.println("Humans: " + humans.size());
+		System.out.println("Men: " + men.size());
+		System.out.println("Women: " + women.size());
+		System.out.println("Humans contains first man..." + humans.contains(men.iterator().next()));
+		
+		
+		//for (Human man : men) {
+		//	System.out.println(man.getClass().getSimpleName() + ":" +  man.uri() + " : " + tickler(man));
+		//}
 
 	}
 
-	private static String tickler(Man man) {
+	private static String tickler(Human man) {
 		if (man.getDescription() == null)
 			return "";
 		String desc = man.getDescription();
