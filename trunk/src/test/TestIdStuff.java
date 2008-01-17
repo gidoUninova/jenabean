@@ -11,6 +11,7 @@ import thewebsemantic.RDF2Bean;
 
 import com.hp.hpl.jena.ontology.Individual;
 import com.hp.hpl.jena.ontology.OntModel;
+import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 
 public class TestIdStuff {
@@ -20,7 +21,7 @@ public class TestIdStuff {
 		TestIDBean bean = new TestIDBean(id);
 		bean.setAddress("123 Oak Circle");
 		bean.setAge(32);
-		OntModel m = ModelFactory.createOntologyModel();
+		Model m = ModelFactory.createDefaultModel();
 		Bean2RDF writer = new Bean2RDF(m);
 		writer.save(bean);
 		RDF2Bean reader = new RDF2Bean(m);
@@ -31,7 +32,7 @@ public class TestIdStuff {
 
 	@Test
 	public void testConstructor()  throws Exception {
-		OntModel m = ModelFactory.createOntologyModel();
+		Model m = ModelFactory.createDefaultModel();
 		Bean2RDF writer = new Bean2RDF(m);
 		writer.save(new Flute("a"));
 		RDF2Bean reader = new RDF2Bean(m);
@@ -39,14 +40,14 @@ public class TestIdStuff {
 		assertEquals("a", a.getMyId());
 		assertEquals(1, a.i);
 		// its uri should be http://package/classname/id
-		Individual i = m.getIndividual("http://test/Flute/a");
-		assertNotNull(i);
+		
+		assertTrue(m.containsResource(m.getResource("http://test/Flute/a")));
 		writer.save(a);
 	}
 
 	@Test
 	public void testHashCode() throws Exception  {
-		OntModel m = ModelFactory.createOntologyModel();
+		Model m = ModelFactory.createDefaultModel();
 		Bean2RDF writer = new Bean2RDF(m);
 		Trumpet t = new Trumpet();
 		t.setId("bach");
