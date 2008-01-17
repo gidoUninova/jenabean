@@ -36,12 +36,10 @@ public class NTNamesExample {
 		System.out.println("Men: " + men.size());
 		System.out.println("Women: " + women.size());
 		System.out.println("Humans contains first man..." + humans.contains(men.iterator().next()));
-		
-		
+
 		//for (Human man : men) {
 		//	System.out.println(man.getClass().getSimpleName() + ":" +  man.uri() + " : " + tickler(man));
 		//}
-
 	}
 
 	private static String tickler(Human man) {
