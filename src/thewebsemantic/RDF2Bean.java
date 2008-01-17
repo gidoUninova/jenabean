@@ -2,7 +2,6 @@ package thewebsemantic;
 
 import static com.hp.hpl.jena.graph.Node.ANY;
 import static com.hp.hpl.jena.graph.Node.createURI;
-import static thewebsemantic.JenaHelper.asInd;
 import static thewebsemantic.JenaHelper.convertLiteral;
 import static thewebsemantic.TypeWrapper.instanceURI;
 import static thewebsemantic.TypeWrapper.type;
@@ -160,7 +159,7 @@ public class RDF2Bean extends Base {
 
 	private <T> Collection<T> loadIndividuals(Class<T> c, ResIterator it) {
 		Collection<T> list =  new LinkedList<T>();
-		while(it.hasNext()) list.add(toObject(c, asInd(it.nextResource())));
+		while(it.hasNext()) list.add(toObject(c, it.nextResource()));
 		it.close();
 		return list;
 	}
@@ -382,7 +381,7 @@ public class RDF2Bean extends Base {
 
 	private <T> T toObject(Class<T> c, RDFNode node) {
 		return (node.isLiteral()) ? (T)convertLiteral(node,c): 
-			toObject(c, asInd(node));
+			toObject(c, (Resource)node.as(Resource.class));
 	}
 	
 	private Object toObject(PropertyDescriptor p, Resource i) {

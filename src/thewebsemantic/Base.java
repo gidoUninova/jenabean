@@ -31,8 +31,7 @@ public class Base {
 		
 		if ( m instanceof OntModel) {
 			om = (OntModel)m;
-			javaclass = om.createAnnotationProperty(JAVACLASS);
-			
+			javaclass = om.createAnnotationProperty(JAVACLASS);			
 		}
 	}
 

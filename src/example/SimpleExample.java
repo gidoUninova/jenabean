@@ -2,6 +2,7 @@ package example;
 
 import java.util.Collection;
 
+import thewebsemantic.Bean2RDF;
 import thewebsemantic.binding.Jenabean;
 import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
@@ -10,6 +11,11 @@ public class SimpleExample {
 	public static void main(String[] args) {
 		OntModel m = ModelFactory.createOntologyModel();
 		Jenabean.instance().bind(m);
+		
+		
+		AppInfo info = new AppInfo();
+		Bean2RDF writer = new Bean2RDF(m);
+		writer.save(info);
 		
 		Song s1 = new Song();
 		s1.setTitle("Waters of March");
