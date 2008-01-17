@@ -4,12 +4,12 @@ import java.util.Collection;
 
 import thewebsemantic.Bean2RDF;
 import thewebsemantic.binding.Jenabean;
-import com.hp.hpl.jena.ontology.OntModel;
+import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 
 public class SimpleExample {
 	public static void main(String[] args) {
-		OntModel m = ModelFactory.createOntologyModel();
+		Model m = ModelFactory.createDefaultModel();
 		Jenabean.instance().bind(m);
 		
 		
