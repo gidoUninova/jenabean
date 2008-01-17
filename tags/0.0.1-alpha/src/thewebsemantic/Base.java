@@ -27,13 +27,11 @@ public class Base {
 		
 	protected Base(Model m) {
 		this.m = m;
-		binder = Jenabean.instance();
-		
-		if ( m instanceof OntModel) {
-			om = (OntModel)m;
-			javaclass = om.createAnnotationProperty(JAVACLASS);			
-		}
-	}
+		binder = Jenabean.instance();		
+		if ( m instanceof OntModel) {om = (OntModel)m;}
+		javaclass = m.createProperty(JAVACLASS);
+		javaclass.addProperty(RDF.type,OWL.AnnotationProperty);
+        }
 
 	protected Property toRdfProperty(PropertyContext ctx) {
 		return ctx.existsInModel(m) ? ctx.property(m) : applyEntailments(ctx);
