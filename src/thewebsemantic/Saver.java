@@ -84,13 +84,13 @@ abstract class Saver {
 		else if (o instanceof Date)
 			save((Date) o);
 		else if (o instanceof Integer)
-			save(((Integer) o).intValue());
+			save((Integer) o);
 		else if (o instanceof Long)
-			save(((Long) o).longValue());
+			save((Long) o);
 		else if (o instanceof Float)
-			save(((Float) o).floatValue());
+			save((Float) o);
 		else if (o instanceof Double)
-			save(((Double) o).doubleValue());
+			save((Double) o);
 		else if (o instanceof Character)
 			save((Character) o);
 		else if (o instanceof Boolean)
