@@ -1,24 +1,41 @@
 package test.thing;
 
 import java.util.Date;
-
 import thewebsemantic.Namespace;
 
 @Namespace("http://purl.org/dc/elements/1.1/")
 public interface DublinCore {
-	public void contributor(String s);
-	public void coverage(String s);
-	public void creator(String s);
-	public void date(Date d);
-	public void description(String s);
-	public void format(String s);
-	public void identifier(String s);
-	public void language(String s);
-	public void publisher(String s);
-	public void relation(String s);
-	public void rights(String s);
-	public void source(String s);
-	public void subject(String s);
-	public void title(String s);
-	public void type(String s);
+	public DublinCore subject(String s);
+	public DublinCore contributor(String s);
+	public DublinCore coverage(String s);
+	public DublinCore creator(String s);
+	public DublinCore date(Date d);
+	public DublinCore description(String s);
+	public DublinCore format(String s);
+	public DublinCore identifier(String s);
+	public DublinCore language(String s);
+	public DublinCore publisher(String s);
+	public DublinCore relation(String s);
+	public DublinCore rights(String s);
+	public DublinCore source(String s);
+	
+
+	public String contributor();
+	public String coverage();
+	public String creator();
+	public String date();
+	public String description();
+	public String format();
+	public String identifier();
+	public String language();
+	public String publisher();
+	public String relation();
+	public String rights();
+	public String source();
+	public String subject();
+	public String title();
+	public String type();
+	
+
+	
 }
