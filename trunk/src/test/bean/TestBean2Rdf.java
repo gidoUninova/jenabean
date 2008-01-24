@@ -156,7 +156,7 @@ public class TestBean2Rdf {
 			if ( a.getName() == "Taylor") {
 				for (A b : a.getFriends()) {
 					assertEquals("Lois", b.getName());
-					assertEquals(777.77, b.getSalary());
+					assertEquals(777.77, b.getSalary(), .001);
 				}
 			}
 		}
@@ -365,7 +365,7 @@ public class TestBean2Rdf {
 		
 		MeanBean bean2 = reader.loadDeep(MeanBean.class, bean.id());
 		assertEquals(bean.getAge(), bean2.getAge());
-		assertEquals(bean.getSalary(), bean2.getSalary());
+		assertEquals(bean.getSalary(), bean2.getSalary(), 2);
 		assertEquals(bean.getCreated(), bean2.getCreated());
 		
 	}

@@ -9,14 +9,13 @@ import java.lang.reflect.Proxy;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.Property;
 import com.hp.hpl.jena.rdf.model.Resource;
+import com.hp.hpl.jena.rdf.model.StmtIterator;
 
 public class Thing implements InvocationHandler{
-	private String id;
 	private Model model;
 	private Resource r;
 	
 	public Thing(String uri, Model m) {
-		id = uri;
 		model = m;
 		r = m.getResource(uri);
 	}
@@ -30,33 +29,37 @@ public class Thing implements InvocationHandler{
 				c.getClassLoader(), new Class[] {c}, this);
 	}
 
-	@Override
 	public Object invoke(Object proxy, Method method, Object[] args)
 			throws Throwable {
-		if (args.length > 0)
-			return set(method, args[0]);
-		else
+		Class<?> returnType = method.getReturnType();
+		if (args != null) {
+			set(method, args[0]);
+			return proxy;
+		} else
 			return get(method);
 	}
 
-	private Object get(Method method) {
-		return null;
+	private Object get(Method m) {
+		Class<?> c = m.getDeclaringClass();
+        String ns = wrap(c).namespace();
+		Property p = model.getProperty(ns + m.getName());
+
+		StmtIterator it = r.listProperties(p);
+		return it.nextStatement().getLiteral().getValue();
 	}
 
-	private Object set(Method thmethodod, Object arg) {
-		Class<?> c = thmethodod.getDeclaringClass();
+	private void set(Method m, Object arg) {
+		Class<?> c = m.getDeclaringClass();
         String ns = wrap(c).namespace();
-		Property p = model.getProperty(ns + thmethodod.getName());
+		Property p = model.getProperty(ns + m.getName());
 		
 		if ( PrimitiveWrapper.isPrimitive(arg))
 			new UpdateSaver(r,p).write(arg);
 		else if (arg instanceof Thing)
 			set(p, (Thing)arg);
-		return null;
 	}
 
 	private void set(Property p, Thing arg) {
-		r.addProperty(p, arg.getResource());
-		
+		r.addProperty(p, arg.getResource());		
 	}
 }
