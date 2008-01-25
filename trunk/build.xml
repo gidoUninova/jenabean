@@ -37,8 +37,8 @@
 
 	<target name="jar" depends="compile">
 		<copy  todir="${build}/thewebsemantic/" file="${src}/thewebsemantic/messages.properties"/>
-		<jar destfile="${dist}/jenabean.jar" basedir="${build}" 
-			excludes="**/test/*.class **/example/*.class" />
+		<jar destfile="${dist}/jenabean.jar" basedir="${build}" compress="true" 
+			excludes="**/test **test/** **/example **/example/**" />
 	</target>
 
 	<target name="clean">
