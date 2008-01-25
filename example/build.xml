@@ -7,7 +7,7 @@
                    
      Taylor Cowan                                                               
      ====================================================================== -->
-<project name="blog example" default="default">
+<project name="blog example" default="war">
 
 	<property name="src" location="src" />
 	<property name="build" location="web/WEB-INF/classes" />
@@ -18,7 +18,7 @@
     	an example app that uses jenabean
     </description>
 
-	<target name="default" depends="init" description="example app">
+	<target name="compile" depends="init" description="example app">
 		<javac srcdir="${src}" destdir="${build}">
 			<classpath>
 				<fileset dir="web/WEB-INF/lib">
@@ -43,14 +43,14 @@
 		<copy todir="${build}" file="${src}/StripesResources.properties"/>
 	</target>
 
-	<target name="jar" depends="default">
-		<jar destfile="blog.war" basedir="web" />
+	<target name="war" depends="compile">
+		<jar destfile="jenabean.war" basedir="web" />
 	</target>
 
 	<target name="clean">
 		<delete dir="${build}" />
 		<delete dir="${lib}" />
-		<delete file="blog.war"/>
+		<delete file="jenabean.war"/>
 	</target>	
 
 </project>
