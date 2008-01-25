@@ -7,6 +7,7 @@ import org.junit.Test;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 import thewebsemantic.Thing;
+import static java.lang.System.out;
 
 
 public class TestBasic {
@@ -19,13 +20,12 @@ public class TestBasic {
 		Thing t = new Thing("http://foo/",m);
 		
 		DublinCore dcThing = t.as(DublinCore.class);
-		dcThing.creator("me")
-			.subject("binding");
+		dcThing.setCreator("me")
+			.setSubject("binding");
 		
-		dcThing.subject("owl");
-	
-		
+		dcThing.setSubject("owl");
+		System.out.println(dcThing.getSubject());
 
-		//m.write(out, "N3");
+		m.write(out, "N3");
 	}
 }

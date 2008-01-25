@@ -11,7 +11,7 @@ import com.hp.hpl.jena.rdf.model.Property;
 import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.rdf.model.StmtIterator;
 
-public class Thing implements InvocationHandler{
+public class Thing implements InvocationHandler, As{
 	private Model model;
 	private Resource r;
 	
@@ -32,7 +32,10 @@ public class Thing implements InvocationHandler{
 	public Object invoke(Object proxy, Method method, Object[] args)
 			throws Throwable {
 		Class<?> returnType = method.getReturnType();
-		if (args != null) {
+		String actionType = method.getName().substring(0,3);
+		
+		
+		if ("set".equals(actionType)) {
 			set(method, args[0]);
 			return proxy;
 		} else
@@ -40,18 +43,20 @@ public class Thing implements InvocationHandler{
 	}
 
 	private Object get(Method m) {
+		String methodName = m.getName().substring(3);
 		Class<?> c = m.getDeclaringClass();
         String ns = wrap(c).namespace();
-		Property p = model.getProperty(ns + m.getName());
+		Property p = model.getProperty(ns + methodName);
 
 		StmtIterator it = r.listProperties(p);
 		return it.nextStatement().getLiteral().getValue();
 	}
 
 	private void set(Method m, Object arg) {
+		String methodName = m.getName().substring(3);
 		Class<?> c = m.getDeclaringClass();
         String ns = wrap(c).namespace();
-		Property p = model.getProperty(ns + m.getName());
+		Property p = model.getProperty(ns + methodName);
 		
 		if ( PrimitiveWrapper.isPrimitive(arg))
 			new UpdateSaver(r,p).write(arg);
