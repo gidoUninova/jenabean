@@ -247,6 +247,10 @@ public class RDF2Bean extends Base {
 	public <T> T load(Class<T> c, int id) throws NotFoundException {
 		return load(c, Integer.toString(id), true);
 	}
+	
+	public <T> T load(Class<T> c, Resource r) {
+		return load(c, r, true, new String[0]);
+	}
 
 	protected <T> T load(Class<T> c, String id, boolean shallow)
 			throws NotFoundException {
@@ -267,6 +271,17 @@ public class RDF2Bean extends Base {
 		}
 	}
 
+	private synchronized <T> T load(Class<T> c, Resource r, boolean shallow,
+			String[] includes) {
+		init(shallow, includes);
+		cycle = new HashMap<String, Object>();
+		try {
+			return (T)toObject(c, r);
+		} finally {
+			m.leaveCriticalSection();
+		}
+	}	
+	
 	/**
 	 * Loads an object from model with the same identifier as <tt>target</tt>.
 	 * 
