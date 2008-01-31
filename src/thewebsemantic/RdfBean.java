@@ -1,13 +1,14 @@
 package thewebsemantic;
 
-import java.beans.PropertyDescriptor;
-import java.util.Collection;
-import com.hp.hpl.jena.ontology.Individual;
-import com.hp.hpl.jena.rdf.model.Resource;
-
 import static thewebsemantic.TypeWrapper.instanceURI;
 import static thewebsemantic.TypeWrapper.wrap;
+
+import java.beans.PropertyDescriptor;
+import java.util.Collection;
+
 import thewebsemantic.binding.Jenabean;
+
+import com.hp.hpl.jena.rdf.model.Resource;
 
 public class RdfBean<T> {
 
