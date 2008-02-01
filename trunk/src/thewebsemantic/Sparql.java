@@ -46,13 +46,14 @@ public class Sparql {
 		Collection<T> beans = new LinkedList<T>();
 		try {
 			ResultSet results = qexec.execSelect();
-			for (;results.hasNext();) {
-				Resource r = results.nextSolution().getResource("s");
-				beans.add(reader.load(c, r));				
-			}
+			for (;results.hasNext();) beans.add(reader.load(c, resource(results)));
 			return beans;
 		} finally {
 			qexec.close();
 		}
+	}
+
+	private static Resource resource(ResultSet results) {
+		return results.nextSolution().getResource("s");
 	}
 }
