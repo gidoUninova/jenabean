@@ -46,30 +46,24 @@ public class TestSparqlBind {
 		fat2.getBeers().add("Bud Light");
 		fat2.save();		
 
-
-
-		
 		Jenabean jb = Jenabean.instance();
 		Model m = jb.model();
 		String queryString = 
 			"SELECT ?s WHERE { ?s a <http://test.bean/Man> }";
 
-		Collection<Man> result = Sparql.exec(queryString, m, Man.class);
+		Collection<Man> result = Sparql.exec( m, Man.class, queryString);
 		assertEquals(1, result.size());
 		Man man2 = result.iterator().next();
 		assertEquals(man.getName(), man2.getName());
 		assertEquals(man.getDescription(), man2.getDescription());
-	
+
 		queryString = 
 			"SELECT ?s WHERE { ?s a <http://test.bean/FatBean> }";
-		Collection<FatBean> result2 = Sparql.exec(queryString, m, FatBean.class);
+		Collection<FatBean> result2 = Sparql.exec(m, FatBean.class, queryString);
 		assertEquals(2, result2.size());
 		FatBean bean = result2.iterator().next();
 		assertEquals(0, bean.getBeers().size());
 		bean.fill();
 		assertEquals(3, bean.getBeers().size());
-		
 	}
-	
-
 }

@@ -1,5 +1,7 @@
 package example;
 
+import java.util.Collection;
+
 import thewebsemantic.RdfProperty;
 import thewebsemantic.Uri;
 
@@ -7,7 +9,18 @@ public class Human {
 	private String name;
 	private String description;
 	private String uri;
+	private Collection<Human> children;
 	
+	
+	@RdfProperty(NTNames.parentOf_PROPERTY)
+	public Collection<Human> getChildren() {
+		return children;
+	}
+
+	public void setChildren(Collection<Human> children) {
+		this.children = children;
+	}
+
 	public Human(String uri) {
 		this.uri = uri;
 	}
