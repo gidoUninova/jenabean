@@ -2,6 +2,7 @@ package example;
 
 import java.util.Collection;
 
+import thewebsemantic.Sparql;
 import thewebsemantic.binding.Jenabean;
 
 import com.hp.hpl.jena.ontology.OntDocumentManager;
@@ -10,8 +11,6 @@ import com.hp.hpl.jena.rdf.model.ModelFactory;
 import static thewebsemantic.binding.Jenabean.*;
 
 public class NTNamesExample {
-
-	public static final String ONT1 = "urn:ntnames:1";
 
 	public static void main(String[] args) {
 		OntModel m = ModelFactory.createOntologyModel();
@@ -27,28 +26,31 @@ public class NTNamesExample {
 		J.bind(NTNames.Woman_CLASS).to(Woman.class);
 		J.bind(NTNames.Human_CLASS).to(Human.class);
 		long t1 = System.currentTimeMillis();
-		Collection<Human> humans = load(Human.class);
 		Collection<Woman> women = load(Woman.class);
-		Collection<Man> men = load(Man.class);
 		long t2 = System.currentTimeMillis();
 		System.out.println(t2-t1);
-		System.out.println("Humans: " + humans.size());
-		System.out.println("Men: " + men.size());
-		System.out.println("Women: " + women.size());
-		System.out.println("Humans contains first man..." + humans.contains(men.iterator().next()));
 
-		//for (Human man : men) {
-		//	System.out.println(man.getClass().getSimpleName() + ":" +  man.uri() + " : " + tickler(man));
-		//}
+		for (Woman w : women) {
+			J.reader().fill(w).with("children");
+			System.out.println(w.getClass().getSimpleName() + ":" +  w.uri() + " : " + tickler(w));
+			for (Human child : w.getChildren()) {
+				System.out.println("\tparent of " + child.uri());
+			}
+		}
+		
+		// demonstrate loading beans from a sparql query
+		// Rebecca had two sons, Esau and Jacob
+		String query =
+			"PREFIX : <http://semanticbible.org/ns/2006/NTNames#>\n" +
+			"SELECT ?s WHERE {?s :childOf :Rebecca .  ?s a :Man }";
+		Collection<Man> men = Sparql.exec(m, Man.class, query);
+		for (Man man : men)	System.out.println(man.uri());
 	}
 
-	private static String tickler(Human man) {
-		if (man.getDescription() == null)
-			return "";
-		String desc = man.getDescription();
-		if (desc.length()>=20)
-			return man.getDescription().substring(0,20);
-		else
-			return desc;
+	private static String tickler(Human h) {
+		String desc = h.getDescription();
+		if (desc == null)
+			return "";		
+		return (desc.length()>=30) ? desc.substring(0,30):desc;
 	}
 }
