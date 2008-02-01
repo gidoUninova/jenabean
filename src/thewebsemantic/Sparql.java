@@ -41,8 +41,7 @@ public class Sparql {
 	 */
 	public static <T> Collection<T> exec(Model m, Class<T> c, String query) {
 		RDF2Bean reader = new RDF2Bean(m);
-		Query q = QueryFactory.create(query);
-		QueryExecution qexec = QueryExecutionFactory.create(q, m);
+		QueryExecution qexec = getQueryExec(m, query);
 		Collection<T> beans = new LinkedList<T>();
 		try {
 			ResultSet results = qexec.execSelect();
@@ -51,6 +50,11 @@ public class Sparql {
 		} finally {
 			qexec.close();
 		}
+	}
+
+	private static QueryExecution getQueryExec(Model m, String query) {
+		Query q = QueryFactory.create(query);
+		return QueryExecutionFactory.create(q, m);
 	}
 
 	private static Resource resource(ResultSet results) {
