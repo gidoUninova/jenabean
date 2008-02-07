@@ -44,6 +44,7 @@ public class Thing implements InvocationHandler, As{
 
 	private Object get(Method m) {
 		String methodName = m.getName().substring(3);
+		Class<?> returnType = m.getReturnType();
 		Class<?> c = m.getDeclaringClass();
         String ns = wrap(c).namespace();
 		Property p = model.getProperty(ns + methodName);
@@ -64,7 +65,12 @@ public class Thing implements InvocationHandler, As{
 			set(p, (Thing)arg);
 	}
 
+	private void add(Property p, Thing arg) {
+		r.addProperty(p, arg.getResource());		
+	}
+	
 	private void set(Property p, Thing arg) {
+		model.removeAll(r, p, null);
 		r.addProperty(p, arg.getResource());		
 	}
 }
