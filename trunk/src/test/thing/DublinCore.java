@@ -1,5 +1,6 @@
 package test.thing;
 
+import java.util.Collection;
 import java.util.Date;
 
 import thewebsemantic.As;
@@ -22,10 +23,10 @@ public interface DublinCore extends As {
 	public DublinCore setSource(String s);
 	
 
-	public String getContributor();
+	public Collection<String> getContributor();
 	public String getCoverage();
-	public String getCreator();
-	public String getDate();
+	public Collection<String> getCreator();
+	public Collection<Date> getDate();
 	public String getDescription();
 	public String getFormat();
 	public String getIdentifier();
@@ -34,7 +35,8 @@ public interface DublinCore extends As {
 	public String getRelation();
 	public String getRights();
 	public String getSource();
-	public String getSubject();
+	public Collection<String> getSubject();
+
 	public String getTitle();
 	public String getType();
 	
