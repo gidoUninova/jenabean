@@ -299,8 +299,8 @@ public class TestBean2Rdf {
 		assertEquals(bean.getMyDate(), bean2.getMyDate());
 		assertEquals(bean.getMyChar(), bean2.getMyChar());
 		assertEquals(bean.getMyCalendar().getTime(), bean2.getMyCalendar().getTime());
-		assertEquals(bean.getMyDouble(), bean2.getMyDouble());
-		assertEquals(bean.getMyFloat(), bean2.getMyFloat());
+		assertEquals(bean.getMyDouble(), bean2.getMyDouble(), .00);
+		assertEquals(bean.getMyFloat(), bean2.getMyFloat(), .00);
 		assertEquals(bean.getMyInt(), bean2.getMyInt());
 		assertEquals(bean.getMyLong(), bean2.getMyLong());
 		assertEquals(bean.isMyBoolean(), bean2.isMyBoolean());
@@ -405,11 +405,11 @@ public class TestBean2Rdf {
 		writer.save(u);
 		Individual i = m.getIndividual("http://test#User/" + u.getScreenName());
 		
-		Property p = m.getProperty("http://test#" + "hasProfile");
+		Property p = m.getProperty("http://test#" + "profile");
 		assertNotNull(i);
 		RDFNode n = i.getPropertyValue(p);
 		Individual iProfile = (Individual)n.as(Individual.class);
-		p = m.getProperty("http://test#" + "hasLastName");
+		p = m.getProperty("http://test#" + "lastName");
 		n = iProfile.getPropertyValue(p);
 		assertNotNull(n);
 		Literal value = (Literal)n.as(Literal.class);
@@ -425,18 +425,18 @@ public class TestBean2Rdf {
 		
 		i = m.getIndividual("http://test#User/" + u.getScreenName());
 		assertNotNull(i);
-		p = m.getProperty("http://test#" + "hasEmail");
+		p = m.getProperty("http://test#" + "email");
 		Literal l = (Literal)i.getPropertyValue(p);
 		assertEquals(u.getEmail(), l.getString());
 	
-		p = m.getProperty("http://test#" + "hasScreenName");
+		p = m.getProperty("http://test#" + "screenName");
 		l = (Literal)i.getPropertyValue(p);
 		assertEquals(u.getScreenName(), l.getString());
 
-		p = m.getProperty("http://test#" + "hasProfile");
+		p = m.getProperty("http://test#" + "profile");
 		n = i.getPropertyValue(p);
 		iProfile = (Individual)n.as(Individual.class);
-		p = m.getProperty("http://test#" + "hasLastName");
+		p = m.getProperty("http://test#" + "lastName");
 		n = iProfile.getPropertyValue(p);
 		assertNotNull(n);
 		value = (Literal)n.as(Literal.class);

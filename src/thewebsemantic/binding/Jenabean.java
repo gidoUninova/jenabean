@@ -7,6 +7,7 @@ import thewebsemantic.Bean2RDF;
 import thewebsemantic.Includer;
 import thewebsemantic.NotFoundException;
 import thewebsemantic.RDF2Bean;
+import thewebsemantic.RdfProperty;
 
 import com.hp.hpl.jena.ontology.OntClass;
 import com.hp.hpl.jena.rdf.model.Model;
@@ -49,6 +50,11 @@ public class Jenabean {
 		return reader;
 	}
 	
+	public void bind(Object o) {
+		if (o.getClass().isAnnotationPresent(RdfProperty.class)) {
+			bind(o.getClass().getAnnotation(RdfProperty.class));
+		}
+	}
 	
 	public Binding bind(OntClass oc) {
 		return new Binding(this,oc);

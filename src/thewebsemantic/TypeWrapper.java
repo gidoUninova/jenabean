@@ -23,8 +23,6 @@ import com.hp.hpl.jena.rdf.model.Resource;
  * 
  */
 public class TypeWrapper {
-	private static final String HAS = "has";
-
 	private String NS;
 	private Class<?> c;
 	private BeanInfo info;
@@ -32,8 +30,10 @@ public class TypeWrapper {
 	private Method uriMethod;
 	private Constructor<?> constructor;
 	private static HashMap<Class<?>, TypeWrapper> cache = new HashMap<Class<?>, TypeWrapper>();
-
+	private String prefix = null;
+	
 	private <T> TypeWrapper(Class<T> c) {
+		prefix = System.getProperty("jenabean.prefix");
 		this.c = c;
 		info = beanInfo(c);
 		for (MethodDescriptor md : info.getMethodDescriptors())
@@ -123,7 +123,9 @@ public class TypeWrapper {
 	}
 
 	private String namingPatternUri(PropertyDescriptor pd) {
-		return namespace() + HAS + Util.toProperCase(pd.getName());
+		return (prefix != null) ?
+			namespace() + prefix + Util.toProperCase(pd.getName()):
+			namespace() + pd.getName();
 	}
 
 	public static String instanceURI(Object bean) {
