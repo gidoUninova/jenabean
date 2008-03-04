@@ -446,4 +446,12 @@ public class TestBean2Rdf {
 		writer.save(u);
 		
 	}
+	
+	@Test
+	public void testMissingMethods() {
+		MissingGetter bean = new MissingGetter();
+		OntModel m = ModelFactory.createOntologyModel();
+		Bean2RDF writer = new Bean2RDF(m);
+		writer.save(bean);
+	}
 }
