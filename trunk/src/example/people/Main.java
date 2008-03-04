@@ -15,6 +15,7 @@ public class Main {
 		p.setName("John Smith");
 		p.setAddress(a);
 		writer.save(p);
-		m.write(System.out, "N3");
+		m.write(System.out, "N3");		
+		
 	}
 }
