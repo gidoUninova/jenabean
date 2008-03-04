@@ -71,7 +71,7 @@ public class TypeWrapper {
 	public PropertyDescriptor[] descriptors() {
 		Collection<PropertyDescriptor> results = new LinkedList<PropertyDescriptor>();
 		for (PropertyDescriptor p : info.getPropertyDescriptors())
-			if (p.getWriteMethod() != null)
+			if (p.getWriteMethod() != null && p.getReadMethod() != null)
 				results.add(p);
 		return results.toArray(new PropertyDescriptor[0]);
 	}
