@@ -14,6 +14,7 @@ public class TestBean {
 	private Collection<String> stringList;
 	private String[] stringArray;
 	private String id;
+
 	public Collection<String> getStringList() {
 		return stringList;
 	}
@@ -33,4 +34,6 @@ public class TestBean {
 	public void setStringArray(String[] stringArray) {
 		this.stringArray = stringArray;
 	}
+	
+	
 }
