@@ -9,4 +9,4 @@ Add your content here.
 
 RDF is really very simple.  A property either points to another node or a literal value.  Common literals are strings, numbers, and dates, and are represented as one of the many XML schema defined types.  This maps onto Java fairly well.  A property connecting two RDF nodes can be represented by an object with a non-primitive property.  Literals can be represented by Java primitives.
 
-One point of confusion regarding RDF is expressing 
+One point of confusion regarding RDF is expressing multiplicity.  It's easy to declare that a person has many friends by declaring that property more than once.  The problem comes in when you want that to be ordered.  In RDF order of assertions is undefined.  The most naturaly match is Java's Collection type.
