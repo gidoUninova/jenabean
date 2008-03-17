@@ -1,0 +1,12 @@
+#summary One-sentence summary of this page.
+
+= Introduction =
+
+Add your content here.
+
+
+= Details =
+
+RDF is really very simple.  A property either points to another node or a literal value.  Common literals are strings, numbers, and dates, and are represented as one of the many XML schema defined types.  This maps onto Java fairly well.  A property connecting two RDF nodes can be represented by an object with a non-primitive property.  Literals can be represented by Java primitives.
+
+One point of confusion regarding RDF is expressing 
