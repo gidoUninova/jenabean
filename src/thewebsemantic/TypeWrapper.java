@@ -56,7 +56,11 @@ public class TypeWrapper {
 		return wrap(o.getClass());
 	}
 
-	public static synchronized PropertyDescriptor[] descriptors(Object o) {
+	public static String getId(Object o) {
+		return type(o).id(o);
+	}
+	
+	public static PropertyDescriptor[] descriptors(Object o) {
 		return type(o).descriptors();
 	}
 
@@ -134,7 +138,10 @@ public class TypeWrapper {
 	}
 
 	public String id(Object bean) {
-		return (idMethod != null) ? invokeIdMethod(bean, idMethod) : String
+		if ( uriSupport() )
+			return getUri(bean);
+		else
+			return (idMethod != null) ? invokeIdMethod(bean, idMethod) : String
 				.valueOf(bean.hashCode());
 	}
 
