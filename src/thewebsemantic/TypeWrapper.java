@@ -133,7 +133,7 @@ public class TypeWrapper {
 		return (t.uriSupport()) ? t.getUri(bean) : t.uri(bean);
 	}
 
-	private String id(Object bean) {
+	public String id(Object bean) {
 		return (idMethod != null) ? invokeIdMethod(bean, idMethod) : String
 				.valueOf(bean.hashCode());
 	}
