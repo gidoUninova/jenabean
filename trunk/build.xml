@@ -14,6 +14,7 @@
 	<property name="dist" location="dist" />
     <property name="vocab.dir"       value="src/example"/>
 	<property name="vocab.tool"      value="jena.schemagen" />
+	<property name="release" value="0.0" />
 
 	<description>
     	library for saving and retrieving java beans from RDF.
@@ -36,8 +37,9 @@
 	</target>
 
 	<target name="jar" depends="compile">
+		<buildnumber file="buildnumber.txt"/>
 		<copy  todir="${build}/thewebsemantic/" file="${src}/thewebsemantic/messages.properties"/>
-		<jar destfile="${dist}/jenabean.jar" basedir="${build}" compress="true" 
+		<jar destfile="${dist}/jenabean-${release}.${build.number}.jar" basedir="${build}" compress="true" 
 			excludes="**/test **test/** **/example **/example/**" />
 	</target>
 
