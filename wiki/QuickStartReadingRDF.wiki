@@ -4,8 +4,8 @@
 = Introduction =
 This guide demonstrates how to read pre-existing RDF data into java objects.  The code is part of the distribution and can be browsed from the project's SVN browser.  This slightly more complicated (just a tiny bit) because Jenabean isn't in control of the URI's.  We are taking something created by somebody else, and mapping it to our objects.  Most of you may just want to read the code, so here it is:
   * [http://jenabean.googlecode.com/svn/trunk/src/example/City.java City bean]
-  * [http://jenabean.googlecode.com/svn/trunk/src/example/GeonamesExample.java main() example]
-  * [http://jenabean.googlecode.com/svn/trunk/src/example/GeonamesExample.java GeonamesExample.java]
+  * [http://jenabean.googlecode.com/svn/trunk/src/example/GeonamesExample.java GeonameExample.java (main)]
+  * [http://jenabean.googlecode.com/svn/trunk/src/example/GeonamesVocabulary.java GeonamesVocabulary.java]
 
 
 = Details =
