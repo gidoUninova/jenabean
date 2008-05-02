@@ -3,11 +3,12 @@ package action;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+import net.sourceforge.stripes.action.ActionBean;
+import net.sourceforge.stripes.action.ActionBeanContext;
+
 import com.hp.hpl.jena.ontology.OntModel;
 
 import example.StripesContext;
-import net.sourceforge.stripes.action.ActionBean;
-import net.sourceforge.stripes.action.ActionBeanContext;
 
 public class BaseAction implements ActionBean {
 	protected StripesContext context;
@@ -30,4 +31,6 @@ public class BaseAction implements ActionBean {
 		md.update(s.getBytes());
 		return Hex.toHex(md.digest());
 	}
+	
+
 }
