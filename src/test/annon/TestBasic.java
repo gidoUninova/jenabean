@@ -13,14 +13,20 @@ public class TestBasic {
 	@Test
 	public void drive() throws NotFoundException {
 		OntModel m = ModelFactory.createOntologyModel();
-		m.read( getClass().getResourceAsStream("example.rdf"),null, "N3");
+		m.read( getClass().getResourceAsStream("example.n3"),null, "N3");
 		
+		// bind Thing.class to a pre-existing RDF type ../thing
 		Jenabean j = Jenabean.instance();
 		j.bind(m);
 		j.bind("http://thewebsemantic.com/thing").to(Thing.class);
 		
+		// try and find a Thing with specific url
 		Thing me = j.load(Thing.class, "http://thewebsemantic.com/me");
+		
+		// the thing's name from RDF
 		System.out.println(me.name);
+		
+		// the annonymous known thing's name too
 		System.out.println(me.getKnows().name);
 
 	}

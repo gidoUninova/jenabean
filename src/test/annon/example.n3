@@ -1,0 +1,9 @@
+@prefix :         <http://thewebsemantic.com/> .
+
+:me a :thing ;
+	:name "hi there, I'm a thing" ;
+    :knows [
+      a :thing;
+      :name "anonymous thing"    
+    ] .
+	
