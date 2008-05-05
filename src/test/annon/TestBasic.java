@@ -21,13 +21,17 @@ public class TestBasic {
 		j.bind("http://thewebsemantic.com/thing").to(Thing.class);
 		
 		// try and find a Thing with specific url
-		Thing me = j.load(Thing.class, "http://thewebsemantic.com/me");
+		Thing me = j.include("knows").load(Thing.class, "http://thewebsemantic.com/me");
 		
 		// the thing's name from RDF
 		System.out.println(me.name);
 		
 		// the annonymous known thing's name too
-		System.out.println(me.getKnows().name);
+		System.out.println("me :knows " + me.getKnows().size() + " things");
+		for (Thing t : me.getKnows()) {
+			System.out.println(t.name);
+		}
+		
 
 	}
 }

@@ -4,6 +4,15 @@
 	:name "hi there, I'm a thing" ;
     :knows [
       a :thing;
-      :name "anonymous thing"    
-    ] .
+      :name "anonymous thing1"    
+    ] ;
+    :knows [
+      a :thing;
+      :name "anonymous thing2"    
+    ] ;
+    :knows [
+      a :thing;
+      :name "anonymous thing3"    
+    ] 
+    .
 	
