@@ -135,7 +135,6 @@ public class RDF2Bean extends Base {
 	protected synchronized <T> Collection<T> load(Class<T> c, boolean shallow,
 			String[] includes) {
 		init(shallow, includes);
-		cycle = new HashMap<String, Object>();
 		try {
 			return loadAll(c);
 		} finally {
@@ -144,6 +143,7 @@ public class RDF2Bean extends Base {
 	}
 
 	private void init(boolean shallow, String[] includes) {
+		cycle = new HashMap<String, Object>();
 		m.enterCriticalSection(Lock.READ);
 		this.shallow = shallow;
 		this.myIncludes.clear();
