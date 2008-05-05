@@ -1,12 +1,15 @@
 package test.annon;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 import thewebsemantic.Namespace;
 import thewebsemantic.Uri;
 
 @Namespace("http://thewebsemantic.com/")
 public class Thing {
 	String name;
-	Thing knows;
+	Collection<Thing> knows = new ArrayList<Thing>();
 	String uri;
 	
 	public Thing(String uri) {		
@@ -23,11 +26,13 @@ public class Thing {
 		this.name = name;
 	}
 
-	public Thing getKnows() {
+	public Collection<Thing> getKnows() {
 		return knows;
 	}
 
-	public void setKnows(Thing knows) {
+	public void setKnows(Collection<Thing> knows) {
 		this.knows = knows;
 	}
+
+
 }
