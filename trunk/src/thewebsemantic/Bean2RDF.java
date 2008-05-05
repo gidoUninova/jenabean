@@ -194,7 +194,8 @@ public class Bean2RDF extends Base {
 			Calendar c = Calendar.getInstance();
 			c.setTime((Date)o);
 			return m.createTypedLiteral(c);
-		} else if (o instanceof Integer)
+		}
+		else if (o instanceof Integer)
 			return m.createTypedLiteral(((Integer) o).intValue());
 		else if (o instanceof Long)
 			return m.createTypedLiteral(((Long) o).longValue());
@@ -203,9 +204,9 @@ public class Bean2RDF extends Base {
 		else if (o instanceof Double)
 			return m.createTypedLiteral(((Double) o).doubleValue());
 		else if (o instanceof Character)
-			return m.createTypedLiteral((Character) o);
+			return m.createTypedLiteral(((Character) o).charValue());
 		else if (o instanceof Boolean)
-			return m.createTypedLiteral((Boolean) o);
+			return m.createTypedLiteral(((Boolean) o).booleanValue());
 		else if (o instanceof Calendar)
 			return m.createTypedLiteral((Calendar) o);
 		else if (o instanceof BigDecimal)
@@ -219,11 +220,9 @@ public class Bean2RDF extends Base {
 		Statement s = subject.getProperty(property);
 		if (s != null) 
 			return s.getSeq();
-		else {
-			Seq seq = m.createSeq();
-			subject.addProperty(property, seq);
-			return seq;
-		}
+		Seq seq = m.createSeq();
+		subject.addProperty(property, seq);
+		return seq;
 	}
 
 	private boolean isNormalObject(Object o) {

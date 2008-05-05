@@ -152,9 +152,7 @@ public class RDF2Bean extends Base {
 
 	private <T> Collection<T> loadAll(Class<T> c) {
 		Resource a = getRdfType(c);
-		return (a!=null) ? loadIndividuals(c, m.listSubjectsWithProperty(RDF.type, a)):
-			new LinkedList<T>();
-
+		return loadIndividuals(c, m.listSubjectsWithProperty(RDF.type, a));
 	}
 
 	private <T> Collection<T> loadIndividuals(Class<T> c, ResIterator it) {
@@ -309,7 +307,7 @@ public class RDF2Bean extends Base {
 	 * @return
 	 * @throws NotFoundException
 	 */
-	public synchronized Object exists(Object target) {
+	public synchronized boolean exists(Object target) {
 		init(shallow, none);
 		try {
 			return exists(instanceURI(target));
