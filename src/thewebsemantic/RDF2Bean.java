@@ -391,7 +391,11 @@ public class RDF2Bean extends Base {
 	}
 
 	private Object testCycle(Resource i, Class<?> c) {
-		return (isCycle(i)) ? cycle.get(i.getURI()) : applyProperties(i,c);
+		return (isCycle(i)) ? cachedObject(i) : applyProperties(i,c);
+	}
+
+	private Object cachedObject(Resource i) {
+		return cycle.get(key(i));
 	}
 
 	private <T> T toObject(Class<T> c, RDFNode node) {
@@ -404,9 +408,14 @@ public class RDF2Bean extends Base {
 	}
 
 	private boolean isCycle(Resource i) {
-		return cycle.containsKey(i.getURI());
+		return cycle.containsKey(key(i));
 	}
 
+	private String key(Resource i) {
+		return ( i.isAnon() ) ?
+			i.getId().toString() : i.getURI();
+	}
+	
 	private Object fillWithChildren(Object target, String propertyName) {
 		Resource source = m.getResource(instanceURI(target));
 		for (PropertyDescriptor p : type(target).descriptors())
@@ -483,8 +492,7 @@ public class RDF2Bean extends Base {
 	 */
 	private void apply(Resource i, PropertyContext ctx) {
 		Property p = m.getProperty(ctx.uri());
-		if (p != null)
-			apply(ctx, i.listProperties(p));
+		apply(ctx, i.listProperties(p));
 	}
 
 	private void fill(Resource i, PropertyContext ctx) {
