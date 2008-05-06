@@ -21,7 +21,7 @@
     </description>
 
 	<target name="compile" depends="init" description="--> library for saving and retrieving java beans from RDF.">
-		<javac srcdir="${src}" destdir="${build}" debug="true">
+		<javac srcdir="${src}" destdir="${build}" debug="true" target="1.5" source="1.5">
 			<classpath>
 				<fileset dir="jenalib">
 					<include name="**/*.jar" />
