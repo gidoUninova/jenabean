@@ -537,7 +537,7 @@ public class RDF2Bean extends Base {
 	private Object fillArray(Class<?> type, Seq s) {
 		Object array = Array.newInstance(type, s.size());
 		for (int i=0; i<Array.getLength(array); i++)
-			Array.set(array,i,toObject(type, s.getLiteral(i+1) ));
+			Array.set(array,i,toObject(type, s.getObject(i+1) ));
 		return array;
 	}
 	
