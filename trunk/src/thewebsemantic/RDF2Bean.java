@@ -151,7 +151,7 @@ public class RDF2Bean extends Base {
 	}
 
 	private <T> Collection<T> loadAll(Class<T> c) {
-		Resource a = getRdfType(c);
+		Resource a = rdfType(c);
 		return loadIndividuals(c, m.listSubjectsWithProperty(RDF.type, a));
 	}
 
@@ -472,7 +472,7 @@ public class RDF2Bean extends Base {
 		return c;
 	}
 
-	private Resource getRdfType(Class<?> c) {
+	private Resource rdfType(Class<?> c) {
 		return ontClass( (binder.isBound(c)) ? binder.getUri(c) : wrap(c).typeUri() );
 	}
 
