@@ -11,6 +11,8 @@ public class TestArraysBean {
 	private String[] names;
 	private Date[] times;
 	private int[] ages;
+	private Person[] people;
+	
 	private String id;
 
 	public Date[] getTimes() {
@@ -44,6 +46,14 @@ public class TestArraysBean {
 
 	public void setId(String id) {
 		this.id = id;
+	}
+
+	public Person[] getPeople() {
+		return people;
+	}
+
+	public void setPeople(Person[] people) {
+		this.people = people;
 	}
 	
 	
