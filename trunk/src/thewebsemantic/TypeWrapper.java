@@ -102,7 +102,7 @@ public class TypeWrapper {
 	}
 
 	public String uri(Object bean) {
-		return typeUri() + '/' + id(bean);
+		return (uriSupport()) ?  invokeMethod(bean, uriMethod): typeUri() + '/' + id(bean);
 	}
 
 	/**
@@ -127,27 +127,29 @@ public class TypeWrapper {
 	}
 
 	private String namingPatternUri(PropertyDescriptor pd) {
-		return (prefix != null) ?
-			namespace() + prefix + Util.toProperCase(pd.getName()):
-			namespace() + pd.getName();
+		return namespace() + prefix(pd.getName());
+	}
+	
+	private String prefix(String p) {
+		return (prefix != null) ? prefix + Util.toProperCase(p):p;
 	}
 
 	public static String instanceURI(Object bean) {
-		TypeWrapper t = type(bean);
-		return (t.uriSupport()) ? t.getUri(bean) : t.uri(bean);
+		return type(bean).uri(bean);
 	}
 
+	/**
+	 * Reterns the ID 
+	 * @param bean
+	 * @return
+	 */
 	public String id(Object bean) {
 		if ( uriSupport() )
-			return getUri(bean);
-		else
-			return (idMethod != null) ? invokeIdMethod(bean, idMethod) : String
-				.valueOf(bean.hashCode());
-	}
-
-	private String getUri(Object bean) {
-		return (uriMethod != null) ? invokeIdMethod(bean, uriMethod) : String
-				.valueOf(bean.hashCode());
+			return invokeMethod(bean, uriMethod);
+		else if (idMethod != null)
+			return invokeMethod(bean, idMethod);
+		else 
+			return String.valueOf(bean.hashCode());
 	}
 
 	private BeanInfo beanInfo(Class<?> c) {
@@ -159,7 +161,7 @@ public class TypeWrapper {
 		return null;
 	}
 
-	private String invokeIdMethod(Object bean, Method me) {
+	private String invokeMethod(Object bean, Method me) {
 		try {
 			return me.invoke(bean).toString();
 		} catch (Exception e) {
@@ -201,11 +203,12 @@ public class TypeWrapper {
 	public Object toBean(Resource source) {
 		try {
 			Constructor<?> m = constructor;
-			if (m != null)
+			if (m != null) {
 				return (uriSupport()) ? m.newInstance(source.getURI()) : m
 						.newInstance(last(source.getURI()));
+			}
 			return c.newInstance();
-		} catch (Exception e) {
+		} catch (Exception e) {e.printStackTrace();
 		}
 		return null;
 	}
