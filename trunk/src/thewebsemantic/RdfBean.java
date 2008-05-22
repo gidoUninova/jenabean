@@ -12,7 +12,7 @@ import com.hp.hpl.jena.rdf.model.Resource;
 
 public class RdfBean<T> {
 
-	private Jenabean binder;
+	private transient Jenabean binder;
 	
 	public RdfBean() {
 		binder = Jenabean.instance();

@@ -9,6 +9,7 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import thewebsemantic.Bean2RDF;
@@ -24,7 +25,13 @@ import com.hp.hpl.jena.rdf.model.ModelFactory;
 import com.hp.hpl.jena.rdf.model.Property;
 import com.hp.hpl.jena.rdf.model.RDFNode;
 
+
 public class TestBean2Rdf {
+	
+	@Before
+	public void setup() {
+		System.setProperty("jenabean.fieldaccess", "true");
+	}
 	
 	@Test
 	public void testSimple() {
@@ -258,6 +265,7 @@ public class TestBean2Rdf {
 		
 		RDF2Bean reader = new RDF2Bean(m);
 		IdTesterBean bean2 = reader.loadDeep(IdTesterBean.class, "example");
+		m.write(System.out, "N3");
 		assertEquals(bean.getValue(), bean2.getValue());
 		
 		bean.setValue(1);
@@ -444,6 +452,7 @@ public class TestBean2Rdf {
 	
 		p = m.getProperty("http://test#" + "screenName");
 		l = (Literal)i.getPropertyValue(p);
+		m.write(System.out, "N3");
 		assertEquals(u.getScreenName(), l.getString());
 
 		p = m.getProperty("http://test#" + "profile");
