@@ -4,10 +4,8 @@ import static com.hp.hpl.jena.graph.Node.ANY;
 import static com.hp.hpl.jena.graph.Node.createURI;
 import static thewebsemantic.JenaHelper.convertLiteral;
 import static thewebsemantic.TypeWrapper.instanceURI;
-import static thewebsemantic.TypeWrapper.type;
 import static thewebsemantic.TypeWrapper.wrap;
 
-import java.beans.PropertyDescriptor;
 import java.lang.reflect.Array;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -401,9 +399,6 @@ public class RDF2Bean extends Base {
 			toObject(c, (Resource)node.as(Resource.class));
 	}
 	
-	private Object toObject(PropertyDescriptor p, Resource i) {
-		return toObject(p.getPropertyType(), i);
-	}
 
 	private boolean isCycle(Resource i) {
 		return cycle.containsKey(key(i));
@@ -416,16 +411,16 @@ public class RDF2Bean extends Base {
 	
 	private Object fillWithChildren(Object target, String propertyName) {
 		Resource source = m.getResource(instanceURI(target));
-		for (PropertyDescriptor p : type(target).descriptors())
+		for (ValuesContext p : TypeWrapper.valueContexts(target))
 			if (match(propertyName, p))
-				fill(source, new PropertyContext(target, p));
+				fill(source, p);
 		return target;
 	}
 
-	private boolean match(String propertyName, PropertyDescriptor p) {
+	private boolean match(String propertyName, ValuesContext p) {
 		return p.getName().equals(propertyName) &&
-			   (p.getPropertyType().equals(Collection.class) ||
-			   p.getPropertyType().isArray());
+			   (p.type().equals(Collection.class) ||
+			   p.type().isArray());
 	}
 
 	private Object applyProperties(Resource source, Class c) {
@@ -434,8 +429,8 @@ public class RDF2Bean extends Base {
 
 	private Object applyProperties(Resource source, Object target) {
 		cycle.put(source.getURI(), target);
-		for (PropertyDescriptor p : type(target).descriptors())
-			apply(source, new PropertyContext(target, p));
+		for (ValuesContext ctx : TypeWrapper.valueContexts(target))
+			apply(source, ctx);
 		return target;
 	}
 
@@ -488,12 +483,12 @@ public class RDF2Bean extends Base {
 	 * @throws IllegalAccessException
 	 * @throws InvocationTargetException
 	 */
-	private void apply(Resource i, PropertyContext ctx) {
+	private void apply(Resource i, ValuesContext ctx) {
 		Property p = m.getProperty(ctx.uri());
 		apply(ctx, i.listProperties(p));
 	}
 
-	private void fill(Resource i, PropertyContext ctx) {
+	private void fill(Resource i, ValuesContext ctx) {
 		Property p = m.getProperty(ctx.uri());
 		if (p == null) return;
 		StmtIterator values = i.listProperties(p);
@@ -503,13 +498,13 @@ public class RDF2Bean extends Base {
 			Class<?> type = ctx.type().getComponentType();
 			o = fillArray(type, s);			
 		} else {
-			o = fillCollection(t(ctx.property), values);
+			o = fillCollection(ctx.t(), values);
 		}
 		
 		ctx.setProperty(o);
 	}
 
-	private void apply(PropertyContext ctx, StmtIterator nodes) {
+	private void apply(ValuesContext ctx, StmtIterator nodes) {
 		if (nodes == null)
 			return;
 		else if (ctx.isCollection())
@@ -524,10 +519,10 @@ public class RDF2Bean extends Base {
 			applyIndividual(ctx, nodes.nextStatement().getResource());
 	}
 
-	private void array(PropertyContext ctx, RDFNode nextNode) {
+	private void array(ValuesContext ctx, RDFNode nextNode) {
 		Seq s = (Seq)nextNode.as(Seq.class);
 		Class<?> type = ctx.type().getComponentType();
-		if (shallow && !included(ctx.property))
+		if (shallow && !included(ctx.getName()))
 			ctx.setProperty( Array.newInstance(type, 0));
 		else
 			ctx.setProperty(fillArray(type, s));
@@ -541,13 +536,13 @@ public class RDF2Bean extends Base {
 		return array;
 	}
 	
-	private void collection(PropertyContext ctx, StmtIterator nodes) {
-		ctx.setProperty( (shallow && !included(ctx.property)) ? 
-				addOnlyCollection():fillCollection(t(ctx.property), nodes));
+	private void collection(ValuesContext ctx, StmtIterator nodes) {
+		ctx.setProperty( (shallow && !included(ctx.getName())) ? 
+				addOnlyCollection():fillCollection(ctx.t(), nodes));
 	}
 
-	private boolean included(PropertyDescriptor property) {
-		return myIncludes.contains(property.getName());
+	private boolean included(String property) {
+		return myIncludes.contains(property);
 	}
 
 	private Collection<Object> addOnlyCollection() {
@@ -561,11 +556,11 @@ public class RDF2Bean extends Base {
 		return results;
 	}
 
-	private void applyIndividual(PropertyContext ctx, Resource i) {
-		ctx.setProperty(toObject(ctx.property, i));
+	private void applyIndividual(ValuesContext ctx, Resource i) {
+		ctx.setProperty(toObject(ctx.type(), i));
 	}
 
-	private void applyLiteral(PropertyContext ctx, Literal l) {
+	private void applyLiteral(ValuesContext ctx, Literal l) {
 		ctx.setProperty(convertLiteral(l, ctx.type()));
 	}
 }

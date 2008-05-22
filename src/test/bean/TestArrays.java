@@ -34,6 +34,7 @@ public class TestArrays {
 		
 		OntModel m = ModelFactory.createOntologyModel();	
 		m.setNsPrefix("xsd", "http://www.w3.org/2001/XMLSchema#");
+	
 		Bean2RDF writer = new Bean2RDF(m);
 		writer.save(bean);
 

@@ -2,7 +2,6 @@ package thewebsemantic;
 
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.ParameterizedType;
-
 import thewebsemantic.binding.Jenabean;
 
 import com.hp.hpl.jena.ontology.OntModel;
@@ -33,18 +32,18 @@ public class Base {
 		javaclass.addProperty(RDF.type,OWL.AnnotationProperty);
 	}
 
-	protected Property toRdfProperty(PropertyContext ctx) {
+	protected Property toRdfProperty(ValuesContext ctx) {
 		return ctx.existsInModel(m) ? ctx.property(m) : applyEntailments(ctx);
 	}
 
-	private Property applyEntailments(PropertyContext ctx) {
+	private Property applyEntailments(ValuesContext ctx) {
 		if (om == null) return m.getProperty(ctx.uri());
 		
 		OntProperty op = om.createOntProperty(ctx.uri());
 		if (ctx.isSymmetric())
 			op.convertToSymmetricProperty();
-		else if (ctx.isInverse())
-			makeInverse(ctx.property, op);
+		else if (ctx.isInverse() && ctx instanceof PropertyContext)
+			makeInverse(((PropertyContext)ctx).property, op);
 		else if (ctx.isTransitive())
 			op.convertToTransitiveProperty();
 		return op;
@@ -60,7 +59,8 @@ public class Base {
 
 	
 
-	protected Class<?> t(PropertyDescriptor propDesc) {
+	protected Class<?> t(PropertyDescriptor propDesc) { 
+
 		ParameterizedType type = (ParameterizedType) propDesc.getReadMethod()
 				.getGenericReturnType();
 		return (type == null) ? NullType.class : (Class<?>) type
