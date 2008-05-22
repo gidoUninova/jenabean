@@ -13,6 +13,8 @@ public class Person extends RdfBean<Person> {
 	private String lastName;
 	private int age;
 	private Date birthday;
+	
+	@RdfProperty(transitive=true)
 	private Collection<Person> ancestors;
 	private Collection<Person> friends;
 	private Collection<Person> colleagues;
