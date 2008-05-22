@@ -10,6 +10,7 @@ import thewebsemantic.Symmetric;
 @Namespace("http://example.org/")
 public class A {
 
+	@Symmetric
 	private Collection<A> friends = new LinkedList<A>();
 	private String name;
 	private float salary;

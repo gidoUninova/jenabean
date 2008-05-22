@@ -5,8 +5,6 @@ import java.lang.reflect.ParameterizedType;
 import java.util.Collection;
 import java.util.Date;
 
-import thewebsemantic.Base.NullType;
-
 import com.hp.hpl.jena.graph.Node;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.Property;
@@ -41,7 +39,7 @@ class FieldContext extends ValuesContext {
 	}
 	
 	public boolean isTransitive() {
-		return type.getRDFAnnotation(field).transitive();
+		return TypeWrapper.getRDFAnnotation(field).transitive();
 	}
 	
 	public Property property(Model m) { 
@@ -56,17 +54,19 @@ class FieldContext extends ValuesContext {
 	public Object invokeGetter() {
 		Object result=null;
 		try {
+			field.setAccessible(true);
 			result = field.get(subject);
 			if ( result == null)
 				result = new int[0];
-		} catch (Exception e) {}
+		} catch (Exception e) {e.printStackTrace();}
 		return result;
 	}
 	
 	public void setProperty(Object v) {
 	   try {
+		 field.setAccessible(true);
          field.set(subject, v);
-      } catch (Exception e) {}
+      } catch (Exception e) {e.printStackTrace();}
 	}
 	
 	public boolean isDate() {
@@ -92,11 +92,9 @@ class FieldContext extends ValuesContext {
 	public String getName() {
 		return field.getName();
 	}
-	
 
-	
 	public Class<?> t() { 
 		return getGenericType((ParameterizedType) field.getGenericType());
 	}
-    
+
 }

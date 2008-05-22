@@ -1,13 +1,15 @@
 package test.bean;
 
+import static org.junit.Assert.assertEquals;
+import static thewebsemantic.binding.Jenabean.load;
+
 import org.junit.BeforeClass;
 import org.junit.Test;
-import static org.junit.Assert.*;
-import static thewebsemantic.binding.Jenabean.*;
+
 import thewebsemantic.Bean2RDF;
 import thewebsemantic.RDF2Bean;
 import thewebsemantic.binding.Jenabean;
-import com.hp.hpl.jena.ontology.Individual;
+
 import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.ontology.OntModelSpec;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
@@ -20,10 +22,12 @@ public class TestLoadWith {
 	public static void setUpBeforeClass() throws Exception {
 		OntModel m = ModelFactory.createOntologyModel();
 		Jenabean.instance().bind(m);
+		
 	}
 	
 	@Test
 	public void testBasic() throws Exception {
+		System.setProperty("jenabean.fieldaccess", "true");
 		OntModel m = ModelFactory
 				.createOntologyModel(OntModelSpec.OWL_MEM_MINI_RULE_INF);
 		Bean2RDF writer = new Bean2RDF(m);
@@ -35,11 +39,12 @@ public class TestLoadWith {
 		p1.addTag(fun);
 		p1.addTag(run);
 		writer.save(p1);
-
+		m.write(System.out, "N3");
 		RDF2Bean reader = new RDF2Bean(m);
 		Post shallow = reader.load(Post.class, p1.hashCode());
 		assertEquals(0, shallow.getTags().size());
 		reader.fill(shallow, "tags");
+		
 		assertEquals(2, shallow.getTags().size());
 
 		shallow = reader.load(Post.class, p1.hashCode());
@@ -50,6 +55,7 @@ public class TestLoadWith {
 
 	@Test
 	public void testPeople() throws Exception {
+		System.setProperty("jenabean.fieldaccess", "true");
 		Person p = new Person();
 		p.setFirstName("Joe");
 		p.setLastName("Joe");

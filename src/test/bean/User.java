@@ -7,29 +7,29 @@ import thewebsemantic.Namespace;
 public class User {
 	private String encryptedPassword;
 	private String email;
-	private String screen;
+	private String screenName;
 	private Profile profile;
 
 	public User() {
 	}
 
 	public User(String s) {
-		screen = s;
+		screenName = s;
 	}
 
 	public String toString() {
-		return encryptedPassword + "\n" + email + "\n" + screen;
+		return encryptedPassword + "\n" + email + "\n" + screenName;
 	}
 
 	public User(String p, String e, String s) {
-		screen = s;
+		screenName = s;
 		encryptedPassword = p;
 		email = e;
 	}
 
 	@Override
 	public int hashCode() {
-		return screen.hashCode();
+		return screenName.hashCode();
 	}
 
 	public boolean equals(Object o) {
@@ -58,11 +58,11 @@ public class User {
 
 	@Id
 	public String getScreenName() {
-		return screen;
+		return screenName;
 	}
 
 	public void setScreenName(String screen) {
-		this.screen = screen;
+		this.screenName = screen;
 	}
 
 	public Profile getProfile() {

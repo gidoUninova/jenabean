@@ -16,7 +16,7 @@ import java.lang.annotation.Target;
  * </code>
  *
  */
-@Target({ElementType.METHOD})
+@Target({ElementType.METHOD, ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME) 
 public @interface RdfProperty {
 	String value() default "";

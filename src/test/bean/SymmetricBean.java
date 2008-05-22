@@ -10,6 +10,7 @@ import thewebsemantic.RdfProperty;
 @Namespace("http://jenabean.com/")
 public class SymmetricBean {
 
+	@RdfProperty(value = "http://jenabean.com/isNextTo", symmetric = true)
 	private Collection<SymmetricBean> adjacent;
 	private String id;
 	

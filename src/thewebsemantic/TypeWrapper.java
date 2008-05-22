@@ -7,11 +7,12 @@ import java.beans.IntrospectionException;
 import java.beans.Introspector;
 import java.beans.MethodDescriptor;
 import java.beans.PropertyDescriptor;
-import java.lang.annotation.Annotation;
 import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -62,11 +63,40 @@ public class TypeWrapper {
 	}
 
 	public static ValuesContext[] valueContexts(Object o) {
+		String sFieldLevelAccess =  System.getProperty("jenabean.fieldaccess", "false");
+		boolean fieldLevelAccess = Boolean.valueOf(sFieldLevelAccess);
+		return (fieldLevelAccess) ? viaFields(o) : viaBeanProperties(o);
+	}
+
+	//TODO: needs to be cached in TypeWrapper
+	private static ValuesContext[] viaBeanProperties(Object o) {
 		PropertyDescriptor[] props = type(o).descriptors();
 		PropertyContext[] values = new PropertyContext[props.length];
 		for (int i = 0; i < props.length; i++)
 			values[i] = new PropertyContext(o, props[i]);
 		return values;
+	}
+
+
+	private static ValuesContext[] viaFields(Object o) {
+		Class<?> c = o.getClass();
+		Field[] fields = c.getDeclaredFields();
+		ArrayList<FieldContext> values = new ArrayList<FieldContext>();
+		for (Field field : fields) {
+			if ( !Modifier.isTransient(field.getModifiers()) )
+				values.add(new FieldContext(o, field));
+		}
+			
+		
+		c = c.getSuperclass();
+		if (c != Object.class) {
+			fields = c.getDeclaredFields();
+			for (Field field : fields) {
+				if (! Modifier.isTransient(field.getModifiers()) )
+					values.add(new FieldContext(o, field));
+			}	
+		}
+		return values.toArray(new ValuesContext[0]);
 	}
 	
 	public static synchronized TypeWrapper wrap(Class<?> c) {
@@ -198,8 +228,6 @@ public class TypeWrapper {
 	public boolean uriSupport() {
 		return uriMethod != null;
 	}
-
-
 
 	/**
 	 * 
