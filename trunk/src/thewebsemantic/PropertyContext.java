@@ -5,8 +5,6 @@ import java.lang.reflect.ParameterizedType;
 import java.util.Collection;
 import java.util.Date;
 
-import thewebsemantic.Base.NullType;
-
 import com.hp.hpl.jena.graph.Node;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.Property;
