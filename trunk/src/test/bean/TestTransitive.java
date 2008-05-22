@@ -17,7 +17,7 @@ public class TestTransitive {
 	
 	@Test
 	public void testBasic()  throws Exception {
-
+		System.setProperty("jenabean.fieldaccess", "true");
 		Person a = new Person();
 		a.setAge(18);
 		a.setBirthday(new Date());
