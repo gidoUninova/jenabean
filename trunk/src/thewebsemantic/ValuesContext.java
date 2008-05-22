@@ -1,9 +1,13 @@
 package thewebsemantic;
 
+import java.lang.reflect.ParameterizedType;
+
+import thewebsemantic.Base.NullType;
+
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.Property;
 
-interface ValuesContext {
+public abstract class ValuesContext {
 
 	public abstract String uri();
 
@@ -34,5 +38,10 @@ interface ValuesContext {
 	public abstract Class<?> type();
 
 	public abstract Class<?> t();
+
+	public Class<?> getGenericType(ParameterizedType type) {
+		return (type == null) ? NullType.class : (Class<?>) type
+				.getActualTypeArguments()[0];		
+	}
 
 }

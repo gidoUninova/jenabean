@@ -11,7 +11,7 @@ import com.hp.hpl.jena.graph.Node;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.Property;
 
-class PropertyContext implements ValuesContext {
+class PropertyContext extends ValuesContext {
 
 	Object subject;
 	PropertyDescriptor property;
@@ -135,8 +135,7 @@ class PropertyContext implements ValuesContext {
 	public Class<?> t() { 
 		ParameterizedType type = (ParameterizedType) property.getReadMethod()
 				.getGenericReturnType();
-		return (type == null) ? NullType.class : (Class<?>) type
-				.getActualTypeArguments()[0];
+		return getGenericType(type);
 	}
     
 }

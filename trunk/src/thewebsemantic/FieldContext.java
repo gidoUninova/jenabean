@@ -11,7 +11,7 @@ import com.hp.hpl.jena.graph.Node;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.Property;
 
-class FieldContext implements ValuesContext {
+class FieldContext extends ValuesContext {
 
 	Object subject;
 	Field field;
@@ -93,10 +93,10 @@ class FieldContext implements ValuesContext {
 		return field.getName();
 	}
 	
+
+	
 	public Class<?> t() { 
-		ParameterizedType type = (ParameterizedType) field.getGenericType();
-		return (type == null) ? NullType.class : (Class<?>) type
-				.getActualTypeArguments()[0];
+		return getGenericType((ParameterizedType) field.getGenericType());
 	}
     
 }
