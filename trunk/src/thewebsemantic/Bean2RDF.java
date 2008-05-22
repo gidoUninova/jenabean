@@ -1,11 +1,9 @@
 package thewebsemantic;
 
 import static thewebsemantic.PrimitiveWrapper.isPrimitive;
-import static thewebsemantic.TypeWrapper.descriptors;
 import static thewebsemantic.TypeWrapper.instanceURI;
 import static thewebsemantic.TypeWrapper.type;
 
-import java.beans.PropertyDescriptor;
 import java.lang.reflect.Array;
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -156,13 +154,13 @@ public class Bean2RDF extends Base {
 
 	private Resource write(Object bean, Resource subject, boolean shallow) {
 		cycle.add(bean);
-		for (PropertyDescriptor p : descriptors(bean))
-			if (!(shallow && p.getPropertyType().equals(Collection.class)) || forceDeep)
-				saveOrUpdate(subject, new PropertyContext(bean, p));
+		for (ValuesContext p : TypeWrapper.valueContexts(bean))
+			if (!(shallow && p.type().equals(Collection.class)) || forceDeep)
+				saveOrUpdate(subject, p);
 		return subject;
 	}
 
-	private void saveOrUpdate(Resource subject, PropertyContext pc) {
+	private void saveOrUpdate(Resource subject, ValuesContext pc) {
 		Object o = pc.invokeGetter();
 		Property property = toRdfProperty(pc);
 		if (o instanceof Collection)

@@ -8,6 +8,7 @@ import java.beans.Introspector;
 import java.beans.MethodDescriptor;
 import java.beans.PropertyDescriptor;
 import java.lang.annotation.Annotation;
+import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -59,11 +60,15 @@ public class TypeWrapper {
 	public static String getId(Object o) {
 		return type(o).id(o);
 	}
-	
-	public static PropertyDescriptor[] descriptors(Object o) {
-		return type(o).descriptors();
-	}
 
+	public static ValuesContext[] valueContexts(Object o) {
+		PropertyDescriptor[] props = type(o).descriptors();
+		PropertyContext[] values = new PropertyContext[props.length];
+		for (int i = 0; i < props.length; i++)
+			values[i] = new PropertyContext(o, props[i]);
+		return values;
+	}
+	
 	public static synchronized TypeWrapper wrap(Class<?> c) {
 		return (cache.containsKey(c)) ? cache.get(c) : new TypeWrapper(c);
 	}
@@ -117,17 +122,22 @@ public class TypeWrapper {
 	 * @return
 	 */
 	public String uri(PropertyDescriptor pd) {
-		RdfProperty rdf = getAnnotation(pd.getReadMethod());
-		return ("".equals(rdf.value())) ? namingPatternUri(pd) : rdf.value();
+		RdfProperty rdf = getRDFAnnotation(pd.getReadMethod());
+		return ("".equals(rdf.value())) ? namingPatternUri(pd.getName()) : rdf.value();
 	}
 
-	public RdfProperty getAnnotation(Method m) {
+	public String uri(Field field) {
+		RdfProperty rdf = getRDFAnnotation(field);
+		return ("".equals(rdf.value())) ? namingPatternUri(field.getName()) : rdf.value();
+	}
+	
+	public static RdfProperty getRDFAnnotation(AccessibleObject m) {
 		return (m.isAnnotationPresent(RdfProperty.class)) ? m
 				.getAnnotation(RdfProperty.class) : new NullRdfProperty();
 	}
 
-	private String namingPatternUri(PropertyDescriptor pd) {
-		return namespace() + prefix(pd.getName());
+	private String namingPatternUri(String name) {
+		return namespace() + prefix(name);
 	}
 	
 	private String prefix(String p) {
@@ -189,10 +199,7 @@ public class TypeWrapper {
 		return uriMethod != null;
 	}
 
-	public boolean isSymmetric(PropertyDescriptor p) {
-		return (p.getReadMethod().isAnnotationPresent(Symmetric.class)) ? true
-				: getAnnotation(p.getReadMethod()).symmetric();
-	}
+
 
 	/**
 	 * 
@@ -213,23 +220,7 @@ public class TypeWrapper {
 		return null;
 	}
 
-	class NullRdfProperty implements RdfProperty {
-		public boolean symmetric() {
-			return false;
-		}
 
-		public boolean transitive() {
-			return false;
-		}
-
-		public String value() {
-			return "";
-		}
-
-		public Class<? extends Annotation> annotationType() {
-			return null;
-		}
-	}
 	
 	public String inspect() {
 		StringBuilder buffer = new StringBuilder();
