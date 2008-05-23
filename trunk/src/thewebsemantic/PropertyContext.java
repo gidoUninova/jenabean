@@ -25,7 +25,7 @@ class PropertyContext extends ValuesContext {
 	 * @see thewebsemantic.ValuesContext#uri()
 	 */
 	public String uri() {
-		return type.uri(property);
+		return type.uri(property.getReadMethod(), property.getName());
 	}
 	
 	/* (non-Javadoc)
@@ -39,13 +39,6 @@ class PropertyContext extends ValuesContext {
 		return (p.getReadMethod().isAnnotationPresent(Symmetric.class)) ? true
 				: TypeWrapper.getRDFAnnotation(p.getReadMethod()).symmetric();
 	}	
-	
-	/* (non-Javadoc)
-	 * @see thewebsemantic.ValuesContext#isInverse()
-	 */
-	public boolean isInverse() {
-		return property.getReadMethod().isAnnotationPresent(Inverse.class);
-	}
 	
 	/* (non-Javadoc)
 	 * @see thewebsemantic.ValuesContext#isTransitive()
@@ -125,6 +118,10 @@ class PropertyContext extends ValuesContext {
     public Class<?> type() {
     	return property.getPropertyType();
     }
+    
+    public TypeWrapper tw() {
+    	return type;
+    }
 
 	public String getName() {
 		return property.getName();
@@ -135,5 +132,5 @@ class PropertyContext extends ValuesContext {
 				.getGenericReturnType();
 		return getGenericType(type);
 	}
-    
+
 }

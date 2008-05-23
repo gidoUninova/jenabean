@@ -13,8 +13,6 @@ public abstract class ValuesContext {
 
 	public abstract boolean isSymmetric();
 
-	public abstract boolean isInverse();
-
 	public abstract boolean isTransitive();
 
 	public abstract Property property(Model m);
@@ -38,6 +36,8 @@ public abstract class ValuesContext {
 	public abstract Class<?> type();
 
 	public abstract Class<?> t();
+	
+    public abstract TypeWrapper tw();
 
 	public Class<?> getGenericType(ParameterizedType type) {
 		return (type == null) ? NullType.class : (Class<?>) type

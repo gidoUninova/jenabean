@@ -2,7 +2,6 @@ package example;
 
 import java.util.Collection;
 import java.util.LinkedHashSet;
-import thewebsemantic.Inverse;
 
 public class Taggable {
 	private Collection<Tag> tags = new LinkedHashSet<Tag>();
@@ -15,7 +14,7 @@ public class Taggable {
 		this.tags = tags;
 	}
 
-	@Inverse("elements")
+	//@Inverse("elements")
 	public Collection<Tag> getTags() {
 		return tags;
 	}
