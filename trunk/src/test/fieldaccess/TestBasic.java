@@ -4,6 +4,7 @@ import java.util.Collection;
 
 import org.junit.Before;
 import org.junit.Test;
+import static org.junit.Assert.*;
 
 import thewebsemantic.Bean2RDF;
 import thewebsemantic.RDF2Bean;
@@ -27,6 +28,9 @@ public class TestBasic {
 		RDF2Bean reader = new RDF2Bean(m);
 		Collection<GrandsonOfFatAlbert> results 
 			= reader.load(GrandsonOfFatAlbert.class);
-		System.out.println( results );
+		GrandsonOfFatAlbert bean = results.iterator().next();
+		assertEquals("fatalbert", bean.name());
+		assertEquals( "son", bean.sonname());
+		assertEquals("grandson", bean.grandsonname());
 	}
 }
