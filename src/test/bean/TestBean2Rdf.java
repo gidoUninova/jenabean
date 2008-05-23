@@ -30,7 +30,7 @@ public class TestBean2Rdf {
 	
 	@Before
 	public void setup() {
-		System.setProperty("jenabean.fieldaccess", "true");
+		//System.setProperty("jenabean.fieldaccess", "true");
 	}
 	
 	@Test
