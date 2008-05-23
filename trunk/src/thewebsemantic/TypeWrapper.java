@@ -14,6 +14,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 
@@ -63,9 +64,13 @@ public class TypeWrapper {
 	}
 
 	public static ValuesContext[] valueContexts(Object o) {
+		return (isFieldLevelAccess()) ? viaFields(o) : viaBeanProperties(o);
+	}
+
+	private static boolean isFieldLevelAccess() {
 		String sFieldLevelAccess =  System.getProperty("jenabean.fieldaccess", "false");
 		boolean fieldLevelAccess = Boolean.valueOf(sFieldLevelAccess);
-		return (fieldLevelAccess) ? viaFields(o) : viaBeanProperties(o);
+		return fieldLevelAccess;
 	}
 
 	//TODO: needs to be cached in TypeWrapper
@@ -78,24 +83,30 @@ public class TypeWrapper {
 	}
 
 
+	private Field[] getDeclaredFields() {
+		Field[] chunk = c.getDeclaredFields();
+		ArrayList<Field> fields = new ArrayList<Field>();
+
+		for (Field field : chunk)
+			fields.add(field);
+		Class<?> cls = c;
+		while ( cls.getSuperclass() != Object.class) {
+			cls = cls.getSuperclass();
+			chunk = cls.getDeclaredFields();
+			for (Field field : chunk)
+				fields.add(field);
+		}
+		return fields.toArray(new Field[0]);
+	}
+	
 	private static ValuesContext[] viaFields(Object o) {
 		Class<?> c = o.getClass();
-		Field[] fields = c.getDeclaredFields();
+		TypeWrapper t = TypeWrapper.wrap(c);
+		Field[] fields = t.getDeclaredFields();
 		ArrayList<FieldContext> values = new ArrayList<FieldContext>();
-		for (Field field : fields) {
+		for (Field field : fields)
 			if ( !Modifier.isTransient(field.getModifiers()) )
 				values.add(new FieldContext(o, field));
-		}
-			
-		
-		c = c.getSuperclass();
-		if (c != Object.class) {
-			fields = c.getDeclaredFields();
-			for (Field field : fields) {
-				if (! Modifier.isTransient(field.getModifiers()) )
-					values.add(new FieldContext(o, field));
-			}	
-		}
 		return values.toArray(new ValuesContext[0]);
 	}
 	
@@ -115,13 +126,20 @@ public class TypeWrapper {
 		return results.toArray(new PropertyDescriptor[0]);
 	}
 
-	public PropertyDescriptor[] collections() {
-		Collection<PropertyDescriptor> results = new LinkedList<PropertyDescriptor>();
-		for (PropertyDescriptor p : info.getPropertyDescriptors())
-			if (p.getWriteMethod() != null
-					&& p.getPropertyType().equals(Collection.class))
-				results.add(p);
-		return results.toArray(new PropertyDescriptor[0]);
+	public String[] collections() {
+		Collection<String> results = new LinkedList<String>();		
+		if (isFieldLevelAccess()) {
+			Field[] fields = getDeclaredFields();
+			for (Field field : fields)
+				if (field.getType().equals(Collection.class))
+					results.add(field.getName());			
+		} else {
+			for (PropertyDescriptor p : info.getPropertyDescriptors())
+				if (p.getWriteMethod() != null
+						&& p.getPropertyType().equals(Collection.class))
+					results.add(p.getName());			
+		}
+		return results.toArray(new String[0]);
 	}
 
 	public Field[] fields() {
