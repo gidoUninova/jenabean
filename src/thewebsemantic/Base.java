@@ -37,27 +37,14 @@ public class Base {
 	}
 
 	private Property applyEntailments(ValuesContext ctx) {
-		if (om == null) return m.getProperty(ctx.uri());
-		
+		if (om == null) return m.getProperty(ctx.uri());		
 		OntProperty op = om.createOntProperty(ctx.uri());
 		if (ctx.isSymmetric())
 			op.convertToSymmetricProperty();
-		else if (ctx.isInverse() && ctx instanceof PropertyContext)
-			makeInverse(((PropertyContext)ctx).property, op);
 		else if (ctx.isTransitive())
 			op.convertToTransitiveProperty();
 		return op;
 	}
-
-	private void makeInverse(PropertyDescriptor property, OntProperty op) {
-		TypeWrapper type = TypeWrapper.wrap(t(property));
-		Inverse i = property.getReadMethod().getAnnotation(Inverse.class);
-		for (PropertyDescriptor pd : type.descriptors())
-			if (pd.getName().equals(i.value()))
-				op.setInverseOf(m.createProperty(type.uri(pd)));
-	}
-
-	
 
 	protected Class<?> t(PropertyDescriptor propDesc) { 
 

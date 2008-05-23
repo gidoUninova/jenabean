@@ -32,11 +32,12 @@ class FieldContext extends ValuesContext {
 	private boolean isSymmetric(Field p) {
 		return (field.isAnnotationPresent(Symmetric.class)) ? true
 				: TypeWrapper.getRDFAnnotation(field).symmetric();
-	}	
-	
-	public boolean isInverse() {
-		return field.isAnnotationPresent(Inverse.class);
 	}
+	
+    public TypeWrapper tw() {
+    	return type;
+    }
+
 	
 	public boolean isTransitive() {
 		return TypeWrapper.getRDFAnnotation(field).transitive();

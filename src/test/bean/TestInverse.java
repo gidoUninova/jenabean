@@ -1,11 +1,12 @@
 package test.bean;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 import java.io.FileWriter;
-import java.io.IOException;
 import java.util.Collection;
 
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 import thewebsemantic.Bean2RDF;
 import thewebsemantic.RDF2Bean;

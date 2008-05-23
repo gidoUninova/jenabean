@@ -152,16 +152,19 @@ public class TypeWrapper {
 	 * @return
 	 */
 	public String uri(PropertyDescriptor pd) {
-		RdfProperty rdf = getRDFAnnotation(pd.getReadMethod());
-		return ("".equals(rdf.value())) ? namingPatternUri(pd.getName()) : rdf.value();
+		return uri(pd.getReadMethod(), pd.getName());
 	}
 
 	public String uri(Field field) {
-		RdfProperty rdf = getRDFAnnotation(field);
-		return ("".equals(rdf.value())) ? namingPatternUri(field.getName()) : rdf.value();
+		return uri(field, field.getName());
 	}
 	
-	public static RdfProperty getRDFAnnotation(AccessibleObject m) {
+	public String uri(AccessibleObject m, String name) {
+		RdfProperty rdf = getRDFAnnotation(m);
+		return ("".equals(rdf.value())) ? namingPatternUri(name) : rdf.value();
+	}
+	
+	protected static RdfProperty getRDFAnnotation(AccessibleObject m) {
 		return (m.isAnnotationPresent(RdfProperty.class)) ? m
 				.getAnnotation(RdfProperty.class) : new NullRdfProperty();
 	}
@@ -250,12 +253,5 @@ public class TypeWrapper {
 
 
 	
-	public String inspect() {
-		StringBuilder buffer = new StringBuilder();
-		buffer.append(typeUri() + "\n");
-		for (PropertyDescriptor d : this.descriptors()) {
-			buffer.append("\t" + uri(d) + "\n");
-		}
-		return buffer.toString();
-	}
+
 }
