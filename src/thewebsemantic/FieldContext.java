@@ -22,7 +22,7 @@ class FieldContext extends ValuesContext {
 	}
 	
 	public String uri() {
-		return type.uri(field);
+		return type.uri(field, field.getName());
 	}
 	
 	public boolean isSymmetric() {

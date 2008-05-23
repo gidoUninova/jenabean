@@ -140,25 +140,6 @@ public class TypeWrapper {
 		return (uriSupport()) ?  invokeMethod(bean, uriMethod): typeUri() + '/' + id(bean);
 	}
 
-	/**
-	 * returns a URI pointing to the rdf property resource. If the property
-	 * descriptor is annotated with an explicit uri, then we'll use the URI
-	 * specified in the annotation, otherwise a URI is created using the
-	 * following naming pattern. <br/><br/> If the property name is "age" and
-	 * the namespace for this type is http://example.org/, the resulting URI
-	 * will be <code>http://example.org/hasAge</code>.
-	 * 
-	 * @param pd
-	 * @return
-	 */
-	public String uri(PropertyDescriptor pd) {
-		return uri(pd.getReadMethod(), pd.getName());
-	}
-
-	public String uri(Field field) {
-		return uri(field, field.getName());
-	}
-	
 	public String uri(AccessibleObject m, String name) {
 		RdfProperty rdf = getRDFAnnotation(m);
 		return ("".equals(rdf.value())) ? namingPatternUri(name) : rdf.value();

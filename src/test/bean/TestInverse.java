@@ -10,9 +10,11 @@ import org.junit.Test;
 
 import thewebsemantic.Bean2RDF;
 import thewebsemantic.RDF2Bean;
+import thewebsemantic.TypeWrapper;
 
 import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.ontology.OntModelSpec;
+import com.hp.hpl.jena.ontology.OntProperty;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 
 public class TestInverse {
@@ -42,15 +44,14 @@ public class TestInverse {
 			Post p = (Post)o;
 			assertEquals("i like OWL", p.getTitle());
 			assertEquals(p.getTags().size(), 2);
-		}
-		
-		
+		}		
 	}
 	
 	@Test
 	public void testBasic() throws Exception {
 		OntModel m = ModelFactory.createOntologyModel(OntModelSpec.OWL_MEM_MINI_RULE_INF);	
 		Bean2RDF writer = new Bean2RDF(m);
+
 		Apple a = new Apple();
 		Apple aprime = new Apple();
 		
@@ -65,6 +66,14 @@ public class TestInverse {
 		writer.save(a);
 		writer.save(o);
 
+		TypeWrapper appleType = TypeWrapper.wrap(Apple.class);
+		TypeWrapper orangeType = TypeWrapper.wrap(Orange.class);
+		
+		OntProperty pOranges = m.getOntProperty( appleType.namespace() + "oranges" );
+		OntProperty pApples = m.getOntProperty( orangeType.namespace() + "apples" );
+		pOranges.setInverseOf(pApples);
+		
+		
 		//m.write(System.out);
 		RDF2Bean reader = new RDF2Bean(m);
 		Collection<Orange> oranges = reader.loadDeep(Orange.class);
