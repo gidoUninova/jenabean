@@ -7,4 +7,8 @@ public class GrandsonOfFatAlbert extends SonOfFatAlbert {
 	public String toString() {
 		return super.toString() + "\n" +grandsonname;
 	}
+	
+	public String grandsonname() {
+		return grandsonname;
+	}
 }
