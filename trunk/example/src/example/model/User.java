@@ -4,7 +4,6 @@ import java.util.Collection;
 import java.util.LinkedList;
 
 import thewebsemantic.Id;
-import thewebsemantic.Namespace;
 import thewebsemantic.RdfBean;
 
 public class User extends RdfBean<User>{
