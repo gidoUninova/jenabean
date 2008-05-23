@@ -22,7 +22,9 @@ public class TestBasic {
 	public void simple() {
 		Model m = ModelFactory.createDefaultModel();
 		Bean2RDF writer = new Bean2RDF(m);
-		writer.save(new GrandsonOfFatAlbert());
+		GrandsonOfFatAlbert fa = new GrandsonOfFatAlbert();
+		fa.dontsaveme = "I don't get saved";
+		writer.save(fa);
 		m.write(System.out,"N3");
 		
 		RDF2Bean reader = new RDF2Bean(m);
@@ -32,5 +34,6 @@ public class TestBasic {
 		assertEquals("fatalbert", bean.name());
 		assertEquals( "son", bean.sonname());
 		assertEquals("grandson", bean.grandsonname());
+		assertNull(bean.dontsaveme);
 	}
 }
