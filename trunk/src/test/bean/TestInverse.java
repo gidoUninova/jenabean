@@ -31,7 +31,6 @@ public class TestInverse {
 		p1.addTag(fun);
 		p1.addTag(run);
 		writer.save(p1); 
-		//m.writeAll(System.out, "RDF/XML-ABBREV", "http://foo/");
 		RDF2Bean reader = new RDF2Bean(m);
 		reader.loadDeep(Post.class, p1.hashCode());
 		Post test = reader.loadDeep(Post.class, p1.hashCode());
