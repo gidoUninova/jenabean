@@ -27,7 +27,7 @@ public class TestLoadWith {
 	
 	@Test
 	public void testBasic() throws Exception {
-		System.setProperty("jenabean.fieldaccess", "true");
+		//System.setProperty("jenabean.fieldaccess", "true");
 		OntModel m = ModelFactory
 				.createOntologyModel(OntModelSpec.OWL_MEM_MINI_RULE_INF);
 		Bean2RDF writer = new Bean2RDF(m);
