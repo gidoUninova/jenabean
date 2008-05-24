@@ -16,4 +16,8 @@ public class FatAlbert {
 	public String name() {
 		return name;
 	}
+	
+	public void name(String s) {
+		name=s;
+	}
 }

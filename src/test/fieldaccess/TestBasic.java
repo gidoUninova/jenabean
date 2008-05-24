@@ -23,7 +23,9 @@ public class TestBasic {
 		Model m = ModelFactory.createDefaultModel();
 		Bean2RDF writer = new Bean2RDF(m);
 		GrandsonOfFatAlbert fa = new GrandsonOfFatAlbert();
-		fa.dontsaveme = "I don't get saved";
+		fa.grandsonname("grandson");
+		fa.name("fieldaccess"); // this comes from the super super class
+		fa.dontsaveme = "I don't get saved"; // this one is transient
 		writer.save(fa);
 		m.write(System.out,"N3");
 		
@@ -31,7 +33,7 @@ public class TestBasic {
 		Collection<GrandsonOfFatAlbert> results 
 			= reader.load(GrandsonOfFatAlbert.class);
 		GrandsonOfFatAlbert bean = results.iterator().next();
-		assertEquals("fatalbert", bean.name());
+		assertEquals("fieldaccess", bean.name());
 		assertEquals( "son", bean.sonname());
 		assertEquals("grandson", bean.grandsonname());
 		assertNull(bean.dontsaveme);
