@@ -26,6 +26,8 @@ import com.hp.hpl.jena.rdf.model.Resource;
  * 
  */
 public class TypeWrapper {
+	public static final String JENABEAN_PREFIX = "jenabean.prefix";
+	public static final String JENABEAN_FIELDACCESS = "jenabean.fieldaccess";
 	private String NS;
 	private Class<?> c;
 	private BeanInfo info;
@@ -36,7 +38,7 @@ public class TypeWrapper {
 	private String prefix = null;
 	
 	private <T> TypeWrapper(Class<T> c) {
-		prefix = System.getProperty("jenabean.prefix");
+		prefix = System.getProperty(JENABEAN_PREFIX);
 		this.c = c;
 		info = beanInfo(c);
 		for (MethodDescriptor md : info.getMethodDescriptors())
@@ -68,7 +70,7 @@ public class TypeWrapper {
 	}
 
 	private static boolean isFieldLevelAccess() {
-		String sFieldLevelAccess =  System.getProperty("jenabean.fieldaccess", "false");
+		String sFieldLevelAccess =  System.getProperty(JENABEAN_FIELDACCESS, "false");
 		boolean fieldLevelAccess = Boolean.valueOf(sFieldLevelAccess);
 		return fieldLevelAccess;
 	}
