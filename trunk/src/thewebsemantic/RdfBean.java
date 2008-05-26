@@ -2,10 +2,6 @@ package thewebsemantic;
 
 import static thewebsemantic.TypeWrapper.instanceURI;
 import static thewebsemantic.TypeWrapper.wrap;
-
-import java.beans.PropertyDescriptor;
-import java.util.Collection;
-
 import thewebsemantic.binding.Jenabean;
 
 import com.hp.hpl.jena.rdf.model.Resource;
