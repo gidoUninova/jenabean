@@ -49,6 +49,7 @@ public class TestBasic {
 		Jenabean.instance().bind(m);
 		Date d = new Date();
 		Calendar c = Calendar.getInstance();
+		c.set(Calendar.YEAR, 1967);
 		for (int i = 0; i < 100; i++) {
 			AllTypes bean = new AllTypes(i + "");
 			bean.age = 40;
@@ -65,5 +66,11 @@ public class TestBasic {
 		RDF2Bean reader = new RDF2Bean(m);
 		Collection<AllTypes> beans = reader.load(AllTypes.class);
 		assertEquals(100, beans.size());
+		AllTypes bean2 = beans.iterator().next();
+		assertEquals(40, bean2.age);
+		assertEquals(444444444, bean2.ssn);
+		assertEquals(1000000.01, bean2.debt, 0);
+		assertEquals(d, bean2.birthday);
+		//assertEquals(c, bean2.appointment);
 	}
 }
