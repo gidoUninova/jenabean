@@ -52,7 +52,7 @@ public class TypeWrapper {
 				+ c.getPackage().getName() + '/';
 		try {
 			constructor = c.getConstructor(String.class);
-		} catch (Exception e) {
+		} catch (Exception e) {e.printStackTrace();
 		}
 		cache.put(c, this);
 	}
