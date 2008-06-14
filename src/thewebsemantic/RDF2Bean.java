@@ -382,6 +382,18 @@ public class RDF2Bean extends Base {
 			toObject(c, m.getResource(wrap(c).uri(id)));
 	}
 
+	public Object load(String uri) throws NotFoundException {
+		init(shallow, none);
+		try {
+			if (exists(uri))
+				return toObject(Object.class, m.getResource(uri));
+			else
+				throw new NotFoundException();
+		} finally {
+			m.leaveCriticalSection();
+		}
+	}
+
 	private <T> T toObject(Class<T> c, Resource i) {
 		return (i != null) ? (T) testCycle(i,c) : null;
 	}
@@ -398,7 +410,6 @@ public class RDF2Bean extends Base {
 		return (node.isLiteral()) ? (T)convertLiteral(node,c): 
 			toObject(c, (Resource)node.as(Resource.class));
 	}
-	
 
 	private boolean isCycle(Resource i) {
 		return cycle.containsKey(key(i));

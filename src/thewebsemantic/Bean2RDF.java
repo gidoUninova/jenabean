@@ -149,7 +149,8 @@ public class Bean2RDF extends Base {
 	}
 
 	private Resource write(Object bean, RDFNode node, boolean shallow) {
-		return write(bean, (Resource) node.as(Resource.class), shallow);
+		return (cycle.contains(bean)) ? existing(bean):
+			write(bean, (Resource) node.as(Resource.class), shallow);
 	}
 
 	private Resource write(Object bean, Resource subject, boolean shallow) {
