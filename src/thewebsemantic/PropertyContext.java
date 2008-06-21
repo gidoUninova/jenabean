@@ -44,7 +44,7 @@ class PropertyContext extends ValuesContext {
 	 * @see thewebsemantic.ValuesContext#isTransitive()
 	 */
 	public boolean isTransitive() {
-		return type.getRDFAnnotation(property.getReadMethod()).transitive();
+		return TypeWrapper.getRDFAnnotation(property.getReadMethod()).transitive();
 	}
 	
 	/* (non-Javadoc)

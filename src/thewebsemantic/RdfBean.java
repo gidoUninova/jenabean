@@ -18,7 +18,7 @@ public class RdfBean<T> {
 		return (T)binder.load(getClass(), id);
 	}
 	
-	public T refresh() throws NotFoundException {
+	public T refresh() {
 		return (T)binder.reader().load(this);
 	}
 	
