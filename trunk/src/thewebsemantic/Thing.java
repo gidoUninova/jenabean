@@ -11,7 +11,7 @@ import com.hp.hpl.jena.rdf.model.Property;
 import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.rdf.model.StmtIterator;
 
-public class Thing implements InvocationHandler, As{
+public class Thing implements InvocationHandler, As {
 	private Model model;
 	private Resource r;
 	
@@ -48,9 +48,13 @@ public class Thing implements InvocationHandler, As{
 		Class<?> c = m.getDeclaringClass();
         String ns = wrap(c).namespace();
 		Property p = model.getProperty(ns + methodName);
-
 		StmtIterator it = r.listProperties(p);
-		return it.nextStatement().getLiteral().getValue();
+
+		if (returnType.isPrimitive())
+			return it.nextStatement().getLiteral().getValue();
+		else {
+			return new Things(it.toSet());
+		}
 	}
 
 	private void set(Method m, Object arg) {

@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
-import java.util.logging.Logger;
 
 import com.hp.hpl.jena.rdf.model.Literal;
 import com.hp.hpl.jena.rdf.model.Model;
@@ -59,8 +58,6 @@ public class Bean2RDF extends Base {
 	private ArrayList<Object> cycle;
 	private boolean forceDeep = false;
 
-	private Logger logger = Logger.getLogger("thewebsemenatic",
-			"thewebsemantic.messages");
 
 	/**
 	 * construct a new instance bound to OntModel <tt>m</tt>.
@@ -115,8 +112,8 @@ public class Bean2RDF extends Base {
 	}
 
 	private Resource _write(Object bean, boolean shallow) {
-		return (cycle.contains(bean)) ? existing(bean) : write(bean,
-				toResource(bean), shallow);
+		return (cycle.contains(bean)) ? existing(bean) : 
+			write(bean, toResource(bean), shallow);
 	}
 
 	private Resource toResource(Object bean) {
@@ -148,11 +145,6 @@ public class Bean2RDF extends Base {
 		return (isBound(bean)) ? binder.getUri(bean) : type(bean).typeUri();
 	}
 
-	private Resource write(Object bean, RDFNode node, boolean shallow) {
-		return (cycle.contains(bean)) ? existing(bean):
-			write(bean, (Resource) node.as(Resource.class), shallow);
-	}
-
 	private Resource write(Object bean, Resource subject, boolean shallow) {
 		cycle.add(bean);
 		for (ValuesContext p : TypeWrapper.valueContexts(bean))
@@ -167,7 +159,7 @@ public class Bean2RDF extends Base {
 		if (o instanceof Collection)
 			updateCollection(subject, property, (Collection<?>) o);
 		else if (isPrimitive(o.getClass()))
-			getSaver(subject, property).write(o);
+			new UpdateSaver(subject, property).write(o);
 		else if (pc.isArray())
 			updateArray(getSeq(subject, property), o);
 		else if (isNormalObject(o))
@@ -209,9 +201,9 @@ public class Bean2RDF extends Base {
 		else if (o instanceof Calendar)
 			return m.createTypedLiteral((Calendar) o);
 		else if (o instanceof BigDecimal)
-			return m.createTypedLiteral(o);
+			return m.createTypedLiteral((BigDecimal)o);
 		else if (o instanceof BigInteger)
-			return m.createTypedLiteral(o);
+			return m.createTypedLiteral((BigInteger)o);
 		return null;
 	}
 
@@ -252,19 +244,6 @@ public class Bean2RDF extends Base {
 	}
 
 	/**
-	 * To simplify the type switch above, return a specialized helper either for
-	 * updating an existing relation, or adding a new relation, depending on the
-	 * existence of property on resource s.
-	 * 
-	 * @param s
-	 * @param property
-	 * @return appropriate saver implementation
-	 */
-	private Saver getSaver(Resource s, Property property) {
-		return new UpdateSaver(s, property);
-	}
-
-	/**
 	 * Update or persist a domain object outside String, Date, and the usual
 	 * primitive types. We set the write style to shallow=true, causing an end
 	 * of recursive traversal of the object graph.
@@ -276,9 +255,8 @@ public class Bean2RDF extends Base {
 	private void updateOrCreate(Resource subject, Property property, Object o) {
 		Statement existingRelation = subject.getProperty(property);
 		if (existingRelation != null)
-			write(o, existingRelation.getObject(), true);
-		else
-			subject.addProperty(property, _write(o, true));
+			subject.removeAll(property);
+		subject.addProperty(property, _write(o, true));
 	}
 }
 /*

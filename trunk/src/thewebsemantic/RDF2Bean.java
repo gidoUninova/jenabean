@@ -16,6 +16,7 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.Set;
 
+import com.hp.hpl.jena.graph.Node;
 import com.hp.hpl.jena.rdf.model.Literal;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.Property;
@@ -285,13 +286,11 @@ public class RDF2Bean extends Base {
 	 * @return
 	 * @throws NotFoundException
 	 */
-	public synchronized Object load(Object target) throws NotFoundException {
+	public synchronized Object load(Object target) {
 		init(shallow, none);
 		cycle = new HashMap<String, Object>();
 		try {
 			Resource source = m.getResource(instanceURI(target));
-			if (source == null)
-				throw new NotFoundException();
 			return applyProperties(source, target);
 		} finally {
 			m.leaveCriticalSection();
@@ -464,7 +463,13 @@ public class RDF2Bean extends Base {
 	 * @throws ClassNotFoundException
 	 */
 	private Class<?> javaclass(Resource source, Class c) throws ClassNotFoundException {
-		Resource oc = source.getProperty(RDF.type).getResource();
+		StmtIterator it = source.listProperties(RDF.type);
+		Resource oc=null;
+		while(it.hasNext()) {
+			oc = (Resource)it.nextStatement().getResource();
+			if (!oc.getNameSpace().startsWith("http://www.w3.org"))
+				break;
+		}
 		if ( binder.getClass(oc.getURI()) != null)
 			return binder.getClass(oc.getURI());
 		else if (bindingsCache.containsKey(oc.getURI()))
