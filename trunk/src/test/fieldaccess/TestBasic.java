@@ -30,7 +30,7 @@ public class TestBasic {
 		fa.name("fieldaccess"); // this comes from the super super class
 		fa.dontsaveme = "I don't get saved"; // this one is transient
 		writer.save(fa);
-		m.write(System.out, "N3");
+		
 		RDF2Bean reader = new RDF2Bean(m);
 		Collection<GrandsonOfFatAlbert> results = reader
 				.load(GrandsonOfFatAlbert.class);
@@ -46,6 +46,8 @@ public class TestBasic {
 		Model m = ModelFactory.createDefaultModel();
 		m.setNsPrefix("rdf", "http://www.w3.org/1999/02/22-rdf-syntax-ns#");
 		m.setNsPrefix("", "http://test.fieldaccess/");
+		m.setNsPrefix("foaf", "http://xmlns.com/foaf/0.1/");
+		m.setNsPrefix("xsd","http://www.w3.org/2001/XMLSchema#");
 		Jenabean.instance().bind(m);
 		Date d = new Date();
 		Calendar c = Calendar.getInstance();
@@ -58,11 +60,12 @@ public class TestBasic {
 			bean.birthday = d;
 			bean.debt = 1000000.01;
 			bean.salary = 1234.56f;
+			bean.name = "Tyler Moon";
 			bean.nicknames = new String[] { "bob", "doogy", "fats", "mo" };
 			bean.nothing = 57;
 			bean.save();
 		}
-		
+		m.write(System.out, "N3");
 		RDF2Bean reader = new RDF2Bean(m);
 		Collection<AllTypes> beans = reader.load(AllTypes.class);
 		assertEquals(100, beans.size());
