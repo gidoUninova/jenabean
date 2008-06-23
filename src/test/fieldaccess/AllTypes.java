@@ -5,9 +5,11 @@ import java.util.Date;
 
 import thewebsemantic.Id;
 import thewebsemantic.RdfBean;
+import thewebsemantic.RdfProperty;
 
 public class AllTypes extends RdfBean<AllTypes> {
 	
+	@RdfProperty("http://xmlns.com/foaf/0.1/name")
 	public String name;
 	public int age;
 	public long ssn;
