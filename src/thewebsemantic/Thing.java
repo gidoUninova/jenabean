@@ -49,12 +49,7 @@ public class Thing implements InvocationHandler, As {
         String ns = wrap(c).namespace();
 		Property p = model.getProperty(ns + methodName);
 		StmtIterator it = r.listProperties(p);
-
-		if (returnType.isPrimitive())
-			return it.nextStatement().getLiteral().getValue();
-		else {
-			return new Things(it.toSet());
-		}
+		return (returnType.isPrimitive()) ? it.nextStatement().getLiteral().getValue() : new Things(it.toSet());
 	}
 
 	private void set(Method m, Object arg) {

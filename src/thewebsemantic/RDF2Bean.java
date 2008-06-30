@@ -257,7 +257,6 @@ public class RDF2Bean extends Base {
 	private synchronized <T> T load(Class<T> c, String id, boolean shallow,
 			String[] includes) throws NotFoundException {
 		init(shallow, includes);
-		cycle = new HashMap<String, Object>();
 		try {
 			T result = toObject(c, id);
 			if (result != null)
@@ -271,7 +270,6 @@ public class RDF2Bean extends Base {
 	private synchronized <T> T load(Class<T> c, Resource r, boolean shallow,
 			String[] includes) {
 		init(shallow, includes);
-		cycle = new HashMap<String, Object>();
 		try {
 			return (T)toObject(c, r);
 		} finally {
@@ -288,7 +286,6 @@ public class RDF2Bean extends Base {
 	 */
 	public synchronized Object load(Object target) {
 		init(shallow, none);
-		cycle = new HashMap<String, Object>();
 		try {
 			Resource source = m.getResource(instanceURI(target));
 			return applyProperties(source, target);
@@ -508,16 +505,13 @@ public class RDF2Bean extends Base {
 		Property p = m.getProperty(ctx.uri());
 		if (p == null) return;
 		StmtIterator values = i.listProperties(p);
-		Object o;
 		if (ctx.type().isArray()) {
 			Seq s = values.nextStatement().getSeq();
 			Class<?> type = ctx.type().getComponentType();
-			o = fillArray(type, s);			
+			ctx.setProperty( fillArray(type, s) );			
 		} else {
-			o = fillCollection(ctx.t(), values);
-		}
-		
-		ctx.setProperty(o);
+			ctx.setProperty( fillCollection(ctx.t(), values));
+		}		
 	}
 
 	private void apply(ValuesContext ctx, StmtIterator nodes) {
