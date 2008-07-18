@@ -18,7 +18,7 @@ public class JenaHelper {
 		if (c.equals(Date.class)) {
 			return date(l);
 		} else if ( c.equals(Calendar.class)) {
-			return calendar(l);
+			return ((XSDDateTime)l.getValue()).asCalendar();
 		} else if (c.equals(BigDecimal.class)) {
 			return bigDecimal(l);
 		} else
@@ -35,12 +35,7 @@ public class JenaHelper {
 		System.out.println(o.getClass());
 		return null;
 	}
-	
-	public static Calendar calendar(Literal l) {
-		XSDDateTime date = (XSDDateTime) l.getValue();
-		return date.asCalendar();
-	}
-	
+		
 	public static Literal asLiteral(RDFNode n) {
 		return (Literal)n.as(Literal.class);
 	}
