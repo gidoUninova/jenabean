@@ -2,7 +2,7 @@
 
 = Introduction =
 
-Add your content here.
+Add your content.
 
 
 = Details =
