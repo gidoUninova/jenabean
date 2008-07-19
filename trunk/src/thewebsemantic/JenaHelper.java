@@ -1,5 +1,7 @@
 package thewebsemantic;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -21,10 +23,21 @@ public class JenaHelper {
 			return ((XSDDateTime)l.getValue()).asCalendar();
 		} else if (c.equals(BigDecimal.class)) {
 			return bigDecimal(l);
+		} else if (c.equals(URI.class)) {
+			return uri(l);
 		} else
 			return l.getValue();
 	}
 	
+	private static URI uri(Literal l) {
+		try {
+			return new URI(l.getString());
+		} catch (URISyntaxException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
 	public static Date date(Literal l) {
 		XSDDateTime date = (XSDDateTime) l.getValue();
 		return date.asCalendar().getTime();

@@ -6,11 +6,13 @@ import static thewebsemantic.TypeWrapper.type;
 
 import java.lang.reflect.Array;
 import java.math.BigInteger;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 
+import com.hp.hpl.jena.datatypes.xsd.XSDDatatype;
 import com.hp.hpl.jena.rdf.model.Literal;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.Property;
@@ -19,6 +21,7 @@ import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.rdf.model.Seq;
 import com.hp.hpl.jena.rdf.model.Statement;
 import com.hp.hpl.jena.shared.Lock;
+import com.hp.hpl.jena.vocabulary.XSD;
 import com.ibm.icu.math.BigDecimal;
 
 /**
@@ -204,6 +207,8 @@ public class Bean2RDF extends Base {
 			return m.createTypedLiteral((BigDecimal)o);
 		else if (o instanceof BigInteger)
 			return m.createTypedLiteral((BigInteger)o);
+		else if (o instanceof URI)
+			return m.createTypedLiteral(o, XSDDatatype.XSDanyURI);
 		return null;
 	}
 
