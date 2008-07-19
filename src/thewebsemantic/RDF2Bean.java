@@ -16,7 +16,6 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.Set;
 
-import com.hp.hpl.jena.graph.Node;
 import com.hp.hpl.jena.rdf.model.Literal;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.Property;

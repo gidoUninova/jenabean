@@ -2,6 +2,7 @@ package thewebsemantic;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.net.URI;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -78,6 +79,10 @@ abstract class Saver {
 		save(m.createTypedLiteral(c));	
 	}
 	
+	public void save(URI uri) {
+		save(m.createTypedLiteral( uri.toString(), XSDDatatype.XSDanyURI));
+	}
+	
 	public void write(Object o) {	
 		if (o instanceof String)
 			save(o.toString());
@@ -101,6 +106,8 @@ abstract class Saver {
 			save((BigInteger) o);
 		else if (o instanceof BigDecimal)
 			save((BigDecimal) o);
+		else if (o instanceof URI)
+			save((URI)o);
 	}
 }
 /*
