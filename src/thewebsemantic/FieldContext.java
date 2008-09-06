@@ -2,6 +2,7 @@ package thewebsemantic;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
+import java.net.URI;
 import java.util.Collection;
 import java.util.Date;
 
@@ -65,6 +66,7 @@ class FieldContext extends ValuesContext {
 	
 	public void setProperty(Object v) {
 	   try {
+//	  	 System.out.println("Setting value: " + v);
 		 field.setAccessible(true);
          field.set(subject, v);
       } catch (Exception e) {e.printStackTrace();}
@@ -72,6 +74,10 @@ class FieldContext extends ValuesContext {
 	
 	public boolean isDate() {
 	   return field.getType().equals(Date.class);
+	}
+	
+	public boolean isURI() {
+	   return field.getType().equals(URI.class);
 	}
 	
 	public boolean isPrimitive() {

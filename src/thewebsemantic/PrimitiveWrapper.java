@@ -26,7 +26,7 @@ public class PrimitiveWrapper {
 		WRAPPERS.add(Calendar.class);
 		WRAPPERS.add(BigDecimal.class);
 		WRAPPERS.add(BigInteger.class);
-		WRAPPERS.add(URI.class);
+//		WRAPPERS.add(URI.class);
 	}
 
 	public static boolean isPrimitive(Class<?> c) {

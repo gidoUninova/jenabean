@@ -8,6 +8,7 @@ import static thewebsemantic.TypeWrapper.wrap;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.InvocationTargetException;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -524,8 +525,15 @@ public class RDF2Bean extends Base {
 			applyLiteral(ctx, nodes.nextStatement().getLiteral());
 		else if (ctx.isArray())
 			array(ctx, nodes.nextStatement().getResource());
+		else if (ctx.isURI())
+			applyURI(ctx, nodes.nextStatement().getResource());
 		else
 			applyIndividual(ctx, nodes.nextStatement().getResource());
+	}
+
+	private void applyURI(ValuesContext ctx, Resource resource) {
+		URI uri = URI.create(resource.getURI());
+		ctx.setProperty(uri);
 	}
 
 	private void array(ValuesContext ctx, RDFNode nextNode) {

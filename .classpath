@@ -19,6 +19,6 @@
 	<classpathentry kind="lib" path="jenalib/wstx-asl-3.0.0.jar"/>
 	<classpathentry kind="lib" path="jenalib/xercesImpl.jar"/>
 	<classpathentry kind="lib" path="jenalib/xml-apis.jar"/>
-	<classpathentry kind="lib" path="junit-4.4.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
