@@ -2,6 +2,7 @@ package thewebsemantic;
 
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.ParameterizedType;
+import java.net.URI;
 import java.util.Collection;
 import java.util.Date;
 
@@ -89,6 +90,13 @@ class PropertyContext extends ValuesContext {
 	 */
 	public boolean isDate() {
 	   return property.getPropertyType().equals(Date.class);
+	}
+	
+	/* (non-Javadoc)
+	 * @see thewebsemantic.ValuesContext#isURI()
+	 */
+	public boolean isURI() {
+	   return property.getPropertyType().equals(URI.class);
 	}
 	
 	/* (non-Javadoc)

@@ -120,6 +120,9 @@ public class Bean2RDF extends Base {
 	}
 
 	private Resource toResource(Object bean) {
+		 if (bean instanceof URI) {
+       return m.createResource(bean.toString());
+		 }
 		return m.createResource(instanceURI(bean), getOntClass(bean));
 	}
 
@@ -164,7 +167,7 @@ public class Bean2RDF extends Base {
 		else if (isPrimitive(o.getClass()))
 			new UpdateSaver(subject, property).write(o);
 		else if (pc.isArray())
-			updateArray(getSeq(subject, property), o);
+			updateArray(getSeq(subject, property), o);			
 		else if (isNormalObject(o))
 			updateOrCreate(subject, property, o);
 	}

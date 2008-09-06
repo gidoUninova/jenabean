@@ -31,6 +31,8 @@ public abstract class ValuesContext {
 
 	public abstract boolean isArray();
 	
+	public abstract boolean isURI();
+	
 	public abstract String getName();
 
 	public abstract Class<?> type();
