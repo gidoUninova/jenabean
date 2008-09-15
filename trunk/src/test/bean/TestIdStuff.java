@@ -17,14 +17,14 @@ public class TestIdStuff {
 	@Test
 	public void testId() throws Exception {
 		String id = "myuniqueid";
-		TestIDBean bean = new TestIDBean(id);
+		AnIDBean bean = new AnIDBean(id);
 		bean.setAddress("123 Oak Circle");
 		bean.setAge(32);
 		Model m = ModelFactory.createDefaultModel();
 		Bean2RDF writer = new Bean2RDF(m);
 		writer.save(bean);
 		RDF2Bean reader = new RDF2Bean(m);
-		TestIDBean bean2 = reader.load(TestIDBean.class, id);
+		AnIDBean bean2 = reader.load(AnIDBean.class, id);
 		assertEquals("123 Oak Circle", bean2.getAddress());
 		assertEquals(32, bean2.getAge());
 	}

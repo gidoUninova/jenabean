@@ -4,7 +4,7 @@ import thewebsemantic.Id;
 import thewebsemantic.Namespace;
 
 @Namespace("http://foo.com/")
-public class TestIDBean {
+public class AnIDBean {
 
 	private String id;
 	private int age;
@@ -67,7 +67,7 @@ public class TestIDBean {
 		this.salary = salary;
 	}
 
-	public TestIDBean(String s) {
+	public AnIDBean(String s) {
 		id = s;
 	}
 	
