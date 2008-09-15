@@ -7,7 +7,7 @@ import thewebsemantic.Bean2RDF;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 
-import static org.junit.Assert.*;
+
 
 public class TestLinkedBean {
 
