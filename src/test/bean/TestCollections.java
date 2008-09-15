@@ -16,7 +16,7 @@ public class TestCollections {
 	public void testIt() throws Exception {
 		OntModel m = ModelFactory.createOntologyModel();	
 		final Bean2RDF writer = new Bean2RDF(m);
-		TestBean bean = new TestBean();
+		SomeBean bean = new SomeBean();
 		List<String> stringValues = Arrays.asList(new String[] {"value1", "value2", "value3"});
 		bean.setStringList(stringValues);
 		bean.setId("1");
@@ -24,7 +24,7 @@ public class TestCollections {
 		bean.setStringArray(values);
 		writer.save(bean);		
 		RDF2Bean reader = new RDF2Bean(m);
-		TestBean bean2 = reader.loadDeep(TestBean.class, "1");
+		SomeBean bean2 = reader.loadDeep(SomeBean.class, "1");
 		for (String s :bean2.getStringList()) {
 			System.out.println(s);			
 		}
