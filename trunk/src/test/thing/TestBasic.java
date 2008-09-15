@@ -24,8 +24,7 @@ public class TestBasic {
 			.setSubject("binding");
 		
 		dcThing.setSubject("owl");
-		System.out.println(dcThing.getSubject());
-
-		m.write(out, "N3");
+		//System.out.println(dcThing.getSubject());
+		//m.write(out, "N3");
 	}
 }
