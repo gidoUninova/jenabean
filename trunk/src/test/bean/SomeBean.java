@@ -10,7 +10,7 @@ import thewebsemantic.Namespace;
  * Test class to prove Jena saving & loading Jenabeans with List fields
  */
 @Namespace("http://my-uri.com/ns")
-public class TestBean {
+public class SomeBean {
 	private Collection<String> stringList;
 	private String[] stringArray;
 	private String id;
