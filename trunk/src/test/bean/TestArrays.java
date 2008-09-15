@@ -16,7 +16,7 @@ import com.hp.hpl.jena.rdf.model.ModelFactory;
 public class TestArrays {
 
 	@Test public void basic() {
-		TestArraysBean bean = new TestArraysBean();
+		ExampleArraysBean bean = new ExampleArraysBean();
 		bean.setId("34fwe");
 		Date d1 = new Date();
 		Date d2 = new Date();
@@ -41,10 +41,10 @@ public class TestArrays {
 	
 		
 		RDF2Bean reader = new RDF2Bean(m);
-		Collection<TestArraysBean>  beans = reader.load(TestArraysBean.class);
+		Collection<ExampleArraysBean>  beans = reader.load(ExampleArraysBean.class);
 		assertEquals(1, beans.size());
 		
-		TestArraysBean loadedBean = beans.iterator().next();
+		ExampleArraysBean loadedBean = beans.iterator().next();
 		assertEquals(0, loadedBean.getAges().length);
 		reader.fill(loadedBean).with("ages");
 		assertEquals(5, loadedBean.getAges().length);

@@ -6,7 +6,7 @@ import thewebsemantic.Id;
 import thewebsemantic.Namespace;
 
 @Namespace("http://example.org/")
-public class TestArraysBean {
+public class ExampleArraysBean {
 	
 	private String[] names;
 	private Date[] times;
