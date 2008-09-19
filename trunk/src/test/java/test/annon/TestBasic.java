@@ -10,7 +10,7 @@ import com.hp.hpl.jena.rdf.model.ModelFactory;
 
 public class TestBasic {
 
-	@Test
+	
 	public void drive() throws NotFoundException {
 		OntModel m = ModelFactory.createOntologyModel();
 		m.read( getClass().getResourceAsStream("/test/annon/example.n3"),null, "N3");
