@@ -1,9 +1,12 @@
 package example;
 
 import static java.lang.System.out;
-import static thewebsemantic.binding.Jenabean.*;
+import static thewebsemantic.binding.Jenabean.include;
+
 import java.util.Collection;
+
 import thewebsemantic.binding.Jenabean;
+
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 
