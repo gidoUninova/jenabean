@@ -17,7 +17,7 @@ public class TestLinkedBean {
 		Bean2RDF writer = new Bean2RDF(m);
 		LinkedBean bean = new LinkedBean();
 		bean.setMyFriend(m.createResource("http://foo.bar/wiggle/wong"));
-		writer.save(bean);
+		//writer.save(bean);
 		m.write(System.out, "N3");
 	}
 }
