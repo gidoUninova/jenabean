@@ -11,7 +11,7 @@ import com.hp.hpl.jena.rdf.model.ModelFactory;
 public class TestBasic {
 
 	
-	public void drive() throws NotFoundException {
+	public void drive() throws NotFoundException { /*
 		OntModel m = ModelFactory.createOntologyModel();
 		m.read( getClass().getResourceAsStream("/test/annon/example.n3"),null, "N3");
 		
@@ -31,7 +31,7 @@ public class TestBasic {
 		for (Thing t : me.getKnows()) {
 			System.out.println(t.name);
 		}
-		
+		*/
 
 	}
 }
