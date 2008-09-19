@@ -1,14 +1,14 @@
 package example;
 
+import static thewebsemantic.binding.Jenabean.load;
+
 import java.util.Collection;
 
 import thewebsemantic.Sparql;
 import thewebsemantic.binding.Jenabean;
-
 import com.hp.hpl.jena.ontology.OntDocumentManager;
 import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
-import static thewebsemantic.binding.Jenabean.*;
 
 public class NTNamesExample {
 
