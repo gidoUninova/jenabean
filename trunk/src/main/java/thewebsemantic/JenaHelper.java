@@ -23,8 +23,6 @@ public class JenaHelper {
 			return ((XSDDateTime)l.getValue()).asCalendar();
 		} else if (c.equals(BigDecimal.class)) {
 			return bigDecimal(l);
-//		} else if (c.equals(URI.class)) {
-//			return uri(l);
 		} else
 			return l.getValue();
 	}

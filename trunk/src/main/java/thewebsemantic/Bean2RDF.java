@@ -21,7 +21,6 @@ import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.rdf.model.Seq;
 import com.hp.hpl.jena.rdf.model.Statement;
 import com.hp.hpl.jena.shared.Lock;
-import com.hp.hpl.jena.vocabulary.XSD;
 import com.ibm.icu.math.BigDecimal;
 
 /**
