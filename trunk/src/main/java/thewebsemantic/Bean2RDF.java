@@ -206,7 +206,7 @@ public class Bean2RDF extends Base {
 		else if (o instanceof Calendar)
 			return m.createTypedLiteral((Calendar) o);
 		else if (o instanceof BigDecimal)
-			return m.createTypedLiteral((BigDecimal)o);
+			return m.createTypedLiteral((BigDecimal)o, XSDDatatype.XSDdouble);
 		else if (o instanceof BigInteger)
 			return m.createTypedLiteral((BigInteger)o);
 		else if (o instanceof URI)

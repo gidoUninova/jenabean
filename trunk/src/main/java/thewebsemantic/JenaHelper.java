@@ -8,7 +8,7 @@ import java.util.Date;
 import com.hp.hpl.jena.datatypes.xsd.XSDDateTime;
 import com.hp.hpl.jena.rdf.model.Literal;
 import com.hp.hpl.jena.rdf.model.RDFNode;
-import com.ibm.icu.math.BigDecimal;
+import java.math.BigDecimal;
 
 public class JenaHelper {
 
