@@ -66,7 +66,7 @@ abstract class Saver {
 	}
 	
 	public void save(BigDecimal v) {
-		save(m.createTypedLiteral(v, XSDDatatype.XSDdecimal));
+		save(m.createTypedLiteral(v, XSDDatatype.XSDdouble));
 	}
 	
 	public void save(Date d) {
