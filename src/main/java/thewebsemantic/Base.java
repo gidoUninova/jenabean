@@ -36,8 +36,7 @@ public class Base {
 	}
 
 	protected Property toRdfProperty(ValuesContext ctx) {
-		//return ctx.existsInModel(m) ? ctx.property(m) : applyEntailments(ctx);
-		return applyEntailments(ctx);
+		return ctx.existsInModel(m) ? ctx.property(m) : applyEntailments(ctx);
 	}
 
 	private Property applyEntailments(ValuesContext ctx) {
