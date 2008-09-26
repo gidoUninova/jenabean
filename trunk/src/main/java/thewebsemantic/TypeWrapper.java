@@ -66,17 +66,33 @@ public class TypeWrapper {
 	public static ValuesContext[] valueContexts(Object o) {
 		return (isFieldLevelAccess()) ? viaFields(o) : viaBeanProperties(o);
 	}
+	
+	public ValuesContext getProperty(String name) {
+		if (isFieldLevelAccess()) {
+			try {
+				Field f = c.getDeclaredField(name);
+				return new FieldContext(null, f);
+			} catch (NoSuchFieldException e) {
+				e.printStackTrace();
+			}
+		} else {
+			for (PropertyDescriptor p : descriptors()) {
+				if (p.getName().equals(name))
+					return new NullPropertyContext(this, p);
+			}
+		}
+		return null;
+	}
 
 	private static boolean isFieldLevelAccess() {
 		String sFieldLevelAccess =  System.getProperty(JENABEAN_FIELDACCESS, "false");
-		boolean fieldLevelAccess = Boolean.valueOf(sFieldLevelAccess);
-		return fieldLevelAccess;
+		return Boolean.valueOf(sFieldLevelAccess);
 	}
 
 	//TODO: needs to be cached in TypeWrapper
 	private static ValuesContext[] viaBeanProperties(Object o) {
 		PropertyDescriptor[] props = type(o).descriptors();
-		PropertyContext[] values = new PropertyContext[props.length];
+		ValuesContext[] values = new ValuesContext[props.length];
 		for (int i = 0; i < props.length; i++)
 			values[i] = new PropertyContext(o, props[i]);
 		return values;
@@ -140,10 +156,6 @@ public class TypeWrapper {
 					results.add(p.getName());			
 		}
 		return results.toArray(new String[0]);
-	}
-
-	public Field[] fields() {
-		return c.getFields();
 	}
 
 	public String namespace() {

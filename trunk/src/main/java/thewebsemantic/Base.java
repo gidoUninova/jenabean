@@ -43,6 +43,11 @@ public class Base {
 			op.convertToSymmetricProperty();
 		else if (ctx.isTransitive())
 			op.convertToTransitiveProperty();
+		else if (ctx.isInverse()) {
+			TypeWrapper type = TypeWrapper.wrap(ctx.t());
+			ValuesContext inverse = type.getProperty(ctx.inverseOf());
+			op.addInverseOf(inverse.property(om));
+		}
 		return op;
 	}
 

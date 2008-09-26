@@ -6,20 +6,19 @@ import java.net.URI;
 import java.util.Collection;
 import java.util.Date;
 
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+
 import com.hp.hpl.jena.graph.Node;
 import com.hp.hpl.jena.rdf.model.Model;
-import com.hp.hpl.jena.rdf.model.Property;
 
-class PropertyContext extends ValuesContext {
+class NullPropertyContext extends ValuesContext {
 
-	Object subject;
 	PropertyDescriptor property;
 	TypeWrapper type;
 
-	public PropertyContext(Object bean, PropertyDescriptor p) {
-		subject = bean;
+	public NullPropertyContext(TypeWrapper t, PropertyDescriptor p) {
 		property = p;
-		type = TypeWrapper.type(bean);
+		type = t;
 	}
 	
 	/* (non-Javadoc)
@@ -47,7 +46,7 @@ class PropertyContext extends ValuesContext {
 	public boolean isTransitive() {
 		return isTransitive(property.getReadMethod());
 	}
-
+	
 	/* (non-Javadoc)
 	 * @see thewebsemantic.ValuesContext#existsInModel(com.hp.hpl.jena.rdf.model.Model)
 	 */
@@ -60,22 +59,14 @@ class PropertyContext extends ValuesContext {
 	 * @see thewebsemantic.ValuesContext#invokeGetter()
 	 */
 	public Object invokeGetter() {
-		Object result=null;
-		try {
-			result = property.getReadMethod().invoke(subject);
-			if ( result == null)
-				result = new int[0];
-		} catch (Exception e) {}
-		return result;
+		throw new NotImplementedException();
 	}
 	
 	/* (non-Javadoc)
 	 * @see thewebsemantic.ValuesContext#setProperty(java.lang.Object)
 	 */
 	public void setProperty(Object v) {
-	   try {
-         property.getWriteMethod().invoke(subject, v);
-      } catch (Exception e) {}
+		throw new NotImplementedException();
 	}
 	
 	/* (non-Javadoc)

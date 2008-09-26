@@ -39,13 +39,14 @@ class FieldContext extends ValuesContext {
     	return type;
     }
 
+    
 	
-	public boolean isTransitive() {
+	public boolean isInverse() {
 		return TypeWrapper.getRDFAnnotation(field).transitive();
 	}
 	
-	public Property property(Model m) { 
-		return (existsInModel(m)) ? m.getProperty(uri()): null;
+	public String inverseOf() {
+		return inverseOf(field);
 	}
 
 	public boolean existsInModel(Model m) {
@@ -102,6 +103,11 @@ class FieldContext extends ValuesContext {
 
 	public Class<?> t() { 
 		return getGenericType((ParameterizedType) field.getGenericType());
+	}
+
+	@Override
+	public boolean isTransitive() {
+		return isTransitive(field);
 	}
 
 }
