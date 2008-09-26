@@ -18,4 +18,9 @@ class NullRdfProperty implements RdfProperty {
 	public Class<? extends Annotation> annotationType() {
 		return null;
 	}
+
+	@Override
+	public String inverseOf() {
+		return "";
+	}
 }

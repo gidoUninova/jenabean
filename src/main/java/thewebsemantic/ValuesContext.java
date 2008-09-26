@@ -1,5 +1,6 @@
 package thewebsemantic;
 
+import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.ParameterizedType;
 
 import thewebsemantic.Base.NullType;
@@ -14,8 +15,10 @@ public abstract class ValuesContext {
 	public abstract boolean isSymmetric();
 
 	public abstract boolean isTransitive();
-
-	public abstract Property property(Model m);
+	
+	public abstract boolean isInverse();
+	
+	public abstract String inverseOf();
 
 	public abstract boolean existsInModel(Model m);
 
@@ -44,6 +47,24 @@ public abstract class ValuesContext {
 	public Class<?> getGenericType(ParameterizedType type) {
 		return (type == null) ? NullType.class : (Class<?>) type
 				.getActualTypeArguments()[0];		
+	}
+
+	public boolean isTransitive(AccessibleObject o) {
+		return TypeWrapper.getRDFAnnotation(o).transitive();
+	}
+
+	public boolean isInverse(AccessibleObject o) {
+		String inverseProperty = 
+			TypeWrapper.getRDFAnnotation(o).inverseOf();
+		return !"".equals(inverseProperty);
+	}
+	
+	public String inverseOf(AccessibleObject o) {
+		return TypeWrapper.getRDFAnnotation(o).inverseOf();
+	}
+
+	public Property property(Model m) { 
+		return m.getProperty(uri());
 	}
 
 }

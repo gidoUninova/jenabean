@@ -22,6 +22,7 @@ public @interface RdfProperty {
 	String value() default "";
 	boolean symmetric() default false;
 	boolean transitive() default false;
+	String inverseOf() default "";
 }
 /*
 	Copyright (c) 2007 
