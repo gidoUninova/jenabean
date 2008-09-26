@@ -24,7 +24,6 @@ public class Tag {
 		return name;
 	}
 
-	@RdfProperty(inverseOf="tags")
 	public Collection<Taggable> getItems() {
 		return items;
 	}

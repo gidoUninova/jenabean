@@ -11,10 +11,11 @@ public class Taggable {
 	protected Collection<Tag> tags = new LinkedList<Tag>();
 
 
-	
+	@RdfProperty(inverseOf="items")	
 	public Collection<Tag> getTags() {
 		return tags;
 	}
+
 
 	public void setTags(Collection<Tag> tags) {
 		this.tags = tags;

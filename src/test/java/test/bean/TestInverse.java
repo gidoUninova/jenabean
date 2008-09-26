@@ -3,6 +3,8 @@ package test.bean;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.util.Collection;
 
@@ -21,21 +23,21 @@ public class TestInverse {
 	
 	@Test
 	public void testExtended()  throws Exception {
-		OntModel m = ModelFactory.createOntologyModel(OntModelSpec.OWL_MEM_MINI_RULE_INF);	
+		System.setProperty("jenabean.fieldaccess", "false");
+		OntModel m = ModelFactory.createOntologyModel(OntModelSpec.OWL_MEM_MICRO_RULE_INF);	
 		Bean2RDF writer = new Bean2RDF(m);
 		
 		Tag fun = new Tag("fun");
 		writer.save(fun);
 		Tag run = new Tag("run");
 		Post p1 = new Post();
-	
 		p1.setTitle("i like OWL");
-		
+		writer.save(p1);
 		p1.addTag(fun);
 		p1.addTag(run);
 		
 		writer.save(p1); 
-		m.writeAll(System.out, "N3", null);
+		
 		RDF2Bean reader = new RDF2Bean(m);
 		reader.loadDeep(Post.class, p1.hashCode());
 		Post test = reader.loadDeep(Post.class, p1.hashCode());
@@ -54,7 +56,8 @@ public class TestInverse {
 	
 	@Test
 	public void testBasic() throws Exception {
-		OntModel m = ModelFactory.createOntologyModel(OntModelSpec.OWL_MEM_MINI_RULE_INF);	
+		System.setProperty("jenabean.fieldaccess", "false");
+		OntModel m = ModelFactory.createOntologyModel(OntModelSpec.OWL_MEM_MICRO_RULE_INF);	
 		Bean2RDF writer = new Bean2RDF(m);
 
 		Apple a = new Apple();
@@ -71,7 +74,7 @@ public class TestInverse {
 		writer.save(a);
 		writer.save(o);		
 		
-		
+		m.writeAll(System.out, "N3", null);
 		RDF2Bean reader = new RDF2Bean(m);
 		Collection<Orange> oranges = reader.loadDeep(Orange.class);
 
@@ -79,17 +82,20 @@ public class TestInverse {
 			assertEquals(1, orange.getApples().size());
 
 		writer.save(aprime);
+		File f = new File("tmp.rdf");
+		if ( f.exists())
+			f.delete();
 		m.write(new FileWriter("tmp.rdf"));
-		m = ModelFactory.createOntologyModel(OntModelSpec.OWL_MEM_MINI_RULE_INF);
+		m = ModelFactory.createOntologyModel(OntModelSpec.OWL_MEM_MICRO_RULE_INF);
 		reader = new RDF2Bean(m);
-		m.read("file:tmp.rdf");
+		m.read(new FileReader("tmp.rdf"), null);
 		o = reader.loadDeep(Orange.class, rememberedId);
 		assertEquals(2, o.getApples().size());
 		
 		//without reasoner, it's back to none
 		m = ModelFactory.createOntologyModel();
 		reader = new RDF2Bean(m);
-		m.read("file:tmp.rdf");
+		m.read(new FileReader("tmp.rdf"), null);
 		o = reader.loadDeep(Orange.class, rememberedId);
 		assertEquals(0, o.getApples().size());
 		
