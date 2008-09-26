@@ -1,14 +1,12 @@
 package thewebsemantic;
 
-import java.net.URI;
-import java.net.URISyntaxException;
+import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Date;
 
 import com.hp.hpl.jena.datatypes.xsd.XSDDateTime;
 import com.hp.hpl.jena.rdf.model.Literal;
 import com.hp.hpl.jena.rdf.model.RDFNode;
-import java.math.BigDecimal;
 
 public class JenaHelper {
 
@@ -27,15 +25,6 @@ public class JenaHelper {
 			return l.getValue();
 	}
 	
-	private static URI uri(Literal l) {
-		try {
-			return new URI(l.getString());
-		} catch (URISyntaxException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-
 	public static Date date(Literal l) {
 		XSDDateTime date = (XSDDateTime) l.getValue();
 		return date.asCalendar().getTime();

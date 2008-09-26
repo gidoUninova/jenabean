@@ -298,6 +298,7 @@ public class TestBean2Rdf {
 		int aInt = Integer.MAX_VALUE;
 		long aLong = Long.MAX_VALUE;
 		BigDecimal bd = new BigDecimal("1115.37");
+		bd.setScale(2);
 
 
 		bean.setMyDate(aDate);
