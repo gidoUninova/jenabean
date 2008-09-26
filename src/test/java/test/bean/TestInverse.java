@@ -63,17 +63,9 @@ public class TestInverse {
 		aprime.addOrange(o);
 		
 		writer.save(a);
-		writer.save(o);
-
-		TypeWrapper appleType = TypeWrapper.wrap(Apple.class);
-		TypeWrapper orangeType = TypeWrapper.wrap(Orange.class);
+		writer.save(o);		
 		
-		OntProperty pOranges = m.getOntProperty( appleType.namespace() + "oranges" );
-		OntProperty pApples = m.getOntProperty( orangeType.namespace() + "apples" );
-		pOranges.setInverseOf(pApples);
-		
-		
-		//m.write(System.out);
+		m.write(System.out);
 		RDF2Bean reader = new RDF2Bean(m);
 		Collection<Orange> oranges = reader.loadDeep(Orange.class);
 
