@@ -5,6 +5,7 @@ import java.util.LinkedList;
 
 import thewebsemantic.Id;
 import thewebsemantic.Namespace;
+import thewebsemantic.RdfProperty;
 
 @Namespace("http://example.org/")
 public class Tag {
@@ -23,6 +24,7 @@ public class Tag {
 		return name;
 	}
 
+	@RdfProperty(inverseOf="tags")
 	public Collection<Taggable> getItems() {
 		return items;
 	}

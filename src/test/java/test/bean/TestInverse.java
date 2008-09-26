@@ -25,12 +25,17 @@ public class TestInverse {
 		Bean2RDF writer = new Bean2RDF(m);
 		
 		Tag fun = new Tag("fun");
+		writer.save(fun);
 		Tag run = new Tag("run");
 		Post p1 = new Post();
+	
 		p1.setTitle("i like OWL");
+		
 		p1.addTag(fun);
 		p1.addTag(run);
+		
 		writer.save(p1); 
+		m.writeAll(System.out, "N3", null);
 		RDF2Bean reader = new RDF2Bean(m);
 		reader.loadDeep(Post.class, p1.hashCode());
 		Post test = reader.loadDeep(Post.class, p1.hashCode());
@@ -38,6 +43,7 @@ public class TestInverse {
 		
 		Tag funLoaded = reader.loadDeep(Tag.class, "fun");
 		Collection<Taggable> items = funLoaded.getItems();
+		assertEquals(1, funLoaded.getItems().size());
 		for (Object o : items) {
 			assertTrue(o instanceof Post);
 			Post p = (Post)o;
@@ -65,7 +71,7 @@ public class TestInverse {
 		writer.save(a);
 		writer.save(o);		
 		
-		m.write(System.out);
+		
 		RDF2Bean reader = new RDF2Bean(m);
 		Collection<Orange> oranges = reader.loadDeep(Orange.class);
 

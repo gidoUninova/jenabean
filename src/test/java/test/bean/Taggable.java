@@ -4,12 +4,14 @@ import java.util.Collection;
 import java.util.LinkedList;
 
 import thewebsemantic.Namespace;
+import thewebsemantic.RdfProperty;
 
 @Namespace("http://example.org/")
 public class Taggable {
 	protected Collection<Tag> tags = new LinkedList<Tag>();
 
 
+	
 	public Collection<Tag> getTags() {
 		return tags;
 	}
