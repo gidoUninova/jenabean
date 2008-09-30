@@ -3,8 +3,6 @@ package thewebsemantic;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.ParameterizedType;
 
-import javax.swing.plaf.basic.BasicInternalFrameTitlePane.SystemMenuBar;
-
 import thewebsemantic.binding.Jenabean;
 
 import com.hp.hpl.jena.ontology.OntModel;
