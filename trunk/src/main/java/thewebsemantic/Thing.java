@@ -1,5 +1,6 @@
 package thewebsemantic;
 
+import static thewebsemantic.JenaHelper.toLiteral;
 import static thewebsemantic.TypeWrapper.wrap;
 
 import java.lang.reflect.InvocationHandler;
@@ -59,7 +60,7 @@ public class Thing implements InvocationHandler, As {
 		Property p = model.getProperty(ns + methodName);
 		
 		if ( PrimitiveWrapper.isPrimitive(arg))
-			new UpdateSaver(r,p).write(arg);
+			r.removeAll(p).addProperty(p, JenaHelper.toLiteral(model, arg));
 		else if (arg instanceof Thing)
 			set(p, (Thing)arg);
 	}
