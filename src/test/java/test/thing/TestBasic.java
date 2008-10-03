@@ -7,7 +7,6 @@ import org.junit.Test;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 import thewebsemantic.Thing;
-import static java.lang.System.out;
 
 
 public class TestBasic {
@@ -27,4 +26,5 @@ public class TestBasic {
 		//System.out.println(dcThing.getSubject());
 		//m.write(out, "N3");
 	}
+	
 }
