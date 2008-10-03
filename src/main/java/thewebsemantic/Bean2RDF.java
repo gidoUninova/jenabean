@@ -5,15 +5,10 @@ import static thewebsemantic.TypeWrapper.instanceURI;
 import static thewebsemantic.TypeWrapper.type;
 
 import java.lang.reflect.Array;
-import java.math.BigInteger;
 import java.net.URI;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collection;
-import java.util.Date;
 
-import com.hp.hpl.jena.datatypes.xsd.XSDDatatype;
-import com.hp.hpl.jena.rdf.model.Literal;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.Property;
 import com.hp.hpl.jena.rdf.model.RDFNode;
@@ -21,7 +16,6 @@ import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.rdf.model.Seq;
 import com.hp.hpl.jena.rdf.model.Statement;
 import com.hp.hpl.jena.shared.Lock;
-import com.ibm.icu.math.BigDecimal;
 
 /**
  * Converts a simple java bean to RDF, provided it's annotated with
@@ -180,38 +174,7 @@ public class Bean2RDF extends Base {
 	}
 	
 	private RDFNode toNode(Object o) {
-		return (isPrimitive(o)) ? toLiteral(o):_write(o,true);
-	}
-
-	private Literal toLiteral(Object o) {	
-		if (o instanceof String)
-			return m.createTypedLiteral(o.toString());
-		else if (o instanceof Date) {
-			Calendar c = Calendar.getInstance();
-			c.setTime((Date)o);
-			return m.createTypedLiteral(c);
-		}
-		else if (o instanceof Integer)
-			return m.createTypedLiteral(((Integer) o).intValue());
-		else if (o instanceof Long)
-			return m.createTypedLiteral(((Long) o).longValue());
-		else if (o instanceof Float)
-			return m.createTypedLiteral(((Float) o).floatValue());
-		else if (o instanceof Double)
-			return m.createTypedLiteral(((Double) o).doubleValue());
-		else if (o instanceof Character)
-			return m.createTypedLiteral(((Character) o).charValue());
-		else if (o instanceof Boolean)
-			return m.createTypedLiteral(((Boolean) o).booleanValue());
-		else if (o instanceof Calendar)
-			return m.createTypedLiteral((Calendar) o);
-		else if (o instanceof BigDecimal)
-			return m.createTypedLiteral((BigDecimal)o, XSDDatatype.XSDdouble);
-		else if (o instanceof BigInteger)
-			return m.createTypedLiteral((BigInteger)o);
-		else if (o instanceof URI)
-			return m.createTypedLiteral(o, XSDDatatype.XSDanyURI);
-		return null;
+		return (isPrimitive(o)) ? JenaHelper.toLiteral(m, o):_write(o,true);
 	}
 
 	private Seq getSeq(Resource subject, Property property) {

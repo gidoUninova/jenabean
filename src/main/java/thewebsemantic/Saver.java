@@ -1,12 +1,13 @@
 package thewebsemantic;
 
+import static thewebsemantic.JenaHelper.toLiteral;
+
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.net.URI;
 import java.util.Calendar;
 import java.util.Date;
 
-import com.hp.hpl.jena.datatypes.xsd.XSDDatatype;
 import com.hp.hpl.jena.rdf.model.Literal;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.Property;
@@ -28,59 +29,57 @@ abstract class Saver {
 	public abstract void save(Literal l);
 	
 	public void save(double v) {
-		save(m.createTypedLiteral(v));	
+		save(toLiteral(m,v));	
 	}
 
 	
 	public void save(long v) {
-		save(m.createTypedLiteral(v));	
+		save(toLiteral(m,v));	
 	}
 
 	
 	public void save(int v) {
-		save(m.createTypedLiteral(v));	
+		save(toLiteral(m,v));	
 	}
 
 	
 	public void save(char c) {
-		save(m.createTypedLiteral(c));	
+		save(toLiteral(m,c));	
 	}
 
 	
 	public void save(boolean b) {
-		save(m.createTypedLiteral(b));	
+		save(toLiteral(m,b));	
 	}
 	
 	
 	public void save(float v) {
-		save(m.createTypedLiteral(v));	
+		save(toLiteral(m,v));	
 	}
 
 	
 	public void save(String s) {
-		save(m.createTypedLiteral(s));	
+		save(toLiteral(m,s));	
 	}
 
 	public void save(BigInteger v) {
-		save(m.createTypedLiteral(v));
+		save(toLiteral(m,v));
 	}
 	
 	public void save(BigDecimal v) {
-		save(m.createTypedLiteral(v));
+		save(toLiteral(m,v));
 	}
 	
 	public void save(Date d) {
-		Calendar c = Calendar.getInstance();
-		c.setTime(d);
-		save(m.createTypedLiteral(c));	
+		save(toLiteral(m,d));
 	}
 
 	public void save(Calendar c) {
-		save(m.createTypedLiteral(c));	
+		save(toLiteral(m,c));	
 	}
 	
 	public void save(URI uri) {
-		save(m.createTypedLiteral( uri.toString(), XSDDatatype.XSDanyURI));
+		save(toLiteral(m,uri));
 	}
 	
 	public void write(Object o) {	
