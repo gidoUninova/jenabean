@@ -3,6 +3,7 @@ package thewebsemantic;
 import static thewebsemantic.PrimitiveWrapper.isPrimitive;
 import static thewebsemantic.TypeWrapper.instanceURI;
 import static thewebsemantic.TypeWrapper.type;
+import static thewebsemantic.JenaHelper.toLiteral;
 
 import java.lang.reflect.Array;
 import java.net.URI;
@@ -158,7 +159,7 @@ public class Bean2RDF extends Base {
 		if (o instanceof Collection)
 			updateCollection(subject, property, (Collection<?>) o);
 		else if (isPrimitive(o.getClass()))
-			new UpdateSaver(subject, property).write(o);
+			subject.removeAll(property).addProperty(property, toLiteral(m, o));
 		else if (pc.isArray())
 			updateArray(getSeq(subject, property), o);			
 		else if (isNormalObject(o))
@@ -174,7 +175,7 @@ public class Bean2RDF extends Base {
 	}
 	
 	private RDFNode toNode(Object o) {
-		return (isPrimitive(o)) ? JenaHelper.toLiteral(m, o):_write(o,true);
+		return (isPrimitive(o)) ? toLiteral(m, o): _write(o,true);
 	}
 
 	private Seq getSeq(Resource subject, Property property) {
@@ -201,10 +202,9 @@ public class Bean2RDF extends Base {
 			Collection<?> c) {
 		if (supportsDelete(c))
 			subject.removeAll(property);
-		AddSaver saver = new AddSaver(subject, property);
 		for (Object o : c)
 			if (isPrimitive(o))
-				saver.write(o); // leaf
+				subject.addProperty(property, toLiteral(m, o)); // leaf
 			else
 				subject.addProperty(property, _write(o, true)); // recursive
 	}
