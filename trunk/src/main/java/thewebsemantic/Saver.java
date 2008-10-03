@@ -2,12 +2,6 @@ package thewebsemantic;
 
 import static thewebsemantic.JenaHelper.toLiteral;
 
-import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.net.URI;
-import java.util.Calendar;
-import java.util.Date;
-
 import com.hp.hpl.jena.rdf.model.Literal;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.Property;
@@ -28,85 +22,8 @@ abstract class Saver {
 
 	public abstract void save(Literal l);
 	
-	public void save(double v) {
-		save(toLiteral(m,v));	
-	}
-
-	
-	public void save(long v) {
-		save(toLiteral(m,v));	
-	}
-
-	
-	public void save(int v) {
-		save(toLiteral(m,v));	
-	}
-
-	
-	public void save(char c) {
-		save(toLiteral(m,c));	
-	}
-
-	
-	public void save(boolean b) {
-		save(toLiteral(m,b));	
-	}
-	
-	
-	public void save(float v) {
-		save(toLiteral(m,v));	
-	}
-
-	
-	public void save(String s) {
-		save(toLiteral(m,s));	
-	}
-
-	public void save(BigInteger v) {
-		save(toLiteral(m,v));
-	}
-	
-	public void save(BigDecimal v) {
-		save(toLiteral(m,v));
-	}
-	
-	public void save(Date d) {
-		save(toLiteral(m,d));
-	}
-
-	public void save(Calendar c) {
-		save(toLiteral(m,c));	
-	}
-	
-	public void save(URI uri) {
-		save(toLiteral(m,uri));
-	}
-	
 	public void write(Object o) {	
-		if (o instanceof String)
-			save(o.toString());
-		else if (o instanceof Date)
-			save((Date) o);
-		else if (o instanceof Integer)
-			save((Integer) o);
-		else if (o instanceof Long)
-			save((Long) o);
-		else if (o instanceof Float)
-			save((Float) o);
-		else if (o instanceof Double)
-			save((Double) o);
-		else if (o instanceof Character)
-			save((Character) o);
-		else if (o instanceof Boolean)
-			save((Boolean) o);
-		else if (o instanceof Calendar)
-			save((Calendar) o);
-		else if (o instanceof BigInteger)
-			save((BigInteger) o);
-		else if (o instanceof BigDecimal)
-			save((BigDecimal) o);
-		else if (o instanceof URI)
-			save((URI)o);
+		save(toLiteral(m, o));
 	}
 }
 /*
