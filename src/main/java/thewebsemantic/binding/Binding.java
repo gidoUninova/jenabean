@@ -23,8 +23,5 @@ public class Binding {
 		binder.save(javaClass, ontClass);
 	}
 	
-	public void foo() {
-		Package p = Package.getPackage("example");
-		p.
-	}
+
 }
