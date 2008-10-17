@@ -4,8 +4,8 @@ import java.util.Calendar;
 import java.util.Date;
 
 import thewebsemantic.Id;
-import thewebsemantic.RdfBean;
 import thewebsemantic.RdfProperty;
+import thewebsemantic.binding.RdfBean;
 
 public class AllTypes extends RdfBean<AllTypes> {
 	

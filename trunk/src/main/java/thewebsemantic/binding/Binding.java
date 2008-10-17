@@ -1,27 +1,29 @@
 package thewebsemantic.binding;
 
+import thewebsemantic.binder.Binder;
+
 import com.hp.hpl.jena.ontology.OntClass;
 
 public class Binding {
 
 	private String ontClass;
-	private Class<?> javaClass;
-	private Jenabean binder;
+	private Binder binder;
 	
-	public Binding(Jenabean b, OntClass c) {
+	public Binding(Binder b, OntClass c) {
 		ontClass = c.getURI();
 		binder = b;
 	}
 
-	public Binding(Jenabean b, String ontClassUri) {
+	public Binding(Binder b, String ontClassUri) {
 		ontClass = ontClassUri;
 		binder = b;
 	}
 	
 	public void to(Class<?> c) {
-		javaClass = c;
-		binder.save(javaClass, ontClass);
+		binder.save(c, ontClass);
 	}
+	
+	
 	
 
 }

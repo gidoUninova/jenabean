@@ -1,6 +1,8 @@
-package thewebsemantic;
+package thewebsemantic.binding;
 
 import java.rmi.server.UID;
+
+import thewebsemantic.Id;
 
 public class RdfBeanId<T> extends RdfBean<T> {
 

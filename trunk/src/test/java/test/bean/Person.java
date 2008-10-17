@@ -4,9 +4,9 @@ import java.rmi.server.UID;
 import java.util.Collection;
 import java.util.Date;
 import java.util.LinkedList;
-import thewebsemantic.RdfBean;
 import thewebsemantic.RdfProperty;
 import thewebsemantic.Uri;
+import thewebsemantic.binding.RdfBean;
 
 public class Person extends RdfBean<Person> {
 	private String firstName;

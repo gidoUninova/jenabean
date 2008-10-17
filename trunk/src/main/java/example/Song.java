@@ -3,8 +3,8 @@ package example;
 import java.util.Collection;
 
 import thewebsemantic.Id;
-import thewebsemantic.RdfBean;
 import thewebsemantic.binding.Jenabean;
+import thewebsemantic.binding.RdfBean;
 
 public class Song extends RdfBean<Song> {
 	private String composer;

@@ -1,6 +1,6 @@
 package test.bean;
 
-import thewebsemantic.RdfBeanId;
+import thewebsemantic.binding.RdfBeanId;
 
 public class Company extends RdfBeanId<Company> {
 	

@@ -1,8 +1,8 @@
 package test.bean;
 
-import thewebsemantic.RdfBean;
 import thewebsemantic.RdfProperty;
 import thewebsemantic.Uri;
+import thewebsemantic.binding.RdfBean;
 
 public class Man extends RdfBean<Man>{
 

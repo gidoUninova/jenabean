@@ -3,7 +3,8 @@ package thewebsemantic;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.ParameterizedType;
 
-import thewebsemantic.binding.Jenabean;
+import thewebsemantic.binder.Binder;
+import thewebsemantic.binder.BinderImp;
 
 import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.ontology.OntProperty;
@@ -18,7 +19,7 @@ public class Base {
 	protected static final String JAVACLASS = "http://thewebsemantic.com/javaclass";
 	protected OntModel om;
 	protected Model m;
-	protected Jenabean binder;
+	protected Binder binder;
 	protected Property javaclass;
 
 	protected Resource ontClass(String uri) {
@@ -27,7 +28,7 @@ public class Base {
 		
 	protected Base(Model m) {
 		this.m = m;
-		binder = Jenabean.instance();		
+		binder = BinderImp.instance();		
 		if ( m instanceof OntModel) {om = (OntModel)m;}
 		javaclass = m.createProperty(JAVACLASS);
 		javaclass.addProperty(RDF.type,OWL.AnnotationProperty);
