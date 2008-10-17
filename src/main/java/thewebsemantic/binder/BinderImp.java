@@ -25,7 +25,7 @@ public class BinderImp implements Binder {
 	}
 	
 	public String getUri(Class<?> c) {
-		return (class2url.containsKey(c)) ? class2url.get(c) : null;
+		return class2url.get(c);
 	}
 	
 	public String getUri(Object bean) {
@@ -33,7 +33,7 @@ public class BinderImp implements Binder {
 	}
 	
 	public Class<?> getClass(String uri) {
-		return (url2class.containsKey(uri)) ? url2class.get(uri):null;		
+		return url2class.get(uri);		
 	}
 	
 	public void save(Class<?> javaClass, String ontClass) {
