@@ -1,8 +1,8 @@
-package thewebsemantic;
+package thewebsemantic.binding;
 
 import static thewebsemantic.TypeWrapper.instanceURI;
 import static thewebsemantic.TypeWrapper.wrap;
-import thewebsemantic.binding.Jenabean;
+import thewebsemantic.NotFoundException;
 
 import com.hp.hpl.jena.rdf.model.Resource;
 

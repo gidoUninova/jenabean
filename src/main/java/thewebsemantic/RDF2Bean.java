@@ -95,7 +95,6 @@ public class RDF2Bean extends Base {
 	 * myRDF2Bean.fill(aCustomer, "orders");
 	 * </code>
 	 * 
-	 * @see binding.Jenabean
 	 * @see Namespace
 	 * @param <T>
 	 * @param c
@@ -175,7 +174,6 @@ public class RDF2Bean extends Base {
 	 * @param id
 	 *            unique id of the bean to find
 	 * @return An instance of T, otherwise null
-	 * @see binding.Jenabean
 	 * @see Namespace
 	 */
 	public <T> T loadDeep(Class<T> c, int id) throws NotFoundException {

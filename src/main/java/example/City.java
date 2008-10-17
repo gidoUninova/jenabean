@@ -2,9 +2,9 @@ package example;
 
 import java.util.Collection;
 
-import thewebsemantic.RdfBean;
 import thewebsemantic.RdfProperty;
 import thewebsemantic.Uri;
+import thewebsemantic.binding.RdfBean;
 
 public class City extends RdfBean<City>{
 

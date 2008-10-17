@@ -3,7 +3,7 @@ package test.bean;
 import java.util.Collection;
 
 import thewebsemantic.Id;
-import thewebsemantic.RdfBean;
+import thewebsemantic.binding.RdfBean;
 
 public class Article extends RdfBean<Article> { 
 

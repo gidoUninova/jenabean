@@ -1,11 +1,16 @@
 package test.thing;
 
 
+import java.util.Set;
+
 import org.junit.Test;
 
 
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
+
+import thewebsemantic.Namespace;
+import thewebsemantic.ResolverUtil;
 import thewebsemantic.Thing;
 
 
@@ -25,6 +30,16 @@ public class TestBasic {
 		dcThing.setSubject("owl");
 		//System.out.println(dcThing.getSubject());
 		//m.write(out, "N3");
+	}
+	
+	@Test
+	public void annotated() {
+		ResolverUtil<Object> resolver = new ResolverUtil<Object>();
+		resolver.findAnnotated(Namespace.class, "example");
+		Set<Class<? extends Object>> classes = resolver.getClasses();
+		for (Class<? extends Object> class1 : classes) {
+			System.out.println(class1.getName());
+		}
 	}
 	
 }

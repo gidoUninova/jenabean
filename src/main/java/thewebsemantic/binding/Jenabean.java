@@ -1,24 +1,24 @@
 package thewebsemantic.binding;
 
 import java.util.Collection;
-import java.util.HashMap;
 
 import thewebsemantic.Bean2RDF;
 import thewebsemantic.Includer;
 import thewebsemantic.NotFoundException;
 import thewebsemantic.RDF2Bean;
 import thewebsemantic.RdfProperty;
+import thewebsemantic.binder.Binder;
+import thewebsemantic.binder.BinderImp;
 
 import com.hp.hpl.jena.ontology.OntClass;
 import com.hp.hpl.jena.rdf.model.Model;
 
-public class Jenabean {
+public class Jenabean  {
 	
-	private HashMap<Class<?>, String> class2url;
-	private HashMap<String, Class<?>> url2class;
 	private Model model;
 	private Bean2RDF writer;
 	private RDF2Bean reader;
+	private Binder binder = BinderImp.instance();
 	
 	private static Jenabean myself = new Jenabean();
 	
@@ -27,8 +27,7 @@ public class Jenabean {
 	}
 
 	private Jenabean() {
-		class2url = new HashMap<Class<?>, String>();
-		url2class = new HashMap<String, Class<?>>();
+
 	}
 	
 	public void bind(Model m) {
@@ -57,28 +56,23 @@ public class Jenabean {
 	}
 	
 	public Binding bind(OntClass oc) {
-		return new Binding(this,oc);
+		return new Binding(binder,oc);
 	}
 
 	public Binding bind(String ontClassUri) {
-		return new Binding(this,ontClassUri);
-	}
-	
-	protected void save(Class<?> javaClass, String ontClass) {
-		class2url.put(javaClass, ontClass);
-		url2class.put(ontClass, javaClass);
+		return new Binding(binder,ontClassUri);
 	}
 	
 	public boolean isBound(Class<?> c) {
-		return class2url.containsKey(c);
+		return binder.isBound(c);
 	}
 	
 	public boolean isBound(OntClass c) {
-		return url2class.containsKey(c.getURI());
+		return binder.isBound(c);
 	}
 	
 	public String getUri(Class<?> c) {
-		return (class2url.containsKey(c)) ? class2url.get(c) : null;
+		return binder.getUri(c);
 	}
 	
 	public String getUri(Object bean) {
@@ -86,7 +80,7 @@ public class Jenabean {
 	}
 	
 	public Class<?> getClass(String uri) {
-		return (url2class.containsKey(uri)) ? url2class.get(uri):null;		
+		return binder.getClass(uri);	
 	}
 	
 	public static boolean exists(Class<?> c, String id) {

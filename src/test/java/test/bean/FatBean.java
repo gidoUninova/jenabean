@@ -2,7 +2,7 @@ package test.bean;
 
 import java.util.Collection;
 
-import thewebsemantic.RdfBeanId;
+import thewebsemantic.binding.RdfBeanId;
 
 public class FatBean extends RdfBeanId<FatBean> {
 	private Collection<String> hamburgers;
