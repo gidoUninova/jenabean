@@ -1,12 +1,15 @@
 package thewebsemantic.binding;
 
 import java.util.Collection;
+import java.util.Set;
 
 import thewebsemantic.Bean2RDF;
 import thewebsemantic.Includer;
+import thewebsemantic.Namespace;
 import thewebsemantic.NotFoundException;
 import thewebsemantic.RDF2Bean;
 import thewebsemantic.RdfProperty;
+import thewebsemantic.ResolverUtil;
 import thewebsemantic.binder.Binder;
 import thewebsemantic.binder.BinderImp;
 
@@ -99,5 +102,17 @@ public class Jenabean  {
 	}	
 	public static Includer include(String s) {
 		return new Includer(s, myself.reader());
+	}
+
+	public void bindAll(String... string) {
+		ResolverUtil<Object> resolver = new ResolverUtil<Object>();
+		resolver.findAnnotated(Namespace.class, "example");
+		Set<Class<? extends Object>> classes = resolver.getClasses();
+		for (Class<? extends Object> class1 : classes) {
+			Namespace ns = class1.getAnnotation(Namespace.class);
+			String namespace = ns.value();
+			bind(namespace + "#" + class1.getSimpleName()).to(class1);
+		}		
+		
 	}
 }
