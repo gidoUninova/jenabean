@@ -4,6 +4,7 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -19,6 +20,11 @@ public class TestBasic {
 	@Before
 	public void setup() {
 		System.setProperty("jenabean.fieldaccess", "true");
+	}
+	
+	@After
+	public void after() {
+		System.setProperty("jenabean.fieldaccess", "false");
 	}
 
 	@Test
