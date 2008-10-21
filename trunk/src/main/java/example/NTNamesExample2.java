@@ -27,13 +27,11 @@ public class NTNamesExample2 {
 		for (Woman woman : women) {
 			System.out.println(woman.uri());
 		}
-		
 
 		Collection<Man> men = load(Man.class);
 		System.out.println(men.size());
 		for (Man man : men) {
 			System.out.println(man.uri());
 		}
-				
 	}
 }
