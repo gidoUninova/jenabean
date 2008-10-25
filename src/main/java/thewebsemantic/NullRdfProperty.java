@@ -19,7 +19,6 @@ class NullRdfProperty implements RdfProperty {
 		return null;
 	}
 
-	@Override
 	public String inverseOf() {
 		return "";
 	}
