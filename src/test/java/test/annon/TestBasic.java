@@ -1,5 +1,7 @@
 package test.annon;
 
+import java.io.InputStream;
+
 import org.junit.Test;
 
 import thewebsemantic.NotFoundException;
@@ -13,7 +15,12 @@ public class TestBasic {
 	@Test
 	public void drive() throws NotFoundException { 
 		OntModel m = ModelFactory.createOntologyModel();
-		m.read( getClass().getResourceAsStream("/example.n3"),null, "N3");
+		
+		// this weirdness is so that the test runs well in eclipse junit and maven
+		InputStream in = getClass().getResourceAsStream("/example.n3");
+		if (in == null)
+			in = getClass().getResourceAsStream("example.n3");
+		m.read( in,null, "N3");
 		
 		// bind Thing.class to a pre-existing RDF type ../thing
 		Jenabean j = Jenabean.instance();
