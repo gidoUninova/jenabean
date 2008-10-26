@@ -13,7 +13,7 @@ public class TestBasic {
 	@Test
 	public void drive() throws NotFoundException { 
 		OntModel m = ModelFactory.createOntologyModel();
-		m.read( getClass().getResourceAsStream("/example.n3"),null, "N3");
+		m.read( getClass().getResourceAsStream("example.n3"),null, "N3");
 		
 		// bind Thing.class to a pre-existing RDF type ../thing
 		Jenabean j = Jenabean.instance();
