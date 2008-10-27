@@ -465,7 +465,9 @@ public class RDF2Bean extends Base {
 			if (!oc.getNameSpace().startsWith("http://www.w3.org"))
 				break;
 		}
-		if ( binder.getClass(oc.getURI()) != null)
+		if (oc == null)
+			return c;
+		else if ( binder.getClass(oc.getURI()) != null)
 			return binder.getClass(oc.getURI());
 		else if (bindingsCache.containsKey(oc.getURI()))
 			return bindingsCache.get(oc.getURI());
