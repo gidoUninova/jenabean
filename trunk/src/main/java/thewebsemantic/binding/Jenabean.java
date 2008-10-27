@@ -104,14 +104,14 @@ public class Jenabean  {
 		return new Includer(s, myself.reader());
 	}
 
-	public void bindAll(String... string) {
+	public void bindAll(String... s) {
 		ResolverUtil<Object> resolver = new ResolverUtil<Object>();
-		resolver.findAnnotated(Namespace.class, "example");
+		resolver.findAnnotated(Namespace.class, s);
 		Set<Class<? extends Object>> classes = resolver.getClasses();
 		for (Class<? extends Object> class1 : classes) {
 			Namespace ns = class1.getAnnotation(Namespace.class);
 			String namespace = ns.value();
-			bind(namespace + "#" + class1.getSimpleName()).to(class1);
+			bind(namespace + class1.getSimpleName()).to(class1);
 		}		
 		
 	}

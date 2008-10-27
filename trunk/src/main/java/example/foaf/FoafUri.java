@@ -1,6 +1,7 @@
 package example.foaf;
 
 public class FoafUri {
+	public static final String NS = "http://xmlns.com/foaf/0.1/";
 	public static final String jabberID_PROPERTY = "http://xmlns.com/foaf/0.1/jabberID";
 	public static final String nick_PROPERTY = "http://xmlns.com/foaf/0.1/nick";
 	public static final String dnaChecksum_PROPERTY = "http://xmlns.com/foaf/0.1/dnaChecksum";

@@ -6,7 +6,7 @@ import thewebsemantic.Namespace;
 import thewebsemantic.RdfProperty;
 import thewebsemantic.Uri;
 
-@Namespace("http://semanticbible.org/ns/2006/NTNames")
+@Namespace("http://semanticbible.org/ns/2006/NTNames#")
 public class Human {
 	private String name;
 	private String description;
