@@ -158,6 +158,8 @@ public class Bean2RDF extends Base {
 		Property property = toRdfProperty(pc);
 		if (o instanceof Collection)
 			updateCollection(subject, property, (Collection<?>) o);
+		else if (o instanceof thewebsemantic.Resource) 
+			subject.removeAll(property).addProperty(property, m.getResource(((thewebsemantic.Resource) o).uri));
 		else if (isPrimitive(o.getClass()))
 			subject.removeAll(property).addProperty(property, toLiteral(m, o));
 		else if (pc.isArray())

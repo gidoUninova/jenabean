@@ -26,8 +26,6 @@ public abstract class ValuesContext {
 
 	public abstract void setProperty(Object v);
 
-	public abstract boolean isDate();
-
 	public abstract boolean isPrimitive();
 
 	public abstract boolean isCollection();
