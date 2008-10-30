@@ -2,8 +2,7 @@ package example.foaf;
 
 import java.util.Collection;
 
-
-
+import thewebsemantic.Resource;
 import thewebsemantic.Namespace;
 import thewebsemantic.RdfProperty;
 import thewebsemantic.Uri;
@@ -11,7 +10,7 @@ import thewebsemantic.Uri;
 @Namespace(FoafUri.NS)
 public class Person {
 	String name;
-	Document homepage;
+	Resource homepage;
 	String uri;
 	Collection<Person> knows;
 	Collection<Document> publications;
@@ -45,11 +44,11 @@ public class Person {
 		this.seealso = seealso;
 	}
 
-	public Document getHomepage() {
+	public Resource getHomepage() {
 		return homepage;
 	}
 
-	public void setHomepage(Document homepage) {
+	public void setHomepage(Resource homepage) {
 		this.homepage = homepage;
 	}
 }

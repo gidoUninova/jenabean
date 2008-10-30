@@ -4,11 +4,9 @@ import java.beans.PropertyDescriptor;
 import java.lang.reflect.ParameterizedType;
 import java.net.URI;
 import java.util.Collection;
-import java.util.Date;
 
 import com.hp.hpl.jena.graph.Node;
 import com.hp.hpl.jena.rdf.model.Model;
-import com.hp.hpl.jena.rdf.model.Property;
 
 class PropertyContext extends ValuesContext {
 
@@ -76,13 +74,6 @@ class PropertyContext extends ValuesContext {
 	   try {
          property.getWriteMethod().invoke(subject, v);
       } catch (Exception e) {}
-	}
-	
-	/* (non-Javadoc)
-	 * @see thewebsemantic.ValuesContext#isDate()
-	 */
-	public boolean isDate() {
-	   return property.getPropertyType().equals(Date.class);
 	}
 	
 	/* (non-Javadoc)

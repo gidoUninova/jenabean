@@ -7,7 +7,7 @@ import java.util.Collection;
 
 import thewebsemantic.binding.Jenabean;
 
-import com.hp.hpl.jena.ontology.OntModel;
+import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 
 public class Main {
@@ -16,8 +16,9 @@ public class Main {
 	 * @throws IOException 
 	 */
 	public static void main(String[] args) throws IOException {
-		OntModel m = ModelFactory.createOntologyModel();
+		Model m = ModelFactory.createDefaultModel();
 		m.read("http://richard.cyganiak.de/foaf.rdf#cygri");
+		m.read("http://bblfish.net/people/henry/card");
 		m.read("http://www.deri.ie/fileadmin/scripts/foaf.php?id=316");
 		Jenabean J = Jenabean.instance();
 		J.bind(m);
