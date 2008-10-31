@@ -10,6 +10,7 @@ import thewebsemantic.NotFoundException;
 import thewebsemantic.RDF2Bean;
 import thewebsemantic.RdfProperty;
 import thewebsemantic.ResolverUtil;
+import thewebsemantic.Sparql;
 import thewebsemantic.binder.Binder;
 import thewebsemantic.binder.BinderImp;
 
@@ -102,6 +103,9 @@ public class Jenabean  {
 	}	
 	public static Includer include(String s) {
 		return new Includer(s, myself.reader());
+	}
+	public static <T> Collection<T> query(Class<T> c,String query) {
+		return Sparql.exec(myself.model, c, query);
 	}
 
 	public void bindAll(String... s) {
