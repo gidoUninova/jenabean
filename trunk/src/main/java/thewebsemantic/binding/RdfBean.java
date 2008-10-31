@@ -2,6 +2,9 @@ package thewebsemantic.binding;
 
 import static thewebsemantic.TypeWrapper.instanceURI;
 import static thewebsemantic.TypeWrapper.wrap;
+
+import java.util.Collection;
+
 import thewebsemantic.NotFoundException;
 
 import com.hp.hpl.jena.rdf.model.Resource;
@@ -15,7 +18,7 @@ public class RdfBean<T> {
 	}
 
 	public T load(String id) throws NotFoundException {
-		return (T)binder.load(getClass(), id);
+		return (T)binder.load(this.getClass(), id);
 	}
 	
 	public T refresh() {
@@ -36,6 +39,10 @@ public class RdfBean<T> {
 		return (T)this;
 	}
 	
+	public Collection<T> query(String query) {
+		return (Collection<T>)binder.query(getClass(), query);
+	}
+	
 	public T fill() {
 		for (String pd : wrap(this.getClass()).collections())
 			binder.reader().fill(this, pd);
@@ -45,5 +52,6 @@ public class RdfBean<T> {
 	public Resource asIndividual() {
 		return binder.model().getResource(instanceURI(this));
 	}
+	
 	
 }
