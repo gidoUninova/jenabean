@@ -1,5 +1,6 @@
 package test.resource;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import org.junit.Test;
@@ -25,9 +26,8 @@ public class TestResource {
 		termite.setName("termite");
 		termite.setSimilarTo(new Resource("http://termite"));
 		termite.save();
-		J.model().write(System.out, "N3");
 
-		Collection<Bug> bugs = J.reader().load(Bug.class);
+		Collection<Bug> bugs = load(Bug.class);
 		for (Bug bug : bugs) {
 			assertEquals("http://termite", bug.getSimilarTo().toString());
 		}
@@ -39,5 +39,25 @@ public class TestResource {
 	    assertEquals(2, bugs.size());
 		
 		
+	}
+	
+	@Test
+	public void collection() {
+		Jenabean J = Jenabean.instance();
+		J.bind(ModelFactory.createDefaultModel());
+		Harmonica h = new Harmonica();
+		h.setSimilarTo(new ArrayList<Resource>());
+		h.getSimilarTo().add(new Resource("http://trombone"));
+		h.getSimilarTo().add(new Resource("http://trumpet"));
+		h.save();
+		J.model().write(System.out, "N3");
+		
+		Collection<Harmonica> harmonicas = include("similarTo").load(Harmonica.class);
+		assertEquals(1, harmonicas.size());
+		assertEquals(2, harmonicas.iterator().next().getSimilarTo().size());
+		
+		harmonicas = loadDeep(Harmonica.class);
+		assertEquals(1, harmonicas.size());
+		assertEquals(2, harmonicas.iterator().next().getSimilarTo().size());
 	}
 }
