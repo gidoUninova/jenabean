@@ -1,0 +1,42 @@
+<rdf:RDF
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:owl="http://www.w3.org/2002/07/owl#"
+    xmlns:j.0="http://thewebsemantic.com/"
+    xmlns:j.1="http://fruity/"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+    xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" > 
+  <rdf:Description rdf:about="http://thewebsemantic.com/javaclass">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AnnotationProperty"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://fruity/Orange/536608">
+    <rdf:type rdf:resource="http://fruity/Orange"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://fruity/Apple/2554674">
+    <j.1:oranges rdf:resource="http://fruity/Orange/8585506"/>
+    <rdf:type rdf:resource="http://fruity/Apple"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://fruity/Orange/24688203">
+    <rdf:type rdf:resource="http://fruity/Orange"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://fruity/oranges">
+    <owl:inverseOf rdf:resource="http://fruity/apples"/>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://fruity/Apple/21465645">
+    <j.1:oranges rdf:resource="http://fruity/Orange/8585506"/>
+    <j.1:oranges rdf:resource="http://fruity/Orange/536608"/>
+    <j.1:oranges rdf:resource="http://fruity/Orange/24688203"/>
+    <rdf:type rdf:resource="http://fruity/Apple"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://fruity/Orange/8585506">
+    <rdf:type rdf:resource="http://fruity/Orange"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://fruity/Orange">
+    <j.0:javaclass>test.bean.Orange</j.0:javaclass>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://fruity/Apple">
+    <j.0:javaclass>test.bean.Apple</j.0:javaclass>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+  </rdf:Description>
+</rdf:RDF>

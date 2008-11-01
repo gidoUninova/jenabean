@@ -5,7 +5,8 @@ import java.util.Collection;
 import java.util.Date;
 
 import org.junit.After;
-import org.junit.Before;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -17,13 +18,14 @@ import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 
 public class TestBasic {
-	@Before
-	public void setup() {
+	@BeforeClass
+	public static void setup() {
 		System.setProperty("jenabean.fieldaccess", "true");
+		System.out.println("########################################33");
 	}
 	
-	@After
-	public void after() {
+	@AfterClass
+	public static void after() {
 		System.setProperty("jenabean.fieldaccess", "false");
 	}
 

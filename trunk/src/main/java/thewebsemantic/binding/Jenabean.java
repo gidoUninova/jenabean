@@ -98,6 +98,10 @@ public class Jenabean  {
 		return myself.reader().load(c);
 	}
 	
+	public static <E> Collection<E> loadDeep(Class<E> c) {
+		return myself.reader().loadDeep(c);
+	}
+	
 	public static <E> E load(Class<E> c, int id) throws NotFoundException {
 		return myself.reader().load(c, id);
 	}	
