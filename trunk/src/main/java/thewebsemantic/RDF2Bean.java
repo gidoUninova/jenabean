@@ -388,6 +388,10 @@ public class RDF2Bean extends Base {
 		}
 	}
 
+	private thewebsemantic.Resource toObject(Class<thewebsemantic.Resource> c, Resource i) {
+		return new thewebsemantic.Resource(i.getURI());
+	}
+	
 	private <T> T toObject(Class<T> c, Resource i) {
 		return (i != null) ? (T) testCycle(i,c) : null;
 	}
