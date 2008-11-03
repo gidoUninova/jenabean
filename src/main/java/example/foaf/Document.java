@@ -5,17 +5,18 @@ import thewebsemantic.Uri;
 
 @Namespace(FoafUri.NS)
 public class Document {
+
 	String uri;
+	
 	public Document(String uri) {
 		this.uri = uri;
 	}
-	
 	@Uri
-	public String uri() {
+	public String getUri() {
 		return uri;
 	}
-	
+
 	public String toString() {
 		return uri;
-	}
+	}	
 }

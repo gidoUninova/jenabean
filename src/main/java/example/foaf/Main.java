@@ -1,10 +1,11 @@
 package example.foaf;
 
-import static thewebsemantic.binding.Jenabean.load;
+import static thewebsemantic.binding.Jenabean.include;
 
 import java.io.IOException;
 import java.util.Collection;
 
+import thewebsemantic.Resource;
 import thewebsemantic.binding.Jenabean;
 
 import com.hp.hpl.jena.rdf.model.Model;
@@ -23,10 +24,16 @@ public class Main {
 		Jenabean J = Jenabean.instance();
 		J.bind(m);
 		J.bindAll("example.foaf");
-		
-		Collection<Person> people = load(Person.class);
+		m.write(System.out, "N3");
+		Collection<Person> people =   include("seealso").load(Person.class);
 		for (Person person : people) {
-			System.out.println(person.name + person.homepage);
+			System.out.println(person.name);
+			if ( "Dan Connolly".equals(person.name)) {
+				System.out.println(person.seealso.getClass());
+			}
+			for (Resource uri : person.seealso) {
+				System.out.println("\t" + uri);
+			}
 		}
 	}
 	
