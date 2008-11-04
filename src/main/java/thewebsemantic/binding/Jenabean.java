@@ -74,14 +74,6 @@ public class Jenabean  {
 		return binder.isBound(c);
 	}
 	
-	public String getUri(Class<?> c) {
-		return binder.getUri(c);
-	}
-	
-	public String getUri(Object bean) {
-		return getUri(bean.getClass());
-	}
-	
 	public Class<?> getClass(String uri) {
 		return binder.getClass(uri);	
 	}
