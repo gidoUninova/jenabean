@@ -2,6 +2,7 @@ package test.bean;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
@@ -26,7 +27,7 @@ public class TestArrays {
 		Person p2 = new Person();
 		p2.setFirstName("Sam");
 		Person p3 = new Person();
-		p2.setFirstName("Surekha");
+		p3.setFirstName("Surekha");
 		bean.setAges(new int[] {1,2,3,4,5} );
 		bean.setNames(new String[] {"bob", "sarah", "jimmy"});
 		bean.setTimes(new Date[] {d1, d2, d3});
@@ -36,7 +37,7 @@ public class TestArrays {
 		m.setNsPrefix("xsd", "http://www.w3.org/2001/XMLSchema#");
 	
 		Bean2RDF writer = new Bean2RDF(m);
-		writer.save(bean);
+		writer.saveDeep(bean);
 
 	
 		
@@ -59,6 +60,34 @@ public class TestArrays {
 		
 		bean.getAges()[0] = 100;
 		writer.save(bean);
-		m.write(System.out, "N3");
+	}
+	
+	@Test
+	public void cycles() {
+		OntModel model = ModelFactory.createOntologyModel();	
+		model.setNsPrefix("xsd", "http://www.w3.org/2001/XMLSchema#");	
+		Bean2RDF writer = new Bean2RDF(model);
+		
+		Molecule m = new Molecule();
+		ArrayList<Molecule> molecules = new ArrayList<Molecule>();
+		for(int i=0; i<10; i++) {
+			molecules.add(new Molecule());
+		}
+		m.setNeighbors(molecules.toArray(new Molecule[0]));
+		writer.saveDeep(m);
+
+		molecules.remove(0);
+		molecules.remove(0);
+		molecules.remove(0);
+		molecules.remove(0);
+	    m.setNeighbors(molecules.toArray(new Molecule[0]));	    
+		writer.saveDeep(m);	
+		for (int i=0;i<20;i++)
+			molecules.add(new Molecule());
+	    m.setNeighbors(molecules.toArray(new Molecule[0]));	    
+	    writer.saveDeep(m);
+		model.write(System.out, "N3");
+
+		
 	}
 }
