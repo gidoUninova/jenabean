@@ -26,7 +26,7 @@ public class Main {
 		J.bindAll("example.foaf");
 
 		m.write(System.out, "N3");
-		Collection<Person> people = include("seealso").load(Person.class);
+		Collection<Person> people = loadDeep(Person.class);
 		for (Person person : people) {
 			System.out.println(person.name);
 			for (Resource uri : person.seealso) {
