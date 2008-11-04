@@ -76,7 +76,7 @@ public class TestArrays {
 			molecules.add(new Molecule());
 		m.setNeighbors(molecules.toArray(new Molecule[0]));
 		writer.saveDeep(m);
-		Molecule actual = reader.loadDeep(Molecule.class, m.id());
+		Molecule actual = reader.load(Molecule.class, m.id(), new String[] {"neighbors"});
 		assertEquals(10, actual.neighbors.length);
 
 		molecules.remove(0);
