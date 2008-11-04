@@ -20,22 +20,25 @@ import com.hp.hpl.jena.shared.Lock;
 
 /**
  * Converts a simple java bean to RDF, provided it's annotated with
- * <code>Namespace</code>. To make a bean persitable by jenabean, you are
- * merely required to add the Namespace annotation. By default public bean
- * properties are converted to rdf properties by appending "has" and proper
- * casing the property name. For example, a bean with methods getName() and
- * setName() would result in the RDF property "hasName", with the namespace
- * given in the classes Namespace annotation. <br/><br/> The default behavior
- * for rdf property naming is overridden by using the RdfProperty annotation
- * along with the getter method. The value supplied to the RdfProperty
- * annotation is taken as the full RDF property URI. <br/><br/> The bean itself
- * is typed using the Namespace annotation along with the bean name, for
- * example, Book.class with namespace "http://example.org/" becomes rdf type
- * "http://example.org/Book". <br/><br/> Here's a simple example of a bean
- * that's ready to be saved:
+ * <code>Namespace</code>. To make a bean persitable by jenabean, you are merely
+ * required to add the Namespace annotation. By default public bean properties
+ * are converted to rdf properties by appending "has" and proper casing the
+ * property name. For example, a bean with methods getName() and setName() would
+ * result in the RDF property "hasName", with the namespace given in the classes
+ * Namespace annotation. <br/>
+ * <br/>
+ * The default behavior for rdf property naming is overridden by using the
+ * RdfProperty annotation along with the getter method. The value supplied to
+ * the RdfProperty annotation is taken as the full RDF property URI. <br/>
+ * <br/>
+ * The bean itself is typed using the Namespace annotation along with the bean
+ * name, for example, Book.class with namespace "http://example.org/" becomes
+ * rdf type "http://example.org/Book". <br/>
+ * <br/>
+ * Here's a simple example of a bean that's ready to be saved:
  * 
  * <pre>
- * <code>
+ * &lt;code&gt;
  * package org.example;
  * import thewebsemantic.Id;
  * public Book {
@@ -44,7 +47,7 @@ import com.hp.hpl.jena.shared.Lock;
  *    &#064;Id
  *    public String getName() {return name;}
  * }
- * </code>
+ * &lt;/code&gt;
  * </pre>
  * 
  * @see Namespace
@@ -55,10 +58,11 @@ public class Bean2RDF extends Base {
 	private ArrayList<Object> cycle;
 	private boolean forceDeep = false;
 
-
 	/**
 	 * construct a new instance bound to OntModel <tt>m</tt>.
-	 * @param m Jena OntModel instance
+	 * 
+	 * @param m
+	 *            Jena OntModel instance
 	 */
 	public Bean2RDF(Model m) {
 		super(m);
@@ -73,14 +77,13 @@ public class Bean2RDF extends Base {
 	public Resource save(Object bean) {
 		return write(bean, false);
 	}
-	
-	
+
 	public void delete(Object bean) {
 		Resource i = m.getResource(instanceURI(bean));
 		m.removeAll(null, null, i);
 		m.removeAll(i, null, null);
 	}
-	
+
 	/**
 	 * Saves the entire object graph starting with <tt>bean</tt>.
 	 * 
@@ -109,14 +112,14 @@ public class Bean2RDF extends Base {
 	}
 
 	private Resource _write(Object bean, boolean shallow) {
-		return (cycle.contains(bean)) ? existing(bean) : 
-			write(bean, toResource(bean), shallow);
+		return (cycle.contains(bean)) ? existing(bean) : write(bean,
+				toResource(bean), shallow);
 	}
 
 	private Resource toResource(Object bean) {
-		 if (bean instanceof URI) {
-       return m.createResource(bean.toString());
-		 }
+		if (bean instanceof URI) {
+			return m.createResource(bean.toString());
+		}
 		return m.createResource(instanceURI(bean), getOntClass(bean));
 	}
 
@@ -137,9 +140,8 @@ public class Bean2RDF extends Base {
 	}
 
 	private Resource ontClass(Object bean) {
-	   return m.getResource(getURI(bean));
+		return m.getResource(getURI(bean));
 	}
-
 
 	private String getURI(Object bean) {
 		return (isBound(bean)) ? binder.getUri(bean) : type(bean).typeUri();
@@ -158,12 +160,13 @@ public class Bean2RDF extends Base {
 		Property property = toRdfProperty(pc);
 		if (o instanceof Collection)
 			updateCollection(subject, property, (Collection<?>) o);
-		else if (o instanceof thewebsemantic.Resource) 
-			subject.removeAll(property).addProperty(property, m.getResource(((thewebsemantic.Resource) o).uri));
+		else if (o instanceof thewebsemantic.Resource)
+			subject.removeAll(property).addProperty(property,
+					m.getResource(((thewebsemantic.Resource) o).uri));
 		else if (isPrimitive(o.getClass()))
 			subject.removeAll(property).addProperty(property, toLiteral(m, o));
 		else if (pc.isArray())
-			updateArray(getSeq(subject, property), o);			
+			updateArray(getSeq(subject, property), o);
 		else if (isNormalObject(o))
 			updateOrCreate(subject, property, o);
 	}
@@ -171,27 +174,25 @@ public class Bean2RDF extends Base {
 	private void updateArray(Seq s, Object array) {
 		int len = Array.getLength(array);
 		int difference = s.size() - len;
-		if ( difference > 0) {
-			for (int i=0; i<difference; i++) {
-				s.remove(i+1);
-			}
-		}
-		for (int i=0; i<len; i++) {
+		if (difference > 0)
+			for (int i = 0; i < difference; s.remove(i++ + 1)) {}
+		
+		for (int i = 0; i < len; i++) {
 			if (i >= s.size()) {
 				s.add(toNode(Array.get(array, i)));
 			} else {
-				s.set(i+1, toNode(Array.get(array, i)));
+				s.set(i + 1, toNode(Array.get(array, i)));
 			}
 		}
 	}
-	
+
 	private RDFNode toNode(Object o) {
-		return (isPrimitive(o)) ? toLiteral(m, o): _write(o,true);
+		return (isPrimitive(o)) ? toLiteral(m, o) : _write(o, true);
 	}
 
 	private Seq getSeq(Resource subject, Property property) {
 		Statement s = subject.getProperty(property);
-		if (s != null) 
+		if (s != null)
 			return s.getSeq();
 		Seq seq = m.createSeq();
 		subject.addProperty(property, seq);
@@ -214,10 +215,9 @@ public class Bean2RDF extends Base {
 		if (supportsDelete(c))
 			subject.removeAll(property);
 		for (Object o : c)
-			if (isPrimitive(o))
-				subject.addProperty(property, toLiteral(m, o)); // leaf
-			else
-				subject.addProperty(property, _write(o, true)); // recursive
+			subject.addProperty(property, isPrimitive(o) ? toLiteral(m, o)
+					: _write(o, true));
+
 	}
 
 	private boolean supportsDelete(Collection<?> c) {
@@ -260,5 +260,4 @@ public class Bean2RDF extends Base {
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
- * 
  */
