@@ -23,16 +23,14 @@ public class Person extends Agent {
 	Document workInfoHomepage;
 	Document schoolHomepage;
 	Collection<Resource> interest;
-	Collection<Resource> topic_interest; 
+	Collection<Resource> topic_interest;
 	Collection<Document> publications;
 	Collection<Resource> currentProject;
 	Collection<Resource> pastProject;
-	
-	
+
 	public Person(String uri) {
 		super(uri);
 	}
-	
 
 	public String getName() {
 		return name;
@@ -42,8 +40,6 @@ public class Person extends Agent {
 		this.name = name;
 	}
 
-
-
 	public Document getHomepage() {
 		return homepage;
 	}
@@ -52,16 +48,13 @@ public class Person extends Agent {
 		this.homepage = homepage;
 	}
 
-
 	public Collection<Person> getKnows() {
 		return knows;
 	}
 
-
 	public void setKnows(Collection<Person> knows) {
 		this.knows = knows;
 	}
-
 
 	@RdfProperty("http://www.w3.org/2000/01/rdf-schema#seeAlso")
 	public Collection<Resource> getSeealso() {
@@ -72,151 +65,121 @@ public class Person extends Agent {
 		this.seealso = seealso;
 	}
 
-
 	public String getGeekcode() {
 		return geekcode;
 	}
-
 
 	public void setGeekcode(String geekcode) {
 		this.geekcode = geekcode;
 	}
 
-
 	public String getFirstName() {
 		return firstName;
 	}
-
 
 	public void setFirstName(String firstName) {
 		this.firstName = firstName;
 	}
 
-
 	public String getSurname() {
 		return surname;
 	}
-
 
 	public void setSurname(String surname) {
 		this.surname = surname;
 	}
 
-
 	public String getFamily_name() {
 		return family_name;
 	}
-
 
 	public void setFamily_name(String family_name) {
 		this.family_name = family_name;
 	}
 
-
 	public String getPlan() {
 		return plan;
 	}
-
 
 	public void setPlan(String plan) {
 		this.plan = plan;
 	}
 
-
 	public Resource getImg() {
 		return img;
 	}
-
 
 	public void setImg(Resource img) {
 		this.img = img;
 	}
 
-
 	public String getMyersBriggs() {
 		return myersBriggs;
 	}
-
 
 	public void setMyersBriggs(String myersBriggs) {
 		this.myersBriggs = myersBriggs;
 	}
 
-
 	public Document getWorkplaceHomepage() {
 		return workplaceHomepage;
 	}
-
 
 	public void setWorkplaceHomepage(Document workplaceHomepage) {
 		this.workplaceHomepage = workplaceHomepage;
 	}
 
-
 	public Document getWorkInfoHomepage() {
 		return workInfoHomepage;
 	}
-
 
 	public void setWorkInfoHomepage(Document workInfoHomepage) {
 		this.workInfoHomepage = workInfoHomepage;
 	}
 
-
 	public Document getSchoolHomepage() {
 		return schoolHomepage;
 	}
-
 
 	public void setSchoolHomepage(Document schoolHomepage) {
 		this.schoolHomepage = schoolHomepage;
 	}
 
-
 	public Collection<Resource> getInterest() {
 		return interest;
 	}
-
 
 	public void setInterest(Collection<Resource> interest) {
 		this.interest = interest;
 	}
 
-
 	public Collection<Resource> getTopic_interest() {
 		return topic_interest;
 	}
-
 
 	public void setTopic_interest(Collection<Resource> topic_interest) {
 		this.topic_interest = topic_interest;
 	}
 
-
 	public Collection<Document> getPublications() {
 		return publications;
 	}
-
 
 	public void setPublications(Collection<Document> publications) {
 		this.publications = publications;
 	}
 
-
 	public Collection<Resource> getCurrentProject() {
 		return currentProject;
 	}
-
 
 	public void setCurrentProject(Collection<Resource> currentProject) {
 		this.currentProject = currentProject;
 	}
 
-
 	public Collection<Resource> getPastProject() {
 		return pastProject;
 	}
-
 
 	public void setPastProject(Collection<Resource> pastProject) {
 		this.pastProject = pastProject;
