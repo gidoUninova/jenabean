@@ -50,7 +50,7 @@ public class TestBasic {
 		Jenabean J = Jenabean.instance();
 		J.bind(ModelFactory.createOntologyModel());
 		J.bindAll("example");
-		System.out.println(J.getUri(Man.class));
+
 		
 	}
 	
