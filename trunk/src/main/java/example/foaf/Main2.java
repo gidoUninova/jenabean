@@ -20,7 +20,7 @@ public class Main2 {
 		J.bindAll("example.foaf");
 		
 		Person p = new Person("http://foo/bar");
-		p.setHomepage(new Resource("http://homepage"));
+		p.setHomepage(new Document("http://homepage"));
 		p.setName("thewebsemantic");
 		J.writer().save(p);
 		

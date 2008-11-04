@@ -137,7 +137,7 @@ public class Bean2RDF extends Base {
 	}
 
 	private Resource ontClass(Object bean) {
-	   return ontClass(getURI(bean));
+	   return m.getResource(getURI(bean));
 	}
 
 

@@ -10,7 +10,6 @@ import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.ontology.OntProperty;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.Property;
-import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.vocabulary.OWL;
 import com.hp.hpl.jena.vocabulary.RDF;
 
@@ -22,10 +21,6 @@ public class Base {
 	protected Binder binder;
 	protected Property javaclass;
 
-	protected Resource ontClass(String uri) {
-		   return m.getResource(uri).addProperty(RDF.type, OWL.Class);
-	}
-		
 	protected Base(Model m) {
 		this.m = m;
 		binder = BinderImp.instance();		

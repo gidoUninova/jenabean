@@ -149,8 +149,7 @@ public class RDF2Bean extends Base {
 	}
 
 	private <T> Collection<T> loadAll(Class<T> c) {
-		Resource a = rdfType(c);
-		return loadIndividuals(c, m.listSubjectsWithProperty(RDF.type, a));
+		return loadIndividuals(c, m.listSubjectsWithProperty(RDF.type, rdfType(c)));
 	}
 
 	private <T> Collection<T> loadIndividuals(Class<T> c, ResIterator it) {
@@ -387,12 +386,10 @@ public class RDF2Bean extends Base {
 			m.leaveCriticalSection();
 		}
 	}
-
-	private thewebsemantic.Resource toObject(Class<thewebsemantic.Resource> c, Resource i) {
-		return new thewebsemantic.Resource(i.getURI());
-	}
 	
 	private <T> T toObject(Class<T> c, Resource i) {
+		if (c == thewebsemantic.Resource.class)
+			return (T)new thewebsemantic.Resource(i.getURI());
 		return (i != null) ? (T) testCycle(i,c) : null;
 	}
 
@@ -485,7 +482,7 @@ public class RDF2Bean extends Base {
 	}
 
 	private Resource rdfType(Class<?> c) {
-		return ontClass( (binder.isBound(c)) ? binder.getUri(c) : wrap(c).typeUri() );
+		return m.getResource( (binder.isBound(c)) ? binder.getUri(c) : wrap(c).typeUri() );
 	}
 
 	/**
@@ -570,8 +567,8 @@ public class RDF2Bean extends Base {
 		return new AddOnlyArrayList<Object>();
 	}
 
-	private ArrayList<Object> fillCollection(Class<?> c, StmtIterator nodes) {
-		ArrayList<Object> results = new ArrayList<Object>();
+	private <T> ArrayList<T> fillCollection(Class<T> c, StmtIterator nodes) {
+		ArrayList<T> results = new ArrayList<T>();
 		while(nodes.hasNext())
 			results.add(toObject(c,nodes.nextStatement().getObject()));
 		return results;

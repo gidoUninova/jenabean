@@ -9,7 +9,7 @@ import thewebsemantic.Resource;
 @Namespace(FoafUri.NS)
 public class Person extends Agent {
 	String name;
-	Resource homepage;
+	Document homepage;
 	Collection<Person> knows;
 	Collection<Resource> seealso;
 	String geekcode;
@@ -44,11 +44,11 @@ public class Person extends Agent {
 
 
 
-	public Resource getHomepage() {
+	public Document getHomepage() {
 		return homepage;
 	}
 
-	public void setHomepage(Resource homepage) {
+	public void setHomepage(Document homepage) {
 		this.homepage = homepage;
 	}
 
