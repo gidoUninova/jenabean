@@ -9,6 +9,7 @@ import java.util.Date;
 import org.junit.Test;
 
 import thewebsemantic.Bean2RDF;
+import thewebsemantic.NotFoundException;
 import thewebsemantic.RDF2Bean;
 
 import com.hp.hpl.jena.ontology.OntModel;
@@ -63,18 +64,20 @@ public class TestArrays {
 	}
 	
 	@Test
-	public void cycles() {
+	public void cycles() throws NotFoundException {
 		OntModel model = ModelFactory.createOntologyModel();	
 		model.setNsPrefix("xsd", "http://www.w3.org/2001/XMLSchema#");	
 		Bean2RDF writer = new Bean2RDF(model);
+		RDF2Bean reader = new RDF2Bean(model);
 		
 		Molecule m = new Molecule();
 		ArrayList<Molecule> molecules = new ArrayList<Molecule>();
-		for(int i=0; i<10; i++) {
+		for(int i=0; i<10; i++)
 			molecules.add(new Molecule());
-		}
 		m.setNeighbors(molecules.toArray(new Molecule[0]));
 		writer.saveDeep(m);
+		Molecule actual = reader.loadDeep(Molecule.class, m.id());
+		assertEquals(10, actual.neighbors.length);
 
 		molecules.remove(0);
 		molecules.remove(0);
@@ -82,12 +85,15 @@ public class TestArrays {
 		molecules.remove(0);
 	    m.setNeighbors(molecules.toArray(new Molecule[0]));	    
 		writer.saveDeep(m);	
+		actual = reader.loadDeep(Molecule.class, m.id());
+		assertEquals(6, actual.neighbors.length);
+		
 		for (int i=0;i<20;i++)
 			molecules.add(new Molecule());
 	    m.setNeighbors(molecules.toArray(new Molecule[0]));	    
 	    writer.saveDeep(m);
-		model.write(System.out, "N3");
-
+		actual = reader.loadDeep(Molecule.class, m.id());
+		assertEquals(26, actual.neighbors.length);
 		
 	}
 }
