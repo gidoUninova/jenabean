@@ -126,10 +126,10 @@ public class RDF2Bean extends Base {
 	 * @param includes
 	 * @return
 	 */
-	public <T> Collection<T> load(Class<T> c, String[] includes) {
+	public <T> Collection<T> load(Class<T> c, String... includes) {
 		return load(c, true, includes);
 	}
-
+	
 	/**
 	 * load all rdf entries that map to the bean.
 	 * 
@@ -138,7 +138,7 @@ public class RDF2Bean extends Base {
 	 * @return
 	 */
 	protected synchronized <T> Collection<T> load(Class<T> c, boolean shallow,
-			String[] includes) {
+			String... includes) {
 		init(shallow, includes);
 		try {
 			return loadAll(c);
