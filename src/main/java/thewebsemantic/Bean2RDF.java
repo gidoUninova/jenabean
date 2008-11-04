@@ -171,9 +171,12 @@ public class Bean2RDF extends Base {
 	private void updateArray(Seq s, Object array) {
 		int len = Array.getLength(array);
 		for (int i=0; i<len; i++) {
-			if (i >= s.size()) s.add(true);
-			s.set(i+1, toNode(Array.get(array, i)));
-		}		
+			if (i >= s.size()) {
+				s.add(toNode(Array.get(array, i)));
+			} else {
+				s.set(i+1, toNode(Array.get(array, i)));
+			}
+		}
 	}
 	
 	private RDFNode toNode(Object o) {
