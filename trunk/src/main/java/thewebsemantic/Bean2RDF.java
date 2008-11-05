@@ -175,10 +175,8 @@ public class Bean2RDF extends Base {
 		int len = Array.getLength(array);
 		int difference = s.size() - len;
 		int seqsize = s.size();
-		if (difference > 0) {
-			System.out.println("size:" + s.size());
-			for (int i = 0; i < difference; s.remove(seqsize-i)) {}
-		}
+		if (difference > 0)
+			for (int i = 0; i < difference; s.remove(seqsize-i++)) {}
 		
 		for (int i = 0; i < len; i++) {
 			Object o = Array.get(array, i);

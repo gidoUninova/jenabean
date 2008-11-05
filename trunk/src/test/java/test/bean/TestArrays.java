@@ -13,6 +13,7 @@ import thewebsemantic.NotFoundException;
 import thewebsemantic.RDF2Bean;
 
 import com.hp.hpl.jena.ontology.OntModel;
+import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 
 public class TestArrays {
@@ -65,7 +66,7 @@ public class TestArrays {
 	
 	@Test
 	public void cycles() throws NotFoundException {
-		OntModel model = ModelFactory.createOntologyModel();	
+		Model model = ModelFactory.createDefaultModel();	
 		model.setNsPrefix("xsd", "http://www.w3.org/2001/XMLSchema#");	
 		Bean2RDF writer = new Bean2RDF(model);
 		RDF2Bean reader = new RDF2Bean(model);
@@ -97,7 +98,7 @@ public class TestArrays {
 		assertEquals(26, actual.neighbors.length);
 		
 	}
-	/*
+	
 	@Test
 	public void testStrings() throws NotFoundException {
 		OntModel model = ModelFactory.createOntologyModel();	
@@ -120,5 +121,5 @@ public class TestArrays {
 			writer.saveDeep(m);
 		}
 		model.write(System.out, "N3");
-	} */
+	} 
 }

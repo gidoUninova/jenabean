@@ -14,7 +14,7 @@ public class Molecule extends RdfBeanId<Molecule>{
 	public Molecule(String id) {
 		super(id);
 	}
-	
+
 	public Molecule[] getNeighbors() {
 		return neighbors;
 	}
