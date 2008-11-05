@@ -2,7 +2,6 @@ package thewebsemantic;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.net.URI;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
@@ -26,7 +25,6 @@ public class PrimitiveWrapper {
 		WRAPPERS.add(Calendar.class);
 		WRAPPERS.add(BigDecimal.class);
 		WRAPPERS.add(BigInteger.class);
-//		WRAPPERS.add(URI.class);
 	}
 
 	public static boolean isPrimitive(Class<?> c) {

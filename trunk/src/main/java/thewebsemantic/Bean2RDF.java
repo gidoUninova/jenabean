@@ -174,14 +174,20 @@ public class Bean2RDF extends Base {
 	private void updateArray(Seq s, Object array) {
 		int len = Array.getLength(array);
 		int difference = s.size() - len;
-		if (difference > 0)
-			for (int i = 0; i < difference; s.remove(i++ + 1)) {}
+		int seqsize = s.size();
+		if (difference > 0) {
+			System.out.println("size:" + s.size());
+			for (int i = 0; i < difference; s.remove(seqsize-i)) {}
+		}
 		
 		for (int i = 0; i < len; i++) {
+			Object o = Array.get(array, i);
+			if (o==null)
+				continue;
 			if (i >= s.size()) {
-				s.add(toNode(Array.get(array, i)));
+				s.add(toNode(o));
 			} else {
-				s.set(i + 1, toNode(Array.get(array, i)));
+				s.set(i + 1, toNode(o));
 			}
 		}
 	}
