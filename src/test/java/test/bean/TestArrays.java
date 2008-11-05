@@ -90,6 +90,7 @@ public class TestArrays {
 		
 		for (int i=0;i<20;i++)
 			molecules.add(new Molecule());
+		molecules.add(null);
 	    m.setNeighbors(molecules.toArray(new Molecule[0]));	    
 	    writer.saveDeep(m);
 		actual = reader.loadDeep(Molecule.class, m.id());
