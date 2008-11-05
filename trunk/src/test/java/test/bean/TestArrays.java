@@ -52,11 +52,11 @@ public class TestArrays {
 		assertEquals(5, loadedBean.getAges().length);
 		reader.fill(loadedBean).with("people");
 		for (Person p: loadedBean.getPeople()) {
-			System.out.println(p.getFirstName());
+			//System.out.println(p.getFirstName());
 		}
 		reader.fill(loadedBean).with("times");
 		for (Date d : loadedBean.getTimes()) {
-			System.out.println(d);
+			//System.out.println(d);
 		}
 		
 		bean.getAges()[0] = 100;
@@ -83,8 +83,8 @@ public class TestArrays {
 		molecules.remove(0);
 		molecules.remove(0);
 		molecules.remove(0);
-	    m.setNeighbors(molecules.toArray(new Molecule[0]));	    
-		writer.saveDeep(m);	
+	    m.setNeighbors(molecules.toArray(new Molecule[0]));	 
+		writer.saveDeep(m);
 		actual = reader.loadDeep(Molecule.class, m.id());
 		assertEquals(6, actual.neighbors.length);
 		
@@ -97,4 +97,28 @@ public class TestArrays {
 		assertEquals(26, actual.neighbors.length);
 		
 	}
+	/*
+	@Test
+	public void testStrings() throws NotFoundException {
+		OntModel model = ModelFactory.createOntologyModel();	
+		model.setNsPrefix("xsd", "http://www.w3.org/2001/XMLSchema#");	
+		Bean2RDF writer = new Bean2RDF(model);
+		RDF2Bean reader = new RDF2Bean(model);
+		Molecule m = new Molecule();
+		m.setSymbols( new String[] {"H", "2", "O", null, "2", "O", "Na"});
+		writer.saveDeep(m);
+		reader.loadDeep(Molecule.class);
+		m.setSymbols( new String[] {"H", "2", "2", "O", "Na"});
+		writer.saveDeep(m);
+		m = reader.loadDeep(Molecule.class, m.id());
+		assertEquals(5, 5);
+		ArrayList<String> stuff = new ArrayList<String>();
+		
+		for(int i=0; i<10; i++) {
+			stuff.add("hello");
+			m.setSymbols(stuff.toArray(new String[] {}));
+			writer.saveDeep(m);
+		}
+		model.write(System.out, "N3");
+	} */
 }
