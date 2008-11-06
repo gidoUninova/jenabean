@@ -47,18 +47,19 @@ public class TypeWrapper {
 				uriMethod = md.getMethod();
 		
 		Namespace nsa = c.getAnnotation(Namespace.class);
-		if (nsa != null)
-			NS = nsa.value();
-		else {
-			NS = (c.getPackage() == null) ?
-				"http://default.package/":
-				"http://" + c.getPackage().getName() + '/';
-		}
+		NS = (nsa != null) ? nsa.value():getNamespaceFromPackage(c);
+		
 		
 		try {
 			constructor = c.getConstructor(String.class);
 		} catch (Exception e) {}
 		cache.put(c, this);
+	}
+
+	private String getNamespaceFromPackage(Class<?> c) {
+		return (c.getPackage() == null) ?
+			"http://default.package/":
+			"http://" + c.getPackage().getName() + '/';
 	}
 
 	public static synchronized TypeWrapper type(Object o) {
