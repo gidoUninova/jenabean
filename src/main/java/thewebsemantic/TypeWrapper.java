@@ -257,13 +257,15 @@ public class TypeWrapper {
 	 * @throws Exception
 	 */
 	public Object toBean(Resource source) {
+		return toBean(source.getURI());
+	}
+	
+	public Object toBean(String uri) {
 		try {
-			Constructor<?> m = constructor;
-			if (m != null) {
-				return (uriSupport()) ? m.newInstance(source.getURI()) : m
-						.newInstance(last(source.getURI()));
-			}
-			return c.newInstance();
+			// last gets the id off the end of the URI
+			return (constructor != null) ?
+				constructor.newInstance(uriSupport()?uri:last(uri)):
+				c.newInstance();
 		} catch (Exception e) {e.printStackTrace();
 		}
 		return null;
