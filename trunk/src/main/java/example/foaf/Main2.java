@@ -2,7 +2,6 @@ package example.foaf;
 
 import java.io.IOException;
 
-import thewebsemantic.Resource;
 import thewebsemantic.binding.Jenabean;
 
 import com.hp.hpl.jena.rdf.model.Model;
