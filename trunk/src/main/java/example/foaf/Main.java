@@ -1,11 +1,10 @@
 package example.foaf;
 
-import static thewebsemantic.binding.Jenabean.*;
+import static thewebsemantic.binding.Jenabean.loadDeep;
 
 import java.io.IOException;
 import java.util.Collection;
 
-import thewebsemantic.Resource;
 import thewebsemantic.binding.Jenabean;
 
 import com.hp.hpl.jena.rdf.model.Model;
@@ -29,10 +28,6 @@ public class Main {
 		Collection<Person> people = loadDeep(Person.class);
 		for (Person person : people) {
 			System.out.println(person.name);
-			for (Resource uri : person.seealso) {
-				System.out.println("\t" + uri);
-			}
-
 		}
 	}
 

@@ -11,7 +11,6 @@ public class Person extends Agent {
 	String name;
 	Document homepage;
 	Collection<Person> knows;
-	Collection<Resource> seealso;
 	String geekcode;
 	String firstName;
 	String surname;
@@ -54,15 +53,6 @@ public class Person extends Agent {
 
 	public void setKnows(Collection<Person> knows) {
 		this.knows = knows;
-	}
-
-	@RdfProperty("http://www.w3.org/2000/01/rdf-schema#seeAlso")
-	public Collection<Resource> getSeealso() {
-		return seealso;
-	}
-
-	public void setSeealso(Collection<Resource> seealso) {
-		this.seealso = seealso;
 	}
 
 	public String getGeekcode() {
