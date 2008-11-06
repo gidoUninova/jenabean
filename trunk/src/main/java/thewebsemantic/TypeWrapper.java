@@ -47,8 +47,14 @@ public class TypeWrapper {
 				uriMethod = md.getMethod();
 		
 		Namespace nsa = c.getAnnotation(Namespace.class);
-		NS = (nsa != null) ? nsa.value() : "http://"
-				+ c.getPackage().getName() + '/';
+		if (nsa != null)
+			NS = nsa.value();
+		else {
+			NS = (c.getPackage() == null) ?
+				"http://default.package/":
+				"http://" + c.getPackage().getName() + '/';
+		}
+		
 		try {
 			constructor = c.getConstructor(String.class);
 		} catch (Exception e) {}
