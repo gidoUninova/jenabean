@@ -24,32 +24,22 @@ import com.hp.hpl.jena.rdf.model.Resource;
  * Classes. Keeps cached versions to minimize introspection work.
  * 
  */
-public class TypeWrapper {
+public abstract class TypeWrapper {
 	public static final String JENABEAN_PREFIX = "jenabean.prefix";
 	public static final String JENABEAN_FIELDACCESS = "jenabean.fieldaccess";
 	private String NS;
-	private Class<?> c;
+	protected Class<?> c;
 	private BeanInfo info;
-	private Method idMethod;
-	private Method uriMethod;
-	private Constructor<?> constructor;
+	protected Constructor<?> constructor;
 	private static HashMap<Class<?>, TypeWrapper> cache = new HashMap<Class<?>, TypeWrapper>();
 	private String prefix = null;
 	
-	private <T> TypeWrapper(Class<T> c) {
+	protected <T> TypeWrapper(Class<T> c) {
 		prefix = System.getProperty(JENABEAN_PREFIX);
 		this.c = c;
 		info = beanInfo(c);
-		for (MethodDescriptor md : info.getMethodDescriptors())
-			if (isId(md))
-				idMethod = md.getMethod();
-			else if (isUri(md))
-				uriMethod = md.getMethod();
-		
 		Namespace nsa = c.getAnnotation(Namespace.class);
 		NS = (nsa != null) ? nsa.value():getNamespaceFromPackage(c);
-		
-		
 		try {
 			constructor = c.getConstructor(String.class);
 		} catch (Exception e) {}
@@ -134,14 +124,24 @@ public class TypeWrapper {
 	}
 	
 	public static synchronized TypeWrapper wrap(Class<?> c) {
-		return (cache.containsKey(c)) ? cache.get(c) : new TypeWrapper(c);
+		return (cache.containsKey(c)) ? cache.get(c) : newwrapper(c);
+	}
+	
+	private static TypeWrapper newwrapper(Class<?> c) {
+		BeanInfo info = beanInfo(c);
+		for (MethodDescriptor md : info.getMethodDescriptors())
+			if (isId(md))
+				return new IdTypeWrapper(c,md.getMethod());
+			else if (isUri(md))
+				return new UriTypeWrapper(c,md.getMethod());
+		return new DefaultTypeWrapper(c);
 	}
 
 	public String typeUri() {
 		return NS + c.getSimpleName();
 	}
 
-	public PropertyDescriptor[] descriptors() {
+	private PropertyDescriptor[] descriptors() {
 		Collection<PropertyDescriptor> results = new LinkedList<PropertyDescriptor>();
 		for (PropertyDescriptor p : info.getPropertyDescriptors())
 			if (p.getWriteMethod() != null && p.getReadMethod() != null)
@@ -169,14 +169,13 @@ public class TypeWrapper {
 		return NS;
 	}
 
-	public String uri(String id) {
-		return (uriSupport()) ? id:typeUri() + '/' + id;
-	}
+	public abstract String uri(String id);
+
 
 	public String uri(Object bean) {
-		return (uriSupport()) ?  invokeMethod(bean, uriMethod): typeUri() + '/' + id(bean);
+		return typeUri() + '/' + id(bean);
 	}
-
+	
 	public String uri(AccessibleObject m, String name) {
 		RdfProperty rdf = getRDFAnnotation(m);
 		return ("".equals(rdf.value())) ? namingPatternUri(name) : rdf.value();
@@ -204,16 +203,9 @@ public class TypeWrapper {
 	 * @param bean
 	 * @return
 	 */
-	public String id(Object bean) {
-		if ( uriSupport() )
-			return invokeMethod(bean, uriMethod);
-		else if (idMethod != null)
-			return invokeMethod(bean, idMethod);
-		else 
-			return String.valueOf(bean.hashCode());
-	}
+	public abstract String id(Object bean);
 
-	private BeanInfo beanInfo(Class<?> c) {
+	private static BeanInfo beanInfo(Class<?> c) {
 		try {
 			return Introspector.getBeanInfo(c);
 		} catch (IntrospectionException e1) {
@@ -222,7 +214,7 @@ public class TypeWrapper {
 		return null;
 	}
 
-	private String invokeMethod(Object bean, Method me) {
+	protected String invokeMethod(Object bean, Method me) {
 		try {
 			return me.invoke(bean).toString();
 		} catch (Exception e) {
@@ -230,24 +222,20 @@ public class TypeWrapper {
 		return null;
 	}
 
-	private boolean isId(Method m) {
+	private static boolean isId(Method m) {
 		return m.isAnnotationPresent(Id.class);
 	}
 
-	private boolean isId(MethodDescriptor md) {
+	private static boolean isId(MethodDescriptor md) {
 		return isId(md.getMethod());
 	}
 
-	private boolean isUri(Method m) {
+	private static boolean isUri(Method m) {
 		return m.isAnnotationPresent(Uri.class);
 	}
 
-	private boolean isUri(MethodDescriptor md) {
+	private static boolean isUri(MethodDescriptor md) {
 		return isUri(md.getMethod());
-	}
-
-	public boolean uriSupport() {
-		return uriMethod != null;
 	}
 
 	/**
@@ -264,7 +252,7 @@ public class TypeWrapper {
 		try {
 			// last gets the id off the end of the URI
 			return (constructor != null) ?
-				constructor.newInstance(uriSupport()?uri:last(uri)):
+				constructor.newInstance(last(uri)):
 				c.newInstance();
 		} catch (Exception e) {e.printStackTrace();
 		}
