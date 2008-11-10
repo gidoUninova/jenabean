@@ -6,7 +6,6 @@ import thewebsemantic.Bean2RDF;
 import thewebsemantic.Includer;
 import thewebsemantic.NotFoundException;
 import thewebsemantic.RDF2Bean;
-import thewebsemantic.RdfProperty;
 import thewebsemantic.Sparql;
 import thewebsemantic.binder.Binder;
 import thewebsemantic.binder.BinderImp;
@@ -47,12 +46,6 @@ public class Jenabean  {
 	
 	public RDF2Bean reader() {
 		return reader;
-	}
-	
-	public void bind(Object o) {
-		if (o.getClass().isAnnotationPresent(RdfProperty.class)) {
-			bind(o.getClass().getAnnotation(RdfProperty.class));
-		}
 	}
 	
 	public Binding bind(OntClass oc) {
