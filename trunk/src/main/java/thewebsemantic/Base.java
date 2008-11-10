@@ -15,7 +15,7 @@ import com.hp.hpl.jena.vocabulary.RDF;
 
 public class Base {
 
-	protected static final String JAVACLASS = "http://thewebsemantic.com/javaclass";
+	public static final String JAVACLASS = "http://thewebsemantic.com/javaclass";
 	protected OntModel om;
 	protected Model m;
 	protected Binder binder;

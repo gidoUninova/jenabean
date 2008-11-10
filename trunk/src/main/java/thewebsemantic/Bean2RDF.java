@@ -17,6 +17,8 @@ import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.rdf.model.Seq;
 import com.hp.hpl.jena.rdf.model.Statement;
 import com.hp.hpl.jena.shared.Lock;
+import com.hp.hpl.jena.vocabulary.RDF;
+import com.hp.hpl.jena.vocabulary.RDFS;
 
 /**
  * Converts a simple java bean to RDF, provided it's annotated with
@@ -120,7 +122,7 @@ public class Bean2RDF extends Base {
 		if (bean instanceof URI) {
 			return m.createResource(bean.toString());
 		}
-		return m.createResource(instanceURI(bean), getOntClass(bean));
+		return m.createResource(instanceURI(bean), getRDFSClass(bean));
 	}
 
 	private Resource existing(Object bean) {
@@ -135,12 +137,10 @@ public class Bean2RDF extends Base {
 	 *            the bean we are saving or updating to the triple store
 	 * @return
 	 */
-	private Resource getOntClass(Object bean) {
-		return ontClass(bean).addProperty(javaclass, bean.getClass().getName());
-	}
-
-	private Resource ontClass(Object bean) {
-		return m.getResource(getURI(bean));
+	private Resource getRDFSClass(Object bean) {
+		return m.getResource(getURI(bean)).
+			addProperty(RDF.type, RDFS.Class).
+			addProperty(javaclass, bean.getClass().getName());
 	}
 
 	private String getURI(Object bean) {

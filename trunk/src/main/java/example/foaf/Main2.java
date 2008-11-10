@@ -17,7 +17,6 @@ public class Main2 {
 		Jenabean J = Jenabean.instance();
 		J.bind(m);
 		J.bindAll("example.foaf");
-		
 		Person p = new Person("http://foo/bar");
 		p.setHomepage(new Document("http://homepage"));
 		p.setName("thewebsemantic");

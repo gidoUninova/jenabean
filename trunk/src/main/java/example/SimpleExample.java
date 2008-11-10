@@ -21,7 +21,7 @@ public class SimpleExample {
 		s1.setTitle("Waters of March");
 		s1.setComposer("Antonio Carlos Jobim");
 		s1.setGenre(Genre.JAZZ);
-		s1.save();
+		s1.save();s1.save();
 
 		Song s2 = new Song();
 		s2.setTitle("I.G.Y.");

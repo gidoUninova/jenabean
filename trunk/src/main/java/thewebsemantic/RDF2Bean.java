@@ -28,6 +28,7 @@ import com.hp.hpl.jena.rdf.model.Seq;
 import com.hp.hpl.jena.rdf.model.Statement;
 import com.hp.hpl.jena.rdf.model.StmtIterator;
 import com.hp.hpl.jena.shared.Lock;
+import com.hp.hpl.jena.vocabulary.OWL;
 import com.hp.hpl.jena.vocabulary.RDF;
 
 /**
@@ -590,6 +591,17 @@ public class RDF2Bean extends Base {
 
 	private void applyLiteral(ValuesContext ctx, Literal l) {
 		ctx.setProperty(convertLiteral(l, ctx.type()));
+	}
+	
+	public void bindAll(String... s) {
+		ResolverUtil<Object> resolver = new ResolverUtil<Object>();
+		resolver.findAnnotated(Namespace.class, s);
+		Set<Class<? extends Object>> classes = resolver.getClasses();
+		for (Class<? extends Object> class1 : classes) {
+			Namespace ns = class1.getAnnotation(Namespace.class);
+			m.getResource(ns.value() + class1.getSimpleName()).
+				addProperty(javaclass, class1.getName());
+		}
 	}
 }
 /*
