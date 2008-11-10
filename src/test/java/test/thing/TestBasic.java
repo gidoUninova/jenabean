@@ -9,8 +9,6 @@ import org.junit.Test;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 
-import example.Man;
-
 import thewebsemantic.Namespace;
 import thewebsemantic.ResolverUtil;
 import thewebsemantic.Thing;
@@ -50,8 +48,6 @@ public class TestBasic {
 		Jenabean J = Jenabean.instance();
 		J.bind(ModelFactory.createOntologyModel());
 		J.bindAll("example");
-
-		
 	}
 	
 }

@@ -1,11 +1,9 @@
 package example.foaf;
 
-import static thewebsemantic.binding.Jenabean.loadDeep;
-
 import java.io.IOException;
 import java.util.Collection;
 
-import thewebsemantic.binding.Jenabean;
+import thewebsemantic.RDF2Bean;
 
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
@@ -20,12 +18,10 @@ public class Main {
 		m.read("http://richard.cyganiak.de/foaf.rdf#cygri");
 		m.read("http://bblfish.net/people/henry/card");
 		m.read("http://www.deri.ie/fileadmin/scripts/foaf.php?id=316");
-		Jenabean J = Jenabean.instance();
-		J.bind(m);
-		J.bindAll("example.foaf");
-
+		RDF2Bean reader = new RDF2Bean(m);
+		reader.bindAll("example.foaf");
 		m.write(System.out, "N3");
-		Collection<Person> people = loadDeep(Person.class);
+		Collection<Person> people = reader.loadDeep(Person.class);
 		for (Person person : people) {
 			System.out.println(person.name);
 		}
