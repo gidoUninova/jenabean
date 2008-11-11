@@ -477,4 +477,23 @@ public class TestBean2Rdf {
 		Bean2RDF writer = new Bean2RDF(m);
 		writer.save(bean);
 	}
+	
+	@Test
+	public void testNull() throws NotFoundException {
+		OntModel m = ModelFactory.createOntologyModel();
+		Bean2RDF writer = new Bean2RDF(m);
+		RDF2Bean reader = new RDF2Bean(m);
+		User u = new User("password", "a@email.com", "tcowan");	
+		u.setEmail("thewebsemantic@gmail.com");
+		writer.save(u);
+		
+		u = reader.load(User.class, u.getScreenName());
+		assertEquals("thewebsemantic@gmail.com", u.getEmail());
+		
+		u.setEmail(null);
+		writer.save(u);
+		u = reader.load(User.class, u.getScreenName());
+		assertEquals(null, u.getEmail());		
+		
+	}
 }
