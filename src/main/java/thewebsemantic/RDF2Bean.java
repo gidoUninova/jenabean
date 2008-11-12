@@ -434,7 +434,7 @@ public class RDF2Bean extends Base {
 
 	private boolean match(String propertyName, ValuesContext p) {
 		return p.getName().equals(propertyName)
-				&& (p.type().equals(Collection.class) || p.type().isArray());
+				&& (p.isAggregateType());
 	}
 
 	private Object applyProperties(Resource source, Class c) {
@@ -508,14 +508,11 @@ public class RDF2Bean extends Base {
 	 * @throws InvocationTargetException
 	 */
 	private void apply(Resource i, ValuesContext ctx) {
-		Property p = m.getProperty(ctx.uri());
-		apply(ctx, i.listProperties(p));
+		apply(ctx, i.listProperties(m.getProperty(ctx.uri())));
 	}
 
 	private void fill(Resource i, ValuesContext ctx) {
-		Property p = m.getProperty(ctx.uri());
-		if (p == null)
-			return;
+		Property p = m.createProperty(ctx.uri());
 		StmtIterator values = i.listProperties(p);
 		if (ctx.isArray()) {
 			Seq s = values.nextStatement().getSeq();
@@ -523,8 +520,7 @@ public class RDF2Bean extends Base {
 			ctx.setProperty(fillArray(type, s));
 		} else if (ctx.isList()){
 			Seq s = values.nextStatement().getSeq();
-			Class<?> type = ctx.t();
-			ctx.setProperty(fillList(type, s));			
+			ctx.setProperty(fillList(ctx.t(), s));			
 		} else {
 			ctx.setProperty(fillCollection(ctx.t(), values));
 		}
@@ -552,7 +548,9 @@ public class RDF2Bean extends Base {
 	private void list(ValuesContext ctx, Resource nextNode) {
 		Seq s = (Seq) nextNode.as(Seq.class);
 		Class<?> type = ctx.t();
-		ctx.setProperty((shallow && !included(ctx.getName())) ? new ArrayList<Object>() : fillList(type, s));		
+		if (!shallow || included(ctx.getName()))
+			ctx.setProperty(fillList(type, s));
+		//ctx.setProperty((shallow && !included(ctx.getName())) ? addOnlyCollection() : fillList(type, s));		
 	}
 	
 	private List<Object> fillList(Class<?> type, Seq s) {
@@ -569,8 +567,8 @@ public class RDF2Bean extends Base {
 	private void array(ValuesContext ctx, RDFNode nextNode) {
 		Seq s = (Seq) nextNode.as(Seq.class);
 		Class<?> type = ctx.type().getComponentType();
-		ctx.setProperty((shallow && !included(ctx.getName())) ? Array
-				.newInstance(type, 0) : fillArray(type, s));
+		if (!shallow || included(ctx.getName()))
+			ctx.setProperty(fillArray(type, s));
 
 	}
 
@@ -590,7 +588,7 @@ public class RDF2Bean extends Base {
 		return myIncludes.contains(property);
 	}
 
-	private Collection<Object> addOnlyCollection() {
+	private List<Object> addOnlyCollection() {
 		return new AddOnlyArrayList<Object>();
 	}
 

@@ -500,11 +500,12 @@ public class TestBean2Rdf {
 	}
 	
 	@Test
-	public void testList() {
+	public void testList() throws NotFoundException {
 		OntModel m = ModelFactory.createOntologyModel();
 		Bean2RDF writer = new Bean2RDF(m);
 		RDF2Bean reader = new RDF2Bean(m);
 		BusyPerson p = new BusyPerson();
+		p.setSsn("123");
 		ArrayList<String> list = new ArrayList<String>();
 		list.add("get groceries");
 		list.add("fill up tank");
@@ -521,6 +522,19 @@ public class TestBean2Rdf {
 		assertEquals("get groceries", list.get(0));
 		assertEquals("fill up tank", list.get(1));
 		assertEquals("go to bank", list.get(2));
+		//m.write(System.out, "N3");
+		BusyPerson p1 = reader.load(BusyPerson.class, "123");
+		assertNull(p1.getTodoList());
+		reader.fill(p1).with("todoList");
+		assertEquals(3,p1.getTodoList().size());
+		
+		p1 = reader.load(BusyPerson.class, "123");
+		assertNull(p1.getTodoList());
+
+		reader.fill(p1).with("todoList");
+		m.write(System.out, "N3");
+		assertEquals(3,p1.getTodoList().size());
+		
 		
 	}
 }

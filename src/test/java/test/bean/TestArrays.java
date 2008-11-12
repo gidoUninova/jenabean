@@ -1,6 +1,6 @@
 package test.bean;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -48,7 +48,7 @@ public class TestArrays {
 		assertEquals(1, beans.size());
 		
 		ExampleArraysBean loadedBean = beans.iterator().next();
-		assertEquals(0, loadedBean.getAges().length);
+		assertNull(loadedBean.getAges());
 		reader.fill(loadedBean).with("ages");
 		assertEquals(5, loadedBean.getAges().length);
 		reader.fill(loadedBean).with("people");

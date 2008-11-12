@@ -18,6 +18,7 @@ import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.rdf.model.Seq;
 import com.hp.hpl.jena.rdf.model.Statement;
 import com.hp.hpl.jena.shared.Lock;
+import com.hp.hpl.jena.shared.PropertyNotFoundException;
 import com.hp.hpl.jena.vocabulary.RDF;
 import com.hp.hpl.jena.vocabulary.RDFS;
 
@@ -162,7 +163,7 @@ public class Bean2RDF extends Base {
 		if (pc.type() == Collection.class)
 			updateCollection(subject, property, (Collection<?>) o);
 		else if (pc.type() == List.class)
-			updateArray(getSeq(subject, property), ((List) o).toArray());
+			updateArray(getSeq(subject, property), ((List)o).toArray());
 		else if (o == null)
 			subject.removeAll(property);
 		else if (pc.type() == thewebsemantic.Resource.class)
@@ -175,7 +176,6 @@ public class Bean2RDF extends Base {
 		else if (isNormalObject(o))
 			setPropertyValue(subject, property, o);
 	}
-	
 	
 	private void updateArray(Seq s, Object array) {
 		int len = Array.getLength(array);
@@ -201,12 +201,14 @@ public class Bean2RDF extends Base {
 	}
 
 	private Seq getSeq(Resource subject, Property property) {
-		Statement s = subject.getProperty(property);
-		if (s != null)
-			return s.getSeq();
-		Seq seq = m.createSeq();
-		subject.addProperty(property, seq);
-		return seq;
+		try {
+			return subject.getRequiredProperty(property).getSeq();
+		} catch (PropertyNotFoundException e) {
+			Seq seq = m.createSeq();
+			subject.addProperty(property, seq);
+			return seq;			
+		}
+
 	}
 
 	private boolean isNormalObject(Object o) {
@@ -232,7 +234,7 @@ public class Bean2RDF extends Base {
 
 	}
 
-	private boolean supportsDelete(Collection<?> c) {
+	private boolean supportsDelete(Object c) {
 		return !(c instanceof AddOnlyArrayList);
 	}
 
