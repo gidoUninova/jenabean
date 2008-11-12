@@ -62,8 +62,6 @@ class PropertyContext extends ValuesContext {
 		Object result=null;
 		try {
 			result = property.getReadMethod().invoke(subject);
-			//if ( result == null )
-			//	result = new int[0];
 		} catch (Exception e) {}
 		return result;
 	}
