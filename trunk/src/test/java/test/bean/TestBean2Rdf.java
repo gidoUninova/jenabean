@@ -5,9 +5,11 @@ import static org.junit.Assert.*;
 
 import java.io.FileWriter;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -494,6 +496,31 @@ public class TestBean2Rdf {
 		writer.save(u);
 		u = reader.load(User.class, u.getScreenName());
 		assertEquals(null, u.getEmail());		
+		
+	}
+	
+	@Test
+	public void testList() {
+		OntModel m = ModelFactory.createOntologyModel();
+		Bean2RDF writer = new Bean2RDF(m);
+		RDF2Bean reader = new RDF2Bean(m);
+		BusyPerson p = new BusyPerson();
+		ArrayList<String> list = new ArrayList<String>();
+		list.add("get groceries");
+		list.add("fill up tank");
+		list.add("go to bank");
+
+		p.setTodoList(list);
+		writer.save(p);
+		//m.write(System.out, "N3");
+		
+		Collection<BusyPerson> people = reader.loadDeep(BusyPerson.class);
+		assertEquals(1, people.size());
+		List<String> todo = people.iterator().next().getTodoList();
+		assertEquals(3, todo.size());
+		assertEquals("get groceries", list.get(0));
+		assertEquals("fill up tank", list.get(1));
+		assertEquals("go to bank", list.get(2));
 		
 	}
 }
