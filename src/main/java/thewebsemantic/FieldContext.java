@@ -5,11 +5,9 @@ import java.lang.reflect.ParameterizedType;
 import java.net.URI;
 import java.util.Collection;
 import java.util.Date;
-import java.util.List;
 
 import com.hp.hpl.jena.graph.Node;
 import com.hp.hpl.jena.rdf.model.Model;
-import com.hp.hpl.jena.rdf.model.Property;
 
 class FieldContext extends ValuesContext {
 
@@ -66,14 +64,13 @@ class FieldContext extends ValuesContext {
 	
 	public void setProperty(Object v) {
 	   try {
-//	  	 System.out.println("Setting value: " + v);
 		 field.setAccessible(true);
          field.set(subject, v);
       } catch (Exception e) {e.printStackTrace();}
 	}
 	
 	public boolean isDate() {
-	   return field.getType().equals(Date.class);
+	   return type().equals(Date.class);
 	}
 	
 	public boolean isURI() {
@@ -85,11 +82,11 @@ class FieldContext extends ValuesContext {
 	}
 	
     public boolean isCollection() {
-       return field.getType().equals(Collection.class);
+       return type().equals(Collection.class);
     }
     
     public boolean isArray() {
-    	return field.getType().isArray();
+    	return type().isArray();
     }
     
     public Class<?> type() {
