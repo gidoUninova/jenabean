@@ -2,6 +2,7 @@ package thewebsemantic;
 
 import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.ParameterizedType;
+import java.util.List;
 
 import thewebsemantic.Base.NullType;
 
@@ -63,6 +64,10 @@ public abstract class ValuesContext {
 
 	public Property property(Model m) { 
 		return m.getProperty(uri());
+	}
+
+	public boolean isList() {
+		return type().equals(List.class);
 	}
 
 }
