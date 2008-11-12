@@ -4,6 +4,7 @@ import java.beans.PropertyDescriptor;
 import java.lang.reflect.ParameterizedType;
 import java.net.URI;
 import java.util.Collection;
+import java.util.List;
 
 import com.hp.hpl.jena.graph.Node;
 import com.hp.hpl.jena.rdf.model.Model;
@@ -61,8 +62,8 @@ class PropertyContext extends ValuesContext {
 		Object result=null;
 		try {
 			result = property.getReadMethod().invoke(subject);
-			if ( result == null)
-				result = new int[0];
+			//if ( result == null )
+			//	result = new int[0];
 		} catch (Exception e) {}
 		return result;
 	}
@@ -94,14 +95,14 @@ class PropertyContext extends ValuesContext {
 	 * @see thewebsemantic.ValuesContext#isCollection()
 	 */
     public boolean isCollection() {
-       return property.getPropertyType().equals(Collection.class);
+       return type().equals(Collection.class);
     }
     
     /* (non-Javadoc)
 	 * @see thewebsemantic.ValuesContext#isArray()
 	 */
     public boolean isArray() {
-    	return property.getPropertyType().isArray();
+    	return type().isArray();
     }
     
     /* (non-Javadoc)
@@ -133,5 +134,6 @@ class PropertyContext extends ValuesContext {
 	public String inverseOf() {
 		return inverseOf(property.getReadMethod());
 	}
+
 
 }

@@ -15,6 +15,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -129,7 +130,7 @@ public class RDF2Bean extends Base {
 	public <T> Collection<T> load(Class<T> c, String... includes) {
 		return load(c, true, includes);
 	}
-	
+
 	/**
 	 * load all rdf entries that map to the bean.
 	 * 
@@ -157,8 +158,7 @@ public class RDF2Bean extends Base {
 	}
 
 	private <T> Collection<T> loadAll(Class<T> c) {
-		return loadIndividuals(c, m.listSubjectsWithProperty(type,
-				rdfType(c)));
+		return loadIndividuals(c, m.listSubjectsWithProperty(type, rdfType(c)));
 	}
 
 	private <T> Collection<T> loadIndividuals(Class<T> c, ResIterator it) {
@@ -517,10 +517,14 @@ public class RDF2Bean extends Base {
 		if (p == null)
 			return;
 		StmtIterator values = i.listProperties(p);
-		if (ctx.type().isArray()) {
+		if (ctx.isArray()) {
 			Seq s = values.nextStatement().getSeq();
 			Class<?> type = ctx.type().getComponentType();
 			ctx.setProperty(fillArray(type, s));
+		} else if (ctx.isList()){
+			Seq s = values.nextStatement().getSeq();
+			Class<?> type = ctx.t();
+			ctx.setProperty(fillList(type, s));			
 		} else {
 			ctx.setProperty(fillCollection(ctx.t(), values));
 		}
@@ -537,10 +541,25 @@ public class RDF2Bean extends Base {
 			applyLiteral(ctx, nodes.nextStatement().getLiteral());
 		else if (ctx.isArray())
 			array(ctx, nodes.nextStatement().getResource());
+		else if (ctx.isList())
+			list(ctx, nodes.nextStatement().getResource());
 		else if (ctx.isURI())
 			applyURI(ctx, nodes.nextStatement().getResource());
 		else
 			applyIndividual(ctx, nodes.nextStatement().getResource());
+	}
+
+	private void list(ValuesContext ctx, Resource nextNode) {
+		Seq s = (Seq) nextNode.as(Seq.class);
+		Class<?> type = ctx.t();
+		ctx.setProperty((shallow && !included(ctx.getName())) ? new ArrayList<Object>() : fillList(type, s));		
+	}
+	
+	private List<Object> fillList(Class<?> type, Seq s) {
+		ArrayList<Object> list = new ArrayList<Object>();
+		for (int i = 0; i < s.size(); i++)
+			list.add( toObject(type, s.getObject(i + 1)));
+		return list;
 	}
 
 	private void applyURI(ValuesContext ctx, Resource resource) {
@@ -550,10 +569,8 @@ public class RDF2Bean extends Base {
 	private void array(ValuesContext ctx, RDFNode nextNode) {
 		Seq s = (Seq) nextNode.as(Seq.class);
 		Class<?> type = ctx.type().getComponentType();
-		if (shallow && !included(ctx.getName()))
-			ctx.setProperty(Array.newInstance(type, 0));
-		else
-			ctx.setProperty(fillArray(type, s));
+		ctx.setProperty((shallow && !included(ctx.getName())) ? Array
+				.newInstance(type, 0) : fillArray(type, s));
 
 	}
 
@@ -591,15 +608,15 @@ public class RDF2Bean extends Base {
 	private void applyLiteral(ValuesContext ctx, Literal l) {
 		ctx.setProperty(convertLiteral(l, ctx.type()));
 	}
-	
+
 	public void bindAll(String... s) {
 		ResolverUtil<Object> resolver = new ResolverUtil<Object>();
 		resolver.findAnnotated(Namespace.class, s);
 		Set<Class<? extends Object>> classes = resolver.getClasses();
 		for (Class<? extends Object> class1 : classes) {
 			Namespace ns = class1.getAnnotation(Namespace.class);
-			m.getResource(ns.value() + class1.getSimpleName()).
-				addProperty(javaclass, class1.getName());
+			m.getResource(ns.value() + class1.getSimpleName()).addProperty(
+					javaclass, class1.getName());
 		}
 	}
 }

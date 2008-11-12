@@ -5,6 +5,7 @@ import java.lang.reflect.ParameterizedType;
 import java.net.URI;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
@@ -133,5 +134,7 @@ class NullPropertyContext extends ValuesContext {
 	public String inverseOf() {
 		return inverseOf(property.getReadMethod());
 	}
+	
+
 
 }

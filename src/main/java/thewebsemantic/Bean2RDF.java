@@ -9,6 +9,7 @@ import java.lang.reflect.Array;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.Property;
@@ -158,19 +159,24 @@ public class Bean2RDF extends Base {
 	private void saveOrUpdate(Resource subject, ValuesContext pc) {
 		Object o = pc.invokeGetter();
 		Property property = toRdfProperty(pc);
-		if (o instanceof Collection)
+		if (pc.type() == Collection.class)
 			updateCollection(subject, property, (Collection<?>) o);
-		else if (o instanceof thewebsemantic.Resource)
+		else if (pc.type() == List.class)
+			updateArray(getSeq(subject, property), ((List) o).toArray());
+		else if (o == null)
+			subject.removeAll(property);
+		else if (pc.type() == thewebsemantic.Resource.class)
 			subject.removeAll(property).addProperty(property,
 					m.getResource(((thewebsemantic.Resource) o).uri));
-		else if (isPrimitive(o.getClass()))
+		else if (pc.isPrimitive())
 			subject.removeAll(property).addProperty(property, toLiteral(m, o));
 		else if (pc.isArray())
 			updateArray(getSeq(subject, property), o);
 		else if (isNormalObject(o))
-			updateOrCreate(subject, property, o);
+			setPropertyValue(subject, property, o);
 	}
-
+	
+	
 	private void updateArray(Seq s, Object array) {
 		int len = Array.getLength(array);
 		int difference = s.size() - len;
@@ -216,6 +222,8 @@ public class Bean2RDF extends Base {
 	 */
 	private void updateCollection(Resource subject, Property property,
 			Collection<?> c) {
+		if (c == null)
+			return;
 		if (supportsDelete(c))
 			subject.removeAll(property);
 		for (Object o : c)
@@ -237,11 +245,8 @@ public class Bean2RDF extends Base {
 	 * @param property
 	 * @param o
 	 */
-	private void updateOrCreate(Resource subject, Property property, Object o) {
-		Statement existingRelation = subject.getProperty(property);
-		if (existingRelation != null)
-			subject.removeAll(property);
-		subject.addProperty(property, _write(o, true));
+	private void setPropertyValue(Resource subject, Property property, Object o) {
+		subject.removeAll(property).addProperty(property, _write(o, true));
 	}
 }
 /*

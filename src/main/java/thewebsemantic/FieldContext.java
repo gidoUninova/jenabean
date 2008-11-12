@@ -5,6 +5,7 @@ import java.lang.reflect.ParameterizedType;
 import java.net.URI;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 import com.hp.hpl.jena.graph.Node;
 import com.hp.hpl.jena.rdf.model.Model;
@@ -59,8 +60,6 @@ class FieldContext extends ValuesContext {
 		try {
 			field.setAccessible(true);
 			result = field.get(subject);
-			if ( result == null)
-				result = new int[0];
 		} catch (Exception e) {e.printStackTrace();}
 		return result;
 	}
@@ -109,5 +108,5 @@ class FieldContext extends ValuesContext {
 	public boolean isTransitive() {
 		return isTransitive(field);
 	}
-
+	
 }
