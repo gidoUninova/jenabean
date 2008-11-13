@@ -533,6 +533,7 @@ public class TestBean2Rdf {
 		writer.save(p1);
 		
 		// should still be three, we didn't make any changes, just a shallow load
+		// null aggregate fields are ignored.
 		p1 = reader.load(BusyPerson.class, "123", new String[] {"todoList"});
 		assertEquals(3,p1.getTodoList().size());
 		p1.getTodoList().remove(0);
@@ -540,6 +541,8 @@ public class TestBean2Rdf {
 		p1.getTodoList().remove(0);
 		writer.save(p1);
 		//m.write(System.out, "N3");
+		
+		// we removed and saved 0 length list, it should remove data.
 		reader.fill(p1).with("todoList");
 		assertEquals(0,p1.getTodoList().size());
 		
