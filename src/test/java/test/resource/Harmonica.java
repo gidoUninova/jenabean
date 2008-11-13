@@ -1,6 +1,7 @@
 package test.resource;
 
 import java.util.Collection;
+import java.util.List;
 
 import thewebsemantic.Resource;
 import thewebsemantic.binding.RdfBeanId;
@@ -10,6 +11,7 @@ public class Harmonica extends RdfBeanId<Harmonica>{
 	String name;
 	int age;
 	Collection<Resource> similarTo;
+	List<Resource> differentFrom;
 
 	public String getName() {
 		return name;
@@ -28,5 +30,11 @@ public class Harmonica extends RdfBeanId<Harmonica>{
 	}
 	public void setSimilarTo(Collection<Resource> similarTo) {
 		this.similarTo = similarTo;
+	}
+	public List<Resource> getDifferentFrom() {
+		return differentFrom;
+	}
+	public void setDifferentFrom(List<Resource> differentFrom) {
+		this.differentFrom = differentFrom;
 	}
 }
