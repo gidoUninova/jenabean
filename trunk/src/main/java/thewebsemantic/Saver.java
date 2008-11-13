@@ -1,6 +1,7 @@
 package thewebsemantic;
 
 import java.lang.reflect.Array;
+import java.net.URI;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -14,16 +15,16 @@ public abstract class Saver {
 	private static Map<Class<?>, Saver> lookup = new HashMap<Class<?>, Saver>() ;
 	
 	static {
-		lookup.put(Resource.class, new ResourceSaver());
+		lookup.put(thewebsemantic.Resource.class, new ResourceSaver());
 		lookup.put(Collection.class, new CollectionSaver());
 		lookup.put(List.class, new ListSaver());
 		lookup.put(Array.class, new ArraySaver());
+		lookup.put(URI.class, new ResourceSaver());
 	}
 	
 	public static boolean supports(Class<?> type) {
 		return lookup.containsKey(type);
 	}
-
 
 	public static Saver of(Class<?> type) {
 		return lookup.get(type);

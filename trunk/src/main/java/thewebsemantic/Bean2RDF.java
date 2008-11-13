@@ -80,8 +80,7 @@ public class Bean2RDF extends Base {
 
 	public void delete(Object bean) {
 		Resource i = m.getResource(instanceURI(bean));
-		m.removeAll(null, null, i);
-		m.removeAll(i, null, null);
+		m.removeAll(null, null, i).removeAll(i, null, null);
 	}
 
 	/**
@@ -117,9 +116,6 @@ public class Bean2RDF extends Base {
 	}
 
 	private Resource toResource(Object bean) {
-		if (bean instanceof URI) {
-			return m.createResource(bean.toString());
-		}
 		return m.createResource(instanceURI(bean), getRDFSClass(bean));
 	}
 
@@ -167,8 +163,6 @@ public class Bean2RDF extends Base {
 		else if (isNormalObject(o))
 			setPropertyValue(subject, property, o);
 	}
-	
-
 
 	protected RDFNode toNode(Object o) {
 		return (isPrimitive(o)) ? toLiteral(m, o) : _write(o, true);
@@ -192,10 +186,20 @@ public class Bean2RDF extends Base {
 		if (supportsDelete(c))
 			subject.removeAll(property);
 		for (Object o : c)
-			subject.addProperty(property, isPrimitive(o) ? toLiteral(m, o)
-					: _write(o, true));
+			subject.addProperty(property, toRDFNode(o));
 
 	}
+
+	private RDFNode toRDFNode(Object o) {
+		if (isPrimitive(o)) 
+			return toLiteral(m, o);
+		else if (o instanceof URI || o instanceof thewebsemantic.Resource)
+			return m.createResource(o.toString());
+		else
+			return _write(o, true);
+	}
+	
+
 
 	private boolean supportsDelete(Object c) {
 		return !(c instanceof AddOnlyArrayList);
