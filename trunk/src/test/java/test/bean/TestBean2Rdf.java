@@ -513,7 +513,7 @@ public class TestBean2Rdf {
 
 		p.setTodoList(list);
 		writer.save(p);
-		//m.write(System.out, "N3");
+		
 		
 		Collection<BusyPerson> people = reader.loadDeep(BusyPerson.class);
 		assertEquals(1, people.size());
@@ -530,10 +530,18 @@ public class TestBean2Rdf {
 		
 		p1 = reader.load(BusyPerson.class, "123");
 		assertNull(p1.getTodoList());
-
-		reader.fill(p1).with("todoList");
-		m.write(System.out, "N3");
+		writer.save(p1);
+		
+		// should still be three, we didn't make any changes, just a shallow load
+		p1 = reader.load(BusyPerson.class, "123", new String[] {"todoList"});
 		assertEquals(3,p1.getTodoList().size());
+		p1.getTodoList().remove(0);
+		p1.getTodoList().remove(0);
+		p1.getTodoList().remove(0);
+		writer.save(p1);
+		//m.write(System.out, "N3");
+		reader.fill(p1).with("todoList");
+		assertEquals(0,p1.getTodoList().size());
 		
 		
 	}
