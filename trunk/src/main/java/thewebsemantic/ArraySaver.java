@@ -12,6 +12,9 @@ public class ArraySaver extends Saver {
 	@Override
 	public void save(Bean2RDF writer, Resource subject, Property property,
 			Object array) {
+		// we will not remove children unless we get a 0 length list
+		if ( array==null)
+			return;
 		Seq s = getSeq(subject, property);
 		int len = Array.getLength(array);
 		int difference = s.size() - len;
@@ -24,9 +27,9 @@ public class ArraySaver extends Saver {
 			if (o==null)
 				continue;
 			if (i >= s.size()) {
-				s.add(writer.toNode(o));
+				s.add(writer.toRDFNode(o));
 			} else {
-				s.set(i + 1, writer.toNode(o));
+				s.set(i + 1, writer.toRDFNode(o));
 			}
 		}
 

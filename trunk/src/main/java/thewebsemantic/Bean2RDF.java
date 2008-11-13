@@ -164,10 +164,6 @@ public class Bean2RDF extends Base {
 			setPropertyValue(subject, property, o);
 	}
 
-	protected RDFNode toNode(Object o) {
-		return (isPrimitive(o)) ? toLiteral(m, o) : _write(o, true);
-	}
-
 	private boolean isNormalObject(Object o) {
 		return !o.getClass().isArray() && !(o instanceof Collection);
 	}
@@ -190,7 +186,7 @@ public class Bean2RDF extends Base {
 
 	}
 
-	private RDFNode toRDFNode(Object o) {
+	protected RDFNode toRDFNode(Object o) {
 		if (isPrimitive(o)) 
 			return toLiteral(m, o);
 		else if (o instanceof URI || o instanceof thewebsemantic.Resource)
