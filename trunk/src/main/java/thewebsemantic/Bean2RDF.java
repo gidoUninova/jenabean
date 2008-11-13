@@ -1,24 +1,20 @@
 package thewebsemantic;
 
+import static thewebsemantic.JenaHelper.toLiteral;
 import static thewebsemantic.PrimitiveWrapper.isPrimitive;
 import static thewebsemantic.TypeWrapper.instanceURI;
 import static thewebsemantic.TypeWrapper.type;
-import static thewebsemantic.JenaHelper.toLiteral;
 
 import java.lang.reflect.Array;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.Property;
 import com.hp.hpl.jena.rdf.model.RDFNode;
 import com.hp.hpl.jena.rdf.model.Resource;
-import com.hp.hpl.jena.rdf.model.Seq;
-import com.hp.hpl.jena.rdf.model.Statement;
 import com.hp.hpl.jena.shared.Lock;
-import com.hp.hpl.jena.shared.PropertyNotFoundException;
 import com.hp.hpl.jena.vocabulary.RDF;
 import com.hp.hpl.jena.vocabulary.RDFS;
 
@@ -160,55 +156,22 @@ public class Bean2RDF extends Base {
 	private void saveOrUpdate(Resource subject, ValuesContext pc) {
 		Object o = pc.invokeGetter();
 		Property property = toRdfProperty(pc);
-		if (pc.type() == Collection.class)
-			updateCollection(subject, property, (Collection<?>) o);
-		else if (pc.type() == List.class)
-			updateArray(getSeq(subject, property), ((List)o).toArray());
+		if ( Saver.supports(pc.type()))
+			Saver.of(pc.type()).save(this,subject, property, o);
 		else if (o == null)
 			subject.removeAll(property);
-		else if (pc.type() == thewebsemantic.Resource.class)
-			subject.removeAll(property).addProperty(property,
-					m.getResource(((thewebsemantic.Resource) o).uri));
 		else if (pc.isPrimitive())
 			subject.removeAll(property).addProperty(property, toLiteral(m, o));
 		else if (pc.isArray())
-			updateArray(getSeq(subject, property), o);
+			Saver.of(Array.class).save(this, subject, property, o);
 		else if (isNormalObject(o))
 			setPropertyValue(subject, property, o);
 	}
 	
-	private void updateArray(Seq s, Object array) {
-		int len = Array.getLength(array);
-		int difference = s.size() - len;
-		int seqsize = s.size();
-		if (difference > 0)
-			for (int i = 0; i < difference; s.remove(seqsize-i++)) {}
-		
-		for (int i = 0; i < len; i++) {
-			Object o = Array.get(array, i);
-			if (o==null)
-				continue;
-			if (i >= s.size()) {
-				s.add(toNode(o));
-			} else {
-				s.set(i + 1, toNode(o));
-			}
-		}
-	}
 
-	private RDFNode toNode(Object o) {
+
+	protected RDFNode toNode(Object o) {
 		return (isPrimitive(o)) ? toLiteral(m, o) : _write(o, true);
-	}
-
-	private Seq getSeq(Resource subject, Property property) {
-		try {
-			return subject.getRequiredProperty(property).getSeq();
-		} catch (PropertyNotFoundException e) {
-			Seq seq = m.createSeq();
-			subject.addProperty(property, seq);
-			return seq;			
-		}
-
 	}
 
 	private boolean isNormalObject(Object o) {
@@ -222,7 +185,7 @@ public class Bean2RDF extends Base {
 	 * @param property
 	 * @param c
 	 */
-	private void updateCollection(Resource subject, Property property,
+	protected void updateCollection(Resource subject, Property property,
 			Collection<?> c) {
 		if (c == null)
 			return;
