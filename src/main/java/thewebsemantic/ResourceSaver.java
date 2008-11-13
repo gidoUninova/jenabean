@@ -10,7 +10,7 @@ public class ResourceSaver extends Saver {
 	public void save(Bean2RDF writer, Resource subject, Property property, Object o) {
 		Model m = subject.getModel();
 		subject.removeAll(property).addProperty(property,
-				m.getResource(((thewebsemantic.Resource) o).uri));
+				m.getResource(o.toString()));
 	}
 
 }
