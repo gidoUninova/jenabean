@@ -3,7 +3,7 @@ package test.driven;
 import thewebsemantic.Namespace;
 
 @Namespace("http://foo")
-public enum Languages {
+public enum Language {
 
 	JAPANESE,
 	ENGLISH, 

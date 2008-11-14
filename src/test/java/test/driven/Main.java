@@ -5,6 +5,6 @@ public class Main {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		Languages english= Languages.valueOf("ENGLISH");
+		Language english= Language.valueOf("ENGLISH");
 	}
 }
