@@ -129,6 +129,8 @@ public abstract class TypeWrapper {
 	
 	private static TypeWrapper newwrapper(Class<?> c) {
 		BeanInfo info = beanInfo(c);
+		if (c.isEnum())
+			return new EnumTypeWrapper(c);
 		for (MethodDescriptor md : info.getMethodDescriptors())
 			if (isId(md))
 				return new IdTypeWrapper(c,md.getMethod());
