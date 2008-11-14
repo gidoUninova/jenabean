@@ -2,7 +2,6 @@ package thewebsemantic;
 
 import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.ParameterizedType;
-import java.util.Collection;
 import java.util.List;
 
 import thewebsemantic.Base.NullType;
