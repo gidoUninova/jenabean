@@ -550,7 +550,6 @@ public class RDF2Bean extends Base {
 		Class<?> type = ctx.t();
 		if (!shallow || included(ctx.getName()))
 			ctx.setProperty(fillList(type, s));
-		//ctx.setProperty((shallow && !included(ctx.getName())) ? addOnlyCollection() : fillList(type, s));		
 	}
 	
 	private List<Object> fillList(Class<?> type, Seq s) {
