@@ -5,18 +5,18 @@ import java.util.Collection;
 import thewebsemantic.binding.RdfBeanId;
 
 public class Person extends RdfBeanId<Person> {
-	
+
 	Language lang;
 	Collection<Continent> visited;
 
 	public Person() {
 		super();
 	}
-	
+
 	public Person(String id) {
 		super(id);
 	}
-	
+
 	public Language getLang() {
 		return lang;
 	}
@@ -32,5 +32,5 @@ public class Person extends RdfBeanId<Person> {
 	public void setVisited(Collection<Continent> visited) {
 		this.visited = visited;
 	}
-	
+
 }
