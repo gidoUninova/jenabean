@@ -8,7 +8,6 @@ import thewebsemantic.RdfProperty;
 public class Book {
 	String isbn;
 	
-
 	@Id
 	public String getIsbn() {
 		return isbn;
