@@ -143,6 +143,10 @@ public abstract class TypeWrapper {
 		return NS + c.getSimpleName();
 	}
 
+	public static String typeUri(Class<?> c) {
+		return wrap(c).typeUri();
+	}
+	
 	private PropertyDescriptor[] descriptors() {
 		Collection<PropertyDescriptor> results = new LinkedList<PropertyDescriptor>();
 		for (PropertyDescriptor p : info.getPropertyDescriptors())

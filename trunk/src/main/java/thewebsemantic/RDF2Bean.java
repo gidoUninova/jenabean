@@ -4,7 +4,7 @@ import static com.hp.hpl.jena.graph.Node.ANY;
 import static com.hp.hpl.jena.graph.Node.createURI;
 import static thewebsemantic.JenaHelper.convertLiteral;
 import static thewebsemantic.TypeWrapper.instanceURI;
-import static thewebsemantic.TypeWrapper.wrap;
+import static thewebsemantic.TypeWrapper.*;
 import static com.hp.hpl.jena.vocabulary.RDF.type;
 
 import java.lang.reflect.Array;
@@ -491,8 +491,7 @@ public class RDF2Bean extends Base {
 	}
 
 	private Resource rdfType(Class<?> c) {
-		return m.getResource((binder.isBound(c)) ? binder.getUri(c) : wrap(c)
-				.typeUri());
+		return m.getResource((binder.isBound(c)) ? binder.getUri(c) : typeUri(c));
 	}
 
 	/**
