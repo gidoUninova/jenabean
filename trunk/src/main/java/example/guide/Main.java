@@ -1,5 +1,6 @@
 package example.guide;
 
+import java.net.Proxy.Type;
 import java.util.Collection;
 
 import thewebsemantic.Bean2RDF;
@@ -23,6 +24,7 @@ public class Main {
 		paradoxOfChoice.setIsbn("978-0060005689");
 		paradoxOfChoice.setTitle("The Paradox of Choice");
 		writer.save(paradoxOfChoice);
+		writer.save(Type.HTTP);
 		m.write(System.out, "N3");
 		
 		RDF2Bean reader = new RDF2Bean(m);
