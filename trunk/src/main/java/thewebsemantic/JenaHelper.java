@@ -27,6 +27,8 @@ public class JenaHelper {
 			return bigDecimal(l);
 		} else if ( Long.TYPE.equals(c)) {
 			return l.getLong();
+		} else if ( Double.TYPE.equals(c)) {
+			return l.getDouble();
 		} else
 			return l.getValue();
 	}
