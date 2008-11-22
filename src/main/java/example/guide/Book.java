@@ -7,7 +7,7 @@ import thewebsemantic.RdfProperty;
 @Namespace("http://example.org/")
 public class Book {
 	String isbn;
-	
+
 	@Id
 	public String getIsbn() {
 		return isbn;
