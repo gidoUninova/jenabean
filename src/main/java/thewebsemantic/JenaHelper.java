@@ -25,6 +25,8 @@ public class JenaHelper {
 			return ((XSDDateTime)l.getValue()).asCalendar();
 		} else if (c.equals(BigDecimal.class)) {
 			return bigDecimal(l);
+		} else if ( Long.TYPE.equals(c)) {
+			return l.getLong();
 		} else
 			return l.getValue();
 	}
