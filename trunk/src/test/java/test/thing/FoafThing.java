@@ -10,7 +10,9 @@ import thewebsemantic.Thing;
 public interface FoafThing extends As {
 	
 	public FoafThing addMade(Thing s);
+	public FoafThing addMbox(Thing mbox);
 	
 	public Collection<Thing> getMade();
+	public Collection<Thing> getMbox();
 
 }
