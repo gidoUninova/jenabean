@@ -50,23 +50,19 @@ public class Thing implements InvocationHandler, As {
 			throws Throwable {
 		Class<?> returnType = method.getReturnType();
 		if (method.equals(as))
-			return as((Class)args[0]);
-		String actionType = method.getName().substring(0,3);
-		
-		if ("set".equals(actionType)) {
+			return as((Class)args[0]);		
+		else if (method.getParameterTypes().length == 0)
+			return get(method);
+		else if (method.isAnnotationPresent(Functional.class)) {
 			set(method, args[0]);
 			return proxy;
-		} else if ("add".equals(actionType)) {
-			add(method, args[0]);
-			return proxy;
-		} else if ("get".equals(actionType)) {
-			return get(method);
 		}
-		return null;
+		add(method, args[0]);
+		return proxy;
 	}
 
 	private Object get(Method m) {
-		String methodName = m.getName().substring(3);
+		String methodName = m.getName();
 		Class<?> genericType = Object.class;
 		if (m.getGenericReturnType() instanceof ParameterizedType )
 			genericType = getGenericType((ParameterizedType)m.getGenericReturnType());
@@ -110,7 +106,7 @@ public class Thing implements InvocationHandler, As {
 	}
 
 	private void set(Method m, Object arg) {
-		String methodName = m.getName().substring(3);
+		String methodName = m.getName();
 		Class<?> c = m.getDeclaringClass();
         String ns = wrap(c).namespace();
 		Property p = model.getProperty(ns + methodName);
@@ -122,7 +118,7 @@ public class Thing implements InvocationHandler, As {
 	}
 
 	private void add(Method m, Object arg) {
-		String methodName = m.getName().substring(3);
+		String methodName = m.getName();
 		Class<?> c = m.getDeclaringClass();
         String ns = wrap(c).namespace();
 		Property p = model.getProperty(ns + methodName);
