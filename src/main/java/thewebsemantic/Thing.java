@@ -74,7 +74,7 @@ public class Thing implements InvocationHandler, As {
 		if (isPrimitive(returnType))
 			return JenaHelper.convertLiteral(it.nextStatement().getLiteral(), returnType);
 		if (returnType.equals(Collection.class) && isPrimitive(genericType))
-			return collection(it, genericType);
+			return collection(it);
 		if (returnType.equals(Collection.class) && genericType.equals(Thing.class))
 			return thingCollection(it);
 		return null;
@@ -95,7 +95,7 @@ public class Thing implements InvocationHandler, As {
 				.getActualTypeArguments()[0];		
 	}
 
-	private Object collection(StmtIterator it, Class type) {
+	private Object collection(StmtIterator it) {
 		ArrayList<Object> list = new ArrayList<Object>();
 		while (it.hasNext()) {
 			Statement s = it.nextStatement();
@@ -131,10 +131,6 @@ public class Thing implements InvocationHandler, As {
 	
 	private void add(Property p, Thing arg) {
 		r.addProperty(p, arg.getResource());		
-	}
-	
-	private void add(Property p, Resource arg) {
-		r.addProperty(p, arg);		
 	}
 	
 	private void set(Property p, Thing arg) {
