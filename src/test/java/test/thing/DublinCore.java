@@ -27,10 +27,9 @@ public interface DublinCore extends As {
 	public DublinCore relation(String s);
 	public DublinCore rights(String s);
 	public DublinCore source(String s);
+	
 	@Functional
 	public DublinCore title(String s);
-	
-
 	public Collection<String> contributor();
 	public String coverage();
 	public Collection<String> creator();
