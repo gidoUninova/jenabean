@@ -28,27 +28,27 @@ public class TestBasic {
 		Thing me = new Thing("http://tcowan.myopenid.com", m);
 		m.write(System.out, "N3");
 		t.as(DublinCore.class).
-			setcreator("me").
-			addsubject("binding").
-			addsubject("owl").
-			addsubject(me).
-			settitle("The web semantic").
+			creator("me").
+			subject("binding").
+			subject("owl").
+			subject(me).
+			title("The web semantic").
 		 as(FoafThing.class).
-			addmade(new Thing("http://thewebsemantic.com",m)).
-		    addmade(new Thing("http://tripblox.com,",m)).
-		    addmbox(new Thing("mailto:gorby.kremvax@example.com",m))
+			made(new Thing("http://thewebsemantic.com",m)).
+		    made(new Thing("http://tripblox.com,",m)).
+		    mbox(new Thing("mailto:gorby.kremvax@example.com",m))
 			;
 		m.write(System.out, "N3");
-		System.out.println(dcThing.getsubject().size());
-		for (String subject : dcThing.getsubject()) {
+		System.out.println(dcThing.subject().size());
+		for (String subject : dcThing.subject()) {
 			System.out.println(subject);
 		}
 		
-		for (Thing thing : t.as(FoafThing.class).getmade())
+		for (Thing thing : t.as(FoafThing.class).made())
 			System.out.println(thing.getResource());
 		
-		t.as(DublinCore.class).setdescription("this is a description");
-		System.out.println(t.as(DublinCore.class).getdescription());
+		t.as(DublinCore.class).description("this is a description");
+		System.out.println(t.as(DublinCore.class).description());
 		
 	}
 	
@@ -57,16 +57,16 @@ public class TestBasic {
 		Model m = ModelFactory.createDefaultModel();
 		Thing me = new Thing("http://tcowan.myopenid.com", m);
 		Date d = new Date();
-		me.as(DublinCore.class).setdate(d);
-		Date e = me.as(DublinCore.class).getdate();
+		me.as(DublinCore.class).date(d);
+		Date e = me.as(DublinCore.class).date();
 		assertEquals(d,e);
 		
-		me.as(Various.class).setage(40).setmiles(4000).addfloat(1.1f).addfloat(2.2f).setdouble(1.123d).setchar('c');
-		assertEquals(me.as(Various.class).getage(), 40);
-		assertEquals(me.as(Various.class).getmiles(), 4000);
-		assertEquals(me.as(Various.class).getfloat().size(), 2);
-		assertEquals(me.as(Various.class).getdouble(), 1.123d, 0);
-		assertEquals(me.as(Various.class).getchar(), 'c');
+		me.as(Various.class).age(40).miles(4000).Float(1.1f).Float(2.2f).Double(1.123d).Char('c');
+		assertEquals(me.as(Various.class).age(), 40);
+		assertEquals(me.as(Various.class).miles(), 4000);
+		assertEquals(me.as(Various.class).Float().size(), 2);
+		assertEquals(me.as(Various.class).Double(), 1.123d, 0);
+		assertEquals(me.as(Various.class).Char(), 'c');
 	}
 
 	

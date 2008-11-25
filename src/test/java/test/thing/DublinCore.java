@@ -9,40 +9,40 @@ import thewebsemantic.Thing;
 
 @Namespace("http://purl.org/dc/elements/1.1/")
 public interface DublinCore extends As {
-	public DublinCore setsubject(String s);
-	public DublinCore addsubject(String s);
-	public DublinCore addsubject(Thing t);
-	public DublinCore setcontributor(String s);
-	public DublinCore setcoverage(String s);
-	public DublinCore setcreator(String s);
-	public DublinCore setdate(Date d);
-	public DublinCore setdescription(String s);
-	public DublinCore setformat(String s);
-	public DublinCore setidentifier(String s);
-	public DublinCore setlanguage(String s);
-	public DublinCore setpublisher(String s);
-	public DublinCore setrelation(String s);
-	public DublinCore setrights(String s);
-	public DublinCore setsource(String s);
-	public DublinCore settitle(String s);
+
+	public DublinCore subject(String s);
+	public DublinCore subject(Thing t);
+	public DublinCore contributor(String s);
+	public DublinCore coverage(String s);
+	public DublinCore creator(String s);
+	public DublinCore date(Date d);
+	public DublinCore description(String s);
+	public DublinCore format(String s);
+	public DublinCore identifier(String s);
+	public DublinCore language(String s);
+	public DublinCore publisher(String s);
+	public DublinCore relation(String s);
+	public DublinCore rights(String s);
+	public DublinCore source(String s);
+	public DublinCore title(String s);
 	
 
-	public Collection<String> getcontributor();
-	public String getcoverage();
-	public Collection<String> getcreator();
-	public Date getdate();
-	public String getdescription();
-	public String getformat();
-	public String getidentifier();
-	public String getlanguage();
-	public String getpublisher();
-	public String getrelation();
-	public String getrights();
-	public String getsource();
-	public Collection<String> getsubject();
+	public Collection<String> contributor();
+	public String coverage();
+	public Collection<String> creator();
+	public Date date();
+	public String description();
+	public String format();
+	public String identifier();
+	public String language();
+	public String publisher();
+	public String relation();
+	public String rights();
+	public String source();
+	public Collection<String> subject();
 
-	public String gettitle();
-	public String gettype();
+	public String title();
+	public String type();
 	
 
 	
