@@ -28,27 +28,27 @@ public class TestBasic {
 		Thing me = new Thing("http://tcowan.myopenid.com", m);
 		m.write(System.out, "N3");
 		t.as(DublinCore.class).
-			setCreator("me").
-			addSubject("binding").
-			addSubject("owl").
-			addSubject(me).
-			setTitle("The web semantic").
+			setcreator("me").
+			addsubject("binding").
+			addsubject("owl").
+			addsubject(me).
+			settitle("The web semantic").
 		 as(FoafThing.class).
-			addMade(new Thing("http://thewebsemantic.com",m)).
-		    addMade(new Thing("http://tripblox.com,",m)).
-		    addMbox(new Thing("mailto:gorby.kremvax@example.com",m))
+			addmade(new Thing("http://thewebsemantic.com",m)).
+		    addmade(new Thing("http://tripblox.com,",m)).
+		    addmbox(new Thing("mailto:gorby.kremvax@example.com",m))
 			;
 		m.write(System.out, "N3");
-		System.out.println(dcThing.getSubject().size());
-		for (String subject : dcThing.getSubject()) {
+		System.out.println(dcThing.getsubject().size());
+		for (String subject : dcThing.getsubject()) {
 			System.out.println(subject);
 		}
 		
-		for (Thing thing : t.as(FoafThing.class).getMade())
+		for (Thing thing : t.as(FoafThing.class).getmade())
 			System.out.println(thing.getResource());
 		
-		t.as(DublinCore.class).setDescription("this is a description");
-		System.out.println(t.as(DublinCore.class).getDescription());
+		t.as(DublinCore.class).setdescription("this is a description");
+		System.out.println(t.as(DublinCore.class).getdescription());
 		
 	}
 	
@@ -57,16 +57,16 @@ public class TestBasic {
 		Model m = ModelFactory.createDefaultModel();
 		Thing me = new Thing("http://tcowan.myopenid.com", m);
 		Date d = new Date();
-		me.as(DublinCore.class).setDate(d);
-		Date e = me.as(DublinCore.class).getDate();
+		me.as(DublinCore.class).setdate(d);
+		Date e = me.as(DublinCore.class).getdate();
 		assertEquals(d,e);
 		
-		me.as(Various.class).setAge(40).setMiles(4000).addFloat(1.1f).addFloat(2.2f).setDouble(1.123d).setChar('c');
-		assertEquals(me.as(Various.class).getAge(), 40);
-		assertEquals(me.as(Various.class).getMiles(), 4000);
-		assertEquals(me.as(Various.class).getFloat().size(), 2);
-		assertEquals(me.as(Various.class).getDouble(), 1.123d, 0);
-		assertEquals(me.as(Various.class).getChar(), 'c');
+		me.as(Various.class).setage(40).setmiles(4000).addfloat(1.1f).addfloat(2.2f).setdouble(1.123d).setchar('c');
+		assertEquals(me.as(Various.class).getage(), 40);
+		assertEquals(me.as(Various.class).getmiles(), 4000);
+		assertEquals(me.as(Various.class).getfloat().size(), 2);
+		assertEquals(me.as(Various.class).getdouble(), 1.123d, 0);
+		assertEquals(me.as(Various.class).getchar(), 'c');
 	}
 
 	

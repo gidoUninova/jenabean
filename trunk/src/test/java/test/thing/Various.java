@@ -3,18 +3,18 @@ package test.thing;
 import java.util.Collection;
 
 public interface Various {
-	public Various setAge(int i);
-	public Various setMiles(long l);
-	public Various addFloat(float f);
-	public Various setDouble(double d);
-	public Various setChar(char c);
-	public Various setShort(short s);
+	public Various setage(int i);
+	public Various setmiles(long l);
+	public Various addfloat(float f);
+	public Various setdouble(double d);
+	public Various setchar(char c);
+	public Various setshort(short s);
 	
-	public Collection<Float> getFloat();
-	public int getAge();
-	public long getMiles();
-	public double getDouble();
-	public char getChar();
-	public short getShort();
+	public Collection<Float> getfloat();
+	public int getage();
+	public long getmiles();
+	public double getdouble();
+	public char getchar();
+	public short getshort();
 	
 }
