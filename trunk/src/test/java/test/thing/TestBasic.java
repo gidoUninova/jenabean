@@ -51,6 +51,26 @@ public class TestBasic {
 		System.out.println(t.as(DublinCore.class).description());
 		
 	}
+
+	@Test
+	public void basic2() {
+		Model m = ModelFactory.createDefaultModel();
+
+		m.setNsPrefix("dc", "http://purl.org/dc/elements/1.1/");
+		m.setNsPrefix("foaf", "http://xmlns.com/foaf/0.1/");
+		m.setNsPrefix("xsd", "http://www.w3.org/2001/XMLSchema#");
+		m.setNsPrefix("geo", "http://www.w3.org/2003/01/geo/wgs84_pos#");
+		Thing t = new Thing("http://example.com/1",m);
+		t.as(FoafThing.class).
+		    aimChatID("example").
+			birthday("01/01/1999").
+			weblog(new Thing("http://thewebsemantic.com", m)).
+			knows(new Thing("http://bblfish.net/people/henry/card#me", m)).
+		as(Geo.class).
+			lat(33.3f).
+			long_(120.1f);
+		
+	}
 	
 	@Test
 	public void check() {
