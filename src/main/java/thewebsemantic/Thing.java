@@ -20,37 +20,40 @@ import com.hp.hpl.jena.rdf.model.StmtIterator;
 
 public class Thing implements InvocationHandler, As {
 	private Model model;
+
 	private Resource r;
+
 	private static Method as;
-	
 	static {
 		try {
 			as = As.class.getMethod("as", Class.class);
-		} catch (Exception e) {}
+		} catch (Exception e) {
+		}
 	}
-	
+
 	public Thing(Resource resource, Model m) {
 		model = m;
 		r = resource;
 	}
-	
+
 	public Thing(String resource, Model m) {
-		this(m.getResource(resource),m);
+		this(m.getResource(resource), m);
 	}
-	
-	public Resource getResource()  {
+
+	public Resource getResource() {
 		return r;
 	}
-	
+
 	public <T> T as(Class<T> c) {
-		return (T)Proxy.newProxyInstance(c.getClassLoader(), new Class[] {c}, this);
+		return (T) Proxy.newProxyInstance(c.getClassLoader(),
+				new Class[] { c }, this);
 	}
 
 	public Object invoke(Object proxy, Method method, Object[] args)
 			throws Throwable {
 		Class<?> returnType = method.getReturnType();
 		if (method.equals(as))
-			return as((Class)args[0]);		
+			return as((Class) args[0]);
 		else if (method.getParameterTypes().length == 0)
 			return get(method);
 		else if (method.isAnnotationPresent(Functional.class)) {
@@ -62,29 +65,32 @@ public class Thing implements InvocationHandler, As {
 	}
 
 	private Object get(Method m) {
-		String methodName = m.getName();
+		String methodName = trim(m.getName());
 		Class<?> genericType = Object.class;
-		if (m.getGenericReturnType() instanceof ParameterizedType )
-			genericType = getGenericType((ParameterizedType)m.getGenericReturnType());
+		if (m.getGenericReturnType() instanceof ParameterizedType)
+			genericType = getGenericType((ParameterizedType) m
+					.getGenericReturnType());
 		Class<?> returnType = m.getReturnType();
 		Class<?> c = m.getDeclaringClass();
-        String ns = wrap(c).namespace();
+		String ns = wrap(c).namespace();
 		Property p = model.getProperty(ns + methodName);
 		StmtIterator it = r.listProperties(p);
 		if (isPrimitive(returnType))
-			return JenaHelper.convertLiteral(it.nextStatement().getLiteral(), returnType);
+			return JenaHelper.convertLiteral(it.nextStatement().getLiteral(),
+					returnType);
 		if (returnType.equals(Collection.class) && isPrimitive(genericType))
 			return collection(it);
-		if (returnType.equals(Collection.class) && genericType.equals(Thing.class))
+		if (returnType.equals(Collection.class)
+				&& genericType.equals(Thing.class))
 			return thingCollection(it);
 		return null;
 	}
-	
+
 	private Object thingCollection(StmtIterator it) {
 		ArrayList<Object> list = new ArrayList<Object>();
 		while (it.hasNext()) {
 			Statement s = it.nextStatement();
-			if (! s.getObject().isLiteral())
+			if (!s.getObject().isLiteral())
 				list.add(new Thing(s.getResource(), s.getModel()));
 		}
 		return list;
@@ -92,7 +98,7 @@ public class Thing implements InvocationHandler, As {
 
 	public Class<?> getGenericType(ParameterizedType type) {
 		return (type == null) ? NullType.class : (Class<?>) type
-				.getActualTypeArguments()[0];		
+				.getActualTypeArguments()[0];
 	}
 
 	private Object collection(StmtIterator it) {
@@ -106,39 +112,51 @@ public class Thing implements InvocationHandler, As {
 	}
 
 	private void set(Method m, Object arg) {
-		String methodName = m.getName();
+		String methodName =  trim(m.getName());
 		Class<?> c = m.getDeclaringClass();
-        String ns = wrap(c).namespace();
+		String ns = wrap(c).namespace();
 		Property p = model.getProperty(ns + methodName);
-
-		if ( PrimitiveWrapper.isPrimitive(arg))
+		if (PrimitiveWrapper.isPrimitive(arg))
 			r.removeAll(p).addProperty(p, JenaHelper.toLiteral(model, arg));
 		else if (arg instanceof Thing)
-			set(p, (Thing)arg);
+			set(p, (Thing) arg);
 	}
 
 	private void add(Method m, Object arg) {
-		String methodName = m.getName();
+		String methodName =  trim(m.getName());
 		Class<?> c = m.getDeclaringClass();
-        String ns = wrap(c).namespace();
+		String ns = wrap(c).namespace();
 		Property p = model.getProperty(ns + methodName);
-		
-		if ( PrimitiveWrapper.isPrimitive(arg))
+		if (PrimitiveWrapper.isPrimitive(arg))
 			r.addProperty(p, JenaHelper.toLiteral(model, arg));
 		else if (arg instanceof Thing)
-			add(p, (Thing)arg);
+			add(p, (Thing) arg);
 	}
-	
+
 	private void add(Property p, Thing arg) {
-		r.addProperty(p, arg.getResource());		
+		r.addProperty(p, arg.getResource());
 	}
-	
+
 	private void set(Property p, Thing arg) {
 		set(p, arg.getResource());
 	}
-	
+
 	private void set(Property p, Resource r) {
 		model.removeAll(r, p, null);
-		r.addProperty(p, r);		
+		r.addProperty(p, r);
+	}
+
+	public String trim(String s) {
+		int len = s.length();
+		int st = 0;
+		int off = 0;
+		char[] val = s.toCharArray();
+		while ((st < len) && (val[off + st] <= '_')) {
+			st++;
+		}
+		while ((st < len) && (val[off + len - 1] <= '_')) {
+			len--;
+		}
+		return ((st > 0) || (len < s.length())) ? s.substring(st, len) : s;
 	}
 }
