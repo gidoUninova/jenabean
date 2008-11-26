@@ -2,11 +2,14 @@ package thewebsemantic;
 
 import java.util.List;
 
+import com.hp.hpl.jena.datatypes.xsd.XSDDatatype;
+import com.hp.hpl.jena.ontology.DatatypeProperty;
 import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.ontology.OntProperty;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 import com.hp.hpl.jena.util.iterator.ExtendedIterator;
 import com.hp.hpl.jena.vocabulary.RDFS;
+import com.hp.hpl.jena.vocabulary.XSD;
 
 public class InterfaceBuilder {
 	OntModel m;
@@ -18,12 +21,25 @@ public class InterfaceBuilder {
 		m.read(uri);
 		ExtendedIterator it = m.listOntProperties();
 		List<OntProperty> props = it.toList();
-		for (OntProperty ontProperty : props) {
+		for (OntProperty ontProperty : props) { 
 			if (ontProperty.getNameSpace().equals(namespace)) {
-				if (RDFS.Literal.equals(ontProperty.getRange())) {
+				if (ontProperty.getRange() == null)
+					continue;
+				
+				if (ontProperty.isDatatypeProperty()) {
 					buffer.append(literalSetter(namespace, type, ontProperty));
 					buffer.append("\n");
 					buffer.append(literalGetter(namespace, type, ontProperty));
+					buffer.append("\n");
+				} else if (RDFS.Literal.equals(ontProperty.getRange())) {
+					buffer.append(literalSetter(namespace, type, ontProperty));
+					buffer.append("\n");
+					buffer.append(literalGetter(namespace, type, ontProperty));
+					buffer.append("\n");
+				} else {
+					buffer.append(resourceSetter(namespace, type, ontProperty));
+					buffer.append("\n");
+					buffer.append(resourceGetter(namespace, type, ontProperty));
 					buffer.append("\n");
 				}
 			}
@@ -31,10 +47,32 @@ public class InterfaceBuilder {
 		System.out.println(buffer);
 	}
 
+	private Object resourceGetter(String namespace, String type,
+			OntProperty ontProperty) {
+		return indent + "public " + resourceCollection(ontProperty)
+			+ ontProperty.getURI().substring(namespace.length()) + "();";
+		
+	}
+
+	private Object resourceSetter(String namespace, String type,
+			OntProperty ontProperty) {
+		return functional(ontProperty) + indent + "public " + type + " "
+			+ ontProperty.getURI().substring(namespace.length())
+			+ "(Thing t);";
+	}
+
 	private Object literalGetter(String namespace, String type,
 			OntProperty ontProperty) {
-		return indent + "public String "
+		return indent + "public " + literalCollection(ontProperty)
 				+ ontProperty.getURI().substring(namespace.length()) + "();";
+	}
+
+	private String literalCollection(OntProperty ontProperty) {
+		return (ontProperty.isFunctionalProperty()) ? "String " : "Collection<String> ";
+	}
+	
+	private String resourceCollection(OntProperty ontProperty) {
+		return (ontProperty.isFunctionalProperty()) ? "Thing " : "Collection<Thing> ";
 	}
 
 	private String literalSetter(String namespace, String type,
@@ -45,11 +83,11 @@ public class InterfaceBuilder {
 	}
 
 	private String functional(OntProperty ontProperty) {
-		return (ontProperty.isFunctionalProperty()) ? indent + "@Funtional\n" : "";
+		return (ontProperty.isFunctionalProperty()) ? indent + "@Functional\n" : "";
 	}
 
 	public static void main(String[] args) {
-		new InterfaceBuilder().create("http://xmlns.com/foaf/spec/index.rdf",
-				"http://xmlns.com/foaf/0.1/", "Foaf");
+		new InterfaceBuilder().create("http://purl.org/net/nknouf/ns/bibtex",
+				"http://purl.org/net/nknouf/ns/bibtex#", "BibtexThing");
 	}
 }
