@@ -3,19 +3,22 @@ package test.thing;
 
 import static org.junit.Assert.assertEquals;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Date;
 
 import org.junit.Test;
 
 import thewebsemantic.Thing;
 
+import com.hp.hpl.jena.rdf.model.Literal;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 
 
 public class TestBasic {
 	@Test
-	public void basic() {
+	public void basic() throws URISyntaxException {
 		Model m = ModelFactory.createDefaultModel();
 
 		m.setNsPrefix("dc", "http://purl.org/dc/elements/1.1/");
@@ -31,7 +34,10 @@ public class TestBasic {
 			creator("me").
 			subject("binding").
 			subject("owl").
+			subject(1).
+			subject(new Date()).
 			subject(me).
+			subject(new URI("http://www.google.com")).
 			title("The web semantic").
 		 as(FoafThing.class).
 			made(new Thing("http://thewebsemantic.com",m)).
@@ -40,12 +46,16 @@ public class TestBasic {
 			;
 		m.write(System.out, "N3");
 		System.out.println(dcThing.subject().size());
-		for (String subject : dcThing.subject()) {
-			System.out.println(subject);
+		for (Literal subject : dcThing.subject()) {
+			System.out.println(":" + subject);
+		}
+		
+		for (Thing subject : dcThing.subject_()) {
+			System.out.println("thing: " + subject);
 		}
 		
 		for (Thing thing : t.as(FoafThing.class).made())
-			System.out.println(thing.getResource());
+			System.out.println(thing.getResource()); 
 		
 		t.as(DublinCore.class).description("this is a description");
 		System.out.println(t.as(DublinCore.class).description());

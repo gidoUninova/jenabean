@@ -3,6 +3,8 @@ package test.thing;
 import java.util.Collection;
 import java.util.Date;
 
+import com.hp.hpl.jena.rdf.model.Literal;
+
 import thewebsemantic.As;
 import thewebsemantic.Functional;
 import thewebsemantic.Namespace;
@@ -11,8 +13,7 @@ import thewebsemantic.Thing;
 @Namespace("http://purl.org/dc/elements/1.1/")
 public interface DublinCore extends As {
 
-	public DublinCore subject(String s);
-	public DublinCore subject(Thing t);
+	public DublinCore subject(Object s);
 	public DublinCore contributor(String s);
 	public DublinCore coverage(String s);
 	public DublinCore creator(String s);
@@ -30,9 +31,9 @@ public interface DublinCore extends As {
 
 	@Functional
 	public DublinCore title(String s);
-	public Collection<String> contributor();
+	public Collection<Literal> contributor();
 	public String coverage();
-	public Collection<String> creator();
+	public Collection<Literal> creator();
 	public Date date();
 	public String description();
 	public String format();
@@ -42,10 +43,8 @@ public interface DublinCore extends As {
 	public String relation();
 	public String rights();
 	public String source();
-	public Collection<String> subject();
+	public Collection<Literal> subject();
+	public Collection<Thing> subject_();
 	public String title();
 	public String type();
-	
-
-	
 }
