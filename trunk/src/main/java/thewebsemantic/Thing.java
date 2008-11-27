@@ -7,11 +7,13 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Proxy;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collection;
 
 import thewebsemantic.Base.NullType;
 
+import com.hp.hpl.jena.rdf.model.Literal;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.Property;
 import com.hp.hpl.jena.rdf.model.Resource;
@@ -78,8 +80,8 @@ public class Thing implements InvocationHandler, As {
 		if (isPrimitive(returnType))
 			return JenaHelper.convertLiteral(it.nextStatement().getLiteral(),
 					returnType);
-		if (returnType.equals(Collection.class) && isPrimitive(genericType))
-			return collection(it);
+		if (returnType.equals(Collection.class) && genericType.equals(Literal.class))
+			return literalCollection(it);
 		if (returnType.equals(Collection.class)
 				&& genericType.equals(Thing.class))
 			return thingCollection(it);
@@ -101,12 +103,12 @@ public class Thing implements InvocationHandler, As {
 				.getActualTypeArguments()[0];
 	}
 
-	private Object collection(StmtIterator it) {
+	private Object literalCollection(StmtIterator it) {
 		ArrayList<Object> list = new ArrayList<Object>();
 		while (it.hasNext()) {
 			Statement s = it.nextStatement();
 			if (s.getObject().isLiteral())
-				list.add(s.getLiteral().getValue());
+				list.add(s.getLiteral());
 		}
 		return list;
 	}
@@ -120,6 +122,8 @@ public class Thing implements InvocationHandler, As {
 			r.removeAll(p).addProperty(p, JenaHelper.toLiteral(model, arg));
 		else if (arg instanceof Thing)
 			set(p, (Thing) arg);
+		else if (arg instanceof URI)
+			set(p, ((URI)arg).toString());
 	}
 
 	private void add(Method m, Object arg) {
@@ -131,22 +135,32 @@ public class Thing implements InvocationHandler, As {
 			r.addProperty(p, JenaHelper.toLiteral(model, arg));
 		else if (arg instanceof Thing)
 			add(p, (Thing) arg);
+		else if (arg instanceof URI)
+			add(p, ((URI)arg).toString());
 	}
 
 	private void add(Property p, Thing arg) {
 		r.addProperty(p, arg.getResource());
 	}
 
+	private void add(Property p, String uri) {
+		r.addProperty(p, model.getResource(uri));
+	}	
+	
 	private void set(Property p, Thing arg) {
 		set(p, arg.getResource());
 	}
 
+	private void set(Property p, String arg) {
+		set(p, model.getResource(arg));
+	}
+	
 	private void set(Property p, Resource r) {
 		model.removeAll(r, p, null);
 		r.addProperty(p, r);
 	}
 
-	public String trim(String s) {
+	private String trim(String s) {
 		int len = s.length();
 		int st = 0;
 		int off = 0;
@@ -159,4 +173,6 @@ public class Thing implements InvocationHandler, As {
 		}
 		return ((st > 0) || (len < s.length())) ? s.substring(st, len) : s;
 	}
+	
+	public String toString() { return this.r.getURI();}
 }
