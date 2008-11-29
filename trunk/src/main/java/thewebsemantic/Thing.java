@@ -74,7 +74,7 @@ public class Thing implements InvocationHandler, As {
 			set(method, args[0]);
 			return proxy;
 		}
-		add(method, args[0]);
+		add(method, args);
 		return proxy;
 	}
 
@@ -149,17 +149,20 @@ public class Thing implements InvocationHandler, As {
 			set(p, ((URI)arg).toString());
 	}
 
-	private void add(Method m, Object arg) {
+	private void add(Method m, Object[] arg) {
 		String methodName =  trim(m.getName());
 		Class<?> c = m.getDeclaringClass();
 		String ns = wrap(c).namespace();
 		Property p = model.getProperty(ns + methodName);
-		if (PrimitiveWrapper.isPrimitive(arg))
-			r.addProperty(p, JenaHelper.toLiteral(model, arg));
-		else if (arg instanceof Thing)
-			add(p, (Thing) arg);
-		else if (arg instanceof URI)
-			add(p, ((URI)arg).toString());
+		if (PrimitiveWrapper.isPrimitive(arg[0])) {
+			if (arg.length < 2)
+				r.addProperty(p, JenaHelper.toLiteral(model, arg[0]));
+			else
+				r.addProperty(p, arg[0].toString(), arg[1].toString());
+		} else if (arg[0] instanceof Thing)
+			add(p, (Thing) arg[0]);
+		else if (arg[0] instanceof URI)
+			add(p, ((URI)arg[0]).toString());
 	}
 
 	private void add(Property p, Thing arg) {
