@@ -23,20 +23,12 @@ public class InterfaceBuilder {
 		List<OntProperty> props = it.toList();
 		for (OntProperty ontProperty : props) { 
 			if (ontProperty.getNameSpace().equals(namespace)) {
-				if (ontProperty.getRange() == null)
-					continue;
-				
 				if (ontProperty.isDatatypeProperty()) {
 					buffer.append(literalSetter(namespace, type, ontProperty));
 					buffer.append("\n");
 					buffer.append(literalGetter(namespace, type, ontProperty));
 					buffer.append("\n");
-				} else if (RDFS.Literal.equals(ontProperty.getRange())) {
-					buffer.append(literalSetter(namespace, type, ontProperty));
-					buffer.append("\n");
-					buffer.append(literalGetter(namespace, type, ontProperty));
-					buffer.append("\n");
-				} else {
+				} else if (ontProperty.isObjectProperty()) {
 					buffer.append(resourceSetter(namespace, type, ontProperty));
 					buffer.append("\n");
 					buffer.append(resourceGetter(namespace, type, ontProperty));
@@ -79,7 +71,7 @@ public class InterfaceBuilder {
 			OntProperty ontProperty) {
 		return functional(ontProperty) + indent + "public " + type + " "
 				+ ontProperty.getURI().substring(namespace.length())
-				+ "(String s);";
+				+ "(Object o);";
 	}
 
 	private String functional(OntProperty ontProperty) {
@@ -87,7 +79,7 @@ public class InterfaceBuilder {
 	}
 
 	public static void main(String[] args) {
-		new InterfaceBuilder().create("http://purl.org/net/nknouf/ns/bibtex",
-				"http://purl.org/net/nknouf/ns/bibtex#", "BibtexThing");
+		new InterfaceBuilder().create("http://www.w3.org/TR/2008/WD-skos-reference-20080829/skos.rdf",
+				"http://www.w3.org/2008/05/skos#", "BibtexThing");
 	}
 }
