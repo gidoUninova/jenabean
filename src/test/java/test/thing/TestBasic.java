@@ -29,7 +29,7 @@ public class TestBasic {
 		
 		DublinCore dcThing = t.as(DublinCore.class);
 		Thing me = new Thing("http://tcowan.myopenid.com", m);
-		m.write(System.out, "N3");
+		
 		t.as(DublinCore.class).
 			creator("me").
 			subject("binding").
@@ -58,6 +58,7 @@ public class TestBasic {
 			System.out.println(thing.getResource()); 
 		
 		t.as(DublinCore.class).description("this is a description");
+		m.write(System.out, "N3");
 		System.out.println(t.as(DublinCore.class).description());
 		
 	}
@@ -103,6 +104,33 @@ public class TestBasic {
 		assertEquals(f, 2.2, 0.001);
 		assertEquals(me.as(Various.class).Double(), 1.123d, 0);
 		assertEquals(me.as(Various.class).Char(), 'c');
+	}
+	
+	@Test
+	public void skos27() {
+		Model m = ModelFactory.createDefaultModel();
+
+		m.setNsPrefix("dc", "http://purl.org/dc/elements/1.1/");
+		m.setNsPrefix("skos", "http://www.w3.org/2008/05/skos#");
+		m.setNsPrefix("xsd", "http://www.w3.org/2001/XMLSchema#");
+		Thing t = new Thing("Protein",m);
+		t.as(SkosThing.class).
+			definition("A physical entity consisting of a sequence of amino-acids; a protein monomer; a single polypeptide chain. An example is the EGFR protein.", "en");
+		
+		
+		//28, <A> skos:broader <B> ; skos:related <C> .
+		Thing a = new Thing("A", m);
+		Thing b = new Thing("B", m);
+		Thing c = new Thing("C", m);
+		a.as(SkosThing.class).broader(b).related(c);
+		
+		Thing rocks = new Thing("rocks", m);
+		rocks.isa(SkosThing.Concept.class).
+			prefLabel("rocks", "en").
+			altLabel("basalt", "en").
+			altLabel("granite", "en").
+			altLabel("slate", "en");
+		m.write(System.out, "N3");
 	}
 
 	

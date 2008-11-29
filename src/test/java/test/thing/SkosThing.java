@@ -34,7 +34,7 @@ public interface SkosThing extends As {
 	Collection<Thing> scopeNote();
 	SkosThing exactMatch(Thing t);
 	Collection<Thing> exactMatch();
-	SkosThing prefLabel(Object o);
+	SkosThing prefLabel(String a, String lang);
 	Collection<String> prefLabel();
 	SkosThing hiddenLabel(Object o);
 	Collection<String> hiddenLabel();
@@ -43,6 +43,7 @@ public interface SkosThing extends As {
 	SkosThing editorialNote(Thing t);
 	Collection<Thing> editorialNote();
 	SkosThing definition(Thing t);
+	SkosThing definition(String def, String lang);
 	Collection<Thing> definition();
 	SkosThing changeNote(Thing t);
 	Collection<Thing> changeNote();
@@ -50,7 +51,7 @@ public interface SkosThing extends As {
 	Collection<Thing> narrowMatch();
 	SkosThing relatedMatch(Thing t);
 	Collection<Thing> relatedMatch();
-	SkosThing altLabel(Object o);
+	SkosThing altLabel(Object o, String lang);
 	Collection<String> altLabel();
 	SkosThing topConceptOf(Thing t);
 	Collection<Thing> topConceptOf();
