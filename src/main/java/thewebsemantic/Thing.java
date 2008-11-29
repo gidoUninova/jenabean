@@ -19,6 +19,8 @@ import com.hp.hpl.jena.rdf.model.Property;
 import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.rdf.model.Statement;
 import com.hp.hpl.jena.rdf.model.StmtIterator;
+import com.hp.hpl.jena.vocabulary.RDF;
+
 
 public class Thing implements InvocationHandler, As {
 	private Model model;
@@ -26,9 +28,11 @@ public class Thing implements InvocationHandler, As {
 	private Resource r;
 
 	private static Method as;
+	private static Method isa;
 	static {
 		try {
 			as = As.class.getMethod("as", Class.class);
+			isa = As.class.getMethod("isa", Class.class);
 		} catch (Exception e) {
 		}
 	}
@@ -50,12 +54,20 @@ public class Thing implements InvocationHandler, As {
 		return (T) Proxy.newProxyInstance(c.getClassLoader(),
 				new Class[] { c }, this);
 	}
+	
+	public <T> T isa(Class<T> c) {
+		String ns = c.getEnclosingClass().getAnnotation(Namespace.class).value();
+		r.addProperty(RDF.type, model.getResource(ns+c.getSimpleName()));
+		return as(c);
+	}
 
 	public Object invoke(Object proxy, Method method, Object[] args)
 			throws Throwable {
 		Class<?> returnType = method.getReturnType();
 		if (method.equals(as))
 			return as((Class) args[0]);
+		else if ( method.equals(isa))
+			return isa((Class) args[0]);
 		else if (method.getParameterTypes().length == 0)
 			return get(method);
 		else if (method.isAnnotationPresent(Functional.class)) {
@@ -80,9 +92,11 @@ public class Thing implements InvocationHandler, As {
 		if (isPrimitive(returnType))
 			return JenaHelper.convertLiteral(it.nextStatement().getLiteral(),
 					returnType);
-		if (returnType.equals(Collection.class) && genericType.equals(Literal.class))
+		else if (returnType.equals(Collection.class) && genericType.equals(Literal.class))
 			return literalCollection(it);
-		if (returnType.equals(Collection.class)
+		else if (returnType.equals(Collection.class) && PrimitiveWrapper.isPrimitive(genericType))
+			return primitiveCollection(it,returnType);
+		else if (returnType.equals(Collection.class)
 				&& genericType.equals(Thing.class))
 			return thingCollection(it);
 		return null;
@@ -112,7 +126,16 @@ public class Thing implements InvocationHandler, As {
 		}
 		return list;
 	}
-
+	
+	private Object primitiveCollection(StmtIterator it, Class t) {
+		ArrayList<Object> list = new ArrayList<Object>();
+		while (it.hasNext()) {
+			Statement s = it.nextStatement();
+			if (s.getObject().isLiteral())
+				list.add( JenaHelper.convertLiteral(s.getLiteral(),t));
+		}
+		return list;
+	}
 	private void set(Method m, Object arg) {
 		String methodName =  trim(m.getName());
 		Class<?> c = m.getDeclaringClass();
@@ -161,18 +184,13 @@ public class Thing implements InvocationHandler, As {
 	}
 
 	private String trim(String s) {
-		int len = s.length();
-		int st = 0;
-		int off = 0;
-		char[] val = s.toCharArray();
-		while ((st < len) && (val[off + st] <= '_')) {
-			st++;
-		}
-		while ((st < len) && (val[off + len - 1] <= '_')) {
-			len--;
-		}
-		return ((st > 0) || (len < s.length())) ? s.substring(st, len) : s;
+		if (s.endsWith("_"))
+			return s.substring(0, s.length()-1);
+		else
+			return s;
 	}
 	
 	public String toString() { return this.r.getURI();}
+
+
 }

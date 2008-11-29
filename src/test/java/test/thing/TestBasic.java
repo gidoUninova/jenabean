@@ -44,7 +44,7 @@ public class TestBasic {
 		    made(new Thing("http://tripblox.com,",m)).
 		    mbox(new Thing("mailto:gorby.kremvax@example.com",m))
 			;
-		m.write(System.out, "N3");
+		
 		System.out.println(dcThing.subject().size());
 		for (Literal subject : dcThing.subject()) {
 			System.out.println(":" + subject);
@@ -78,7 +78,9 @@ public class TestBasic {
 			knows(new Thing("http://bblfish.net/people/henry/card#me", m)).
 		as(Geo.class).
 			lat(33.3f).
-			long_(120.1f);
+			long_(120.1f).
+		as(SkosThing.class).isa(SkosThing.Concept.class);
+		m.write(System.out, "N3");
 		
 	}
 	
@@ -92,9 +94,13 @@ public class TestBasic {
 		assertEquals(d,e);
 		
 		me.as(Various.class).age(40).miles(4000).Float(1.1f).Float(2.2f).Double(1.123d).Char('c');
+		m.write(System.out, "N3");
+		
 		assertEquals(me.as(Various.class).age(), 40);
 		assertEquals(me.as(Various.class).miles(), 4000);
 		assertEquals(me.as(Various.class).Float().size(), 2);
+		float f = me.as(Various.class).Float().iterator().next();
+		assertEquals(f, 2.2, 0.001);
 		assertEquals(me.as(Various.class).Double(), 1.123d, 0);
 		assertEquals(me.as(Various.class).Char(), 'c');
 	}
