@@ -79,7 +79,7 @@ public class TestBasic {
 		as(Geo.class).
 			lat(33.3f).
 			long_(120.1f).
-		as(SkosThing.class).isa(SkosThing.Concept.class);
+		    isa(SkosThing.Concept.class);
 		m.write(System.out, "N3");
 		
 	}
