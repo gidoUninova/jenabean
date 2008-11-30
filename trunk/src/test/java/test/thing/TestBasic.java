@@ -178,19 +178,23 @@ ex2:siamese rdf:type skos:Concept;
 		m.setNsPrefix("ex2","http://ex2#");
 		Thing ex2 = new Thing("http://ex2#catScheme", m);
 		ex2.isa(SkosThing.ConceptScheme.class).
-		as(DublinCore.class).title("The Complete Cat Thesaurus","en");
+			as(DublinCore.class).
+			title("The Complete Cat Thesaurus","en");
 		Thing ex1 = new Thing("http://ex1#cats", m);
-		ex1.as(SkosThing.class).inScheme(ex2);
+		ex1.as(SkosThing.class).
+			inScheme(ex2);
 		
 		new Thing("http://ex2#abyssinian", m).
 			as(SkosThing.class).isa(SkosThing.Concept.class).
 			prefLabel("Abyssinian Cats", "en").
-			broader(ex1).inScheme(ex2);
+			broader(ex1).
+			inScheme(ex2);
 		
 		new Thing("http://ex2#siamese", m).
 			as(SkosThing.class).isa(SkosThing.Concept.class).
 			prefLabel("Siamese Cats", "en").
-			broader(ex1).inScheme(ex2);		
+			broader(ex1).
+			inScheme(ex2);		
 		m.write(System.out, "N3");
 	}
 
