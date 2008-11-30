@@ -8,7 +8,7 @@ import thewebsemantic.Thing;
 
 @Namespace("http://www.w3.org/2008/05/skos#")
 public interface SkosThing extends As {
-	
+	interface ConceptScheme extends SkosThing{}
 	interface Concept extends SkosThing{}
 	SkosThing narrowerTransitive(Thing t);
 	Collection<Thing> narrowerTransitive();

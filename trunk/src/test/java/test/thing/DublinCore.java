@@ -31,6 +31,8 @@ public interface DublinCore extends As {
 
 	@Functional
 	public DublinCore title(String s);
+	@Functional
+	public DublinCore title(String s, String lang);
 	public Collection<Literal> contributor();
 	public String coverage();
 	public Collection<Literal> creator();

@@ -2,14 +2,11 @@ package thewebsemantic;
 
 import java.util.List;
 
-import com.hp.hpl.jena.datatypes.xsd.XSDDatatype;
-import com.hp.hpl.jena.ontology.DatatypeProperty;
 import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.ontology.OntProperty;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 import com.hp.hpl.jena.util.iterator.ExtendedIterator;
 import com.hp.hpl.jena.vocabulary.RDFS;
-import com.hp.hpl.jena.vocabulary.XSD;
 
 public class InterfaceBuilder {
 	OntModel m;
@@ -33,6 +30,11 @@ public class InterfaceBuilder {
 					buffer.append("\n");
 					buffer.append(resourceGetter(namespace, type, ontProperty));
 					buffer.append("\n");
+				} else if (RDFS.Literal.equals( ontProperty.getRange())) {
+					buffer.append(literalSetter(namespace, type, ontProperty));
+					buffer.append("\n");
+					buffer.append(literalGetter(namespace, type, ontProperty));
+					buffer.append("\n");					
 				}
 			}
 		}
@@ -55,7 +57,7 @@ public class InterfaceBuilder {
 
 	private Object literalGetter(String namespace, String type,
 			OntProperty ontProperty) {
-		return indent + "public " + literalCollection(ontProperty)
+		return indent + literalCollection(ontProperty)
 				+ ontProperty.getURI().substring(namespace.length()) + "();";
 	}
 
@@ -79,7 +81,7 @@ public class InterfaceBuilder {
 	}
 
 	public static void main(String[] args) {
-		new InterfaceBuilder().create("http://www.w3.org/TR/2008/WD-skos-reference-20080829/skos.rdf",
-				"http://www.w3.org/2008/05/skos#", "BibtexThing");
+		new InterfaceBuilder().create("http://www.w3.org/2000/01/rdf-schema",
+				"http://www.w3.org/2000/01/rdf-schema#", "BibtexThing");
 	}
 }

@@ -113,6 +113,8 @@ public class TestBasic {
 		m.setNsPrefix("dc", "http://purl.org/dc/elements/1.1/");
 		m.setNsPrefix("skos", "http://www.w3.org/2008/05/skos#");
 		m.setNsPrefix("xsd", "http://www.w3.org/2001/XMLSchema#");
+		m.setNsPrefix("foaf", "http://xmlns.com/foaf/0.1/");
+		m.setNsPrefix("rdfs","http://www.w3.org/2000/01/rdf-schema#");
 		Thing t = new Thing("Protein",m);
 		t.as(SkosThing.class).
 			definition("A physical entity consisting of a sequence of amino-acids; a protein monomer; a single polypeptide chain. An example is the EGFR protein.", "en");
@@ -130,6 +132,65 @@ public class TestBasic {
 			altLabel("basalt", "en").
 			altLabel("granite", "en").
 			altLabel("slate", "en");
+		
+		//<http://www.w3.org/People/Berners-Lee/card#i> rdf:type foaf:Person;
+		//	  foaf:name "Timothy Berners-Lee";
+		//	  rdfs:label "Tim Berners-Lee";
+		//	  skos:prefLabel "Tim Berners-Lee"@en.
+
+		Thing tbl = new Thing("http://www.w3.org/People/Berners-Lee/card#i", m);
+		tbl.as(FoafThing.class).isa(FoafThing.Person.class).
+				name("Timothy Berners-Lee").
+			as(SkosThing.class).
+				prefLabel("Tim Berners-Lee", "en").
+			as(RdfsVocab.class).
+				label("Tim Berners-Lee");
+		m.write(System.out, "N3");
+	}
+	
+	@Test
+	public void skosPrimer() {
+		/*
+ex2:catScheme rdf:type skos:ConceptScheme;
+   dc:title "The Complete Cat Thesaurus"@en. 
+
+ex1:cats skos:inScheme ex2:catScheme.
+
+ex2:abyssinian rdf:type skos:Concept;
+   skos:prefLabel "Abyssinian Cats"@en;
+   skos:broader ex1:cats;
+   skos:inScheme ex2:catScheme.
+
+ex2:siamese rdf:type skos:Concept;
+   skos:prefLabel "Siamese Cats"@en;
+   skos:broader ex1:cats;
+   skos:inScheme ex2:catScheme.
+		 */
+		 
+		Model m = ModelFactory.createDefaultModel();
+
+		m.setNsPrefix("dc", "http://purl.org/dc/elements/1.1/");
+		m.setNsPrefix("skos", "http://www.w3.org/2008/05/skos#");
+		m.setNsPrefix("xsd", "http://www.w3.org/2001/XMLSchema#");
+		m.setNsPrefix("foaf", "http://xmlns.com/foaf/0.1/");
+		m.setNsPrefix("rdfs","http://www.w3.org/2000/01/rdf-schema#");	
+		m.setNsPrefix("ex1","http://ex1#");
+		m.setNsPrefix("ex2","http://ex2#");
+		Thing ex2 = new Thing("http://ex2#catScheme", m);
+		ex2.isa(SkosThing.ConceptScheme.class).
+		as(DublinCore.class).title("The Complete Cat Thesaurus","en");
+		Thing ex1 = new Thing("http://ex1#cats", m);
+		ex1.as(SkosThing.class).inScheme(ex2);
+		
+		new Thing("http://ex2#abyssinian", m).
+			as(SkosThing.class).isa(SkosThing.Concept.class).
+			prefLabel("Abyssinian Cats", "en").
+			broader(ex1).inScheme(ex2);
+		
+		new Thing("http://ex2#siamese", m).
+			as(SkosThing.class).isa(SkosThing.Concept.class).
+			prefLabel("Siamese Cats", "en").
+			broader(ex1).inScheme(ex2);		
 		m.write(System.out, "N3");
 	}
 
