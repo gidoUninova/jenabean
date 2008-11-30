@@ -71,7 +71,7 @@ public class Thing implements InvocationHandler, As {
 		else if (method.getParameterTypes().length == 0)
 			return get(method);
 		else if (method.isAnnotationPresent(Functional.class)) {
-			set(method, args[0]);
+			set(method, args);
 			return proxy;
 		}
 		add(method, args);
@@ -90,16 +90,20 @@ public class Thing implements InvocationHandler, As {
 		Property p = model.getProperty(ns + methodName);
 		StmtIterator it = r.listProperties(p);
 		if (isPrimitive(returnType))
-			return JenaHelper.convertLiteral(it.nextStatement().getLiteral(),
-					returnType);
-		else if (returnType.equals(Collection.class) && genericType.equals(Literal.class))
+			return primitive(returnType, it);
+		else if (returnType==Collection.class && genericType==Literal.class)
 			return literalCollection(it);
-		else if (returnType.equals(Collection.class) && PrimitiveWrapper.isPrimitive(genericType))
+		else if (returnType==Collection.class && isPrimitive(genericType))
 			return primitiveCollection(it,returnType);
-		else if (returnType.equals(Collection.class)
+		else if (returnType==Collection.class
 				&& genericType.equals(Thing.class))
 			return thingCollection(it);
 		return null;
+	}
+
+	private Object primitive(Class<?> returnType, StmtIterator it) {
+		return JenaHelper.convertLiteral(it.nextStatement().getLiteral(),
+				returnType);
 	}
 
 	private Object thingCollection(StmtIterator it) {
@@ -136,43 +140,37 @@ public class Thing implements InvocationHandler, As {
 		}
 		return list;
 	}
-	private void set(Method m, Object arg) {
+	private void set(Method m, Object[] arg) {
+		Property p = getProperty(m);
+		r.removeAll(p);
+		apply(arg, p);
+	}
+
+	private Property getProperty(Method m) {
 		String methodName =  trim(m.getName());
 		Class<?> c = m.getDeclaringClass();
 		String ns = wrap(c).namespace();
 		Property p = model.getProperty(ns + methodName);
-		if (PrimitiveWrapper.isPrimitive(arg))
-			r.removeAll(p).addProperty(p, JenaHelper.toLiteral(model, arg));
-		else if (arg instanceof Thing)
-			set(p, (Thing) arg);
-		else if (arg instanceof URI)
-			set(p, ((URI)arg).toString());
+		return p;
 	}
 
 	private void add(Method m, Object[] arg) {
-		String methodName =  trim(m.getName());
-		Class<?> c = m.getDeclaringClass();
-		String ns = wrap(c).namespace();
-		Property p = model.getProperty(ns + methodName);
+		Property p = getProperty(m);
+		apply(arg, p);
+	}
+
+	private void apply(Object[] arg, Property p) {
 		if (PrimitiveWrapper.isPrimitive(arg[0])) {
 			if (arg.length < 2)
 				r.addProperty(p, JenaHelper.toLiteral(model, arg[0]));
 			else
 				r.addProperty(p, arg[0].toString(), arg[1].toString());
 		} else if (arg[0] instanceof Thing)
-			add(p, (Thing) arg[0]);
+			set(p, (Thing) arg[0]);
 		else if (arg[0] instanceof URI)
-			add(p, ((URI)arg[0]).toString());
+			set(p, ((URI)arg[0]).toString());
 	}
 
-	private void add(Property p, Thing arg) {
-		r.addProperty(p, arg.getResource());
-	}
-
-	private void add(Property p, String uri) {
-		r.addProperty(p, model.getResource(uri));
-	}	
-	
 	private void set(Property p, Thing arg) {
 		set(p, arg.getResource());
 	}
@@ -181,9 +179,8 @@ public class Thing implements InvocationHandler, As {
 		set(p, model.getResource(arg));
 	}
 	
-	private void set(Property p, Resource r) {
-		model.removeAll(r, p, null);
-		r.addProperty(p, r);
+	private void set(Property p, Resource object) {
+		r.addProperty(p, object);
 	}
 
 	private String trim(String s) {
