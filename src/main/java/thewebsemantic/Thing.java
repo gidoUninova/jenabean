@@ -45,6 +45,10 @@ public class Thing implements InvocationHandler, As {
 	public Thing(String resource, Model m) {
 		this(m.getResource(resource), m);
 	}
+	
+	public Thing(Model m) {
+		this(m.createResource(), m);
+	}
 
 	public Resource getResource() {
 		return r;
