@@ -197,6 +197,29 @@ ex2:siamese rdf:type skos:Concept;
 			inScheme(ex2);		
 		m.write(System.out, "N3");
 	}
+	
+	@Test
+	public void foafExamples() {
+		
+/*		<foaf:Person>
+		   <foaf:name>David Banner</foaf:name>
+		   <foaf:title>Mr</foaf:title>
+		   <foaf:firstName>David</foaf:firstName>
+		   <foaf:surname>Banner</foaf:surname>
+		   <foaf:nick>hulk</foaf:nick>
+		   <foaf:homepage rdf:resource="http://www.davidbanner.com"/>
+		   <foaf:weblog rdf:resource="http://www.davidbanner.com/blog"/>
+		   <foaf:schoolHomepage rdf:resource="http://www.mit.edu"/>
+		   <foaf:workplaceHomepage rdf:resource="http://www.gamma-rays-r-us.com"/>
+		   <foaf:workInfoHomepage rdf:resource="http://www.gamma-rays-r-us.com/~banner/crazy-experiments.html"/>
+		   <!-- etc -->
+		</foaf:Person>
+ 	*/
+		
+		new Thing("http://example.org/dbanner").
+			isa(FoafThing.Person.class).
+			
+	}
 
 	
 }
