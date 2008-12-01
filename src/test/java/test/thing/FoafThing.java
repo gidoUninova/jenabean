@@ -1,5 +1,6 @@
 package test.thing;
 
+import java.net.URI;
 import java.util.Collection;
 
 import thewebsemantic.As;
@@ -16,7 +17,7 @@ public interface FoafThing extends As {
 
 	Collection<String> jabberID();
 
-	FoafThing nick(Thing t);
+	FoafThing nick(Object string);
 
 	Collection<Thing> nick();
 
@@ -44,7 +45,7 @@ public interface FoafThing extends As {
 
 	Collection<Thing> openid();
 
-	FoafThing schoolHomepage(Thing t);
+	FoafThing schoolHomepage(Object uri);
 
 	Collection<Thing> schoolHomepage();
 
@@ -85,7 +86,7 @@ public interface FoafThing extends As {
 
 	Collection<Thing> currentProject();
 
-	FoafThing workInfoHomepage(Thing t);
+	FoafThing workInfoHomepage(Object t);
 
 	Collection<Thing> workInfoHomepage();
 
@@ -110,7 +111,7 @@ public interface FoafThing extends As {
 
 	Collection<Thing> based_near();
 
-	FoafThing workplaceHomepage(Thing t);
+	FoafThing workplaceHomepage(Object t);
 
 	Collection<Thing> workplaceHomepage();
 
@@ -118,11 +119,11 @@ public interface FoafThing extends As {
 
 	Collection<Thing> logo();
 
-	FoafThing weblog(Thing t);
+	FoafThing weblog(Object t);
 
 	Collection<Thing> weblog();
 
-	FoafThing title(Thing t);
+	FoafThing title(Object t);
 
 	Collection<Thing> title();
 
@@ -154,7 +155,7 @@ public interface FoafThing extends As {
 
 	Collection<String> firstName();
 
-	FoafThing homepage(Thing t);
+	FoafThing homepage(Object uri);
 
 	Collection<Thing> homepage();
 
