@@ -7,12 +7,14 @@ import thewebsemantic.Namespace;
 @Namespace("http://www.w3.org/2003/01/geo/wgs84_pos#")
 public interface Geo extends As {
 	
-	@Functional
-	public Geo lat(float l);
-	public Float lat();
+	interface Point extends Geo{}
 
 	@Functional
-	public Geo long_(float l);
-	public Float long_();
+	Geo lat(float l);
+	Float lat();
+
+	@Functional
+	Geo long_(float l);
+	Float long_();
 
 }
