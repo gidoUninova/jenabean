@@ -296,5 +296,52 @@ from http://wiki.foaf-project.org/UsingFoafKnows
 		System.out.println("\n\n-----------------------------------\n\n");
 		m.write(System.out, "RDF/XML-ABBREV");
 	}
+
+	
+	@Test
+	public void foafExamples3() throws URISyntaxException {
+		
+/*	
+ * 	Should create identical RDF as 
+from http://wiki.foaf-project.org/UsingFoafKnows
+
+ <?xml version="1.0" encoding="UTF-8"?> 
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" 
+        xmlns:foaf="http://xmlns.com/foaf/0.1/" 
+        xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#"
+        xmlns:dc="http://purl.org/dc/elements/1.1/"> 
+  <foaf:Person rdf:ID="Jason">
+    <foaf:name>Jason Cook</foaf:name>
+    <foaf:title>Mr</foaf:title>
+    <foaf:based_near>
+      <geo:Point geo:lat="41.8833" geo:long="12.5"/>
+    </foaf:based_near>
+  </foaf:Person>
+</rdf:RDF>
+
+
+		
+	
+ 	* Note that Jenabean may improve things a little, like being specific and typing its literals.
+ 	*
+ 	*
+ 	*/
+		Model m = ModelFactory.createDefaultModel(); 
+		m.setNsPrefix("foaf","http://xmlns.com/foaf/0.1/");
+		m.setNsPrefix("xsd" , "http://www.w3.org/2001/XMLSchema#");
+		m.setNsPrefix("geo" ,"http://www.w3.org/2003/01/geo/wgs84_pos#");
+		Thing loc = new Thing(m);
+		loc.isa(Geo.Point.class).lat(41.8833f).long_(12.5f);
+	
+		new Thing(m). //anonymous!
+			isa(FoafThing.Person.class).
+			name("Jason Cook").
+			title("Mr").
+			as(FoafThing.class).
+			based_near(loc);
+		m.write(System.out, "N3");	
+		System.out.println("\n\n-----------------------------------\n\n");
+		m.write(System.out, "RDF/XML-ABBREV");
+	}
 	
 }
