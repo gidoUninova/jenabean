@@ -185,13 +185,13 @@ ex2:siamese rdf:type skos:Concept;
 			inScheme(ex2);
 		
 		new Thing("http://ex2#abyssinian", m).
-			as(SkosThing.class).isa(SkosThing.Concept.class).
+			isa(SkosThing.Concept.class).
 			prefLabel("Abyssinian Cats", "en").
 			broader(ex1).
 			inScheme(ex2);
 		
 		new Thing("http://ex2#siamese", m).
-			as(SkosThing.class).isa(SkosThing.Concept.class).
+			isa(SkosThing.Concept.class).
 			prefLabel("Siamese Cats", "en").
 			broader(ex1).
 			inScheme(ex2);		
