@@ -227,8 +227,10 @@ ex2:siamese rdf:type skos:Concept;
 			nick("hulk").
 			homepage(new URI("http://www.gamma-rays-r-us.com")).
 			weblog(new URI("http://www.davidbanner.com/blog")).
-			schoolHomepage( new URI("http://www.mit.edu"));
-		m.write(System.out, "N3");
+			schoolHomepage( new URI("http://www.mit.edu")).
+			workplaceHomepage(new URI("http://www.gamma-rays-r-us.com")).
+			workInfoHomepage(new URI("http://www.gamma-rays-r-us.com/~banner/crazy-experiments.html"));
+		m.write(System.out, "RDF/XML-ABBREV");
 	}
 
 	
