@@ -199,7 +199,7 @@ ex2:siamese rdf:type skos:Concept;
 	}
 	
 	@Test
-	public void foafExamples() {
+	public void foafExamples() throws URISyntaxException {
 		
 /*		<foaf:Person>
 		   <foaf:name>David Banner</foaf:name>
@@ -215,10 +215,20 @@ ex2:siamese rdf:type skos:Concept;
 		   <!-- etc -->
 		</foaf:Person>
  	*/
-		
-		new Thing("http://example.org/dbanner").
+		Model m = ModelFactory.createDefaultModel();
+		m.setNsPrefix("foaf","http://xmlns.com/foaf/0.1/");
+		m.setNsPrefix("xsd" , "http://www.w3.org/2001/XMLSchema#");
+		new Thing("http://example.org/dbanner",m).
 			isa(FoafThing.Person.class).
-			
+			name("David Banner").
+			title("Mr").
+			firstName("David").
+			surname("Banner").
+			nick("hulk").
+			homepage(new URI("http://www.gamma-rays-r-us.com")).
+			weblog(new URI("http://www.davidbanner.com/blog")).
+			schoolHomepage( new URI("http://www.mit.edu"));
+		m.write(System.out, "N3");
 	}
 
 	
