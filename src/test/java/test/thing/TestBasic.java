@@ -201,7 +201,11 @@ ex2:siamese rdf:type skos:Concept;
 	@Test
 	public void foafExamples() throws URISyntaxException {
 		
-/*		<foaf:Person>
+/*	
+ * 	Should create identical RDF as 
+from http://wiki.foaf-project.org/DescribingAPerson
+
+ 	<foaf:Person>
 		   <foaf:name>David Banner</foaf:name>
 		   <foaf:title>Mr</foaf:title>
 		   <foaf:firstName>David</foaf:firstName>
@@ -214,8 +218,13 @@ ex2:siamese rdf:type skos:Concept;
 		   <foaf:workInfoHomepage rdf:resource="http://www.gamma-rays-r-us.com/~banner/crazy-experiments.html"/>
 		   <!-- etc -->
 		</foaf:Person>
+		
+	
+ 	* Note that Jenabean may improve things a little, like being specific and typing its literals.
+ 	*
+ 	*
  	*/
-		Model m = ModelFactory.createDefaultModel();
+		Model m = ModelFactory.createDefaultModel(); 
 		m.setNsPrefix("foaf","http://xmlns.com/foaf/0.1/");
 		m.setNsPrefix("xsd" , "http://www.w3.org/2001/XMLSchema#");
 		new Thing("http://example.org/dbanner",m).
@@ -232,6 +241,60 @@ ex2:siamese rdf:type skos:Concept;
 			workInfoHomepage(new URI("http://www.gamma-rays-r-us.com/~banner/crazy-experiments.html"));
 		m.write(System.out, "RDF/XML-ABBREV");
 	}
+	
+	
+	@Test
+	public void foafExamples2() throws URISyntaxException {
+		
+/*	
+ * 	Should create identical RDF as 
+from http://wiki.foaf-project.org/UsingFoafKnows
 
+ <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+         xmlns:foaf="http://xmlns.com/foaf/0.1/">
+<foaf:Person>
+  <foaf:name>Leigh Dodds</foaf:name>
+  <foaf:firstName>Leigh</foaf:firstName>
+  <foaf:surname>Dodds</foaf:surname>
+  <foaf:mbox_sha1sum>71b88e951cb5f07518d69e5bb49a45100fbc3ca5</foaf:mbox_sha1sum>
+  <foaf:knows>
+    <foaf:Person>
+      <foaf:name>Dan Brickley</foaf:name>
+      <foaf:mbox_sha1sum>241021fb0e6289f92815fc210f9e9137262c252e</foaf:mbox_sha1sum>
+      <rdfs:seeAlso 
+        rdf:resource="http://rdfweb.org/people/danbri/foaf.rdf"/>
+    </foaf:Person>
+  </foaf:knows>
+</foaf:Person>
+</rdf:RDF>
+
+		
+	
+ 	* Note that Jenabean may improve things a little, like being specific and typing its literals.
+ 	*
+ 	*
+ 	*/
+		Model m = ModelFactory.createDefaultModel(); 
+		m.setNsPrefix("foaf","http://xmlns.com/foaf/0.1/");
+		m.setNsPrefix("xsd" , "http://www.w3.org/2001/XMLSchema#");
+		
+		Thing danbri = new Thing(m); //anonymous!
+		danbri.isa(FoafThing.Person.class).
+			name("Dan Brickley").
+			mbox_sha1sum("241021fb0e6289f92815fc210f9e9137262c252e").
+			as(RdfsVocab.class).
+			seeAlso(new URI("http://rdfweb.org/people/danbri/foaf.rdf"));
+		new Thing(m). //anonymous!
+			isa(FoafThing.Person.class).
+			name("David Banner").
+			firstName("David").
+			surname("Banner").
+			mbox_sha1sum("71b88e951cb5f07518d69e5bb49a45100fbc3ca5").
+			knows(danbri);
+		m.write(System.out, "N3");	
+		System.out.println("\n\n-----------------------------------\n\n");
+		m.write(System.out, "RDF/XML-ABBREV");
+	}
 	
 }
