@@ -39,7 +39,7 @@ public class TestBasic {
 			subject(me).
 			subject(new URI("http://www.google.com")).
 			title("The web semantic").
-		 as(FoafThing.class).
+		 as(Foaf.class).
 			made(new Thing("http://thewebsemantic.com",m)).
 		    made(new Thing("http://tripblox.com,",m)).
 		    mbox(new Thing("mailto:gorby.kremvax@example.com",m))
@@ -54,7 +54,7 @@ public class TestBasic {
 			System.out.println("thing: " + subject);
 		}
 		
-		for (Thing thing : t.as(FoafThing.class).made())
+		for (Thing thing : t.as(Foaf.class).made())
 			System.out.println(thing.getResource()); 
 		
 		t.as(DublinCore.class).description("this is a description");
@@ -72,7 +72,7 @@ public class TestBasic {
 		m.setNsPrefix("xsd", "http://www.w3.org/2001/XMLSchema#");
 		m.setNsPrefix("geo", "http://www.w3.org/2003/01/geo/wgs84_pos#");
 		Thing t = new Thing("http://example.com/1",m);
-		t.as(FoafThing.class).
+		t.as(Foaf.class).
 		    aimChatID("example").
 			birthday("01/01/1999").
 			weblog(new Thing("http://thewebsemantic.com", m)).
@@ -139,7 +139,7 @@ public class TestBasic {
 		//	  skos:prefLabel "Tim Berners-Lee"@en.
 
 		Thing tbl = new Thing("http://www.w3.org/People/Berners-Lee/card#i", m);
-		tbl.as(FoafThing.class).isa(FoafThing.Person.class).
+		tbl.as(Foaf.class).isa(Foaf.Person.class).
 				name("Timothy Berners-Lee").
 			as(Skos.class).
 				prefLabel("Tim Berners-Lee", "en").
@@ -228,7 +228,7 @@ from http://wiki.foaf-project.org/DescribingAPerson
 		m.setNsPrefix("foaf","http://xmlns.com/foaf/0.1/");
 		m.setNsPrefix("xsd" , "http://www.w3.org/2001/XMLSchema#");
 		new Thing("http://example.org/dbanner",m).
-			isa(FoafThing.Person.class).
+			isa(Foaf.Person.class).
 			name("David Banner").
 			title("Mr").
 			firstName("David").
@@ -280,13 +280,13 @@ from http://wiki.foaf-project.org/UsingFoafKnows
 		m.setNsPrefix("xsd" , "http://www.w3.org/2001/XMLSchema#");
 		
 		Thing danbri = new Thing(m); //anonymous!
-		danbri.isa(FoafThing.Person.class).
+		danbri.isa(Foaf.Person.class).
 			name("Dan Brickley").
 			mbox_sha1sum("241021fb0e6289f92815fc210f9e9137262c252e").
 			as(RdfsVocab.class).
 			seeAlso(new URI("http://rdfweb.org/people/danbri/foaf.rdf"));
 		new Thing(m). //anonymous!
-			isa(FoafThing.Person.class).
+			isa(Foaf.Person.class).
 			name("David Banner").
 			firstName("David").
 			surname("Banner").
@@ -331,17 +331,20 @@ from http://wiki.foaf-project.org/UsingFoafKnows
 		m.setNsPrefix("xsd" , "http://www.w3.org/2001/XMLSchema#");
 		m.setNsPrefix("geo" ,"http://www.w3.org/2003/01/geo/wgs84_pos#");
 		Thing loc = new Thing(m);
-		loc.isa(Geo.Point.class).lat(41.8833f).long_(12.5f);
+		loc.isa(Geo.Point.class).
+			lat(41.8833f).
+			long_(12.5f);
 	
 		new Thing(m). //anonymous!
-			isa(FoafThing.Person.class).
+			isa(Foaf.Person.class).
 			name("Jason Cook").
 			title("Mr").
-			as(FoafThing.class).
+			as(Foaf.class).
 			based_near(loc);
 		m.write(System.out, "N3");	
 		System.out.println("\n\n-----------------------------------\n\n");
 		m.write(System.out, "RDF/XML-ABBREV");
+		
 	}
 	
 }

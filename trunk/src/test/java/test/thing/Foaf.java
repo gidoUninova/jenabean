@@ -9,226 +9,226 @@ import thewebsemantic.Namespace;
 import thewebsemantic.Thing;
 
 @Namespace("http://xmlns.com/foaf/0.1/")
-public interface FoafThing extends As {
-	interface Person extends FoafThing {
+public interface Foaf extends As {
+	interface Person extends Foaf {
 	}
 
-	FoafThing jabberID(String s);
+	Foaf jabberID(String s);
 
 	Collection<String> jabberID();
 
-	FoafThing nick(Object string);
+	Foaf nick(Object string);
 
 	Collection<Thing> nick();
 
-	FoafThing dnaChecksum(String s);
+	Foaf dnaChecksum(String s);
 
 	Collection<String> dnaChecksum();
 
-	FoafThing topic(Thing t);
+	Foaf topic(Thing t);
 
 	Collection<Thing> topic();
 
-	FoafThing theme(Thing t);
+	Foaf theme(Thing t);
 
 	Collection<Thing> theme();
 
-	FoafThing msnChatID(String s);
+	Foaf msnChatID(String s);
 
 	Collection<String> msnChatID();
 
-	FoafThing family_name(String s);
+	Foaf family_name(String s);
 
 	Collection<String> family_name();
 
-	FoafThing openid(Thing t);
+	Foaf openid(Thing t);
 
 	Collection<Thing> openid();
 
-	FoafThing schoolHomepage(Object uri);
+	Foaf schoolHomepage(Object uri);
 
 	Collection<Thing> schoolHomepage();
 
-	FoafThing pastProject(Thing t);
+	Foaf pastProject(Thing t);
 
 	Collection<Thing> pastProject();
 
-	FoafThing plan(String s);
+	Foaf plan(String s);
 
 	Collection<String> plan();
 
-	FoafThing myersBriggs(String s);
+	Foaf myersBriggs(String s);
 
 	Collection<String> myersBriggs();
 
-	FoafThing mbox(Thing t);
+	Foaf mbox(Thing t);
 
 	Collection<Thing> mbox();
 
 	@Functional
-	FoafThing gender(String s);
+	Foaf gender(String s);
 
 	String gender();
 
-	FoafThing sha1(Thing t);
+	Foaf sha1(Thing t);
 
 	Collection<Thing> sha1();
 
-	FoafThing publications(Thing t);
+	Foaf publications(Thing t);
 
 	Collection<Thing> publications();
 
-	FoafThing holdsAccount(Thing t);
+	Foaf holdsAccount(Thing t);
 
 	Collection<Thing> holdsAccount();
 
-	FoafThing currentProject(Thing t);
+	Foaf currentProject(Thing t);
 
 	Collection<Thing> currentProject();
 
-	FoafThing workInfoHomepage(Object t);
+	Foaf workInfoHomepage(Object t);
 
 	Collection<Thing> workInfoHomepage();
 
-	FoafThing made(Thing t);
+	Foaf made(Thing t);
 
 	Collection<Thing> made();
 
-	FoafThing aimChatID(String s);
+	Foaf aimChatID(String s);
 
 	Collection<String> aimChatID();
 
 	@Functional
-	FoafThing primaryTopic(Thing t);
+	Foaf primaryTopic(Thing t);
 
 	Thing primaryTopic();
 
-	FoafThing thumbnail(Thing t);
+	Foaf thumbnail(Thing t);
 
 	Collection<Thing> thumbnail();
 
-	FoafThing based_near(Thing t);
+	Foaf based_near(Thing t);
 
 	Collection<Thing> based_near();
 
-	FoafThing workplaceHomepage(Object t);
+	Foaf workplaceHomepage(Object t);
 
 	Collection<Thing> workplaceHomepage();
 
-	FoafThing logo(Thing t);
+	Foaf logo(Thing t);
 
 	Collection<Thing> logo();
 
-	FoafThing weblog(Object t);
+	Foaf weblog(Object t);
 
 	Collection<Thing> weblog();
 
-	FoafThing title(Object t);
+	Foaf title(Object t);
 
 	Collection<Thing> title();
 
-	FoafThing fundedBy(Thing t);
+	Foaf fundedBy(Thing t);
 
 	Collection<Thing> fundedBy();
 
-	FoafThing depiction(Thing t);
+	Foaf depiction(Thing t);
 
 	Collection<Thing> depiction();
 
-	FoafThing accountServiceHomepage(Thing t);
+	Foaf accountServiceHomepage(Thing t);
 
 	Collection<Thing> accountServiceHomepage();
 
-	FoafThing page(Thing t);
+	Foaf page(Thing t);
 
 	Collection<Thing> page();
 
-	FoafThing isPrimaryTopicOf(Thing t);
+	Foaf isPrimaryTopicOf(Thing t);
 
 	Collection<Thing> isPrimaryTopicOf();
 
-	FoafThing surname(String s);
+	Foaf surname(String s);
 
 	Collection<String> surname();
 
-	FoafThing firstName(String s);
+	Foaf firstName(String s);
 
 	Collection<String> firstName();
 
-	FoafThing homepage(Object uri);
+	Foaf homepage(Object uri);
 
 	Collection<Thing> homepage();
 
-	FoafThing knows(Thing t);
+	Foaf knows(Thing t);
 
 	Collection<Thing> knows();
 
-	FoafThing depicts(Thing t);
+	Foaf depicts(Thing t);
 
 	Collection<Thing> depicts();
 
-	FoafThing interest(Thing t);
+	Foaf interest(Thing t);
 
 	Collection<Thing> interest();
 
-	FoafThing geekcode(String s);
+	Foaf geekcode(String s);
 
 	Collection<String> geekcode();
 
-	FoafThing mbox_sha1sum(String s);
+	Foaf mbox_sha1sum(String s);
 
 	Collection<String> mbox_sha1sum();
 
-	FoafThing accountName(String s);
+	Foaf accountName(String s);
 
 	Collection<String> accountName();
 
-	FoafThing membershipClass(Thing t);
+	Foaf membershipClass(Thing t);
 
 	Collection<Thing> membershipClass();
 
-	FoafThing tipjar(Thing t);
+	Foaf tipjar(Thing t);
 
 	Collection<Thing> tipjar();
 
-	FoafThing maker(Thing t);
+	Foaf maker(Thing t);
 
 	Collection<Thing> maker();
 
-	FoafThing name(String s);
+	Foaf name(String s);
 
 	Collection<String> name();
 
-	FoafThing img(Thing t);
+	Foaf img(Thing t);
 
 	Collection<Thing> img();
 
 	@Functional
-	FoafThing birthday(String s);
+	Foaf birthday(String s);
 
 	String birthday();
 
-	FoafThing givenname(Thing t);
+	Foaf givenname(Thing t);
 
 	Collection<Thing> givenname();
 
-	FoafThing member(Thing t);
+	Foaf member(Thing t);
 
 	Collection<Thing> member();
 
-	FoafThing yahooChatID(String s);
+	Foaf yahooChatID(String s);
 
 	Collection<String> yahooChatID();
 
-	FoafThing icqChatID(String s);
+	Foaf icqChatID(String s);
 
 	Collection<String> icqChatID();
 
-	FoafThing phone(Thing t);
+	Foaf phone(Thing t);
 
 	Collection<Thing> phone();
 
-	FoafThing topic_interest(Thing t);
+	Foaf topic_interest(Thing t);
 
 	Collection<Thing> topic_interest();
 }
