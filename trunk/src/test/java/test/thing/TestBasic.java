@@ -330,7 +330,7 @@ from http://wiki.foaf-project.org/UsingFoafKnows
 		m.setNsPrefix("foaf","http://xmlns.com/foaf/0.1/");
 		m.setNsPrefix("xsd" , "http://www.w3.org/2001/XMLSchema#");
 		m.setNsPrefix("geo" ,"http://www.w3.org/2003/01/geo/wgs84_pos#");
-		Thing loc = new Thing(m);
+		Thing loc = new Thing(m); //anonymous!
 		loc.isa(Geo.Point.class).
 			lat(41.8833f).
 			long_(12.5f);
@@ -345,6 +345,13 @@ from http://wiki.foaf-project.org/UsingFoafKnows
 		System.out.println("\n\n-----------------------------------\n\n");
 		m.write(System.out, "RDF/XML-ABBREV");
 		
+	}
+
+	@Test
+	public void foafExamples4() throws URISyntaxException {		
+		Model m = ModelFactory.createDefaultModel(); 
+		m.read("file:src/test/java/test/thing/example4.rdf");
+		m.write(System.out, "RDF/XML-ABBREV", "file:src/test/java/test/thing/example4.rdf#");
 	}
 	
 }
