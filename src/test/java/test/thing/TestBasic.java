@@ -80,7 +80,7 @@ public class TestBasic {
 		as(Geo.class).
 			lat(33.3f).
 			long_(120.1f).
-		    isa(SkosThing.Concept.class);
+		    isa(Skos.Concept.class);
 		m.write(System.out, "N3");
 		
 	}
@@ -116,7 +116,7 @@ public class TestBasic {
 		m.setNsPrefix("foaf", "http://xmlns.com/foaf/0.1/");
 		m.setNsPrefix("rdfs","http://www.w3.org/2000/01/rdf-schema#");
 		Thing t = new Thing("Protein",m);
-		t.as(SkosThing.class).
+		t.as(Skos.class).
 			definition("A physical entity consisting of a sequence of amino-acids; a protein monomer; a single polypeptide chain. An example is the EGFR protein.", "en");
 		
 		
@@ -124,10 +124,10 @@ public class TestBasic {
 		Thing a = new Thing("A", m);
 		Thing b = new Thing("B", m);
 		Thing c = new Thing("C", m);
-		a.as(SkosThing.class).broader(b).related(c);
+		a.as(Skos.class).broader(b).related(c);
 		
 		Thing rocks = new Thing("rocks", m);
-		rocks.isa(SkosThing.Concept.class).
+		rocks.isa(Skos.Concept.class).
 			prefLabel("rocks", "en").
 			altLabel("basalt", "en").
 			altLabel("granite", "en").
@@ -141,7 +141,7 @@ public class TestBasic {
 		Thing tbl = new Thing("http://www.w3.org/People/Berners-Lee/card#i", m);
 		tbl.as(FoafThing.class).isa(FoafThing.Person.class).
 				name("Timothy Berners-Lee").
-			as(SkosThing.class).
+			as(Skos.class).
 				prefLabel("Tim Berners-Lee", "en").
 			as(RdfsVocab.class).
 				label("Tim Berners-Lee");
@@ -177,21 +177,21 @@ ex2:siamese rdf:type skos:Concept;
 		m.setNsPrefix("ex1","http://ex1#");
 		m.setNsPrefix("ex2","http://ex2#");
 		Thing ex2 = new Thing("http://ex2#catScheme", m);
-		ex2.isa(SkosThing.ConceptScheme.class).
+		ex2.isa(Skos.ConceptScheme.class).
 			as(DublinCore.class).
 			title("The Complete Cat Thesaurus","en");
 		Thing ex1 = new Thing("http://ex1#cats", m);
-		ex1.as(SkosThing.class).
+		ex1.as(Skos.class).
 			inScheme(ex2);
 		
 		new Thing("http://ex2#abyssinian", m).
-			isa(SkosThing.Concept.class).
+			isa(Skos.Concept.class).
 			prefLabel("Abyssinian Cats", "en").
 			broader(ex1).
 			inScheme(ex2);
 		
 		new Thing("http://ex2#siamese", m).
-			isa(SkosThing.Concept.class).
+			isa(Skos.Concept.class).
 			prefLabel("Siamese Cats", "en").
 			broader(ex1).
 			inScheme(ex2);		
