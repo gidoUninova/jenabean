@@ -5,7 +5,9 @@ import static org.junit.Assert.assertEquals;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.TimeZone;
 
 import org.junit.Test;
 
@@ -352,6 +354,44 @@ from http://wiki.foaf-project.org/UsingFoafKnows
 		Model m = ModelFactory.createDefaultModel(); 
 		m.read("file:src/test/java/test/thing/example4.rdf");
 		m.write(System.out, "RDF/XML-ABBREV", "file:src/test/java/test/thing/example4.rdf#");
+	}
+	
+	@Test
+	public void icalExample1() {
+		
+		/*
+		 * <Vevent>
+        <uid>20020630T230445Z-3895-69-1-7@jammer</uid>
+        <dtstart>2002-07-03</dtstart>
+        <dtend>2002-07-06</date>
+        <summary>Scooby Conference</summary>
+        <location>San Francisco</location>
+      </Vevent>
+      */
+		Calendar cal = Calendar.getInstance();
+		//cal.setTimeZone(TimeZone.getTimeZone("America/Los_Angeles"));
+		cal.set(Calendar.YEAR, 2002);
+		cal.set(Calendar.MONTH, Calendar.JULY);
+		cal.set(Calendar.DAY_OF_MONTH, 2);
+		cal.set(Calendar.MINUTE, 0);
+		cal.set(Calendar.SECOND, 0);
+		cal.set(Calendar.MILLISECOND, 0);
+		Date start = cal.getTime();
+		cal.set(Calendar.DAY_OF_MONTH, 5);
+		Date end = cal.getTime();
+		Model m = ModelFactory.createDefaultModel(); 
+		m.setNsPrefix("foaf","http://xmlns.com/foaf/0.1/");
+		m.setNsPrefix("xsd" , "http://www.w3.org/2001/XMLSchema#");
+		m.setNsPrefix("ical" ,"http://www.w3.org/2002/12/cal#");		
+		
+		new Thing(m).isa(Ical.Vevent.class).
+			dtstart("2002-07-03").
+			dtend(end).
+			summary("Scooby Conference").
+			location("San Francisco");
+			
+		m.write(System.out, "N3");
+		
 	}
 	
 }
