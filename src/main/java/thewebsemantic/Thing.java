@@ -95,6 +95,10 @@ public class Thing implements InvocationHandler, As {
 		StmtIterator it = r.listProperties(p);
 		if (isPrimitive(returnType))
 			return primitive(returnType, it);
+		else if (returnType==Literal.class)
+			return literal(it);
+		else if (returnType==Thing.class)
+			return thing(it);
 		else if (returnType==Collection.class && genericType==Literal.class)
 			return literalCollection(it);
 		else if (returnType==Collection.class && isPrimitive(genericType))
@@ -103,6 +107,18 @@ public class Thing implements InvocationHandler, As {
 				&& genericType.equals(Thing.class))
 			return thingCollection(it);
 		return null;
+	}
+
+	private Literal thing(StmtIterator it) {
+		Statement s = it.nextStatement();
+		if (s.getObject().isLiteral())
+			return s.getLiteral();
+		else
+			return null;
+	}
+
+	private Object literal(StmtIterator it) {
+		return it.nextStatement().getLiteral();
 	}
 
 	private Object primitive(Class<?> returnType, StmtIterator it) {
@@ -147,7 +163,7 @@ public class Thing implements InvocationHandler, As {
 	private void set(Method m, Object[] arg) {
 		Property p = getProperty(m);
 		r.removeAll(p);
-		apply(arg, p);
+		apply(arg, p, m.getParameterTypes()[0] == Object.class);
 	}
 
 	private Property getProperty(Method m) {
@@ -160,14 +176,17 @@ public class Thing implements InvocationHandler, As {
 
 	private void add(Method m, Object[] arg) {
 		Property p = getProperty(m);
-		apply(arg, p);
+		apply(arg, p, m.getParameterTypes()[0] == Object.class);
 	}
 
-	private void apply(Object[] arg, Property p) {
+	private void apply(Object[] arg, Property p, boolean rawLiteral) {
 		if (PrimitiveWrapper.isPrimitive(arg[0])) {
-			if (arg.length < 2)
-				r.addProperty(p, JenaHelper.toLiteral(model, arg[0]));
-			else
+			if (arg.length < 2 ) {
+				if (rawLiteral)
+					r.addProperty(p, arg[0].toString());
+				else
+					r.addProperty(p, JenaHelper.toLiteral(model, arg[0]));
+			} else
 				r.addProperty(p, arg[0].toString(), arg[1].toString());
 		} else if (arg[0] instanceof Thing)
 			set(p, (Thing) arg[0]);
