@@ -3,6 +3,7 @@ package test.thing;
 
 import static org.junit.Assert.assertEquals;
 
+import java.lang.reflect.Type;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -12,6 +13,8 @@ import org.junit.Test;
 
 import thewebsemantic.Thing;
 
+import com.hp.hpl.jena.ontology.OntModel;
+import com.hp.hpl.jena.ontology.OntModelSpec;
 import com.hp.hpl.jena.rdf.model.Literal;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
@@ -408,15 +411,22 @@ from http://wiki.foaf-project.org/UsingFoafKnows
       <dc:title>The Rolling Stones</dc:title>
   </mm:Artist>
 		 */
-		Model m = ModelFactory.createDefaultModel(); 
+		OntModel m = ModelFactory.createOntologyModel(OntModelSpec.OWL_MEM_MICRO_RULE_INF);
+		ThingFactory factory = new ThingFactory(m);
 		m.setNsPrefix("mm","http://www.purl.org/stuff/rev#");
-		new Thing(m).isa(ReviewVocab.Review.class).
-			rating(8).
+		new Thing("http://example.org/1",m).isa(ReviewVocab.Review.class).
+			rating("8").
 			reviewer(new URI("http://example.org/reviewers/sam")).
 			as(DublinCore.class).
 			description("Classic.");
-		m.write(System.out, "N3");	
+		m.write(System.out, "RDF/XML-ABBREV");	
 		
+		Thing example = factory._("http://example.org/1");
+		assertEquals(8, example.as(ReviewVocab.class).rating().getLong());
+		assertEquals("Classic.", example.as(DublinCore.class).description());
+		assertEquals(1, example.as(ReviewVocab.class).reviewer().size());
+		Thing t = example.as(ReviewVocab.class).reviewer().iterator().next();
+		assertEquals("http://example.org/reviewers/sam",t.getResource().getURI());
 	}
 	
 }
