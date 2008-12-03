@@ -1,7 +1,6 @@
 package thewebsemantic.vocabulary;
 
 import java.util.Collection;
-import java.util.Date;
 
 import thewebsemantic.As;
 import thewebsemantic.Namespace;
