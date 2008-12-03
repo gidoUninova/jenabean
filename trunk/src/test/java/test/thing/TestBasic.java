@@ -3,11 +3,10 @@ package test.thing;
 
 import static org.junit.Assert.assertEquals;
 
+import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.TimeZone;
 
 import org.junit.Test;
 
@@ -360,37 +359,63 @@ from http://wiki.foaf-project.org/UsingFoafKnows
 	public void icalExample1() {
 		
 		/*
-		 * <Vevent>
-        <uid>20020630T230445Z-3895-69-1-7@jammer</uid>
-        <dtstart>2002-07-03</dtstart>
-        <dtend>2002-07-06</date>
-        <summary>Scooby Conference</summary>
-        <location>San Francisco</location>
-      </Vevent>
+		 * 
+		<Vevent>
+        	<uid>20020630T230445Z-3895-69-1-7@jammer</uid>
+        	<dtstart>2002-07-03</dtstart>
+        	<dtend>2002-07-06</date>
+        	<summary>Scooby Conference</summary>
+        	<location>San Francisco</location>
+      	</Vevent>
       */
-		Calendar cal = Calendar.getInstance();
-		//cal.setTimeZone(TimeZone.getTimeZone("America/Los_Angeles"));
-		cal.set(Calendar.YEAR, 2002);
-		cal.set(Calendar.MONTH, Calendar.JULY);
-		cal.set(Calendar.DAY_OF_MONTH, 2);
-		cal.set(Calendar.MINUTE, 0);
-		cal.set(Calendar.SECOND, 0);
-		cal.set(Calendar.MILLISECOND, 0);
-		Date start = cal.getTime();
-		cal.set(Calendar.DAY_OF_MONTH, 5);
-		Date end = cal.getTime();
+	
 		Model m = ModelFactory.createDefaultModel(); 
 		m.setNsPrefix("foaf","http://xmlns.com/foaf/0.1/");
 		m.setNsPrefix("xsd" , "http://www.w3.org/2001/XMLSchema#");
 		m.setNsPrefix("ical" ,"http://www.w3.org/2002/12/cal#");		
 		
 		new Thing(m).isa(Ical.Vevent.class).
+			uid("20020630T230445Z-3895-69-1-7@jammer").
 			dtstart("2002-07-03").
-			dtend(end).
+			dtend("2002-07-06").
 			summary("Scooby Conference").
 			location("San Francisco");
 			
 		m.write(System.out, "N3");
+		
+	}
+	
+	@Test
+	public void reviewExample1() throws MalformedURLException, URISyntaxException {
+		/*
+	<mm:Album rdf:about="http://mm.musicbrainz.org/album/37b9a29b-2d39-441b-9ac6-81770916e5b5">
+      <dc:title>Aftermath</dc:title>
+  
+      <review:hasReview>
+          <review:Review>
+              <review:rating>8</review:rating>
+              <review:reviewer rdf:nodeID="A0"/>
+              <dc:description>Classic.</dc:description>
+          </review:Review>
+      </review:hasReview>
+ 
+      <dc:creator>
+          <mm:Artist rdf:about="http://mm.musicbrainz.org/artist/b071f9fa-14b0-4217-8e97-eb41da73f598"/>
+      </dc:creator>
+  </mm:Album>
+  
+  <mm:Artist rdf:about="http://mm.musicbrainz.org/artist/b071f9fa-14b0-4217-8e97-eb41da73f598">
+      <dc:title>The Rolling Stones</dc:title>
+  </mm:Artist>
+		 */
+		Model m = ModelFactory.createDefaultModel(); 
+		m.setNsPrefix("mm","http://www.purl.org/stuff/rev#");
+		new Thing(m).isa(ReviewVocab.Review.class).
+			rating(8).
+			reviewer(new URI("http://example.org/reviewers/sam")).
+			as(DublinCore.class).
+			description("Classic.");
+		m.write(System.out, "N3");	
 		
 	}
 	
