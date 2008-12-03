@@ -377,8 +377,8 @@ from http://wiki.foaf-project.org/UsingFoafKnows
 		m.setNsPrefix("xsd" , "http://www.w3.org/2001/XMLSchema#");
 		m.setNsPrefix("ical" ,"http://www.w3.org/2002/12/cal#");		
 		
-		new Thing(m).isa(Ical.Vevent.class).
-			uid("20020630T230445Z-3895-69-1-7@jammer").
+		Ical.Vevent t = new Thing(m).isa(Ical.Vevent.class);
+		t.uid("20020630T230445Z-3895-69-1-7@jammer").
 			dtstart("2002-07-03").
 			dtend("2002-07-06").
 			summary("Scooby Conference").
@@ -386,6 +386,9 @@ from http://wiki.foaf-project.org/UsingFoafKnows
 			
 		m.write(System.out, "N3");
 		
+		Literal start = t.dtstart();
+		assertEquals("2002-07-03",start.toString());
+		assertEquals("San Francisco", t.location().iterator().next());
 	}
 	
 	@Test
