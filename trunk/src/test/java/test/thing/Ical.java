@@ -3,6 +3,8 @@ package test.thing;
 import java.util.Collection;
 import java.util.Date;
 
+import com.hp.hpl.jena.rdf.model.Literal;
+
 import thewebsemantic.As;
 import thewebsemantic.Namespace;
 import thewebsemantic.Thing;
@@ -106,7 +108,7 @@ public interface Ical extends As {
 
 	Ical dtstart(Object t);
 
-	Collection<Thing> dtstart();
+	Literal dtstart();
 
 	Ical location(Object o);
 
