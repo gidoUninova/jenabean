@@ -31,6 +31,8 @@ public class JenaHelper {
 			return l.getDouble();
 		} else
 			return l.getValue();
+		
+		
 	}
 	
 	public static Date date(Literal l) {

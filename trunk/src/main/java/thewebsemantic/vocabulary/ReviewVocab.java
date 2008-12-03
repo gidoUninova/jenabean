@@ -20,7 +20,7 @@ public interface ReviewVocab extends As {
 	   ReviewVocab hasFeedback(Thing t);
 	   Collection<Thing> hasFeedback();
 	   ReviewVocab rating(Object o);
-	   Collection<String> rating();
+	   int rating();
 	   ReviewVocab type(Object o);
 	   Collection<String> type();
 	   ReviewVocab reviewer(Object t);
