@@ -5,14 +5,14 @@ import thewebsemantic.Namespace;
 import thewebsemantic.Thing;
 
 @Namespace("http://www.w3.org/2000/01/rdf-schema#")
-public interface RdfsVocab {
-	interface Class extends RdfsVocab {}
-	interface Resource extends RdfsVocab {}
+public interface Rdfs {
+	interface Class extends Rdfs {}
+	interface Resource extends Rdfs {}
 	
-	RdfsVocab comment(Object o);
+	Rdfs comment(Object o);
 	Collection<String> comment();
-	RdfsVocab label(Object o);
+	Rdfs label(Object o);
 	Collection<String> label();
-	RdfsVocab seeAlso(Object o);
+	Rdfs seeAlso(Object o);
 	Collection<Thing> seeAlso();
 }
