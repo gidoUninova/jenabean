@@ -20,7 +20,7 @@ public interface DublinCore extends As {
 
 	@Functional
 	public DublinCore date(Date d);
-	public DublinCore description(String s);
+	public DublinCore description(Object s);
 	public DublinCore format(String s);
 	public DublinCore identifier(String s);
 	public DublinCore language(String s);

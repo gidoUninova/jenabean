@@ -2,7 +2,10 @@ package test.thing;
 
 import java.util.Collection;
 
+import com.hp.hpl.jena.rdf.model.Literal;
+
 import thewebsemantic.As;
+import thewebsemantic.Functional;
 import thewebsemantic.Namespace;
 import thewebsemantic.Thing;
 
@@ -19,8 +22,10 @@ public interface ReviewVocab extends As {
 	   Collection<Thing> hasComment();
 	   ReviewVocab hasFeedback(Thing t);
 	   Collection<Thing> hasFeedback();
-	   ReviewVocab rating(Object o);
-	   Collection<String> rating();
+	   
+	   @Functional
+	   ReviewVocab rating(Object i);
+	   Literal rating();
 	   ReviewVocab type(Object o);
 	   Collection<String> type();
 	   ReviewVocab reviewer(Object t);
