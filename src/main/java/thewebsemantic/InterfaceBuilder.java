@@ -81,7 +81,7 @@ public class InterfaceBuilder {
 	}
 
 	public static void main(String[] args) {
-		new InterfaceBuilder().create("http://www.w3.org/2000/01/rdf-schema",
-				"http://www.w3.org/2000/01/rdf-schema#", "BibtexThing");
+		new InterfaceBuilder().create("http://www.ldodds.com/projects/musicbrainz/schema/index.rdf",
+				"http://musicbrainz.org/mm/mm-2.1#", "Review");
 	}
 }
