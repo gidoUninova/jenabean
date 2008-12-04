@@ -3,7 +3,6 @@ package test.thing;
 
 import static org.junit.Assert.assertEquals;
 
-import java.lang.reflect.Type;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -84,7 +83,9 @@ public class TestBasic {
 		as(Geo.class).
 			lat(33.3f).
 			long_(120.1f).
-		    isa(Skos.Concept.class);
+		    isa(Skos.Concept.class).
+		as(RdfsVocab.class).
+		 	label("an example of polymorphic Thing with 3 vocabularies");
 		m.write(System.out, "N3");
 		
 	}
