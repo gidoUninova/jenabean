@@ -69,9 +69,9 @@ public interface Foaf extends As {
 
 	String gender();
 
-	Foaf sha1(Thing t);
-
-	Collection<Thing> sha1();
+	@Functional
+	Foaf sha1(Object o);
+	String sha1();
 
 	Foaf publications(Thing t);
 
@@ -147,11 +147,11 @@ public interface Foaf extends As {
 	Collection<Thing> isPrimaryTopicOf();
 
 	Foaf surname(String s);
-
+	Foaf surname_(Object s);
 	Collection<String> surname();
 
 	Foaf firstName(String s);
-
+	Foaf firstName_(Object s);
 	Collection<String> firstName();
 
 	Foaf homepage(Object uri);

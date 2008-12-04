@@ -31,6 +31,6 @@ public class FoafExample {
 	    isa(Skos.Concept.class).
 	as(RdfsVocab.class).
 	 	label("an example of polymorphic Thing with 3 vocabularies");
-	m.write(System.out, "N3");
+		m.write(System.out, "N3");
 	}
 }
