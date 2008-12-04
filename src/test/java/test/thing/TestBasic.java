@@ -310,6 +310,9 @@ from http://wiki.foaf-project.org/UsingFoafKnows
  * 	Should create identical RDF as 
 from http://wiki.foaf-project.org/UsingFoafKnows
 
+Work Phone: 682-605-2324 
+
+Organization: None Provided 
  <?xml version="1.0" encoding="UTF-8"?> 
 <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" 
         xmlns:foaf="http://xmlns.com/foaf/0.1/" 
