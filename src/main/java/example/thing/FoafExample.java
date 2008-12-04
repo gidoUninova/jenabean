@@ -1,9 +1,9 @@
 package example.thing;
 
-import test.thing.RdfsVocab;
 import thewebsemantic.Thing;
 import thewebsemantic.vocabulary.Foaf;
 import thewebsemantic.vocabulary.Geo;
+import thewebsemantic.vocabulary.Rdfs;
 import thewebsemantic.vocabulary.Skos;
 
 import com.hp.hpl.jena.rdf.model.Model;
@@ -29,7 +29,7 @@ public class FoafExample {
 		lat(33.3f).
 		long_(120.1f).
 	    isa(Skos.Concept.class).
-	as(RdfsVocab.class).
+	as(Rdfs.class).
 	 	label("an example of polymorphic Thing with 3 vocabularies");
 		m.write(System.out, "N3");
 	}
