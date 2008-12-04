@@ -1,6 +1,5 @@
 package thewebsemantic.vocabulary;
 
-import java.net.URI;
 import java.util.Collection;
 
 import thewebsemantic.As;
@@ -10,8 +9,8 @@ import thewebsemantic.Thing;
 
 @Namespace("http://xmlns.com/foaf/0.1/")
 public interface Foaf extends As {
-	interface Person extends Foaf {
-	}
+	interface Person extends Foaf {}
+	interface Image extends Foaf{}
 
 	Foaf jabberID(String s);
 
@@ -196,7 +195,7 @@ public interface Foaf extends As {
 	Collection<Thing> maker();
 
 	Foaf name(String s);
-
+	Foaf name_(Object s);
 	Collection<String> name();
 
 	Foaf img(Thing t);
