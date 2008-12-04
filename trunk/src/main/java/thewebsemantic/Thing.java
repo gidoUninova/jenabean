@@ -53,6 +53,10 @@ public class Thing implements InvocationHandler, As {
 	public Resource getResource() {
 		return r;
 	}
+	
+	public Model getModel() {
+		return model;
+	}
 
 	public <T> T as(Class<T> c) {
 		return (T) Proxy.newProxyInstance(c.getClassLoader(),
