@@ -4,9 +4,10 @@ package example.thing;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 
-import test.thing.RdfsVocab;
+
 import thewebsemantic.Thing;
 import thewebsemantic.vocabulary.Foaf;
+import thewebsemantic.vocabulary.Rdfs;
 import thewebsemantic.vocabulary.Skos;
 
 /**
@@ -32,7 +33,7 @@ public class MixedExample {
 				name("Timothy Berners-Lee").
 			as(Skos.class). //skos land
 				prefLabel("Tim Berners-Lee", "en").
-			as(RdfsVocab.class). //rdfs land
+			as(Rdfs.class). //rdfs land
 				label("Tim Berners-Lee");
 		m.write(System.out, "N3");
 	}
