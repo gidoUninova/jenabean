@@ -26,20 +26,25 @@ public class MixedExample {
 	 * @param args
 	 */
 	public static void main(String[] args) {
+		Model m = model();
+		new Thing("http://www.w3.org/People/Berners-Lee/card#i", m)
+		   .as(Foaf.class).isa(Foaf.Person.class). //foaf land
+				name("Timothy Berners-Lee").
+			as(Skos.class). //skos land
+				prefLabel("Tim Berners-Lee", "en").
+			as(RdfsVocab.class). //rdfs land
+				label("Tim Berners-Lee");
+		m.write(System.out, "N3");
+	}
+
+	private static Model model() {
 		Model m = ModelFactory.createDefaultModel();
 		m.setNsPrefix("dc", "http://purl.org/dc/elements/1.1/");
 		m.setNsPrefix("skos", "http://www.w3.org/2008/05/skos#");
 		m.setNsPrefix("xsd", "http://www.w3.org/2001/XMLSchema#");
 		m.setNsPrefix("foaf", "http://xmlns.com/foaf/0.1/");
 		m.setNsPrefix("rdfs","http://www.w3.org/2000/01/rdf-schema#");
-		new Thing("http://www.w3.org/People/Berners-Lee/card#i", m)
-		   .as(Foaf.class).isa(Foaf.Person.class).
-				name("Timothy Berners-Lee").
-			as(Skos.class).
-				prefLabel("Tim Berners-Lee", "en").
-			as(RdfsVocab.class).
-				label("Tim Berners-Lee");
-		m.write(System.out, "N3");
+		return m;
 	}
 
 }
