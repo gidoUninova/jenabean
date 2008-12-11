@@ -104,7 +104,15 @@ public class TestResource {
 		J.bind(ModelFactory.createDefaultModel());
 		Bug ant = new Bug();
 		ant.setAge(11);
+		ant.setName("ant");
+		ant.setSimilarTo(new Resource("http://foo"));
 		ant.save();
+		
+		
+		ant.setSimilarTo(null);
+		ant.setName(null);
+		ant.save();
+		J.model().write(System.out, "N3");
 	}
 	
 }
