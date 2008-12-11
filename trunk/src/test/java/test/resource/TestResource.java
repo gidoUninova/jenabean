@@ -107,7 +107,9 @@ public class TestResource {
 		ant.setName("ant");
 		ant.setSimilarTo(new Resource("http://foo"));
 		ant.save();
-		
+		ant = ant.load(ant.id());
+		assertNotNull(ant.getSimilarTo());
+		assertNotNull(ant.getName());		
 		
 		ant.setSimilarTo(null);
 		ant.setName(null);
