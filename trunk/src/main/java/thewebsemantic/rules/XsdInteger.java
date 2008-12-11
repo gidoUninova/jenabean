@@ -7,10 +7,7 @@ import com.hp.hpl.jena.reasoner.rulesys.Util;
 import com.hp.hpl.jena.reasoner.rulesys.builtins.BaseBuiltin;
 
 /**
- * Bind the third arg to the sum of the first two args.
  * 
- * @author <a href="mailto:der@hplb.hpl.hp.com">Dave Reynolds</a>
- * @version $Revision: 1.13 $ on $Date: 2008/01/02 12:06:20 $
  */
 public class XsdInteger extends BaseBuiltin {
 
