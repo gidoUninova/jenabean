@@ -96,5 +96,15 @@ public class TestResource {
 		h = include("differentFrom").load(Harmonica.class,h.id());
 		assertEquals(2, h.getDifferentFrom().size());
 
-	}	
+	}
+	
+	@Test
+	public void testNull() {
+		Jenabean J = Jenabean.instance();
+		J.bind(ModelFactory.createDefaultModel());
+		Bug ant = new Bug();
+		ant.setAge(11);
+		ant.save();
+	}
+	
 }
