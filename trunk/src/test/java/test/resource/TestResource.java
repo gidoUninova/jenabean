@@ -99,7 +99,7 @@ public class TestResource {
 	}
 	
 	@Test
-	public void testNull() {
+	public void testNull() throws NotFoundException {
 		Jenabean J = Jenabean.instance();
 		J.bind(ModelFactory.createDefaultModel());
 		Bug ant = new Bug();
@@ -112,7 +112,9 @@ public class TestResource {
 		ant.setSimilarTo(null);
 		ant.setName(null);
 		ant.save();
-		J.model().write(System.out, "N3");
+		ant = ant.load(ant.id());
+		assertNull(ant.getSimilarTo());
+		assertNull(ant.getName());
 	}
 	
 }
