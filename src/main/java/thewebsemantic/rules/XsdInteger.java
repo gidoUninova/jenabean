@@ -1,5 +1,8 @@
 package thewebsemantic.rules;
 
+import java.text.NumberFormat;
+import java.text.ParseException;
+
 import com.hp.hpl.jena.graph.Node;
 import com.hp.hpl.jena.reasoner.rulesys.BindingEnvironment;
 import com.hp.hpl.jena.reasoner.rulesys.RuleContext;
@@ -30,13 +33,14 @@ public class XsdInteger extends BaseBuiltin {
 			Object v1 = n0.getLiteralValue();
 			if (v1 instanceof String) {
 				try {
-					Node n = com.hp.hpl.jena.reasoner.rulesys.Util
-							.makeLongNode(Long.valueOf(v1.toString()));
+					NumberFormat f = NumberFormat.getInstance();
+					Number num = f.parse(v1.toString());
+					Node n = Util.makeLongNode(num.longValue());
 					return env.bind(args[1], n);
-				} catch (NumberFormatException e) {
-					return false;
+				} catch (ParseException e) {
+					e.printStackTrace();
 				}
-			}
+			} 
 		}
 		return false;
 	}
