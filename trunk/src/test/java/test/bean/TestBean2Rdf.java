@@ -3,6 +3,7 @@ package test.bean;
 import static org.junit.Assert.*;
 
 
+import java.io.File;
 import java.io.FileWriter;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -11,6 +12,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -33,6 +35,13 @@ public class TestBean2Rdf {
 	@Before
 	public void setup() {
 		//System.setProperty("jenabean.fieldaccess", "true");
+	}
+	
+	@After
+	public void teardown() {
+		File f = new File("tmp.rdf");
+		if (f.exists())
+			f.delete();
 	}
 	
 	@Test
