@@ -8,19 +8,24 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.util.Collection;
 
+import org.junit.After;
 import org.junit.Test;
 
 import thewebsemantic.Bean2RDF;
 import thewebsemantic.RDF2Bean;
-import thewebsemantic.TypeWrapper;
 
 import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.ontology.OntModelSpec;
-import com.hp.hpl.jena.ontology.OntProperty;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 
 public class TestInverse {
 	
+	@After
+	public void after() {
+		File f = new File("tmp.rdf");
+		if (f.exists())
+			f.delete();
+	}
 	@Test
 	public void testExtended()  throws Exception {
 		System.setProperty("jenabean.fieldaccess", "false");
