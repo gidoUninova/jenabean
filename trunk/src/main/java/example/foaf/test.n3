@@ -14,7 +14,7 @@
 
 
 <http://www.w3.org/People/Connolly/#me>
-      a       foaf:Person ;
+      a       foaf:Person, foaf:Agent ;
       rdfs:seeAlso <http://www.w3.org/People/Connolly/> ;
       foaf:homepage <http://www.w3.org/People/Connolly/> ;
       foaf:mbox_sha1sum "94b6eb0c835f928c5ed565dc3ed1a355ac1b41e5" ;

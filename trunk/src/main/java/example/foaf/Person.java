@@ -3,7 +3,6 @@ package example.foaf;
 import java.util.Collection;
 
 import thewebsemantic.Namespace;
-import thewebsemantic.RdfProperty;
 import thewebsemantic.Resource;
 
 @Namespace(FoafUri.NS)
