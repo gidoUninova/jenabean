@@ -611,7 +611,7 @@ public class RDF2Bean extends Base {
 		Set<Class<? extends Object>> classes = resolver.getClasses();
 		for (Class<? extends Object> class1 : classes) {
 			Namespace ns = class1.getAnnotation(Namespace.class);
-			m.getResource(ns.value() + class1.getSimpleName()).addProperty(
+            m.getResource(ns.value() + Util.getRdfType(class1)).addProperty(
 					javaclass, class1.getName());
 		}
 	}

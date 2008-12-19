@@ -1,32 +1,10 @@
 package thewebsemantic;
 
-public class Util {
-	public static String last(String path) {
-		return end(path, '/');
-	}
-	
-	private static String end(String s, char c) {
-		int i = s.lastIndexOf(c);
-		return (i > 0) ? s.substring(i+1) : s;
-	}
-	
-	public static String toProperCase(String text) {
-		if ((text == null) || (text.length() == 0))
-			return text;
-		else if (text.length() == 1)
-			return text.toUpperCase();
-		else
-			return new StringBuilder().
-			append(text.substring(0, 1).toUpperCase()).
-			append(text.substring(1)).
-			toString();
-	}
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-    public static String getRdfType(Class<?> c) {
-        RdfType rdfType = c.getAnnotation(RdfType.class);
-        return (rdfType != null) ? rdfType.value(): c.getSimpleName();
-    }
-}
 /*
 	Copyright (c) 2007 
 	
@@ -48,3 +26,10 @@ public class Util {
 	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 	THE SOFTWARE.
 */
+
+@Target({ElementType.TYPE})
+@Retention(RetentionPolicy.RUNTIME)
+public @interface RdfType
+{
+	public abstract String value();
+}

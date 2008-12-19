@@ -65,7 +65,8 @@ public class Thing implements InvocationHandler, As {
 	
 	public <T> T isa(Class<T> c) {
 		String ns = c.getEnclosingClass().getAnnotation(Namespace.class).value();
-		r.addProperty(RDF.type, model.getResource(ns+c.getSimpleName()));
+        RdfType rdfType = c.getEnclosingClass().getAnnotation(RdfType.class);
+        r.addProperty(RDF.type, model.getResource(ns+Util.getRdfType(c)));
 		return as(c);
 	}
 
