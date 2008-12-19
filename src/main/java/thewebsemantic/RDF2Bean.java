@@ -397,10 +397,13 @@ public class RDF2Bean extends Base {
 		}
 	}
 
-	private <T> T toObject(Class<T> c, Resource i) {
+	private <T> T toObject(Class<T> c, Resource i) { 
 		if (c == thewebsemantic.Resource.class)
 			return (T) new thewebsemantic.Resource(i.getURI());
-		return (i != null) ? (T) testCycle(i, c) : null;
+		else if (c == URI.class)
+			return (T) URI.create(i.getURI());
+		else
+			return (i != null) ? (T) testCycle(i, c) : null;
 	}
 
 	private Object testCycle(Resource i, Class<?> c) {
@@ -411,11 +414,16 @@ public class RDF2Bean extends Base {
 		return cycle.get(key(i));
 	}
 
+	/**
+	 * literals are not resources, and cannot "as" to Resource.
+	 */
 	private <T> T toObject(Class<T> c, RDFNode node) {
-		return (node.isLiteral()) ? (T) convertLiteral(node, c) : toObject(c,
-				(Resource) node.as(Resource.class));
+		if (node.isLiteral()) 
+			return (T) convertLiteral(node, c);
+		else
+			return toObject(c, (Resource) node.as(Resource.class));
 	}
-
+	
 	private boolean isCycle(Resource i) {
 		return cycle.containsKey(key(i));
 	}
