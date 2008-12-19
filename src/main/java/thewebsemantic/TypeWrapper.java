@@ -140,10 +140,10 @@ public abstract class TypeWrapper {
 	}
 
 	public String typeUri() {
-		return NS + c.getSimpleName();
+        return NS + Util.getRdfType(c);
 	}
 
-	public static String typeUri(Class<?> c) {
+    public static String typeUri(Class<?> c) {
 		return wrap(c).typeUri();
 	}
 	
