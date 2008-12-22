@@ -11,7 +11,6 @@ import com.hp.hpl.jena.rdf.model.Model;
 
 class FieldContext extends ValuesContext {
 
-	Object subject;
 	Field field;
 	TypeWrapper type;
 
