@@ -34,7 +34,7 @@ public class Main {
 		Collection<Person> people = reader.loadDeep(Person.class);
 		Collection<Agent> agents = reader.load(Agent.class);
 		
-		m.writeAll(System.out, "N3", null); System.exit(0);
+		//m.writeAll(System.out, "N3", null); System.exit(0);
 		System.out.println("There are " + people.size() + " People in this graph.");
 		System.out.println("There are " + groups.size() + " Groups in this graph.");
 		System.out.println("There are " + agents.size() + " Agents in this graph. (people + groups)");
