@@ -2,10 +2,11 @@ package thewebsemantic;
 
 import static com.hp.hpl.jena.graph.Node.ANY;
 import static com.hp.hpl.jena.graph.Node.createURI;
+import static com.hp.hpl.jena.vocabulary.RDF.type;
 import static thewebsemantic.JenaHelper.convertLiteral;
 import static thewebsemantic.TypeWrapper.instanceURI;
-import static thewebsemantic.TypeWrapper.*;
-import static com.hp.hpl.jena.vocabulary.RDF.type;
+import static thewebsemantic.TypeWrapper.typeUri;
+import static thewebsemantic.TypeWrapper.wrap;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.InvocationTargetException;
@@ -16,7 +17,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import com.hp.hpl.jena.rdf.model.Literal;
@@ -43,11 +43,10 @@ public class RDF2Bean extends Base {
 
 	private boolean shallow = false;
 	private Set<String> myIncludes = new HashSet<String>();
-	private Map<String, Class> bindingsCache = new HashMap<String, Class>();
 	private static final String[] none = new String[0];
 
 	/**
-	 * Constructs and instance of RDF2Bean bound to a particular ontology model.
+	 * Constructs and instance of RDF2Bean bound to a particular Jena model.
 	 * Operations have potential to modify the model.
 	 * 
 	 * @param model
@@ -340,9 +339,9 @@ public class RDF2Bean extends Base {
 
 	/**
 	 * fill or reload a non-functional property with values from the model. This
-	 * is usefull when you've recently shallow loaded a bean from the triple
-	 * store. non-funtional properties can contain unlimited elements, so your
-	 * app will need to be carefull regarding when it loads them.
+	 * is useful when you've recently shallow loaded a bean from the triple
+	 * store. non-functional properties can contain unlimited elements, so your
+	 * app will need to be careful regarding when it loads them.
 	 * 
 	 * in Jenabean, non-functional properties are represented as properties of
 	 * type java.util.Collection.
@@ -548,20 +547,18 @@ public class RDF2Bean extends Base {
 		else if (ctx.isPrimitive())
 			applyLiteral(ctx, nodes.nextStatement().getLiteral());
 		else if (ctx.isArray())
-			array(ctx, nodes.nextStatement().getResource());
+			array(ctx, nodes.nextStatement().getSeq());
 		else if (ctx.isList())
-			list(ctx, nodes.nextStatement().getResource());
+			list(ctx, nodes.nextStatement().getSeq());
 		else if (ctx.isURI())
 			applyURI(ctx, nodes.nextStatement().getResource());
 		else
 			applyIndividual(ctx, nodes.nextStatement().getResource());
 	}
 
-	private void list(ValuesContext ctx, Resource nextNode) {
-		Seq s = (Seq) nextNode.as(Seq.class);
-		Class<?> type = ctx.t();
+	private void list(ValuesContext ctx, Seq s) {
 		if (!shallow || included(ctx.getName()))
-			ctx.setProperty(fillList(type, s));
+			ctx.setProperty(fillList(ctx.t(), s));
 	}
 	
 	private List<Object> fillList(Class<?> type, Seq s) {
@@ -575,8 +572,7 @@ public class RDF2Bean extends Base {
 		ctx.setProperty(URI.create(resource.getURI()));
 	}
 
-	private void array(ValuesContext ctx, RDFNode nextNode) {
-		Seq s = (Seq) nextNode.as(Seq.class);
+	private void array(ValuesContext ctx, Seq s) {
 		Class<?> type = ctx.type().getComponentType();
 		if (!shallow || included(ctx.getName()))
 			ctx.setProperty(fillArray(type, s));
