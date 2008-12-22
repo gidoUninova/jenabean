@@ -51,7 +51,7 @@ public class RDF2Bean extends Base {
 	 * Operations have potential to modify the model.
 	 * 
 	 * @param model
-	 *            a Jena Ontology Model instance
+	 * a Jena Ontology Model instance
 	 */
 	public RDF2Bean(Model model) {
 		super(model);
@@ -63,7 +63,7 @@ public class RDF2Bean extends Base {
 	 * potential to load the entire graph into memory as Java beans. For
 	 * example, if you been has a <tt>hasFriends</tt> property,
 	 * <tt>loadDeep()</tt> will load each friend, each friend's friends, and so
-	 * on. Every reachable property that maps to a corresponing bean property
+	 * on. Every reachable property that maps to a corresponding bean property
 	 * will be loaded recursively.
 	 * 
 	 * @param <T>
@@ -406,6 +406,9 @@ public class RDF2Bean extends Base {
 			return (i != null) ? (T) testCycle(i, c) : null;
 	}
 
+
+	
+	
 	private Object testCycle(Resource i, Class<?> c) {
 		return (isCycle(i)) ? cachedObject(i) : applyProperties(i, c);
 	}
@@ -474,28 +477,30 @@ public class RDF2Bean extends Base {
 	 * @return
 	 * @throws ClassNotFoundException
 	 */
-	private Class<?> javaclass(Resource source, Class c)
-			throws ClassNotFoundException {
+	private Class<?> javaclass(Resource source, Class<?> c)
+			throws ClassNotFoundException {		
 		StmtIterator it = source.listProperties(RDF.type);
 		Resource oc = null;
 		while (it.hasNext()) {
-			oc = (Resource) it.nextStatement().getResource();
-			if (!oc.getNameSpace().startsWith("http://www.w3.org"))
-				break;
-		}
-		if (oc == null)
-			return c;
-		else if (binder.getClass(oc.getURI()) != null)
-			return binder.getClass(oc.getURI());
-		else if (bindingsCache.containsKey(oc.getURI()))
-			return bindingsCache.get(oc.getURI());
-		else if (oc.getProperty(javaclass) != null) {
+			oc = it.nextStatement().getResource();	
+			Class<?> declared = declaredClass(oc);
+			if (c.isAssignableFrom(declared))
+				return declared;
+		}	
+		return c;
+	}
+
+	private Class<?> declaredClass(Resource oc) throws ClassNotFoundException {
+		Class<?> result = NoBinding.class;
+		if (binder.getClass(oc.getURI()) != null)
+			result = binder.getClass(oc.getURI());
+		else if ( oc.getProperty(javaclass) != null) {
 			Statement node = oc.getProperty(javaclass);
 			Class<?> klass = Class.forName(node.getLiteral().getString());
-			bindingsCache.put(oc.getURI(), klass);
-			return klass;
+			binder.save(klass, oc.getURI());
+			result = klass;
 		}
-		return c;
+		return result;			
 	}
 
 	private Resource rdfType(Class<?> c) {
