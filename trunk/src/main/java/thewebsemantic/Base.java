@@ -2,6 +2,7 @@ package thewebsemantic;
 
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.ParameterizedType;
+import java.util.ResourceBundle;
 
 import thewebsemantic.binder.Binder;
 import thewebsemantic.binder.BinderImp;
@@ -16,6 +17,7 @@ import com.hp.hpl.jena.vocabulary.RDF;
 public class Base {
 
 	public static final String JAVACLASS = "http://thewebsemantic.com/javaclass";
+    ResourceBundle bundle = ResourceBundle.getBundle("thewebsemantic.messages");
 	protected OntModel om;
 	protected Model m;
 	protected Binder binder;

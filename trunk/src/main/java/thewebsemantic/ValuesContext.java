@@ -11,6 +11,8 @@ import com.hp.hpl.jena.rdf.model.Property;
 
 public abstract class ValuesContext {
 
+	protected Object subject;
+
 	public abstract String uri();
 
 	public abstract boolean isSymmetric();

@@ -23,8 +23,6 @@ public class Main {
 		visited.add(Continent.SOUTH_AMERICA);
 		p.setVisited(visited);
 		p.save();
-		Jenabean.instance().model().write(System.out, "N3");
-		
 		
 		Person p1 = p.load(p.id());
 		assertEquals(Language.KOREAN, p1.getLang());

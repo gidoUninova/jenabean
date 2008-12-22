@@ -10,7 +10,6 @@ import com.hp.hpl.jena.rdf.model.Model;
 
 class PropertyContext extends ValuesContext {
 
-	Object subject;
 	PropertyDescriptor property;
 	TypeWrapper type;
 

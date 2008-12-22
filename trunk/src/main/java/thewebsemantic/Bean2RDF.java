@@ -7,8 +7,13 @@ import static thewebsemantic.TypeWrapper.type;
 
 import java.lang.reflect.Array;
 import java.net.URI;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Map;
+import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.Property;
@@ -55,14 +60,18 @@ import com.hp.hpl.jena.vocabulary.RDFS;
  * @see RdfProperty
  */
 public class Bean2RDF extends Base {
+	private static final String UNSUPPORTED_TYPE = "UNSUPPORTED_TYPE";
 	private ArrayList<Object> cycle;
 	private boolean forceDeep = false;
+    private static Logger logger = Logger.getLogger("com.thewebsemantic");
+    ResourceBundle bundle = ResourceBundle.getBundle("thewebsemantic.messages");
+
 
 	/**
 	 * construct a new instance bound to OntModel <tt>m</tt>.
 	 * 
 	 * @param m
-	 *            Jena OntModel instance
+	 * Jena OntModel instance
 	 */
 	public Bean2RDF(Model m) {
 		super(m);
@@ -162,10 +171,13 @@ public class Bean2RDF extends Base {
 			Saver.of(Array.class).save(this, subject, property, o);
 		else if (isNormalObject(o))
 			setPropertyValue(subject, property, o);
+		else 
+			logger.log(Level.WARNING, MessageFormat.format(bundle
+					.getString(UNSUPPORTED_TYPE), pc.type(),pc.subject.getClass()));
 	}
 
 	private boolean isNormalObject(Object o) {
-		return !o.getClass().isArray() && !(o instanceof Collection);
+		return !o.getClass().isArray() && !(o instanceof Collection) && !(o instanceof Map);
 	}
 
 	/**
