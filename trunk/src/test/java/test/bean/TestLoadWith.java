@@ -55,7 +55,7 @@ public class TestLoadWith {
 
 	@Test
 	public void testPeople() throws Exception {
-		System.setProperty("jenabean.fieldaccess", "true");
+		
 		Person p = new Person();
 		p.setFirstName("Joe");
 		p.setLastName("Joe");
