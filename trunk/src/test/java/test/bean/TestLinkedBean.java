@@ -18,6 +18,6 @@ public class TestLinkedBean {
 		LinkedBean bean = new LinkedBean();
 		bean.setMyFriend(m.createResource("http://foo.bar/wiggle/wong"));
 		//writer.save(bean);
-		m.write(System.out, "N3");
+		//m.write(System.out, "N3");
 	}
 }

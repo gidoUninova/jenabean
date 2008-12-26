@@ -73,7 +73,7 @@ public class TestBasic {
 			bean.nothing = 57;
 			bean.save();
 		}
-		m.write(System.out, "N3");
+		//m.write(System.out, "N3");
 		RDF2Bean reader = new RDF2Bean(m);
 		Collection<AllTypes> beans = reader.load(AllTypes.class);
 		assertEquals(100, beans.size());

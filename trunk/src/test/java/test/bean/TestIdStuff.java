@@ -40,7 +40,7 @@ public class TestIdStuff {
 		assertEquals(1, a.i);
 		// its uri should be http://package/classname/id
 		writer.save(a);
-		m.write(System.out,"N3");
+		//m.write(System.out,"N3");
 		assertTrue(m.containsResource(m.getResource("http://test.bean/Flute/a")));
 	}
 

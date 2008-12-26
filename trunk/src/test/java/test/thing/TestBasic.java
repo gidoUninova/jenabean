@@ -86,7 +86,7 @@ public class TestBasic {
 		    isa(Skos.Concept.class).
 		as(RdfsVocab.class).
 		 	label("an example of polymorphic Thing with 3 vocabularies");
-		m.write(System.out, "N3");
+		//m.write(System.out, "N3");
 		
 	}
 	
@@ -100,7 +100,7 @@ public class TestBasic {
 		assertEquals(d,e);
 		
 		me.as(Various.class).age(40).miles(4000).Float(1.1f).Float(2.2f).Double(1.123d).Char('c');
-		m.write(System.out, "N3");
+		//m.write(System.out, "N3");
 		
 		assertEquals(me.as(Various.class).age(), 40);
 		assertEquals(me.as(Various.class).miles(), 4000);
@@ -150,7 +150,7 @@ public class TestBasic {
 				prefLabel("Tim Berners-Lee", "en").
 			as(RdfsVocab.class).
 				label("Tim Berners-Lee");
-		m.write(System.out, "N3");
+		//m.write(System.out, "N3");
 	}
 	
 	@Test
@@ -200,7 +200,7 @@ ex2:siamese rdf:type skos:Concept;
 			prefLabel("Siamese Cats", "en").
 			broader(ex1).
 			inScheme(ex2);		
-		m.write(System.out, "N3");
+		//m.write(System.out, "N3");
 	}
 	
 	@Test
@@ -244,7 +244,7 @@ from http://wiki.foaf-project.org/DescribingAPerson
 			schoolHomepage( new URI("http://www.mit.edu")).
 			workplaceHomepage(new URI("http://www.gamma-rays-r-us.com")).
 			workInfoHomepage(new URI("http://www.gamma-rays-r-us.com/~banner/crazy-experiments.html"));
-		m.write(System.out, "RDF/XML-ABBREV");
+		//m.write(System.out, "RDF/XML-ABBREV");
 	}
 	
 	
@@ -297,9 +297,9 @@ from http://wiki.foaf-project.org/UsingFoafKnows
 			surname("Banner").
 			mbox_sha1sum("71b88e951cb5f07518d69e5bb49a45100fbc3ca5").
 			knows(danbri);
-		m.write(System.out, "N3");	
-		System.out.println("\n\n-----------------------------------\n\n");
-		m.write(System.out, "RDF/XML-ABBREV");
+		//m.write(System.out, "N3");	
+		//System.out.println("\n\n-----------------------------------\n\n");
+		//m.write(System.out, "RDF/XML-ABBREV");
 	}
 
 	
@@ -349,9 +349,9 @@ Organization: None Provided
 			title("Mr").
 			as(Foaf.class).
 			based_near(loc);
-		m.write(System.out, "N3");	
+		//m.write(System.out, "N3");	
 		System.out.println("\n\n-----------------------------------\n\n");
-		m.write(System.out, "RDF/XML-ABBREV");
+		//m.write(System.out, "RDF/XML-ABBREV");
 		
 	}
 
@@ -359,7 +359,7 @@ Organization: None Provided
 	public void foafExamples4() throws URISyntaxException {		
 		Model m = ModelFactory.createDefaultModel(); 
 		m.read("file:src/test/java/test/thing/example4.rdf");
-		m.write(System.out, "RDF/XML-ABBREV", "file:src/test/java/test/thing/example4.rdf#");
+		//m.write(System.out, "RDF/XML-ABBREV", "file:src/test/java/test/thing/example4.rdf#");
 	}
 	
 	@Test
@@ -388,7 +388,7 @@ Organization: None Provided
 			summary("Scooby Conference").
 			location("San Francisco");
 			
-		m.write(System.out, "N3");
+		//m.write(System.out, "N3");
 		
 		Literal start = t.dtstart();
 		assertEquals("2002-07-03",start.toString());
@@ -426,7 +426,7 @@ Organization: None Provided
 			reviewer(new URI("http://example.org/reviewers/sam")).
 			as(DublinCore.class).
 			description("Classic.");
-		m.write(System.out, "RDF/XML-ABBREV");	
+		//m.write(System.out, "RDF/XML-ABBREV");	
 		
 		Thing example = factory._("http://example.org/1");
 		assertEquals(8, example.as(ReviewVocab.class).rating().getLong());

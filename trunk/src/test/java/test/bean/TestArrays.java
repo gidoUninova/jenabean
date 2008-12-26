@@ -120,6 +120,6 @@ public class TestArrays {
 			m.setSymbols(stuff.toArray(new String[] {}));
 			writer.saveDeep(m);
 		}
-		model.write(System.out, "N3");
+		//model.write(System.out, "N3");
 	} 
 }

@@ -25,6 +25,6 @@ public class TestPropertyAnnotation {
 		for (int i=0; i<1000; i++)
 			Jenabean.instance().writer().save(bean);
 		
-		Jenabean.instance().model().write(System.out);
+		//Jenabean.instance().model().write(System.out);
 	}
 }
