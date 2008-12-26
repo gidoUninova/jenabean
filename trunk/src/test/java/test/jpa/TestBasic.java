@@ -42,8 +42,7 @@ public class TestBasic {
 		EntityManagerFactory factory =  Persistence.createEntityManagerFactory("tws:test");
 		EntityManager em = factory.createEntityManager();
 		Yin yin = new Yin();
-		em.persist(yin);
-		
+		em.persist(yin);		
 		Yin yin2 = em.find(Yin.class, yin.hashCode());
 		assertNotNull(yin2);
 	}
