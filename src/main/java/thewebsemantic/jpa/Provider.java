@@ -9,6 +9,7 @@ import java.util.Enumeration;
 import java.util.Map;
 
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.PersistenceException;
 import javax.persistence.spi.PersistenceProvider;
 import javax.persistence.spi.PersistenceUnitInfo;
 
@@ -19,47 +20,44 @@ import com.hp.hpl.jena.rdf.model.Resource;
 
 public class Provider implements PersistenceProvider {
 
-	private static final String ASSEMBLER = "META-INF/jenamodels.n3";
-	
+	private static final String ASSEMBLY = "META-INF/jenamodels.n3";
+
 	public EntityManagerFactory createContainerEntityManagerFactory(
 			PersistenceUnitInfo info, Map map) {
 		throw new UnsupportedOperationException("");
 	}
 
-	public EntityManagerFactory createEntityManagerFactory(String emName,
+	public Factory createEntityManagerFactory(String emName,
 			Map map) {
 
-		Model assembly = null;
 		Model m = null;
+		Model assembly = null;
 		try {
-			assembly = findAssembly();
+			assembly = findAssembly(ASSEMBLY);
 		} catch (IOException e) {
-			e.printStackTrace();
+			throw new PersistenceException(e);
 		}
-		
-		if ( assembly!=null) {
-			String uri =  assembly.expandPrefix(emName);
-			if ( assembly.getGraph().contains(createURI(uri), ANY, ANY) ) {
+		if (assembly != null) {
+			String uri = assembly.expandPrefix(emName);
+			if (assembly.getGraph().contains(createURI(uri), ANY, ANY)) {
 				Resource r = assembly.getResource(uri);
 				m = Assembler.general.openModel(r);
 			}
-		} 
-		
-		return ( m == null) ? null: new Factory(m);
-		
+		}
+
+		return (m == null) ? null : new Factory(m);
+
 	}
 
-	private Model findAssembly() throws IOException {
+	public Model findAssembly(String location) throws IOException {
 		ClassLoader loader = Thread.currentThread().getContextClassLoader();
-		Enumeration<URL> resources = loader.getResources(ASSEMBLER);
+		Enumeration<URL> resources = loader.getResources(location);
+		Model m = ModelFactory.createDefaultModel();
 		while (resources.hasMoreElements()) {
 			URL url = resources.nextElement();
-			Model m = ModelFactory.createDefaultModel();
 			m.read(url.toString(), "N3");
-			return m;
 		}
-		return null;
-
+		return m;
 	}
 
 }
