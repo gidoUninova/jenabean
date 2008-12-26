@@ -89,7 +89,7 @@ public class TestResource {
 		h.getDifferentFrom().remove(1);
 		h.save();
 		h.fill("differentFrom");
-		J.model().write(System.out, "N3");
+		//J.model().write(System.out, "N3");
 		assertEquals(3, h.getDifferentFrom().size());
 		h.getDifferentFrom().remove(0);
 		h.save();

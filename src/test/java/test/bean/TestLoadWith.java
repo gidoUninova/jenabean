@@ -39,7 +39,7 @@ public class TestLoadWith {
 		p1.addTag(fun);
 		p1.addTag(run);
 		writer.save(p1);
-		m.write(System.out, "N3");
+		//m.write(System.out, "N3");
 		RDF2Bean reader = new RDF2Bean(m);
 		Post shallow = reader.load(Post.class, p1.hashCode());
 		assertEquals(0, shallow.getTags().size());

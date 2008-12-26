@@ -29,7 +29,7 @@ public class TestURI {
 		bean.setName("test bean");
 		bean.setId("1");
 		writer.save(bean);
-		m.write(System.out, "N3");
+		//m.write(System.out, "N3");
 
 		RDF2Bean reader = new RDF2Bean(m);
 		bean = reader.load(URITestBean.class, "1");
@@ -54,7 +54,7 @@ public class TestURI {
 		Model memoryModel = ModelFactory.createDefaultModel();
 		Bean2RDF writer = new Bean2RDF(memoryModel);
 		writer.save(beanWithCollectionOfUris);
-		memoryModel.write(System.out, "N3");
+		//memoryModel.write(System.out, "N3");
 		RDF2Bean reader = new RDF2Bean(memoryModel);
 		BeanWithCollectionOfUris reconstitutedBean = null;
 		try {

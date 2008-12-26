@@ -276,7 +276,7 @@ public class TestBean2Rdf {
 		
 		RDF2Bean reader = new RDF2Bean(m);
 		IdTesterBean bean2 = reader.loadDeep(IdTesterBean.class, "example");
-		m.write(System.out, "N3");
+		//m.write(System.out, "N3");
 		assertEquals(bean.getValue(), bean2.getValue());
 		
 		bean.setValue(1);
@@ -325,7 +325,7 @@ public class TestBean2Rdf {
 		OntModel m = ModelFactory.createOntologyModel();
 		Bean2RDF writer = new Bean2RDF(m);
 		writer.save(bean);
-		m.write(System.out, "N3");
+		//m.write(System.out, "N3");
 		RDF2Bean reader = new RDF2Bean(m);
 		TypeTesterBean bean2 = reader.loadDeep(TypeTesterBean.class, bean.hashCode());
 
@@ -464,7 +464,7 @@ public class TestBean2Rdf {
 	
 		p = m.getProperty("http://test#" + "screenName");
 		l = (Literal)i.getPropertyValue(p);
-		m.write(System.out, "N3");
+		//m.write(System.out, "N3");
 		assertEquals(u.getScreenName(), l.getString());
 
 		p = m.getProperty("http://test#" + "profile");

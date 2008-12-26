@@ -79,7 +79,7 @@ public class TestInverse {
 		writer.save(a);
 		writer.save(o);		
 		
-		m.writeAll(System.out, "N3", null);
+		//m.writeAll(System.out, "N3", null);
 		RDF2Bean reader = new RDF2Bean(m);
 		Collection<Orange> oranges = reader.loadDeep(Orange.class);
 
