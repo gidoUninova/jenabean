@@ -39,10 +39,10 @@ public class Sparql {
 	 * @param query a full SPARQL query
 	 * @return
 	 */
-	public static <T> Collection<T> exec(Model m, Class<T> c, String query) {
+	public static <T> LinkedList<T> exec(Model m, Class<T> c, String query) {
 		RDF2Bean reader = new RDF2Bean(m);
 		QueryExecution qexec = getQueryExec(m, query);
-		Collection<T> beans = new LinkedList<T>();
+		LinkedList<T> beans = new LinkedList<T>();
 		try {
 			ResultSet results = qexec.execSelect();
 			for (;results.hasNext();) beans.add(reader.load(c, resource(results)));

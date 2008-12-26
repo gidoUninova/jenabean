@@ -306,7 +306,6 @@ public class RDF2Bean extends Base {
 	 * 
 	 * @param target
 	 * @return
-	 * @throws NotFoundException
 	 */
 	public synchronized boolean exists(Object target) {
 		init(shallow, none);
