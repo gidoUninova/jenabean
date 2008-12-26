@@ -1,7 +1,6 @@
 package test.jpa;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import java.io.IOException;
 
@@ -12,7 +11,10 @@ import javax.persistence.PersistenceException;
 
 import org.junit.Test;
 
+import com.hp.hpl.jena.rdf.model.Model;
+
 import test.bean.Yin;
+import thewebsemantic.jpa.Provider;
 
 public class TestBasic {
 
@@ -44,5 +46,13 @@ public class TestBasic {
 		
 		Yin yin2 = em.find(Yin.class, yin.hashCode());
 		assertNotNull(yin2);
+	}
+	
+	@Test
+	public void testFindAssembly() throws InstantiationException, IllegalAccessException, IOException {
+		Provider p = Provider.class.newInstance();
+		Model m = null;
+		m  = p.findAssembly("bad");
+		assertNotNull(m);
 	}
 }
