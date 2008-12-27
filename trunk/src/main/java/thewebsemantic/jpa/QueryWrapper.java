@@ -25,7 +25,6 @@ public class QueryWrapper implements Query {
 	}
 	
 	public int executeUpdate() {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
