@@ -12,7 +12,7 @@ import thewebsemantic.Sparql;
 
 import com.hp.hpl.jena.rdf.model.Model;
 
-public class QueryWrapper implements Query {
+public class QueryWrapper<T> implements Query {
 
 	Model m;
 	String query;

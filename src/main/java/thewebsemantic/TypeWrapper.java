@@ -229,7 +229,7 @@ public abstract class TypeWrapper {
 	}
 
 	private static boolean isId(Method m) {
-		return m.isAnnotationPresent(Id.class);
+		return m.isAnnotationPresent(Id.class) || m.isAnnotationPresent(javax.persistence.Id.class);
 	}
 
 	private static boolean isId(MethodDescriptor md) {

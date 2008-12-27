@@ -39,18 +39,17 @@ public class JenaEntityManager implements javax.persistence.EntityManager {
 	}
 
 	public Query createNamedQuery(String arg0) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public Query createNativeQuery(String queryString) {
 		throw new UnsupportedOperationException("Use createQuery(String, Class) instead.");
 	}
 
-	public Query createNativeQuery(String arg0, Class arg1) {		
-		return new QueryWrapper(arg0, _model, arg1);
+	public QueryWrapper createNativeQuery(String queryString) {
+		return null;
 	}
 
+	public QueryWrapper createNativeQuery(String arg0, Class arg1) {		
+		return new QueryWrapper(arg0, _model, arg1);
+	}
+	
 	public Query createNativeQuery(String arg0, String arg1) {
 		throw new UnsupportedOperationException("Use createQuery(String, Class) instead.");
 	}
