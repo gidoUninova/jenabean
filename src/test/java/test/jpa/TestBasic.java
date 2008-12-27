@@ -14,6 +14,7 @@ import org.junit.Test;
 import com.hp.hpl.jena.rdf.model.Model;
 
 import test.bean.Yin;
+import thewebsemantic.jpa.Factory;
 import thewebsemantic.jpa.Provider;
 
 public class TestBasic {
@@ -36,6 +37,16 @@ public class TestBasic {
 		assertTrue(caught);
 	}
 
+	@Test
+	public void foundButNotModel() throws IOException {
+		boolean caught = false;
+		try {
+			Persistence.createEntityManagerFactory("tws:notamodel");
+		} catch (PersistenceException e) {
+			caught = true;
+		}
+		assertTrue(caught);
+	}
 	
 	@Test
 	public void simple() {
@@ -53,5 +64,27 @@ public class TestBasic {
 		Model m = null;
 		m  = p.findAssembly("bad");
 		assertNotNull(m);
+	}
+	
+	@Test
+	public void testPackages() throws InstantiationException, IllegalAccessException, IOException {
+		Provider p = Provider.class.newInstance();
+		Factory f = p.createEntityManagerFactory("tws:test", null);
+		assertEquals(2, f.getPackages().length);
+		for (String s : f.getPackages()) {
+			assertTrue( s.equals("example.foo") || s.equals("example.foaf"));
+		}
+	}
+	
+	@Test
+	public void testContainerUnsupported() throws InstantiationException, IllegalAccessException, IOException {
+		Provider p = Provider.class.newInstance();
+		boolean caught = false;
+		try {
+			p.createContainerEntityManagerFactory(null, null);
+		} catch (UnsupportedOperationException e) {
+			caught = true;
+		}
+		assertTrue(caught);
 	}
 }
