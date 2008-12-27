@@ -9,4 +9,9 @@
 @prefix tws:        <http://www.thewebsemantic.com/> .
 
 
-tws:test a ja:MemoryModel .
+tws:test a ja:MemoryModel ;
+  tws:package "example.foaf" ;
+  tws:package "example.foo" 
+.
+
+tws:notamodel a tws:badguy .
