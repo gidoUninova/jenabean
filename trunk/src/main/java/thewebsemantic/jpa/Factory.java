@@ -10,17 +10,19 @@ import com.hp.hpl.jena.rdf.model.Model;
 public class Factory implements EntityManagerFactory {
 
 	private Model _model;
+	private String[] _packages;
 	
-	public Factory(Model m) {
+	public Factory(Model m, String[] packages) {
 		_model = m;
+		_packages = packages;
 	}
-	
+
 	public void close() {
 
 	}
 
 	public EntityManager createEntityManager() {
-		return new thewebsemantic.jpa.JenaEntityManager(_model);
+		return new JenaEntityManager(_model);
 	}
 
 	public EntityManager createEntityManager(Map arg0) {
@@ -29,6 +31,10 @@ public class Factory implements EntityManagerFactory {
 
 	public boolean isOpen() {
 		return false;
+	}
+	
+	public String[] getPackages() {
+		return _packages;
 	}
 
 }

@@ -6,6 +6,7 @@ import static com.hp.hpl.jena.graph.Node.createURI;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Enumeration;
+import java.util.LinkedList;
 import java.util.Map;
 
 import javax.persistence.EntityManagerFactory;
@@ -16,10 +17,13 @@ import javax.persistence.spi.PersistenceUnitInfo;
 import com.hp.hpl.jena.assembler.Assembler;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
+import com.hp.hpl.jena.rdf.model.Property;
 import com.hp.hpl.jena.rdf.model.Resource;
+import com.hp.hpl.jena.rdf.model.StmtIterator;
 
 public class Provider implements PersistenceProvider {
 
+	private static final String TWS_PACKAGE = "tws:package";
 	private static final String ASSEMBLY = "META-INF/jenamodels.n3";
 
 	public EntityManagerFactory createContainerEntityManagerFactory(
@@ -32,20 +36,35 @@ public class Provider implements PersistenceProvider {
 
 		Model m = null;
 		Model assembly = null;
+		String[] packages = new String[0];
+
 		try {
 			assembly = findAssembly(ASSEMBLY);
-		} catch (IOException e) {
+		} catch (Exception e) {
 			throw new PersistenceException(e);
 		}
+
 		if (assembly != null) {
 			String uri = assembly.expandPrefix(emName);
 			if (assembly.getGraph().contains(createURI(uri), ANY, ANY)) {
 				Resource r = assembly.getResource(uri);
-				m = Assembler.general.openModel(r);
+				String packageUri = assembly.expandPrefix(TWS_PACKAGE);
+				Property p = assembly.createProperty(packageUri);
+				StmtIterator it =  r.listProperties(p);
+				LinkedList<String> packageList = new LinkedList<String>();
+				while(it.hasNext()) {
+					String pname = it.nextStatement().getString();
+					packageList.add(pname);
+				}
+				try {
+					m = Assembler.general.openModel(r);
+					return new Factory(m, packageList.toArray(new String[0]));
+				} catch(Exception e) {
+					throw new PersistenceException(e);
+				}
 			}
 		}
-
-		return (m == null) ? null : new Factory(m);
+		return null;
 
 	}
 

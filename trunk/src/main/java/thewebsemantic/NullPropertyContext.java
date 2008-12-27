@@ -5,9 +5,6 @@ import java.lang.reflect.ParameterizedType;
 import java.net.URI;
 import java.util.Collection;
 import java.util.Date;
-import java.util.List;
-
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import com.hp.hpl.jena.graph.Node;
 import com.hp.hpl.jena.rdf.model.Model;
@@ -60,14 +57,14 @@ class NullPropertyContext extends ValuesContext {
 	 * @see thewebsemantic.ValuesContext#invokeGetter()
 	 */
 	public Object invokeGetter() {
-		throw new NotImplementedException();
+		throw new UnsupportedOperationException();
 	}
 	
 	/* (non-Javadoc)
 	 * @see thewebsemantic.ValuesContext#setProperty(java.lang.Object)
 	 */
 	public void setProperty(Object v) {
-		throw new NotImplementedException();
+		throw new UnsupportedOperationException();
 	}
 	
 	/* (non-Javadoc)

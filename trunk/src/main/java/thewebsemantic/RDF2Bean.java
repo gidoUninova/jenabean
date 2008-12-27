@@ -19,6 +19,11 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+import javax.persistence.NamedNativeQueries;
+import javax.persistence.NamedNativeQuery;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+
 import com.hp.hpl.jena.rdf.model.Literal;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.Property;
@@ -621,6 +626,16 @@ public class RDF2Bean extends Base {
 			Namespace ns = class1.getAnnotation(Namespace.class);
             m.getResource(ns.value() + Util.getRdfType(class1)).addProperty(
 					javaclass, class1.getName());
+            if (class1.isAnnotationPresent(NamedNativeQueries.class)) {
+            	storeNamedQuery(class1);
+            }
+		}
+	}
+
+	private void storeNamedQuery(Class<? extends Object> class1) {
+		NamedNativeQueries queries = class1.getAnnotation(NamedNativeQueries.class);
+		for(NamedNativeQuery query : queries.value()) {
+			
 		}
 	}
 }
