@@ -22,7 +22,7 @@ public class Factory implements EntityManagerFactory {
 	}
 
 	public EntityManager createEntityManager() {
-		return new JenaEntityManager(_model);
+		return new JenaEntityManager(_model, _packages);
 	}
 
 	public EntityManager createEntityManager(Map arg0) {
