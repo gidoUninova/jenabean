@@ -18,10 +18,11 @@ public class JenaEntityManager implements javax.persistence.EntityManager {
 	private Bean2RDF _writer;
 	private boolean isOpen;
 	
-	public JenaEntityManager(Model m) {
+	public JenaEntityManager(Model m, String[] packages) {
 		_model = m;
 		_writer = new Bean2RDF(m);
 		_reader = new RDF2Bean(m);
+		_reader.bindAll(packages);
 		isOpen = true;
 	}
 	
