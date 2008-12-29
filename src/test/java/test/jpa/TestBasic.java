@@ -3,11 +3,13 @@ package test.jpa;
 import static org.junit.Assert.*;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.PersistenceException;
+import javax.persistence.Query;
 
 import org.junit.Test;
 
@@ -96,6 +98,20 @@ public class TestBasic {
 		
 		Woman woman = em.find(Woman.class, "http://semanticbible.org/ns/2006/NTNames#invalid");
 		assertNull(woman);
+		
+		Query q = em.createNamedQuery("Woman.hasChildren");
+		List<Woman> haveChildren = q.getResultList();
+		assertNotNull(haveChildren);
+		assertTrue(haveChildren.size() > 0);
+		q = em.createNamedQuery("Woman.noChildren");
+		List<Woman> withoutChildren = q.getResultList();
+		assertNotNull(withoutChildren);
+		assertTrue(withoutChildren.size() > 0);
+		for (Woman woman2 : withoutChildren) {
+			assertFalse(haveChildren.contains(woman2));
+		}
+		
+		
 		
 	}
 }
