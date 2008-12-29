@@ -1,8 +1,11 @@
 package thewebsemantic.jpa;
 
+import java.util.HashMap;
+
 import javax.persistence.EntityTransaction;
 import javax.persistence.FlushModeType;
 import javax.persistence.LockModeType;
+import javax.persistence.NamedNativeQuery;
 import javax.persistence.Query;
 
 import thewebsemantic.Bean2RDF;
@@ -16,12 +19,14 @@ public class JenaEntityManager implements javax.persistence.EntityManager {
 	private Model _model;
 	private RDF2Bean _reader;
 	private Bean2RDF _writer;
+	private HashMap<String, NamedNativeQuery> _queries;
 	private boolean isOpen;
 	
-	public JenaEntityManager(Model m) {
+	public JenaEntityManager(Model m, HashMap<String, NamedNativeQuery> queries) {
 		_model = m;
 		_writer = new Bean2RDF(m);
 		_reader = new RDF2Bean(m);
+		_queries = queries;
 		isOpen = true;
 	}
 	
@@ -38,8 +43,11 @@ public class JenaEntityManager implements javax.persistence.EntityManager {
 		return _reader.exists(target);
 	}
 
-	public Query createNamedQuery(String arg0) {
-		throw new UnsupportedOperationException("Use createQuery(String, Class) instead.");
+	public Query createNamedQuery(String name) {
+		if (!_queries.containsKey(name))
+			throw new IllegalArgumentException(name + ": query not defined in entity.");
+		NamedNativeQuery nnq = _queries.get(name);
+		return new QueryWrapper(nnq.query(), _model, nnq.resultClass());
 	}
 
 	public QueryWrapper createNativeQuery(String queryString) {

@@ -626,16 +626,6 @@ public class RDF2Bean extends Base {
 			Namespace ns = class1.getAnnotation(Namespace.class);
             m.getResource(ns.value() + Util.getRdfType(class1)).addProperty(
 					javaclass, class1.getName());
-            if (class1.isAnnotationPresent(NamedNativeQueries.class)) {
-            	storeNamedQuery(class1);
-            }
-		}
-	}
-
-	private void storeNamedQuery(Class<? extends Object> class1) {
-		NamedNativeQueries queries = class1.getAnnotation(NamedNativeQueries.class);
-		for(NamedNativeQuery query : queries.value()) {
-			
 		}
 	}
 }

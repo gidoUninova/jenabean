@@ -6,6 +6,7 @@ import static com.hp.hpl.jena.graph.Node.createURI;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.Set;
@@ -36,8 +37,11 @@ public class Provider implements PersistenceProvider {
 	private static final String TWS_PACKAGE = "tws:package";
 	private static final String ASSEMBLY = "META-INF/jenamodels.n3";
 	private Model assembly = null;
+	private HashMap<String, Factory> entityManagers;
+	
 	
 	public Provider() {
+		entityManagers = new HashMap<String, Factory>();
 		try {
 			assembly = findAssembly(ASSEMBLY);
 		} catch (Exception e) {
@@ -46,6 +50,7 @@ public class Provider implements PersistenceProvider {
 	}
 	
 	public Provider(Model m) {
+		entityManagers = new HashMap<String, Factory>();
 		assembly = m;
 	}
 	
@@ -54,24 +59,24 @@ public class Provider implements PersistenceProvider {
 		throw new UnsupportedOperationException("");
 	}
 
-	public Factory createEntityManagerFactory(String emName, Map map) {
-		Model m = null;
+	public Factory createEntityManagerFactory(String name, Map map) {
+		if (entityManagers.containsKey(name))
+			return entityManagers.get(name);
+		Factory f = _createEntityManagerFactory(name, map); 
+		if ( f != null) {
+			entityManagers.put(name, f);
+		}
+		return f;
+	}
+	
+	private Factory _createEntityManagerFactory(String emName, Map map) {
 		if (assembly != null) {
 			String uri = assembly.expandPrefix(emName);
 			if (assembly.getGraph().contains(createURI(uri), ANY, ANY)) {
 				Resource r = assembly.getResource(uri);
-				String packageUri = assembly.expandPrefix(TWS_PACKAGE);
-				Property p = assembly.createProperty(packageUri);
-				StmtIterator it =  r.listProperties(p);
-				LinkedList<String> packageList = new LinkedList<String>();
-				while(it.hasNext()) {
-					String pname = it.nextStatement().getString();
-					packageList.add(pname);
-				}
 				try {
-					m = Assembler.general.openModel(r);
-					bindAll(m, packageList.toArray(new String[0]));
-					return new Factory(m);
+					Model m = Assembler.general.openModel(r);
+					return new Factory(m, bindAll(m, getPackages(r)));
 				} catch(Exception e) {
 					throw new PersistenceException(e);
 				}
@@ -79,6 +84,18 @@ public class Provider implements PersistenceProvider {
 		}
 		return null;
 
+	}
+
+	private String[] getPackages(Resource r) {
+		String packageUri = assembly.expandPrefix(TWS_PACKAGE);
+		Property p = assembly.createProperty(packageUri);
+		StmtIterator it =  r.listProperties(p);
+		LinkedList<String> packageList = new LinkedList<String>();
+		while(it.hasNext()) {
+			String pname = it.nextStatement().getString();
+			packageList.add(pname);
+		}
+		return packageList.toArray(new String[0]);
 	}
 
 	public Model findAssembly(String location) throws IOException {
@@ -92,7 +109,8 @@ public class Provider implements PersistenceProvider {
 		return m;
 	}
 	
-	protected void bindAll(Model m, String... s) {
+	protected HashMap<String, NamedNativeQuery> bindAll(Model m, String... s) {
+		HashMap<String, NamedNativeQuery> querymap = new HashMap<String, NamedNativeQuery>();
 		Property javaclass = m.createProperty(JAVACLASS);
 		javaclass.addProperty(RDF.type,OWL.AnnotationProperty);
 		ResolverUtil<Object> resolver = new ResolverUtil<Object>();
@@ -103,15 +121,16 @@ public class Provider implements PersistenceProvider {
             m.getResource(ns.value() + Util.getRdfType(class1)).addProperty(
 					javaclass, class1.getName());
             if (class1.isAnnotationPresent(NamedNativeQueries.class)) {
-            	storeNamedQuery(class1);
+            	storeNamedQuery(class1, querymap);
             }
 		}
+		return querymap;
 	}
 
-	protected void storeNamedQuery(Class<? extends Object> class1) {
+	protected void storeNamedQuery(Class<? extends Object> class1,HashMap<String, NamedNativeQuery> querymap) {
 		NamedNativeQueries queries = class1.getAnnotation(NamedNativeQueries.class);
 		for(NamedNativeQuery query : queries.value()) {
-			
+			querymap.put(query.name(), query);
 		}
 	}
 
