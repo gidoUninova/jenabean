@@ -89,5 +89,13 @@ public class TestBasic {
 		Man jesse = em.find(Man.class, "http://semanticbible.org/ns/2006/NTNames#Jesse");
 		assertNotNull(jesse);
 		assertEquals("the father of King David", jesse.getDescription());
+		
+		Human human = em.find(Human.class, "http://semanticbible.org/ns/2006/NTNames#Jesse");
+		assertNotNull(human);
+		assertEquals("the father of King David", human.getDescription());
+		
+		Woman woman = em.find(Woman.class, "http://semanticbible.org/ns/2006/NTNames#invalid");
+		assertNull(woman);
+		
 	}
 }
