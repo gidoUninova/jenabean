@@ -15,11 +15,11 @@ public class NTNamesExample {
 	public static void main(String[] args) {
 		OntModel m = ModelFactory.createOntologyModel();
 		m.setNsPrefix("xsd", "http://www.w3.org/2001/XMLSchema#");
-		m.read("file:src/main/java/example/NTNames.owl");
+		m.read("file:src/example/java/example/NTNames.owl");
 		OntDocumentManager.getInstance().addAltEntry(
 				"http://www.semanticbible.org/2006/11/NTNames.owl",
-				"file:src/main/java/example/NTNames.owl");
-		m.read("file:src/main/java/example/NTN-individuals.owl");
+				"file:src/example/java/example/NTNames.owl");
+		m.read("file:src/example/java/example/NTN-individuals.owl");
 		Jenabean J = Jenabean.instance();
 		J.bind(m);
 		setupBindings(J);
@@ -42,6 +42,16 @@ public class NTNamesExample {
 			"SELECT ?s WHERE {?s :childOf :Rebecca .  ?s a :Man }";
 		Collection<Man> men = Sparql.exec(m, Man.class, query);
 		for (Man man : men)	System.out.println(man.uri());
+		
+		//women who don't have children (or it's not claimed in the graph)
+		query = 		
+			"PREFIX : <http://semanticbible.org/ns/2006/NTNames#>\n" +
+			"SELECT ?s	WHERE { ?s a :Woman .  OPTIONAL { ?s :parentOf ?Thing . } FILTER (!bound(?Thing))}";
+		women = Sparql.exec(m, Woman.class, query);
+		for (Woman w : women) {
+			J.reader().fill(w).with("children"); // loads getChildren() 
+			System.out.println(w.getClass().getSimpleName() + ":" +  w.uri() + " : " + tickler(w));
+		}
 	}
 
 	private static void setupBindings(Jenabean J) {
