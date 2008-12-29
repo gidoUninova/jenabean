@@ -46,7 +46,7 @@ public class NTNamesExample {
 		//women who don't have children (or it's not claimed in the graph)
 		query = 		
 			"PREFIX : <http://semanticbible.org/ns/2006/NTNames#>\n" +
-			"SELECT ?s	WHERE { ?s a :Woman .  OPTIONAL { ?s :parentOf ?Thing . } FILTER (!bound(?Thing))}";
+			"SELECT ?s	WHERE { ?s a :Woman . ?s :ethnicity :Jewish . }";
 		women = Sparql.exec(m, Woman.class, query);
 		for (Woman w : women) {
 			J.reader().fill(w).with("children"); // loads getChildren() 
