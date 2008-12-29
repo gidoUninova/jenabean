@@ -12,6 +12,7 @@ import javax.persistence.PersistenceException;
 import org.junit.Test;
 
 import com.hp.hpl.jena.rdf.model.Model;
+import com.hp.hpl.jena.rdf.model.ModelFactory;
 
 import test.bean.Yin;
 import thewebsemantic.jpa.Factory;
@@ -67,16 +68,6 @@ public class TestBasic {
 	}
 	
 	@Test
-	public void testPackages() throws InstantiationException, IllegalAccessException, IOException {
-		Provider p = Provider.class.newInstance();
-		Factory f = p.createEntityManagerFactory("tws:test", null);
-		assertEquals(2, f.getPackages().length);
-		for (String s : f.getPackages()) {
-			assertTrue( s.equals("example.foo") || s.equals("example.foaf"));
-		}
-	}
-	
-	@Test
 	public void testContainerUnsupported() throws InstantiationException, IllegalAccessException, IOException {
 		Provider p = Provider.class.newInstance();
 		boolean caught = false;
@@ -86,5 +77,17 @@ public class TestBasic {
 			caught = true;
 		}
 		assertTrue(caught);
+	}
+	
+	@Test
+	public void testForceAssembler() {
+		Model m = ModelFactory.createDefaultModel();
+		m.read("file:src/test/resources/testassembler.n3", "N3");
+		Provider p = new Provider(m);
+		Factory f =  p.createEntityManagerFactory("tws:test", null);
+		EntityManager em =  f.createEntityManager();
+		Man jesse = em.find(Man.class, "http://semanticbible.org/ns/2006/NTNames#Jesse");
+		assertNotNull(jesse);
+		assertEquals("the father of King David", jesse.getDescription());
 	}
 }
