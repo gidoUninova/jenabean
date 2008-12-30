@@ -16,7 +16,7 @@ tws:root a ja:MemoryModel ;
 
 tws:test 
    tws:package "test.jpa"; 
-   ja:ontModelSpec ja:OWL_DL_MEM_RULE_INF; 
+   ja:ontModelSpec ja:OWL_MEM_MICRO_RULE_INF; 
    ja:baseModel tws:root
 .
 
