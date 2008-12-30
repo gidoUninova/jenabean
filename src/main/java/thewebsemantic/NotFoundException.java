@@ -1,3 +1,5 @@
 package thewebsemantic;
 
-public class NotFoundException extends Exception {}
+import javax.persistence.EntityNotFoundException;
+
+public class NotFoundException extends EntityNotFoundException {}

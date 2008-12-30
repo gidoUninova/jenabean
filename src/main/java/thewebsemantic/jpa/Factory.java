@@ -13,17 +13,23 @@ public class Factory implements EntityManagerFactory {
 
 	private Model _model;
 	private HashMap<String, NamedNativeQuery> _queries;
+	private boolean isOpen;
 	
 	public Factory(Model m, HashMap<String, NamedNativeQuery> queries) {
 		_model = m;
 		_queries = queries;
+		isOpen = !_model.isClosed();
 	}
 
 	public void close() {
-
+		_model = null;
+		_queries = null;
+		isOpen = false;
 	}
 
 	public EntityManager createEntityManager() {
+		if (!isOpen)
+			throw new IllegalStateException("The factory is closed.");
 		return new JenaEntityManager(_model, _queries);
 	}
 
@@ -32,7 +38,7 @@ public class Factory implements EntityManagerFactory {
 	}
 
 	public boolean isOpen() {
-		return false;
+		return isOpen && !_model.isClosed();
 	}
 	
 

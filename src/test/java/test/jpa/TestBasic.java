@@ -11,6 +11,7 @@ import javax.persistence.Persistence;
 import javax.persistence.PersistenceException;
 import javax.persistence.Query;
 
+
 import org.junit.Test;
 
 import com.hp.hpl.jena.rdf.model.Model;
@@ -96,9 +97,13 @@ public class TestBasic {
 		assertNotNull(human);
 		assertEquals("the father of King David", human.getDescription());
 		
-		Woman woman = em.find(Woman.class, "http://semanticbible.org/ns/2006/NTNames#invalid");
-		assertNull(woman);
-		
+		boolean caught = false;
+		try {
+			em.find(Woman.class, "http://semanticbible.org/ns/2006/NTNames#Jesse");
+		} catch (PersistenceException e) {
+			caught = true;
+		}
+		assertTrue(caught);
 		Query q = em.createNamedQuery("Woman.hasChildren");
 		List<Woman> haveChildren = q.getResultList();
 		assertNotNull(haveChildren);
