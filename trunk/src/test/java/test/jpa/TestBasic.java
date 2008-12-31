@@ -1,6 +1,9 @@
 package test.jpa;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.util.List;
@@ -11,17 +14,14 @@ import javax.persistence.Persistence;
 import javax.persistence.PersistenceException;
 import javax.persistence.Query;
 
-
 import org.junit.Test;
-
-import com.hp.hpl.jena.ontology.OntModelSpec;
-import com.hp.hpl.jena.rdf.model.Model;
-import com.hp.hpl.jena.rdf.model.ModelFactory;
-import com.hp.hpl.jena.rdf.model.ModelSpec;
 
 import test.bean.Yin;
 import thewebsemantic.jpa.Factory;
 import thewebsemantic.jpa.Provider;
+
+import com.hp.hpl.jena.rdf.model.Model;
+import com.hp.hpl.jena.rdf.model.ModelFactory;
 
 public class TestBasic {
 
@@ -117,6 +117,10 @@ public class TestBasic {
 		for (Woman woman2 : withoutChildren) {
 			assertFalse(haveChildren.contains(woman2));
 		}
+		
+		f = p.createEntityManagerFactory("tws:test2", null);
+		em = f.createEntityManager();
+		em.find(UnkownThing.class, "http://semanticbible.org/ns/2006/NTNames#Jesse");		
 		
 		
 		
