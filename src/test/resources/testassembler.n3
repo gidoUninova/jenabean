@@ -20,3 +20,9 @@ tws:test
    ja:baseModel tws:root
 .
 
+
+tws:test2 
+   ja:ontModelSpec ja:OWL_MEM_MICRO_RULE_INF; 
+   ja:baseModel tws:root
+.
+
