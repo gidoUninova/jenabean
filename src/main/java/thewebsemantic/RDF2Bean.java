@@ -531,6 +531,7 @@ public class RDF2Bean extends Base {
 		} else {
 			ctx.setProperty(fillCollection(ctx.t(), values));
 		}
+		values.close();
 	}
 
 	private void apply(ValuesContext ctx, StmtIterator nodes) {
@@ -583,7 +584,7 @@ public class RDF2Bean extends Base {
 	}
 
 	private void collection(ValuesContext ctx, StmtIterator nodes) {
-		ctx.setProperty((shallow && !included(ctx.getName())) ? addOnlyCollection()
+		ctx.setProperty((shallow && !included(ctx.getName())) ? addOnlyCollection(ctx)
 						: fillCollection(ctx.t(), nodes));
 	}
 
@@ -591,7 +592,7 @@ public class RDF2Bean extends Base {
 		return myIncludes.contains(property);
 	}
 
-	private List<Object> addOnlyCollection() {
+	private List<Object> addOnlyCollection(ValuesContext ctx) {
 		return new AddOnlyArrayList<Object>();
 	}
 
