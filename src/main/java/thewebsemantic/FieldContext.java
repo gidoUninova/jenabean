@@ -6,6 +6,7 @@ import java.net.URI;
 import java.util.Collection;
 import java.util.Date;
 
+import com.hp.hpl.jena.assembler.assemblers.AssemblerGroup.ExpandingAssemblerGroup;
 import com.hp.hpl.jena.graph.Node;
 import com.hp.hpl.jena.rdf.model.Model;
 
@@ -72,22 +73,10 @@ class FieldContext extends ValuesContext {
 	   return type().equals(Date.class);
 	}
 	
-	public boolean isURI() {
-	   return field.getType().equals(URI.class);
-	}
-	
 	public boolean isPrimitive() {
 	   return PrimitiveWrapper.isPrimitive(field.getType());
 	}
 	
-    public boolean isCollection() {
-       return type().equals(Collection.class);
-    }
-    
-    public boolean isArray() {
-    	return type().isArray();
-    }
-    
     public Class<?> type() {
     	return field.getType();
     }

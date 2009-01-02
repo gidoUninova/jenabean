@@ -48,16 +48,14 @@ public class TestArrays {
 		assertEquals(1, beans.size());
 		
 		ExampleArraysBean loadedBean = beans.iterator().next();
-		assertNull(loadedBean.getAges());
-		reader.fill(loadedBean).with("ages");
 		assertEquals(5, loadedBean.getAges().length);
 		reader.fill(loadedBean).with("people");
 		for (Person p: loadedBean.getPeople()) {
-			//System.out.println(p.getFirstName());
+			System.out.println(p.getFirstName());
 		}
 		reader.fill(loadedBean).with("times");
 		for (Date d : loadedBean.getTimes()) {
-			//System.out.println(d);
+			System.out.println(d);
 		}
 		
 		bean.getAges()[0] = 100;

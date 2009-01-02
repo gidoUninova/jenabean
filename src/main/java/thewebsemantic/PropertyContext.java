@@ -73,12 +73,6 @@ class PropertyContext extends ValuesContext {
       } catch (Exception e) {}
 	}
 	
-	/* (non-Javadoc)
-	 * @see thewebsemantic.ValuesContext#isURI()
-	 */
-	public boolean isURI() {
-	   return property.getPropertyType().equals(URI.class);
-	}
 	
 	/* (non-Javadoc)
 	 * @see thewebsemantic.ValuesContext#isPrimitive()
@@ -87,20 +81,7 @@ class PropertyContext extends ValuesContext {
 	   return PrimitiveWrapper.isPrimitive(property.getPropertyType());
 	}
 	
-    /* (non-Javadoc)
-	 * @see thewebsemantic.ValuesContext#isCollection()
-	 */
-    public boolean isCollection() {
-       return type().equals(Collection.class);
-    }
-    
-    /* (non-Javadoc)
-	 * @see thewebsemantic.ValuesContext#isArray()
-	 */
-    public boolean isArray() {
-    	return type().isArray();
-    }
-    
+     
     /* (non-Javadoc)
 	 * @see thewebsemantic.ValuesContext#type()
 	 */

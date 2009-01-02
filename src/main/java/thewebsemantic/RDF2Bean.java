@@ -332,6 +332,7 @@ public class RDF2Bean extends Base {
 	 * @param o
 	 * @return
 	 */
+	@Deprecated
 	public Filler fill(Object o) {
 		return new Filler(this, o);
 	}
@@ -353,7 +354,10 @@ public class RDF2Bean extends Base {
 	 * 
 	 * @param o
 	 * @param propertyName
+	 * @deprecated collections a filled lazily.  Simple access of collection in your loaded
+	 * bean will cause it to load from the model.
 	 */
+	@Deprecated
 	public synchronized void fill(Object o, String propertyName) {
 		init(shallow, none);
 		try {
@@ -449,8 +453,14 @@ public class RDF2Bean extends Base {
 
 	private Object applyProperties(Resource source, Object target) {
 		cycle.put(source.getURI(), target);
+		// first get non-aggregate singular values
 		for (ValuesContext ctx : TypeWrapper.valueContexts(target))
-			apply(source, ctx);
+			if (!ctx.isAggregateType())
+				apply(source, ctx);
+		// now get aggregate (array, collection, set, list)
+		for (ValuesContext ctx : TypeWrapper.valueContexts(target))
+			if (ctx.isAggregateType())
+				apply(source, ctx);
 		return target;
 	}
 
@@ -479,9 +489,12 @@ public class RDF2Bean extends Base {
 		while (it.hasNext()) {
 			oc = it.nextStatement().getResource();	
 			Class<?> declared = declaredClass(oc);
-			if (c.isAssignableFrom(declared))
+			if (c.isAssignableFrom(declared)) {
+				it.close();
 				return declared;
+			}
 		}	
+		it.close();
 		throw new NotBoundException(source.getURI() + " exists but is not bound to or able to coerce as " + c);
 	}
 
@@ -515,7 +528,13 @@ public class RDF2Bean extends Base {
 	 * @throws InvocationTargetException
 	 */
 	private void apply(Resource i, ValuesContext ctx) {
-		apply(ctx, i.listProperties(m.getProperty(ctx.uri())));
+		if (ctx.isCollection() && (shallow && !included(ctx.getName())) ) {
+			ctx.setProperty(new LazySet(i, ctx, this));
+			return;
+		}
+		StmtIterator it = i.listProperties(m.getProperty(ctx.uri()));
+		apply(ctx, it);
+		it.close();
 	}
 
 	private void fill(Resource i, ValuesContext ctx) {
@@ -528,16 +547,22 @@ public class RDF2Bean extends Base {
 		} else if (ctx.isList()){
 			Seq s = values.nextStatement().getSeq();
 			ctx.setProperty(fillList(ctx.t(), s));			
-		} else {
+		} else if (ctx.isCollectionType()) {
 			ctx.setProperty(fillCollection(ctx.t(), values));
 		}
 		values.close();
 	}
 
+	protected Set lazySet(Resource i, ValuesContext ctx) {
+		Property p = m.createProperty(ctx.uri());
+		StmtIterator values = i.listProperties(p);
+		Set l = fillCollection(ctx.t(), values);
+		values.close();
+		return l;
+	}	
+	
 	private void apply(ValuesContext ctx, StmtIterator nodes) {
-		if (nodes == null)
-			return;
-		else if (ctx.isCollection())
+		if (ctx.isCollection())
 			collection(ctx, nodes);
 		else if (!nodes.hasNext())
 			return;
@@ -571,9 +596,7 @@ public class RDF2Bean extends Base {
 
 	private void array(ValuesContext ctx, Seq s) {
 		Class<?> type = ctx.type().getComponentType();
-		if (!shallow || included(ctx.getName()))
-			ctx.setProperty(fillArray(type, s));
-
+		ctx.setProperty(fillArray(type, s));
 	}
 
 	private Object fillArray(Class<?> type, Seq s) {
@@ -584,20 +607,15 @@ public class RDF2Bean extends Base {
 	}
 
 	private void collection(ValuesContext ctx, StmtIterator nodes) {
-		ctx.setProperty((shallow && !included(ctx.getName())) ? addOnlyCollection(ctx)
-						: fillCollection(ctx.t(), nodes));
+		ctx.setProperty(fillCollection(ctx.t(), nodes));
 	}
 
 	private boolean included(String property) {
 		return myIncludes.contains(property);
 	}
 
-	private List<Object> addOnlyCollection(ValuesContext ctx) {
-		return new AddOnlyArrayList<Object>();
-	}
-
-	private <T> ArrayList<T> fillCollection(Class<T> c, StmtIterator nodes) {
-		ArrayList<T> results = new ArrayList<T>();
+	protected <T> Set<T> fillCollection(Class<T> c, StmtIterator nodes) {
+		HashSet<T> results = new HashSet<T>();
 		while (nodes.hasNext())
 			results.add(toObject(c, nodes.nextStatement().getObject()));
 		return results;
