@@ -34,8 +34,6 @@ public class TestRdfBean {
 		b.save();
 		
 		a = load(Article.class, "a1");
-		assertEquals(0, a.getAuthors().size());
-		a.fill("authors");
 		assertEquals(3, a.getAuthors().size());
 
 	}

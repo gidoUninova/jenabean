@@ -2,6 +2,8 @@ package thewebsemantic;
 
 import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.ParameterizedType;
+import java.net.URI;
+import java.util.Collection;
 import java.util.List;
 
 import thewebsemantic.Base.NullType;
@@ -31,11 +33,17 @@ public abstract class ValuesContext {
 
 	public abstract boolean isPrimitive();
 
-	public abstract boolean isCollection();
+    public boolean isCollection() {
+       return type().equals(Collection.class);
+    }
 
-	public abstract boolean isArray();
-	
-	public abstract boolean isURI();
+    public boolean isCollectionType() {
+		return Collection.class.isAssignableFrom(type());
+	}
+
+	public boolean isURI() {
+	   return type().equals(URI.class);
+	}
 	
 	public abstract String getName();
 
@@ -73,7 +81,11 @@ public abstract class ValuesContext {
 	}
 	
 	public boolean isAggregateType() {
-		return isCollection() || isArray() || isList();
+		return isCollectionType() || isArray();
+	}
+
+	public boolean isArray() {
+		return type().isArray();
 	}
 
 }

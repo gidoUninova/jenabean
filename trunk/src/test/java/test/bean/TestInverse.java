@@ -42,7 +42,6 @@ public class TestInverse {
 		p1.addTag(run);
 		
 		writer.save(p1); 
-		
 		RDF2Bean reader = new RDF2Bean(m);
 		reader.loadDeep(Post.class, p1.hashCode());
 		Post test = reader.loadDeep(Post.class, p1.hashCode());

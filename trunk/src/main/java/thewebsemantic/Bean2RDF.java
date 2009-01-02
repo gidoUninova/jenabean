@@ -191,8 +191,7 @@ public class Bean2RDF extends Base {
 			Collection<?> c) {
 		if (c == null)
 			return;
-		if (supportsDelete(c))
-			subject.removeAll(property);
+		subject.removeAll(property);
 		for (Object o : c)
 			subject.addProperty(property, toRDFNode(o));
 
@@ -207,12 +206,6 @@ public class Bean2RDF extends Base {
 			return _write(o, true);
 	}
 	
-
-
-	private boolean supportsDelete(Object c) {
-		return !(c instanceof AddOnlyArrayList);
-	}
-
 	/**
 	 * Update or persist a domain object outside String, Date, and the usual
 	 * primitive types. We set the write style to shallow=true, causing an end

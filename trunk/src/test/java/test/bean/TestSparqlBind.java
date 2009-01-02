@@ -62,8 +62,6 @@ public class TestSparqlBind {
 		Collection<FatBean> result2 = Sparql.exec(m, FatBean.class, queryString);
 		assertEquals(2, result2.size());
 		FatBean bean = result2.iterator().next();
-		assertEquals(0, bean.getBeers().size());
-		bean.fill();
 		assertEquals(3, bean.getBeers().size());
 	}
 }
