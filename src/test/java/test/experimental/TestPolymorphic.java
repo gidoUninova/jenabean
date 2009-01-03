@@ -35,7 +35,6 @@ public class TestPolymorphic {
 		w.save(b);
 		Resource r = m.getResource(red.uri);
 		r.addProperty(RDF.type, m.getResource("http://example.org/Blue"));
-		//m.write(System.out, "N3");
 		
 		RDF2Bean reader = Jenabean.instance().reader();
 		red = reader.load(Red.class, "http://example.org/red1");
