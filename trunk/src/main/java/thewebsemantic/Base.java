@@ -11,6 +11,7 @@ import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.ontology.OntProperty;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.Property;
+import com.hp.hpl.jena.shared.Lock;
 import com.hp.hpl.jena.vocabulary.OWL;
 import com.hp.hpl.jena.vocabulary.RDF;
 
@@ -27,8 +28,10 @@ public class Base {
 		this.m = m;
 		binder = BinderImp.instance();		
 		if ( m instanceof OntModel) {om = (OntModel)m;}
+		m.enterCriticalSection(Lock.WRITE);
 		javaclass = m.createProperty(JAVACLASS);
 		javaclass.addProperty(RDF.type,OWL.AnnotationProperty);
+		m.leaveCriticalSection();
 	}
 
 	protected Property toRdfProperty(ValuesContext ctx) {
