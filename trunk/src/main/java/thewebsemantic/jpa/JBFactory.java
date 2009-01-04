@@ -9,13 +9,13 @@ import javax.persistence.NamedNativeQuery;
 
 import com.hp.hpl.jena.rdf.model.Model;
 
-public class Factory implements EntityManagerFactory {
+public class JBFactory implements EntityManagerFactory {
 
 	private Model _model;
 	private HashMap<String, NamedNativeQuery> _queries;
 	private boolean isOpen;
 	
-	public Factory(Model m, HashMap<String, NamedNativeQuery> queries) {
+	public JBFactory(Model m, HashMap<String, NamedNativeQuery> queries) {
 		_model = m;
 		_queries = queries;
 		isOpen = !_model.isClosed();
@@ -30,7 +30,7 @@ public class Factory implements EntityManagerFactory {
 	public EntityManager createEntityManager() {
 		if (!isOpen)
 			throw new IllegalStateException("The factory is closed.");
-		return new JenaEntityManager(_model, _queries);
+		return new JBEntityManager(_model, _queries);
 	}
 
 	public EntityManager createEntityManager(Map arg0) {
@@ -39,6 +39,10 @@ public class Factory implements EntityManagerFactory {
 
 	public boolean isOpen() {
 		return isOpen && !_model.isClosed();
+	}
+	
+	public Model getModel() {
+		return _model;
 	}
 	
 

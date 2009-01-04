@@ -9,6 +9,7 @@ import com.hp.hpl.jena.query.QueryFactory;
 import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.Resource;
+import com.hp.hpl.jena.shared.Lock;
 
 public class Sparql {
 	
@@ -42,14 +43,31 @@ public class Sparql {
 		QueryExecution qexec = getQueryExec(m, query);
 		LinkedList<T> beans = new LinkedList<T>();
 		try {
+			m.enterCriticalSection(Lock.READ);
 			ResultSet results = qexec.execSelect();
 			for (;results.hasNext();) beans.add(reader.load(c, resource(results)));
 			return beans;
 		} finally {
+			m.leaveCriticalSection();
 			qexec.close();
 		}
 	}
 
+	public static <T> LinkedList<Resource> exec2(Model m, String query) {
+		RDF2Bean reader = new RDF2Bean(m);
+		QueryExecution qexec = getQueryExec(m, query);
+		LinkedList<Resource> beans = new LinkedList<Resource>();
+		try {
+			m.enterCriticalSection(Lock.READ);
+			ResultSet results = qexec.execSelect();
+			for (;results.hasNext();) beans.add(resource(results));
+			return beans;
+		} finally {
+			m.leaveCriticalSection();
+			qexec.close();
+		}
+	}
+	
 	private static QueryExecution getQueryExec(Model m, String query) {
 		Query q = QueryFactory.create(query);
 		return QueryExecutionFactory.create(q, m);

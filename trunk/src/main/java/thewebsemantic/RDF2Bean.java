@@ -398,7 +398,7 @@ public class RDF2Bean extends Base {
 			m.leaveCriticalSection();
 		}
 	}
-
+	
 	private <T> T toObject(Class<T> c, Resource i) { 
 		if (c == thewebsemantic.Resource.class)
 			return (T) new thewebsemantic.Resource(i.getURI());

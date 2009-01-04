@@ -31,17 +31,17 @@ import com.hp.hpl.jena.rdf.model.StmtIterator;
 import com.hp.hpl.jena.vocabulary.OWL;
 import com.hp.hpl.jena.vocabulary.RDF;
 
-public class Provider implements PersistenceProvider {
+public class JBProvider implements PersistenceProvider {
 
 	public static final String JAVACLASS = "http://thewebsemantic.com/javaclass";
 	private static final String TWS_PACKAGE = "tws:package";
 	private static final String ASSEMBLY = "META-INF/jenamodels.n3";
 	private Model assembly = null;
-	private HashMap<String, Factory> entityManagers;
+	private HashMap<String, JBFactory> entityManagers;
 	
 	
-	public Provider() {
-		entityManagers = new HashMap<String, Factory>();
+	public JBProvider() {
+		entityManagers = new HashMap<String, JBFactory>();
 		try {
 			assembly = findAssembly(ASSEMBLY);
 		} catch (Exception e) {
@@ -49,8 +49,8 @@ public class Provider implements PersistenceProvider {
 		}	
 	}
 	
-	public Provider(Model m) {
-		entityManagers = new HashMap<String, Factory>();
+	public JBProvider(Model m) {
+		entityManagers = new HashMap<String, JBFactory>();
 		assembly = m;
 	}
 	
@@ -59,24 +59,24 @@ public class Provider implements PersistenceProvider {
 		throw new UnsupportedOperationException("");
 	}
 
-	public Factory createEntityManagerFactory(String name, Map map) {
+	public JBFactory createEntityManagerFactory(String name, Map map) {
 		if (entityManagers.containsKey(name))
 			return entityManagers.get(name);
-		Factory f = _createEntityManagerFactory(name, map); 
+		JBFactory f = _createEntityManagerFactory(name, map); 
 		if ( f != null) {
 			entityManagers.put(name, f);
 		}
 		return f;
 	}
 	
-	private Factory _createEntityManagerFactory(String emName, Map map) {
+	private JBFactory _createEntityManagerFactory(String emName, Map map) {
 		if (assembly != null) {
 			String uri = assembly.expandPrefix(emName);
 			if (assembly.getGraph().contains(createURI(uri), ANY, ANY)) {
 				Resource r = assembly.getResource(uri);
 				try {
 					Model m = Assembler.general.openModel(r);
-					return new Factory(m, bindAll(m, getPackages(r)));
+					return new JBFactory(m, bindAll(m, getPackages(r)));
 				} catch(Exception e) {
 					throw new PersistenceException(e);
 				}
