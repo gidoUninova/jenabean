@@ -15,13 +15,13 @@ public class JBEntityTransaction implements EntityTransaction {
 		model = m;
 	}
 	
-	@Override
+	
 	public void begin() {
 		model.begin();
 		isActive = true;
 	}
 
-	@Override
+	
 	public void commit() {
 		if (! isActive)
 			throw new IllegalStateException("transaction is not active");
@@ -34,19 +34,19 @@ public class JBEntityTransaction implements EntityTransaction {
 		}
 	}
 
-	@Override
+	
 	public boolean getRollbackOnly() {
 		if (! isActive)
 			throw new IllegalStateException("transaction is not active");
 		return isRollBackOnly;
 	}
 
-	@Override
+	
 	public boolean isActive() {
 		return isActive;
 	}
 
-	@Override
+	
 	public void rollback() {
 		if (! isActive)
 			throw new IllegalStateException("transaction is not active");
@@ -55,7 +55,7 @@ public class JBEntityTransaction implements EntityTransaction {
 
 	}
 
-	@Override
+	
 	public void setRollbackOnly() {
 		isRollBackOnly = true;
 	}
