@@ -2,6 +2,7 @@ package thewebsemantic.jpa;
 
 import java.util.HashMap;
 
+import javax.persistence.EntityNotFoundException;
 import javax.persistence.EntityTransaction;
 import javax.persistence.FlushModeType;
 import javax.persistence.LockModeType;
@@ -16,6 +17,7 @@ import com.hp.hpl.jena.rdf.model.Model;
 
 public class JBEntityManager implements javax.persistence.EntityManager {
 
+	private static final String CLOSED = "This EntityManager is closed.";
 	private Model _model;
 	private RDF2Bean _reader;
 	private Bean2RDF _writer;
@@ -31,6 +33,8 @@ public class JBEntityManager implements javax.persistence.EntityManager {
 	}
 	
 	public void clear() {
+		if (! isOpen)
+			throw new IllegalStateException(CLOSED);
 		// TODO Auto-generated method stub
 
 	}
@@ -40,10 +44,14 @@ public class JBEntityManager implements javax.persistence.EntityManager {
 	}
 
 	public boolean contains(Object target) {
+		if (! isOpen)
+			throw new IllegalStateException(CLOSED);
 		return _reader.exists(target);
 	}
 
 	public Query createNamedQuery(String name) {
+		if (! isOpen)
+			throw new IllegalStateException(CLOSED);
 		if (!_queries.containsKey(name))
 			throw new IllegalArgumentException(name + ": query not defined in entity.");
 		NamedNativeQuery nnq = _queries.get(name);
@@ -54,19 +62,27 @@ public class JBEntityManager implements javax.persistence.EntityManager {
 		return null;
 	}
 
-	public JBQueryWrapper createNativeQuery(String arg0, Class arg1) {		
+	public JBQueryWrapper createNativeQuery(String arg0, Class arg1) {	
+		if (! isOpen)
+			throw new IllegalStateException(CLOSED);
 		return new JBQueryWrapper(arg0, _model, arg1);
 	}
 	
 	public Query createNativeQuery(String arg0, String arg1) {
+		if (! isOpen)
+			throw new IllegalStateException(CLOSED);
 		throw new UnsupportedOperationException("Use createQuery(String, Class) instead.");
 	}
 
 	public Query createQuery(String arg0) {
+		if (! isOpen)
+			throw new IllegalStateException(CLOSED);
 		throw new UnsupportedOperationException("Use createQuery(String, Class) instead.");
 	}
 
 	public <T> T find(Class<T> type, Object arg1) {
+		if (! isOpen)
+			throw new IllegalStateException(CLOSED);
 		try {
 			return _reader.load(type, arg1.toString());
 		} catch (NotFoundException e) {
@@ -89,12 +105,19 @@ public class JBEntityManager implements javax.persistence.EntityManager {
 		return null;
 	}
 
-	public <T> T getReference(Class<T> arg0, Object arg1) {
-		// TODO Auto-generated method stub
-		return null;
+	public <T> T getReference(Class<T> type, Object key) {
+		if (! isOpen)
+			throw new IllegalStateException(CLOSED);
+		try {
+			return _reader.load(type, key.toString());
+		} catch (NotFoundException e) {
+			throw new EntityNotFoundException();
+		}
 	}
 
 	public EntityTransaction getTransaction() {
+		if (! isOpen)
+			throw new IllegalStateException(CLOSED);
 		return new JBEntityTransaction(_model);
 	}
 
