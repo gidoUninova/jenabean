@@ -12,13 +12,13 @@ import thewebsemantic.Sparql;
 
 import com.hp.hpl.jena.rdf.model.Model;
 
-public class QueryWrapper implements Query {
+public class JBQueryWrapper implements Query {
 
 	Model m;
 	String query;
 	Class type;
 	
-	public QueryWrapper(String s, Model m, Class c) {
+	public JBQueryWrapper(String s, Model m, Class c) {
 		this.m = m;
 		query = s;
 		type = c;

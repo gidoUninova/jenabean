@@ -14,7 +14,7 @@ import thewebsemantic.RDF2Bean;
 
 import com.hp.hpl.jena.rdf.model.Model;
 
-public class JenaEntityManager implements javax.persistence.EntityManager {
+public class JBEntityManager implements javax.persistence.EntityManager {
 
 	private Model _model;
 	private RDF2Bean _reader;
@@ -22,7 +22,7 @@ public class JenaEntityManager implements javax.persistence.EntityManager {
 	private HashMap<String, NamedNativeQuery> _queries;
 	private boolean isOpen;
 	
-	public JenaEntityManager(Model m, HashMap<String, NamedNativeQuery> queries) {
+	public JBEntityManager(Model m, HashMap<String, NamedNativeQuery> queries) {
 		_model = m;
 		_writer = new Bean2RDF(m);
 		_reader = new RDF2Bean(m);
@@ -47,15 +47,15 @@ public class JenaEntityManager implements javax.persistence.EntityManager {
 		if (!_queries.containsKey(name))
 			throw new IllegalArgumentException(name + ": query not defined in entity.");
 		NamedNativeQuery nnq = _queries.get(name);
-		return new QueryWrapper(nnq.query(), _model, nnq.resultClass());
+		return new JBQueryWrapper(nnq.query(), _model, nnq.resultClass());
 	}
 
-	public QueryWrapper createNativeQuery(String queryString) {
+	public JBQueryWrapper createNativeQuery(String queryString) {
 		return null;
 	}
 
-	public QueryWrapper createNativeQuery(String arg0, Class arg1) {		
-		return new QueryWrapper(arg0, _model, arg1);
+	public JBQueryWrapper createNativeQuery(String arg0, Class arg1) {		
+		return new JBQueryWrapper(arg0, _model, arg1);
 	}
 	
 	public Query createNativeQuery(String arg0, String arg1) {
@@ -95,8 +95,7 @@ public class JenaEntityManager implements javax.persistence.EntityManager {
 	}
 
 	public EntityTransaction getTransaction() {
-		// TODO Auto-generated method stub
-		return null;
+		return new JBEntityTransaction(_model);
 	}
 
 	public boolean isOpen() {

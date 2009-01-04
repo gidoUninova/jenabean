@@ -17,8 +17,8 @@ import javax.persistence.Query;
 import org.junit.Test;
 
 import test.bean.Yin;
-import thewebsemantic.jpa.Factory;
-import thewebsemantic.jpa.Provider;
+import thewebsemantic.jpa.JBFactory;
+import thewebsemantic.jpa.JBProvider;
 
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
@@ -66,7 +66,7 @@ public class TestBasic {
 	
 	@Test
 	public void testFindAssembly() throws InstantiationException, IllegalAccessException, IOException {
-		Provider p = Provider.class.newInstance();
+		JBProvider p = JBProvider.class.newInstance();
 		Model m = null;
 		m  = p.findAssembly("bad");
 		assertNotNull(m);
@@ -74,7 +74,7 @@ public class TestBasic {
 	
 	@Test
 	public void testContainerUnsupported() throws InstantiationException, IllegalAccessException, IOException {
-		Provider p = Provider.class.newInstance();
+		JBProvider p = JBProvider.class.newInstance();
 		boolean caught = false;
 		try {
 			p.createContainerEntityManagerFactory(null, null);
@@ -88,8 +88,8 @@ public class TestBasic {
 	public void testForceAssembler() {
 		Model m = ModelFactory.createDefaultModel();
 		m.read("file:src/test/resources/testassembler.n3", "N3");
-		Provider p = new Provider(m);
-		Factory f =  p.createEntityManagerFactory("tws:test", null);
+		JBProvider p = new JBProvider(m);
+		JBFactory f =  p.createEntityManagerFactory("tws:test", null);
 		EntityManager em =  f.createEntityManager();
 		Man jesse = em.find(Man.class, "http://semanticbible.org/ns/2006/NTNames#Jesse");
 		assertNotNull(jesse);

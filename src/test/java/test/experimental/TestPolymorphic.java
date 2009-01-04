@@ -47,10 +47,7 @@ public class TestPolymorphic {
 		System.out.println(blueThings.size());		
 		b = blueThings.iterator().next();
 		System.out.println(b.getLabel());
-		System.out.println(b.getClass());
-		
-		
-		
+		System.out.println(b.getClass());		
 	}
 
 }

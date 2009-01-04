@@ -1,1 +1,1 @@
-thewebsemantic.jpa.Provider  # Jenabean EntityManagerFactory
+thewebsemantic.jpa.JBProvider  # Jenabean EntityManagerFactory
