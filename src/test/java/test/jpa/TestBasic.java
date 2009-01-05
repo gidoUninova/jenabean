@@ -121,8 +121,5 @@ public class TestBasic {
 		f = p.createEntityManagerFactory("tws:test2", null);
 		em = f.createEntityManager();
 		em.find(UnkownThing.class, "http://semanticbible.org/ns/2006/NTNames#Jesse");		
-		
-		
-		
 	}
 }
