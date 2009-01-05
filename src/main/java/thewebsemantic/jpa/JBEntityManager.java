@@ -18,9 +18,9 @@ import com.hp.hpl.jena.rdf.model.Model;
 public class JBEntityManager implements javax.persistence.EntityManager {
 
 	private static final String CLOSED = "This EntityManager is closed.";
-	private Model _model;
-	private RDF2Bean _reader;
-	private Bean2RDF _writer;
+	protected Model _model;
+	protected RDF2Bean _reader;
+	protected Bean2RDF _writer;
 	private HashMap<String, NamedNativeQuery> _queries;
 	private boolean isOpen;
 	
@@ -55,7 +55,7 @@ public class JBEntityManager implements javax.persistence.EntityManager {
 		if (!_queries.containsKey(name))
 			throw new IllegalArgumentException(name + ": query not defined in entity.");
 		NamedNativeQuery nnq = _queries.get(name);
-		return new JBQueryWrapper(nnq.query(), _model, nnq.resultClass());
+		return new JBQueryWrapper(nnq.query(), this, nnq.resultClass());
 	}
 
 	public JBQueryWrapper createNativeQuery(String queryString) {
@@ -65,7 +65,7 @@ public class JBEntityManager implements javax.persistence.EntityManager {
 	public JBQueryWrapper createNativeQuery(String arg0, Class arg1) {	
 		if (! isOpen)
 			throw new IllegalStateException(CLOSED);
-		return new JBQueryWrapper(arg0, _model, arg1);
+		return new JBQueryWrapper(arg0, this, arg1);
 	}
 	
 	public Query createNativeQuery(String arg0, String arg1) {
