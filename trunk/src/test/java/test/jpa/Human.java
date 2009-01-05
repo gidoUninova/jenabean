@@ -12,8 +12,16 @@ public class Human {
 	private String description;
 	private String uri;
 	private Collection<Human> children;
+	private Human knew;
 	
-	
+	public Human getKnew() {
+		return knew;
+	}
+
+	public void setKnew(Human knew) {
+		this.knew = knew;
+	}
+
 	@RdfProperty("http://semanticbible.org/ns/2006/NTNames#parentOf")
 	public Collection<Human> getChildren() {
 		return children;
