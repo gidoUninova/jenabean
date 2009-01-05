@@ -6,6 +6,7 @@ import com.hp.hpl.jena.query.Query;
 import com.hp.hpl.jena.query.QueryExecution;
 import com.hp.hpl.jena.query.QueryExecutionFactory;
 import com.hp.hpl.jena.query.QueryFactory;
+import com.hp.hpl.jena.query.QuerySolution;
 import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.Resource;
@@ -53,6 +54,21 @@ public class Sparql {
 		}
 	}
 
+	public static <T> LinkedList<T> exec(Model m, Class<T> c, String query, QuerySolution initialBindings) {
+		RDF2Bean reader = new RDF2Bean(m);
+		QueryExecution qexec = getQueryExec(m, query, initialBindings);
+		LinkedList<T> beans = new LinkedList<T>();
+		try {
+			m.enterCriticalSection(Lock.READ);
+			ResultSet results = qexec.execSelect();
+			for (;results.hasNext();) beans.add(reader.load(c, resource(results)));
+			return beans;
+		} finally {
+			m.leaveCriticalSection();
+			qexec.close();
+		}
+	}
+	
 	public static <T> LinkedList<Resource> exec2(Model m, String query) {
 		RDF2Bean reader = new RDF2Bean(m);
 		QueryExecution qexec = getQueryExec(m, query);
@@ -73,6 +89,11 @@ public class Sparql {
 		return QueryExecutionFactory.create(q, m);
 	}
 
+	private static QueryExecution getQueryExec(Model m, String query, QuerySolution i) {
+		Query q = QueryFactory.create(query);
+		return QueryExecutionFactory.create(q, m, i);
+	}
+	
 	private static Resource resource(ResultSet results) {
 		return results.nextSolution().getResource("s");
 	}
