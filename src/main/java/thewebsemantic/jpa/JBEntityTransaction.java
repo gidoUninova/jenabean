@@ -3,21 +3,23 @@ package thewebsemantic.jpa;
 import javax.persistence.EntityTransaction;
 import javax.persistence.RollbackException;
 
-import com.hp.hpl.jena.rdf.model.Model;
+import com.hp.hpl.jena.graph.TransactionHandler;
 
 public class JBEntityTransaction implements EntityTransaction {
 
-	private Model model;
+	private TransactionHandler ta;
 	private boolean isActive = false;
 	private boolean isRollBackOnly = false;
 	
-	public JBEntityTransaction(Model m) {
-		model = m;
+	public JBEntityTransaction(TransactionHandler ta) {
+		this.ta = ta;
 	}
 	
 	
 	public void begin() {
-		model.begin();
+		if ( isActive)
+			throw new IllegalStateException("Transaction is already active.  Nested transactions are not supported.");
+		ta.begin();
 		isActive = true;
 	}
 
@@ -27,7 +29,7 @@ public class JBEntityTransaction implements EntityTransaction {
 			throw new IllegalStateException("transaction is not active");
 
 		try {
-			model.commit();
+			ta.commit();
 			isActive = false;
 		} catch (Exception e) {
 			throw new RollbackException(e);
@@ -50,7 +52,7 @@ public class JBEntityTransaction implements EntityTransaction {
 	public void rollback() {
 		if (! isActive)
 			throw new IllegalStateException("transaction is not active");
-		model.abort();
+		ta.abort();
 		isActive = false;
 
 	}

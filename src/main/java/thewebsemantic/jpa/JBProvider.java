@@ -34,8 +34,8 @@ import com.hp.hpl.jena.vocabulary.RDF;
 public class JBProvider implements PersistenceProvider {
 
 	public static final String JAVACLASS = "http://thewebsemantic.com/javaclass";
-	private static final String TWS_PACKAGE = "tws:package";
-	private static final String ASSEMBLY = "META-INF/jenamodels.n3";
+	public static final String TWS_PACKAGE = "tws:package";
+	public static final String ASSEMBLY = "META-INF/jenamodels.n3";
 	private Model assembly = null;
 	private HashMap<String, JBFactory> entityManagers;
 	

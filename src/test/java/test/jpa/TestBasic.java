@@ -94,11 +94,11 @@ public class TestBasic {
 		Man jesse = em.find(Man.class, "http://semanticbible.org/ns/2006/NTNames#Jesse");
 		assertNotNull(jesse);
 		assertEquals("the father of King David", jesse.getDescription());
-		
+
 		Human human = em.find(Human.class, "http://semanticbible.org/ns/2006/NTNames#Jesse");
 		assertNotNull(human);
 		assertEquals("the father of King David", human.getDescription());
-		
+
 		boolean caught = false;
 		try {
 			em.find(Woman.class, "http://semanticbible.org/ns/2006/NTNames#Jesse");
@@ -117,7 +117,7 @@ public class TestBasic {
 		for (Woman woman2 : withoutChildren) {
 			assertFalse(haveChildren.contains(woman2));
 		}
-		
+
 		f = p.createEntityManagerFactory("tws:test2", null);
 		em = f.createEntityManager();
 		em.find(UnkownThing.class, "http://semanticbible.org/ns/2006/NTNames#Jesse");		
