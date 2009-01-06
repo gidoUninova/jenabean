@@ -54,7 +54,51 @@ public class TestTransactions {
 		} catch (EntityNotFoundException e) {
 			caught = true;
 		}
-		assertTrue(caught);
+		assertTrue(caught);		
+	}
+	
+	@Test
+	public void illegalStateBegin() {
+		EntityManagerFactory factory =  Persistence.createEntityManagerFactory("tws:filemodel");
+		EntityManager em = factory.createEntityManager();
+		EntityTransaction ta = em.getTransaction();
+		ta.begin();
 		
+		try {
+			ta.begin();
+		} catch (IllegalStateException e) {
+			return;
+		} finally {
+			ta.rollback();
+		}
+		fail();
+	}
+	
+	@Test
+	public void illegalStateClose() {
+		EntityManagerFactory factory =  Persistence.createEntityManagerFactory("tws:filemodel");
+		EntityManager em = factory.createEntityManager();
+		EntityTransaction ta = em.getTransaction();
+		ta.begin();
+		ta.commit();
+		try {
+			ta.commit();
+		} catch (IllegalStateException e) {
+			return;
+		}
+		fail();
+	}
+	
+	@Test
+	public void illegalStateRollback() {
+		EntityManagerFactory factory =  Persistence.createEntityManagerFactory("tws:filemodel");
+		EntityManager em = factory.createEntityManager();
+		EntityTransaction ta = em.getTransaction();
+		try {
+			ta.rollback();
+		} catch (IllegalStateException e) {
+			return;
+		}
+		fail();
 	}
 }

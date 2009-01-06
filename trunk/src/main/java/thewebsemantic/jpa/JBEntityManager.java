@@ -17,13 +17,16 @@ import com.hp.hpl.jena.rdf.model.Model;
 
 public class JBEntityManager implements javax.persistence.EntityManager {
 
+	private static final String TRANSACTIONS_NOT_SUPPORTED = "This model does not support transactions.";
 	private static final String CLOSED = "This EntityManager is closed.";
 	protected Model _model;
 	protected RDF2Bean _reader;
 	protected Bean2RDF _writer;
 	private HashMap<String, NamedNativeQuery> _queries;
 	private boolean isOpen;
-	
+	private FlushModeType flushType = FlushModeType.COMMIT;
+	private JBEntityTransaction ta;
+
 	public JBEntityManager(Model m, HashMap<String, NamedNativeQuery> queries) {
 		_model = m;
 		_writer = new Bean2RDF(m);
@@ -31,12 +34,11 @@ public class JBEntityManager implements javax.persistence.EntityManager {
 		_queries = queries;
 		isOpen = true;
 	}
-	
+
 	public void clear() {
 		if (! isOpen)
 			throw new IllegalStateException(CLOSED);
 		// TODO Auto-generated method stub
-
 	}
 
 	public void close() {
@@ -49,7 +51,7 @@ public class JBEntityManager implements javax.persistence.EntityManager {
 		return _reader.exists(target);
 	}
 
-	public Query createNamedQuery(String name) {
+	public JBQueryWrapper createNamedQuery(String name) {
 		if (! isOpen)
 			throw new IllegalStateException(CLOSED);
 		if (!_queries.containsKey(name))
@@ -59,7 +61,7 @@ public class JBEntityManager implements javax.persistence.EntityManager {
 	}
 
 	public JBQueryWrapper createNativeQuery(String queryString) {
-		return null;
+		return createNativeQuery(queryString, Object.class);
 	}
 
 	public JBQueryWrapper createNativeQuery(String arg0, Class arg1) {	
@@ -67,17 +69,13 @@ public class JBEntityManager implements javax.persistence.EntityManager {
 			throw new IllegalStateException(CLOSED);
 		return new JBQueryWrapper(arg0, this, arg1);
 	}
-	
+
 	public Query createNativeQuery(String arg0, String arg1) {
-		if (! isOpen)
-			throw new IllegalStateException(CLOSED);
-		throw new UnsupportedOperationException("Use createQuery(String, Class) instead.");
+		throw new UnsupportedOperationException("Use createNativeQuery(String, Class) instead.");
 	}
 
 	public Query createQuery(String arg0) {
-		if (! isOpen)
-			throw new IllegalStateException(CLOSED);
-		throw new UnsupportedOperationException("Use createQuery(String, Class) instead.");
+		throw new UnsupportedOperationException("Use createNativeQuery(String, Class) instead.");
 	}
 
 	public <T> T find(Class<T> type, Object arg1) {
@@ -95,14 +93,12 @@ public class JBEntityManager implements javax.persistence.EntityManager {
 
 	}
 
-	public Object getDelegate() {
-		// TODO Auto-generated method stub
-		return null;
+	public Model getDelegate() {
+		return getModel();
 	}
 
 	public FlushModeType getFlushMode() {
-		// TODO Auto-generated method stub
-		return null;
+		return flushType;
 	}
 
 	public <T> T getReference(Class<T> type, Object key) {
@@ -118,7 +114,10 @@ public class JBEntityManager implements javax.persistence.EntityManager {
 	public EntityTransaction getTransaction() {
 		if (! isOpen)
 			throw new IllegalStateException(CLOSED);
-		return new JBEntityTransaction(_model);
+		if (! _model.supportsTransactions())
+			throw new UnsupportedOperationException(TRANSACTIONS_NOT_SUPPORTED);
+		if (ta == null) ta = new JBEntityTransaction(_model.getGraph().getTransactionHandler());
+		return ta;
 	}
 
 	public boolean isOpen() {
@@ -126,8 +125,7 @@ public class JBEntityManager implements javax.persistence.EntityManager {
 	}
 
 	public void joinTransaction() {
-		// TODO Auto-generated method stub
-
+		throw new UnsupportedOperationException("This entity manager does not support JTA transactions");
 	}
 
 	public void lock(Object arg0, LockModeType arg1) {
@@ -135,31 +133,27 @@ public class JBEntityManager implements javax.persistence.EntityManager {
 
 	}
 
-	public <T> T merge(T arg0) {
-		// TODO Auto-generated method stub
-		return null;
+	public <T> T merge(T bean) {
+		_writer.save(bean);
+		return bean;
 	}
 
 	public void persist(Object bean) {
 		_writer.save(bean);
-
 	}
 
 	public void refresh(Object bean) {
 		_reader.load(bean);
-
 	}
 
 	public void remove(Object bean) {
 		_writer.delete(bean);
-
 	}
 
 	public void setFlushMode(FlushModeType arg0) {
-		// TODO Auto-generated method stub
-
+		flushType = arg0;
 	}
-	
+
 	public Model getModel() {
 		return _model;
 	}
