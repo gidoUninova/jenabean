@@ -12,7 +12,6 @@
     xmlns:dc="http://purl.org/dc/elements/1.1/"
   xml:base="http://semanticbible.org/ns/2006/NTNames">
   <owl:Ontology rdf:about="">
-    <owl:imports rdf:resource="http://www.semanticbible.org/2006/11/NTNames.owl"/>
     <owl:versionInfo xml:lang="en">2006-09</owl:versionInfo>
     <owl:versionInfo rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
     >1.0</owl:versionInfo>

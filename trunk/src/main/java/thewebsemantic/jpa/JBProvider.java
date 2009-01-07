@@ -11,6 +11,8 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.Set;
 
+import javax.persistence.Embeddable;
+import javax.persistence.Entity;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.NamedNativeQueries;
 import javax.persistence.NamedNativeQuery;
@@ -20,6 +22,7 @@ import javax.persistence.spi.PersistenceUnitInfo;
 
 import thewebsemantic.Namespace;
 import thewebsemantic.ResolverUtil;
+import thewebsemantic.TypeWrapper;
 import thewebsemantic.Util;
 
 import com.hp.hpl.jena.assembler.Assembler;
@@ -28,6 +31,7 @@ import com.hp.hpl.jena.rdf.model.ModelFactory;
 import com.hp.hpl.jena.rdf.model.Property;
 import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.rdf.model.StmtIterator;
+import com.hp.hpl.jena.shared.Lock;
 import com.hp.hpl.jena.vocabulary.OWL;
 import com.hp.hpl.jena.vocabulary.RDF;
 
@@ -38,7 +42,6 @@ public class JBProvider implements PersistenceProvider {
 	public static final String ASSEMBLY = "META-INF/jenamodels.n3";
 	private Model assembly = null;
 	private HashMap<String, JBFactory> entityManagers;
-	
 	
 	public JBProvider() {
 		entityManagers = new HashMap<String, JBFactory>();
@@ -74,12 +77,19 @@ public class JBProvider implements PersistenceProvider {
 			String uri = assembly.expandPrefix(emName);
 			if (assembly.getGraph().contains(createURI(uri), ANY, ANY)) {
 				Resource r = assembly.getResource(uri);
+				Model m = null;
 				try {
-					Model m = Assembler.general.openModel(r);
+					m = Assembler.general.openModel(r);
+					m.enterCriticalSection(Lock.WRITE);
+					m.createProperty(JAVACLASS).addProperty(RDF.type,OWL.AnnotationProperty);
 					return new JBFactory(m, bindAll(m, getPackages(r)));
 				} catch(Exception e) {
 					throw new PersistenceException(e);
+				} finally {
+					if ( m!= null)
+						m.leaveCriticalSection();
 				}
+
 			}
 		}
 		return null;
@@ -110,28 +120,31 @@ public class JBProvider implements PersistenceProvider {
 	}
 	
 	protected HashMap<String, NamedNativeQuery> bindAll(Model m, String... s) {
-		HashMap<String, NamedNativeQuery> querymap = new HashMap<String, NamedNativeQuery>();
-		Property javaclass = m.createProperty(JAVACLASS);
-		javaclass.addProperty(RDF.type,OWL.AnnotationProperty);
+		HashMap<String, NamedNativeQuery> querymap = new HashMap<String, NamedNativeQuery>();		
 		ResolverUtil<Object> resolver = new ResolverUtil<Object>();
-		resolver.findAnnotated(Namespace.class, s);
-		Set<Class<? extends Object>> classes = resolver.getClasses();
-		for (Class<? extends Object> class1 : classes) {
-			Namespace ns = class1.getAnnotation(Namespace.class);
-            m.getResource(ns.value() + Util.getRdfType(class1)).addProperty(
-					javaclass, class1.getName());
-            if (class1.isAnnotationPresent(NamedNativeQueries.class)) {
-            	storeNamedQuery(class1, querymap);
-            }
-		}
+		resolver.findAnnotated(Namespace.class, s)
+			.findAnnotated(Entity.class, s)
+			.findAnnotated(Embeddable.class, s);
+		bind(m, querymap, resolver.getClasses());		
 		return querymap;
+	}
+
+	private void bind(Model m, HashMap<String, NamedNativeQuery> querymap,
+			Set<Class<? extends Object>> classes) {
+		for (Class<? extends Object> class1 : classes) {
+			Property p = m.getProperty(JAVACLASS);
+			m.getResource(TypeWrapper.typeUri(class1)).
+            	removeAll(p).
+            	addProperty(p, class1.getName());
+            if (class1.isAnnotationPresent(NamedNativeQueries.class))
+            	storeNamedQuery(class1, querymap);
+		}
 	}
 
 	protected void storeNamedQuery(Class<? extends Object> class1,HashMap<String, NamedNativeQuery> querymap) {
 		NamedNativeQueries queries = class1.getAnnotation(NamedNativeQueries.class);
-		for(NamedNativeQuery query : queries.value()) {
+		for(NamedNativeQuery query : queries.value())
 			querymap.put(query.name(), query);
-		}
 	}
 
 }
