@@ -6,6 +6,8 @@ import java.util.Date;
 import java.util.List;
 
 import javax.persistence.FlushModeType;
+import javax.persistence.NoResultException;
+import javax.persistence.NonUniqueResultException;
 import javax.persistence.Query;
 import javax.persistence.TemporalType;
 
@@ -17,11 +19,12 @@ import com.hp.hpl.jena.query.QuerySolutionMap;
 import com.hp.hpl.jena.rdf.model.RDFNode;
 import com.hp.hpl.jena.rdf.model.Resource;
 
+@SuppressWarnings("unchecked")
 public class JBQueryWrapper implements Query {
 
 	JBEntityManager em;
 	String query;
-	Class type;
+	Class<?> type;
 	QuerySolutionMap initialSettings;
 
 	
@@ -41,8 +44,12 @@ public class JBQueryWrapper implements Query {
 	}
 
 	public Object getSingleResult() {
-		// TODO Auto-generated method stub
-		return null;
+		List result = Sparql.exec(em._model, type, query, initialSettings);
+		if ( result.size() > 1 ) 
+			throw new NonUniqueResultException();
+		else if ( result.size()==0 )
+			throw new NoResultException();
+		return result.iterator().next();
 	}
 
 	public Query setFirstResult(int startPosition) {

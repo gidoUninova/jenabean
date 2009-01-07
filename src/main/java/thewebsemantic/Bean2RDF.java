@@ -4,6 +4,7 @@ import static thewebsemantic.JenaHelper.toLiteral;
 import static thewebsemantic.PrimitiveWrapper.isPrimitive;
 import static thewebsemantic.TypeWrapper.instanceURI;
 import static thewebsemantic.TypeWrapper.type;
+import static thewebsemantic.TypeWrapper.isAnonymous;
 
 import java.lang.reflect.Array;
 import java.net.URI;
@@ -15,10 +16,13 @@ import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import thewebsemantic.ResolverUtil.IsA;
+
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.Property;
 import com.hp.hpl.jena.rdf.model.RDFNode;
 import com.hp.hpl.jena.rdf.model.Resource;
+import com.hp.hpl.jena.rdf.model.Statement;
 import com.hp.hpl.jena.shared.Lock;
 import com.hp.hpl.jena.vocabulary.RDF;
 import com.hp.hpl.jena.vocabulary.RDFS;
@@ -125,7 +129,8 @@ public class Bean2RDF extends Base {
 	}
 
 	private Resource toResource(Object bean) {
-		return m.createResource(instanceURI(bean), getRDFSClass(bean));
+		return ( isAnonymous(bean)) ? m.createResource(getRDFSClass(bean)) : 
+			m.createResource(instanceURI(bean), getRDFSClass(bean));
 	}
 
 	private Resource existing(Object bean) {
@@ -216,6 +221,12 @@ public class Bean2RDF extends Base {
 	 * @param o
 	 */
 	private void setPropertyValue(Resource subject, Property property, Object o) {
+		Statement s = subject.getProperty(property);
+		if (s!=null) {
+			Resource r = s.getResource();
+			if ( r.isAnon() )
+				m.removeAll(null, null, r).removeAll(r, null, null);
+		}
 		subject.removeAll(property).addProperty(property, _write(o, true));
 	}
 }

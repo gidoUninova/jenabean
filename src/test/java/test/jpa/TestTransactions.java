@@ -18,13 +18,12 @@ public class TestTransactions {
 	public void basic() {
 		EntityManagerFactory factory =  Persistence.createEntityManagerFactory("tws:filemodel");
 		EntityManager em = factory.createEntityManager();
-		EntityTransaction ta = em.getTransaction();
-		ta.begin();
+		em.getTransaction().begin();
 		Man m = new Man("http://example.org/joe");
 		m.setName("Joseph");
 		m.setDescription("had a nice coat.");
 		em.persist(m);
-		ta.commit();
+		em.getTransaction().commit();
 		
 		Man m2 = em.find(Man.class, "http://example.org/joe");
 		assertEquals("Joseph", m2.getName());
@@ -75,12 +74,25 @@ public class TestTransactions {
 	}
 	
 	@Test
-	public void illegalStateClose() {
+	public void  illegalStateClommit1() {
 		EntityManagerFactory factory =  Persistence.createEntityManagerFactory("tws:filemodel");
 		EntityManager em = factory.createEntityManager();
 		EntityTransaction ta = em.getTransaction();
 		ta.begin();
 		ta.commit();
+		try {
+			ta.commit();
+		} catch (IllegalStateException e) {
+			return;
+		}
+		fail();
+	}
+	
+	@Test
+	public void illegalStateClommit2() {
+		EntityManagerFactory factory =  Persistence.createEntityManagerFactory("tws:filemodel");
+		EntityManager em = factory.createEntityManager();
+		EntityTransaction ta = em.getTransaction();
 		try {
 			ta.commit();
 		} catch (IllegalStateException e) {

@@ -17,6 +17,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
 
+import javax.persistence.Embeddable;
+
 import com.hp.hpl.jena.rdf.model.Resource;
 
 /**
@@ -202,6 +204,14 @@ public abstract class TypeWrapper {
 
 	public static String instanceURI(Object bean) {
 		return type(bean).uri(bean);
+	}
+	
+	public static boolean isAnonymous(Object bean) {
+		return type(bean).isAnon(bean);
+	}
+
+	private boolean isAnon(Object bean) {
+		return c.isAnnotationPresent(Embeddable.class);
 	}
 
 	/**
