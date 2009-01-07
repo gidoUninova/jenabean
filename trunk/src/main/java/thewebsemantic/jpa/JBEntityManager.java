@@ -27,10 +27,10 @@ public class JBEntityManager implements javax.persistence.EntityManager {
 	private FlushModeType flushType = FlushModeType.COMMIT;
 	private JBEntityTransaction ta;
 
-	public JBEntityManager(Model m, HashMap<String, NamedNativeQuery> queries) {
+	public JBEntityManager(Model m, HashMap<String, NamedNativeQuery> queries, Bean2RDF writer, RDF2Bean reader) {
 		_model = m;
-		_writer = new Bean2RDF(m);
-		_reader = new RDF2Bean(m);
+		_writer = writer;
+		_reader = reader;
 		_queries = queries;
 		isOpen = true;
 	}
