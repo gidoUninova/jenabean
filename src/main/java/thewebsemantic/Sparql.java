@@ -11,6 +11,7 @@ import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.shared.Lock;
+import com.hp.hpl.jena.update.UpdateAction;
 
 public class Sparql {
 	
@@ -70,7 +71,6 @@ public class Sparql {
 	}
 	
 	public static <T> LinkedList<Resource> exec2(Model m, String query) {
-		RDF2Bean reader = new RDF2Bean(m);
 		QueryExecution qexec = getQueryExec(m, query);
 		LinkedList<Resource> beans = new LinkedList<Resource>();
 		try {
@@ -82,6 +82,10 @@ public class Sparql {
 			m.leaveCriticalSection();
 			qexec.close();
 		}
+	}
+
+	public static void update(Model m, String query, QuerySolution i) {
+		UpdateAction.parseExecute(query, m, i);
 	}
 	
 	private static QueryExecution getQueryExec(Model m, String query) {
