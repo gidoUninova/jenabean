@@ -2,9 +2,19 @@ package test.jpa;
 
 import java.util.Collection;
 
+import javax.persistence.NamedNativeQueries;
+import javax.persistence.NamedNativeQuery;
+
 import thewebsemantic.Namespace;
 import thewebsemantic.RdfProperty;
 import thewebsemantic.Uri;
+@NamedNativeQueries( { 
+	@NamedNativeQuery(
+		name="Human.hasChildren", 
+		query="PREFIX : <http://semanticbible.org/ns/2006/NTNames#>\n" +
+		"SELECT DISTINCT ?s	WHERE { ?s a :Human . ?s :parentOf ?Thing . }"
+		)	
+})
 
 @Namespace("http://semanticbible.org/ns/2006/NTNames#")
 public class Human {

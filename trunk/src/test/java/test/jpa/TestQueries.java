@@ -56,8 +56,7 @@ public class TestQueries {
 		last.setParameter("value", "Peter");
 		last.setParameter("id", peter);
 		last.executeUpdate();
-		
-		
+
 		results = qry.getResultList();
 		assertEquals(2, results.size());
 		peter = em.find(Man.class, "http://example.org/peter");
