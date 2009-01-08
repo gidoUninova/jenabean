@@ -57,7 +57,8 @@ public class JBEntityManager implements javax.persistence.EntityManager {
 		if (!_queries.containsKey(name))
 			throw new IllegalArgumentException(name + ": query not defined in entity.");
 		NamedNativeQuery nnq = _queries.get(name);
-		return new JBQueryWrapper(nnq.query(), this, nnq.resultClass());
+		Class cls = (nnq.resultClass() == Void.TYPE) ? Object.class : nnq.resultClass();
+		return new JBQueryWrapper(nnq.query(), this, cls);
 	}
 
 	public JBQueryWrapper createNativeQuery(String queryString) {
