@@ -5,6 +5,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.Entity;
 import javax.persistence.FlushModeType;
 import javax.persistence.NoResultException;
 import javax.persistence.NonUniqueResultException;
@@ -18,6 +19,9 @@ import thewebsemantic.TypeWrapper;
 import com.hp.hpl.jena.query.QuerySolutionMap;
 import com.hp.hpl.jena.rdf.model.RDFNode;
 import com.hp.hpl.jena.rdf.model.Resource;
+import com.hp.hpl.jena.sparql.engine.binding.BindingBase;
+import com.hp.hpl.jena.sparql.engine.binding.BindingMap;
+import com.hp.hpl.jena.update.UpdateAction;
 
 @SuppressWarnings("unchecked")
 public class JBQueryWrapper implements Query {
@@ -36,6 +40,7 @@ public class JBQueryWrapper implements Query {
 	}
 
 	public int executeUpdate() {
+		UpdateAction.parseExecute(query, em._model, initialSettings);
 		return 0;
 	}
 
@@ -76,49 +81,49 @@ public class JBQueryWrapper implements Query {
 		if ( value instanceof URI) {
 			String uri = value.toString();
 			setUriParameter(name, uri);
-		} else if ( value.getClass().isAnnotationPresent(Namespace.class)) {
+		} else if ( isManagedEntity(value)) {
 			String uri = TypeWrapper.instanceURI(value);
 			setUriParameter(name, uri);
 		} else if ( value instanceof Resource) {
 			initialSettings.add(name, (Resource)value);
+		} else if (value instanceof Class) {
+			String uri = TypeWrapper.typeUri((Class)value);
+			setUriParameter(name, uri);
 		} else {
 			initialSettings.add(name, em._model.createTypedLiteral(value));
 		}
 		return this;
 	}
 
+	private boolean isManagedEntity(Object value) {
+		return value.getClass().isAnnotationPresent(Namespace.class) || value.getClass().isAnnotationPresent(Entity.class);
+	}
+
 	public void setUriParameter(String name, String uri) {
 		RDFNode node = em._model.createResource(uri);
 		initialSettings.add(name, node);
 	}
-
-	
 	
 	public Query setParameter(int position, Object value) {
-		throw new UnsupportedOperationException("not yet supported, try setParameter(name,value)");
+		return setParameter(Integer.valueOf(position).toString(), value);
 	}
 
 	public Query setParameter(String name, Date value, TemporalType temporalType) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+		throw new UnsupportedOperationException("all dates become xsd:dateTime");	}
 
 	public Query setParameter(String name, Calendar value,
 			TemporalType temporalType) {
-		// TODO Auto-generated method stub
-		return null;
+		throw new UnsupportedOperationException("all dates become xsd:dateTime");
 	}
 
 	public Query setParameter(int position, Date value,
 			TemporalType temporalType) {
-		// TODO Auto-generated method stub
-		return null;
+		throw new UnsupportedOperationException("all dates become xsd:dateTime");
 	}
 
 	public Query setParameter(int position, Calendar value,
 			TemporalType temporalType) {
-		// TODO Auto-generated method stub
-		return null;
+		throw new UnsupportedOperationException("all dates become xsd:dateTime");
 	}
 
 }

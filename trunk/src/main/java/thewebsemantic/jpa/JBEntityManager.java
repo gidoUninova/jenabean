@@ -75,7 +75,7 @@ public class JBEntityManager implements javax.persistence.EntityManager {
 	}
 
 	public Query createQuery(String arg0) {
-		throw new UnsupportedOperationException("Use createNativeQuery(String, Class) instead.");
+		return createNativeQuery(arg0);
 	}
 
 	public <T> T find(Class<T> type, Object arg1) {
@@ -90,7 +90,6 @@ public class JBEntityManager implements javax.persistence.EntityManager {
 
 	public void flush() {
 		// TODO Auto-generated method stub
-
 	}
 
 	public Model getDelegate() {
