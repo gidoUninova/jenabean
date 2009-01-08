@@ -23,7 +23,6 @@ import javax.persistence.spi.PersistenceUnitInfo;
 import thewebsemantic.Namespace;
 import thewebsemantic.ResolverUtil;
 import thewebsemantic.TypeWrapper;
-import thewebsemantic.Util;
 
 import com.hp.hpl.jena.assembler.Assembler;
 import com.hp.hpl.jena.rdf.model.Model;
@@ -43,6 +42,10 @@ public class JBProvider implements PersistenceProvider {
 	private Model assembly = null;
 	private HashMap<String, JBFactory> entityManagers;
 	
+	/**
+	 * called by the JPA Persitence api.  Looks for META-INF/jenamodels.n3 in
+	 * the classpath and uses this file as a Jena Assembler.
+	 */
 	public JBProvider() {
 		entityManagers = new HashMap<String, JBFactory>();
 		try {
@@ -52,6 +55,13 @@ public class JBProvider implements PersistenceProvider {
 		}	
 	}
 	
+	/**
+	 * Creates a new Jena Bean JPA provider given an existing assembler model.
+	 * An assembler tells Jena how to construct a model.  The model passed 
+	 * to this constructor should contain triples according to the Jena Assembler
+	 * schema (http://jena.sourceforge.net/vocabularies/assembler.n3).
+	 * @param m
+	 */
 	public JBProvider(Model m) {
 		entityManagers = new HashMap<String, JBFactory>();
 		assembly = m;

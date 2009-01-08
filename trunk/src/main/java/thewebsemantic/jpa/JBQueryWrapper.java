@@ -19,8 +19,6 @@ import thewebsemantic.TypeWrapper;
 import com.hp.hpl.jena.query.QuerySolutionMap;
 import com.hp.hpl.jena.rdf.model.RDFNode;
 import com.hp.hpl.jena.rdf.model.Resource;
-import com.hp.hpl.jena.sparql.engine.binding.BindingBase;
-import com.hp.hpl.jena.sparql.engine.binding.BindingMap;
 import com.hp.hpl.jena.update.UpdateAction;
 
 @SuppressWarnings("unchecked")
