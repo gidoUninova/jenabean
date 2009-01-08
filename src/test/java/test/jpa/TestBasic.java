@@ -122,4 +122,18 @@ public class TestBasic {
 		em = f.createEntityManager();
 		em.find(UnkownThing.class, "http://semanticbible.org/ns/2006/NTNames#Jesse");		
 	}
+	
+	@Test
+	public void testBad() {
+		Model m = ModelFactory.createDefaultModel();
+		m.read("file:src/test/resources/testassembler.n3", "N3");
+		JBProvider p = new JBProvider(m);
+		JBFactory f =  p.createEntityManagerFactory("tws:test", null);
+		EntityManager em =  f.createEntityManager();
+		Query q = em.createNamedQuery("Human.hasChildren");
+		List<Human> people = q.getResultList();
+		for (Human human : people) {
+			assertTrue(human.getClass() == Man.class || human.getClass() == Woman.class); 
+		}
+	}
 }

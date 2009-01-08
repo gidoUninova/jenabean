@@ -9,7 +9,7 @@ import thewebsemantic.Namespace;
 	@NamedNativeQuery(
 		name="Woman.hasChildren", 
 		query="PREFIX : <http://semanticbible.org/ns/2006/NTNames#>\n" +
-		"SELECT ?s	WHERE { ?s a :Woman . ?s :parentOf ?Thing . }", 
+		"SELECT DISTINCT ?s	WHERE { ?s a :Woman . ?s :parentOf ?Thing . }", 
 		resultClass=Woman.class),
 	@NamedNativeQuery(
 		name="Woman.noChildren", 
@@ -21,8 +21,8 @@ import thewebsemantic.Namespace;
 		name="Woman.Jewish", 
 		query="PREFIX : <http://semanticbible.org/ns/2006/NTNames#>\n" +
 		"SELECT ?s	WHERE { ?s a :Woman . ?s :ethnicity :Jewish . }", 
-		resultClass=Woman.class),
-		
+		resultClass=Woman.class)
+	
 })
 
 
