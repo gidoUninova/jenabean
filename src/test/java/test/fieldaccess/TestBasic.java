@@ -1,14 +1,15 @@
 package test.fieldaccess;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 
-import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 import thewebsemantic.Bean2RDF;
 import thewebsemantic.RDF2Bean;
@@ -18,16 +19,6 @@ import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 
 public class TestBasic {
-	@BeforeClass
-	public static void setup() {
-		System.setProperty("jenabean.fieldaccess", "true");
-		System.out.println("########################################33");
-	}
-	
-	@AfterClass
-	public static void after() {
-		System.setProperty("jenabean.fieldaccess", "false");
-	}
 
 	@Test
 	public void simple() {
@@ -37,8 +28,9 @@ public class TestBasic {
 		fa.grandsonname("grandson");
 		fa.name("fieldaccess"); // this comes from the super super class
 		fa.dontsaveme = "I don't get saved"; // this one is transient
+		fa.id = 0;
 		writer.save(fa);
-		
+		m.write(System.out, "N3");
 		RDF2Bean reader = new RDF2Bean(m);
 		Collection<GrandsonOfFatAlbert> results = reader
 				.load(GrandsonOfFatAlbert.class);

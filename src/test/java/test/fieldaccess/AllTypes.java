@@ -3,7 +3,8 @@ package test.fieldaccess;
 import java.util.Calendar;
 import java.util.Date;
 
-import thewebsemantic.Id;
+import javax.persistence.Id;
+
 import thewebsemantic.RdfProperty;
 import thewebsemantic.binding.RdfBean;
 
@@ -19,6 +20,8 @@ public class AllTypes extends RdfBean<AllTypes> {
 	public Calendar appointment;
 	public String[] nicknames;
 	public transient int nothing;
+	
+	@Id
 	private transient int id;
 	
 	
@@ -26,7 +29,7 @@ public class AllTypes extends RdfBean<AllTypes> {
 		id = Integer.parseInt(s);
 	}
 	
-	@Id
+
 	public int id() {
 		return id;
 	}
