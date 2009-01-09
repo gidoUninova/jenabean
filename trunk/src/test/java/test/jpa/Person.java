@@ -10,8 +10,6 @@ public class Person {
     private String firstName;
     private char middleInitial;
     private String lastName;
- 
-
     private Address address;
  
     public Person() {

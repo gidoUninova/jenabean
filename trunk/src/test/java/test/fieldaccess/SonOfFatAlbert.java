@@ -1,6 +1,10 @@
 package test.fieldaccess;
 
+import javax.persistence.Id;
+
 public class SonOfFatAlbert extends FatAlbert {
+
+
 	private String sonname = "son";
 	
 	public String toString() {

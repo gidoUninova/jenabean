@@ -26,7 +26,7 @@ public class TestQueries {
 		EntityManager em = factory.createEntityManager();
 		Model m = (Model)em.getDelegate();
 		String squery = StringUtils.join("\n", new String[] {
-			"DELETE { ?s ?p ?o } WHERE { ?s a ?type . ?s ?p ?o}"
+			"DELETE { ?s ?p ?o } WHERE { ?s a ?type . ?s ?p ?o }"
 		});
 		
 		String insert = StringUtils.join("\n", new String[] {
@@ -34,6 +34,7 @@ public class TestQueries {
 				"?id <http://semanticbible.org/ns/2006/NTNames#name_en> ?value}",
 				"WHERE { FILTER(bound(?value) && bound(?id)) }"
 		});
+
 		Man peter = new Man("http://example.org/peter");
 		Man paul = new Man("http://example.org/paul");
 		paul.setName("Paul");
@@ -61,9 +62,6 @@ public class TestQueries {
 		assertEquals(2, results.size());
 		peter = em.find(Man.class, "http://example.org/peter");
 		assertEquals("Peter", peter.getName());
-		
-		
-
 		m.write(System.out, "N3");
 	}
 	
