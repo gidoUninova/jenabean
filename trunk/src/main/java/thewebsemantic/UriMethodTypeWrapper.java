@@ -21,10 +21,12 @@ public class UriMethodTypeWrapper extends TypeWrapper {
 		return id;
 	}
 
+	@Override
 	public String id(Object bean) {
 		return invokeMethod(bean, uriMethod);
 	}
 
+	@Override
 	public Object toBean(String uri) {
 		try {
 			return (constructor != null) ?
