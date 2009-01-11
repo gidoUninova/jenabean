@@ -2,10 +2,10 @@ package thewebsemantic;
 
 import java.lang.reflect.Method;
 
-public class IdTypeWrapper extends TypeWrapper {
+public class IdMethodTypeWrapper extends TypeWrapper {
 	
 	private Method idMethod;
-	public IdTypeWrapper(Class<?> c, Method m) {
+	public IdMethodTypeWrapper(Class<?> c, Method m) {
 		super(c);
 		idMethod = m;
 	}

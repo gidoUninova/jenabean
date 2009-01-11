@@ -2,11 +2,11 @@ package thewebsemantic;
 
 import java.lang.reflect.Method;
 
-public class UriTypeWrapper extends TypeWrapper {
+public class UriMethodTypeWrapper extends TypeWrapper {
 
 	private Method uriMethod;
 	
-	public UriTypeWrapper(Class<?> c, Method m) {
+	public UriMethodTypeWrapper(Class<?> c, Method m) {
 		super(c);
 		uriMethod = m;
 	}
@@ -24,13 +24,12 @@ public class UriTypeWrapper extends TypeWrapper {
 	public String id(Object bean) {
 		return invokeMethod(bean, uriMethod);
 	}
-	
+
 	public Object toBean(String uri) {
 		try {
 			return (constructor != null) ?
 				constructor.newInstance(uri):c.newInstance();
-		} catch (Exception e) {e.printStackTrace();
-		}
+		} catch (Exception e) {e.printStackTrace();}
 		return null;
 	}
 
