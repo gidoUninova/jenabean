@@ -12,10 +12,12 @@ public class TypeWrapperFactory {
 		if (c.isEnum())
 			return new EnumTypeWrapper(c);
 		for (MethodDescriptor md : info.getMethodDescriptors())
-			if (isId(md))
+			if (isId(md)) {
 				return new IdMethodTypeWrapper(c, md.getMethod());
-			else if (isUri(md))
+			} else if (isUri(md))
 				return new UriMethodTypeWrapper(c, md.getMethod());
+
+		// now try field annotations
 		Field[] fields = TypeUtils.getDeclaredFields(c);
 		for (Field f : fields) {
 			if (isId(f))
