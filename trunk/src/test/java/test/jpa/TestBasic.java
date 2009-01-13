@@ -6,6 +6,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
+import java.net.URI;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -20,6 +21,9 @@ import test.bean.Yin;
 import thewebsemantic.jpa.JBFactory;
 import thewebsemantic.jpa.JBProvider;
 
+import com.hp.hpl.jena.ontology.Individual;
+import com.hp.hpl.jena.ontology.OntModel;
+import com.hp.hpl.jena.ontology.OntModelSpec;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 
@@ -135,5 +139,54 @@ public class TestBasic {
 		for (Human human : people) {
 			assertTrue(human.getClass() == Man.class || human.getClass() == Woman.class); 
 		}
+	}
+	
+	@Test
+	public void idURIasField() throws IOException {     
+		EntityManagerFactory factory =  Persistence.createEntityManagerFactory("tws:blank");
+		EntityManager em = factory.createEntityManager();
+		MusicGenre jazz = new MusicGenre();
+		jazz.id = URI.create("http://example.org/genre/jazz");
+		jazz.description = "Jazz Music";
+		em.persist(jazz);
+		Model m = (Model)em.getDelegate();
+		OntModel om = ModelFactory.createOntologyModel(OntModelSpec.OWL_MEM, m);
+		Individual I = om.getIndividual("http://example.org/genre/jazz");
+		assertNotNull(I);
+		m.write(System.out, "N3");
+	}
+	
+	@Test
+	public void idURIreadField() throws IOException {     
+		EntityManagerFactory factory =  Persistence.createEntityManagerFactory("tws:blank");
+		EntityManager em = factory.createEntityManager();
+		MusicGenre jazz = new MusicGenre();
+		jazz.id = URI.create("http://example.org/genre/jazz");
+		jazz.description = "Jazz Music";
+		em.persist(jazz);
+		jazz = em.find(MusicGenre.class, "http://example.org/genre/jazz");
+		assertNotNull(jazz.id);
+	}
+	
+	@Test
+	public void idURIonMethod() throws IOException {     
+		EntityManagerFactory factory =  Persistence.createEntityManagerFactory("tws:blank");
+		EntityManager em = factory.createEntityManager();
+		MusicalInstrument trombone = new MusicalInstrument();
+		trombone.setId(URI.create("http://example.org/instruments/trombone"));
+		trombone.setDescription("a large brass instrument used in jazz, clasical, and broadway.");
+		
+		em.persist(trombone);
+		Model m = (Model)em.getDelegate();
+		//m.write(System.out, "N3");
+		OntModel om = ModelFactory.createOntologyModel(OntModelSpec.OWL_MEM, m);
+		Individual I = om.getIndividual("http://example.org/instruments/trombone");
+		assertNotNull(I);
+		
+		trombone = em.find(MusicalInstrument.class, "http://example.org/instruments/trombone");
+		assertNotNull(trombone.getId());
+		assertEquals("http://example.org/instruments/trombone", trombone.getId().toString());
+		assertNotNull(trombone.getDescription());
+		
 	}
 }
