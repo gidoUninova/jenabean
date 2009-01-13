@@ -130,7 +130,6 @@ public class PersonTest {
         }
         em.persist(c1);
         em.getTransaction().commit();
- 
         return c1;
     }
     @SuppressWarnings("unchecked")
@@ -141,7 +140,8 @@ public class PersonTest {
         final List<Person> list = em.createNativeQuery("select ?s where { ?s a <http://test.jpa/Person> }")
                 .getResultList();
         assertEquals(2, list.size());
- 
+        Model m = (Model)em.getDelegate();
+        m.write(System.out, "N3");
         final Company foundCompany = findCompanyNamed(em, "The Company");
         assertEquals(2, foundCompany.getEmployees().size());
     }
