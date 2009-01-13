@@ -140,6 +140,7 @@ public class JBEntityManager implements javax.persistence.EntityManager {
 
 	public void persist(Object bean) {
 		_writer.save(bean);
+		_reader.load(bean);
 	}
 
 	public void refresh(Object bean) {

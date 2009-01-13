@@ -26,6 +26,11 @@ public class UriMethodTypeWrapper extends TypeWrapper {
 		return invokeMethod(bean, uriMethod);
 	}
 
+	/**
+	 * This implementation of toBean() supplies the URI to a constructor, if it
+	 * exists.  This enables the loading of pre-existing RDF what wasn't created
+	 * with Jenabean managed URI's.  
+	 */
 	@Override
 	public Object toBean(String uri) {
 		try {

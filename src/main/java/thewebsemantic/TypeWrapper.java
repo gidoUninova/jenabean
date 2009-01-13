@@ -9,6 +9,7 @@ import java.beans.PropertyDescriptor;
 import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
+import java.net.URI;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -26,7 +27,7 @@ public abstract class TypeWrapper {
 	public static final String JENABEAN_PREFIX = "jenabean.prefix";
 	private String NS;
 	protected Class<?> c;
-	private BeanInfo info;
+	protected BeanInfo info;
 	protected Constructor<?> constructor;
 	protected PropertyDescriptor[] descriptors;
 	private static HashMap<Class<?>, TypeWrapper> cache = new HashMap<Class<?>, TypeWrapper>();
@@ -90,7 +91,7 @@ public abstract class TypeWrapper {
 		return wrap(c).typeUri();
 	}
 
-	private PropertyDescriptor[] descriptors() {
+	protected PropertyDescriptor[] descriptors() {
 		if (descriptors == null) {
 			Collection<PropertyDescriptor> results = new LinkedList<PropertyDescriptor>();
 			for (PropertyDescriptor p : info.getPropertyDescriptors())
@@ -117,7 +118,7 @@ public abstract class TypeWrapper {
 	public abstract String uri(String id);
 
 	public String uri(Object bean) {
-		return typeUri() + '/' + id(bean);
+		return uri(id(bean));
 	}
 
 	public String uri(AccessibleObject m, String name) {

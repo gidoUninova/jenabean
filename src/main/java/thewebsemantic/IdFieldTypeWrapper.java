@@ -1,7 +1,10 @@
 package thewebsemantic;
 
+import static thewebsemantic.Util.last;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
@@ -10,10 +13,12 @@ public class IdFieldTypeWrapper extends TypeWrapper {
 
 	private Field idfield;
 	private Field[] fields;
+	private boolean uriid = false;
 	
 	public IdFieldTypeWrapper(Class<?> c, Field f, Field[] fields) {
 		super(c);
 		idfield = f;
+		uriid = idfield.getType().equals(URI.class);
 		this.fields = fields;
 	}
 
@@ -28,9 +33,13 @@ public class IdFieldTypeWrapper extends TypeWrapper {
 		return result.toString();
 	}
 
+	
 	@Override
 	public String uri(String id) {
-		return typeUri() + '/' + id;
+		if (idfield.getType().equals(URI.class))
+			return id;
+		else
+			return typeUri() + '/' + id;
 	}
 
 	public String[] collections() {
@@ -53,10 +62,31 @@ public class IdFieldTypeWrapper extends TypeWrapper {
 
 	public ValuesContext[] getValueContexts(Object o) {
 		ArrayList<FieldContext> values = new ArrayList<FieldContext>();
-		for (Field field : fields)
+		for (Field field : fields) {
+			if (field.equals(idfield) && uriid)
+				continue;
 			if (!Modifier.isTransient(field.getModifiers()))
 				values.add(new FieldContext(o, field));
+		}
 		return values.toArray(new ValuesContext[0]);
+	}
+
+	public Object toBean(String uri) {
+		try {
+			// last gets the id off the end of the URI
+			return (constructor != null) ? constructor.newInstance(last(uri))
+					: newinstance(uri);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	private Object newinstance(String uri) throws Exception {
+		Object o = c.newInstance();
+		if (uriid)
+			idfield.set(o, URI.create(uri));
+		return o;
 	}
 
 

@@ -5,18 +5,19 @@ import java.util.ArrayList;
 
 public class TypeUtils {
 	public static Field[] getDeclaredFields(Class c) {
-		Field[] chunk = c.getDeclaredFields();
 		ArrayList<Field> fields = new ArrayList<Field>();
-
-		for (Field field : chunk)
-			fields.add(field);
+		for (Field field : c.getDeclaredFields())
+			add(fields, field);
 		Class<?> cls = c;
 		while (cls.getSuperclass() != Object.class && cls.getSuperclass() != null) {
 			cls = cls.getSuperclass();
-			chunk = cls.getDeclaredFields();
-			for (Field field : chunk)
-				fields.add(field);
+			for (Field field : cls.getDeclaredFields())
+				add(fields,field);
 		}
 		return fields.toArray(new Field[0]);
+	}
+
+	private static void add(ArrayList<Field> fields, Field field) {
+		fields.add(field);
 	}
 }

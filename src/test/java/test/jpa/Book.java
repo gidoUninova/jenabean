@@ -1,8 +1,6 @@
 package test.jpa;
 
-import javax.persistence.Entity;
 
-@Entity
 public class Book extends Product
 {
     String author=null;
