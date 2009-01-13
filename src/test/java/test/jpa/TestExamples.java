@@ -57,4 +57,13 @@ public class TestExamples {
 	    m.commit();
 		
 	}
+	
+	@Test
+	public void basic2() {
+		EntityManagerFactory factory =  Persistence.createEntityManagerFactory("tws:blank");
+		EntityManager em = factory.createEntityManager();
+		em.persist(new Message("hello jenabean!"));
+	    Model m = (Model)em.getDelegate();	    
+	    m.write(System.out, "N3");
+	}
 }
