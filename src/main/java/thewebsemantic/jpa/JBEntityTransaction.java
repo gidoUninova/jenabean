@@ -1,5 +1,6 @@
 package thewebsemantic.jpa;
 
+import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.RollbackException;
 
@@ -10,9 +11,11 @@ public class JBEntityTransaction implements EntityTransaction {
 	private TransactionHandler ta;
 	private boolean isActive = false;
 	private boolean isRollBackOnly = false;
+	private EntityManager em;
 	
-	public JBEntityTransaction(TransactionHandler ta) {
+	public JBEntityTransaction(TransactionHandler ta, EntityManager em) {
 		this.ta = ta;
+		this.em = em;
 	}
 	
 	
@@ -29,6 +32,7 @@ public class JBEntityTransaction implements EntityTransaction {
 			throw new IllegalStateException("transaction is not active");
 
 		try {
+			em.flush();
 			ta.commit();
 			isActive = false;
 		} catch (Exception e) {

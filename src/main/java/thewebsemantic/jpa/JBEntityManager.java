@@ -1,6 +1,7 @@
 package thewebsemantic.jpa;
 
 import java.util.HashMap;
+import java.util.HashSet;
 
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.EntityTransaction;
@@ -26,6 +27,7 @@ public class JBEntityManager implements javax.persistence.EntityManager {
 	private boolean isOpen;
 	private FlushModeType flushType = FlushModeType.COMMIT;
 	private JBEntityTransaction ta;
+	private HashSet<Object> cache;
 
 	public JBEntityManager(Model m, HashMap<String, NamedNativeQuery> queries, Bean2RDF writer, RDF2Bean reader) {
 		_model = m;
@@ -33,6 +35,7 @@ public class JBEntityManager implements javax.persistence.EntityManager {
 		_reader = reader;
 		_queries = queries;
 		isOpen = true;
+		cache = new HashSet<Object>();
 	}
 
 	public void clear() {
@@ -90,7 +93,8 @@ public class JBEntityManager implements javax.persistence.EntityManager {
 	}
 
 	public void flush() {
-		// TODO Auto-generated method stub
+		for (Object obj : cache)
+			_writer.save(obj);
 	}
 
 	public Model getDelegate() {
@@ -116,7 +120,7 @@ public class JBEntityManager implements javax.persistence.EntityManager {
 			throw new IllegalStateException(CLOSED);
 		if (! _model.supportsTransactions())
 			throw new UnsupportedOperationException(TRANSACTIONS_NOT_SUPPORTED);
-		if (ta == null) ta = new JBEntityTransaction(_model.getGraph().getTransactionHandler());
+		if (ta == null) ta = new JBEntityTransaction(_model.getGraph().getTransactionHandler(), this);
 		return ta;
 	}
 
@@ -141,6 +145,8 @@ public class JBEntityManager implements javax.persistence.EntityManager {
 	public void persist(Object bean) {
 		_writer.save(bean);
 		_reader.load(bean);
+		if (ta != null && ta.isActive())
+			cache.add(bean);
 	}
 
 	public void refresh(Object bean) {

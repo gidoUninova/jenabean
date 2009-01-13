@@ -21,6 +21,7 @@ tws:filemodel
     ja:directory <file:..> ; 
     ja:modelName "simple.n3" 
     . 
+    
 tws:notamodel a tws:badguy .
 
 tws:blank a ja:MemoryModel .
