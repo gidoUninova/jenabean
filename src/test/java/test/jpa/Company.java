@@ -65,9 +65,7 @@ public class Company {
     }
  
     public void fire(final Person p) {
-        if (!getEmployees().remove(p)) {
-        	throw new RuntimeException("not found");
-        }
+        getEmployees().remove(p);
     }
 }
 

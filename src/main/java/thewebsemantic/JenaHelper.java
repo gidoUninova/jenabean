@@ -29,6 +29,8 @@ public class JenaHelper {
 			return l.getLong();
 		} else if ( Double.TYPE.equals(c)) {
 			return l.getDouble();
+		} else if ( Character.TYPE.equals(c)) {
+			return l.getValue().toString().charAt(0);
 		} else
 			return l.getValue();
 		

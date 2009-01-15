@@ -2,6 +2,7 @@ package test.jpa;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -128,10 +129,13 @@ public class PersonTest {
         for (Person p : people) {
             em.persist(p);
         }
+        System.err.println(c1.getEmployees().size());
         em.persist(c1);
         em.getTransaction().commit();
         return c1;
     }
+    
+    
     @SuppressWarnings("unchecked")
     @Test
     public void createCompanyAndHirePeople() {
@@ -140,8 +144,7 @@ public class PersonTest {
         final List<Person> list = em.createNativeQuery("select ?s where { ?s a <http://test.jpa/Person> }")
                 .getResultList();
         assertEquals(2, list.size());
-        Model m = (Model)em.getDelegate();
-        m.write(System.out, "N3");
+ 
         final Company foundCompany = findCompanyNamed(em, "The Company");
         assertEquals(2, foundCompany.getEmployees().size());
     }
@@ -153,13 +156,14 @@ public class PersonTest {
  
         em.getTransaction().begin();
  
+ 
         for (Person p : people) {
             c1.fire(p);
         }
 
         em.persist(c1);
         em.getTransaction().commit();
-        ((Model)em.getDelegate()).write(System.out, "N3");
+        //((Model)em.getDelegate()).write(System.out, "N3");
         final Company foundCompany = findCompanyNamed(em, "The Company");
         assertEquals(0, foundCompany.getEmployees().size());
     }

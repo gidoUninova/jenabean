@@ -1,10 +1,13 @@
 package thewebsemantic;
 
+import static thewebsemantic.Bean2RDF.logger;
+
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.logging.Level;
 
 public class IdMethodTypeWrapper extends TypeWrapper {
 
@@ -70,7 +73,7 @@ public class IdMethodTypeWrapper extends TypeWrapper {
 			} else
 				return super.toBean(uri);
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.log(Level.WARNING, "Error instantiating bean.", e);
 		}
 		return null;
 	}

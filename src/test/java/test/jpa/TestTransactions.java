@@ -28,7 +28,7 @@ public class TestTransactions {
 		Man m2 = em.find(Man.class, "http://example.org/joe");
 		assertEquals("Joseph", m2.getName());
 		JBFactory jbfactory = (JBFactory)factory;
-		jbfactory.getModel().write(System.out, "N3");
+		//jbfactory.getModel().write(System.out, "N3");
 		
 	}
 

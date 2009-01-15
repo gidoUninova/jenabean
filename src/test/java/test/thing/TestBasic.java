@@ -61,7 +61,7 @@ public class TestBasic {
 			System.out.println(thing.getResource()); 
 		
 		t.as(DublinCore.class).description("this is a description");
-		m.write(System.out, "N3");
+		//m.write(System.out, "N3");
 		System.out.println(t.as(DublinCore.class).description());
 		
 	}

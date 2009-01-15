@@ -1,5 +1,6 @@
 package thewebsemantic;
 
+import static thewebsemantic.Bean2RDF.logger;
 import static thewebsemantic.Util.last;
 
 import java.beans.BeanInfo;
@@ -13,6 +14,7 @@ import java.net.URI;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.logging.Level;
 
 import javax.persistence.Embeddable;
 
@@ -41,8 +43,7 @@ public abstract class TypeWrapper {
 		NS = (nsa != null) ? nsa.value() : getNamespaceFromPackage(c);
 		try {
 			constructor = c.getConstructor(String.class);
-		} catch (Exception e) {
-		}
+		} catch (Exception e) {}
 		cache.put(c, this);
 	}
 
@@ -172,6 +173,8 @@ public abstract class TypeWrapper {
 		try {
 			return me.invoke(bean).toString();
 		} catch (Exception e) {
+			logger.log(Level.WARNING, "Failed invoking method " + 
+					me.getName() + " on class " + bean.getClass() , e);
 		}
 		return null;
 	}
@@ -194,7 +197,7 @@ public abstract class TypeWrapper {
 			return (constructor != null) ? constructor.newInstance(last(uri))
 					: c.newInstance();
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.log(Level.WARNING, "Exception caught while invoking default constructor on " + c, e);
 		}
 		return null;
 	}

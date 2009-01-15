@@ -30,7 +30,7 @@ public class TestBasic {
 		fa.dontsaveme = "I don't get saved"; // this one is transient
 		fa.id = 0;
 		writer.save(fa);
-		m.write(System.out, "N3");
+		//m.write(System.out, "N3");
 		RDF2Bean reader = new RDF2Bean(m);
 		Collection<GrandsonOfFatAlbert> results = reader
 				.load(GrandsonOfFatAlbert.class);

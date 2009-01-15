@@ -463,6 +463,25 @@ public class RDF2Bean extends Base {
 				apply(source, ctx);
 		return target;
 	}
+	
+	/**
+	 * Initializes null collections and sets with a lazy loader.
+	 * You may use this in lieu of creating new collections in your bean constuctor, 
+	 * however, it's main purpose is to initialize beans for use in the JPA api, 
+	 * which requires that managed beans have non-null collection properties
+	 * after being made persistent.
+	 * 
+	 * @param target
+	 */
+	public void init(Object target) {
+		Resource node = m.getResource(instanceURI(target));
+		for (ValuesContext ctx : TypeWrapper.valueContexts(target))
+			if ( ctx.isCollectionOrSet() && ctx.invokeGetter() == null) {
+				ctx.setProperty(new LazySet(node, ctx, this));
+			} else if ( ctx.isList() && ctx.invokeGetter() == null) {
+				ctx.setProperty(new LazyList(node, ctx, this));
+			}
+	}
 
 	private Object newInstance(Resource source, Class c) {
 		try {
@@ -528,8 +547,11 @@ public class RDF2Bean extends Base {
 	 * @throws InvocationTargetException
 	 */
 	private void apply(Resource i, ValuesContext ctx) {
-		if (ctx.isCollection() && (shallow && !included(ctx.getName())) ) {
+		if (ctx.isCollection() || ctx.isSet() && (shallow && !included(ctx.getName())) ) {
 			ctx.setProperty(new LazySet(i, ctx, this));
+			return;
+		} else if (ctx.isList() && (shallow && !included(ctx.getName())) ) {
+			ctx.setProperty(new LazyList(i, ctx, this));
 			return;
 		}
 		StmtIterator it = i.listProperties(m.getProperty(ctx.uri()));
@@ -561,9 +583,25 @@ public class RDF2Bean extends Base {
 		return l;
 	}	
 	
+	protected List lazyList(Resource i, ValuesContext ctx) {
+		Property p = m.createProperty(ctx.uri());
+		List l = null;
+		StmtIterator values = i.listProperties(p);
+		if ( values.hasNext()) {
+			Seq s = values.nextStatement().getSeq();
+			l = fillList(ctx.t(), s);
+		} else {
+			l = new ArrayList();
+		}
+		values.close();
+		return l;
+	}	
+	
 	private void apply(ValuesContext ctx, StmtIterator nodes) {
 		if (ctx.isCollection())
 			collection(ctx, nodes);
+		
+		// important, if not hasNext, we need to bail
 		else if (!nodes.hasNext())
 			return;
 		else if (ctx.isPrimitive())
@@ -579,8 +617,7 @@ public class RDF2Bean extends Base {
 	}
 
 	private void list(ValuesContext ctx, Seq s) {
-		if (!shallow || included(ctx.getName()))
-			ctx.setProperty(fillList(ctx.t(), s));
+		ctx.setProperty(fillList(ctx.t(), s));
 	}
 	
 	private List<Object> fillList(Class<?> type, Seq s) {

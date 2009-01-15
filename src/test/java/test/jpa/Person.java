@@ -66,15 +66,17 @@ public class Person {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (obj instanceof Person) 
-			return equals((Person)obj);
-		else
-			return super.equals(obj);
+		if ( obj == null) return false;
+		if ( this == obj ) return true;
+		if ( !(obj instanceof Person) ) return false;
+		return ( ((Person)obj).id == id);
 	}
 	
-	public boolean equals(Person p) {
-		return id == p.id;
+	public int hashCode() {
+		return id;
 	}
+	
+
     
     
 }
