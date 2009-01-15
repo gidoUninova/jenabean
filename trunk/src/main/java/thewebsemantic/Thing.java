@@ -1,5 +1,6 @@
 package thewebsemantic;
 
+import static thewebsemantic.Bean2RDF.logger;
 import static thewebsemantic.PrimitiveWrapper.isPrimitive;
 import static thewebsemantic.TypeWrapper.wrap;
 
@@ -10,6 +11,7 @@ import java.lang.reflect.Proxy;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.logging.Level;
 
 import thewebsemantic.Base.NullType;
 
@@ -34,6 +36,7 @@ public class Thing implements InvocationHandler, As {
 			as = As.class.getMethod("as", Class.class);
 			isa = As.class.getMethod("isa", Class.class);
 		} catch (Exception e) {
+			logger.log(Level.WARNING, "Could not access methods on As interface.", e);
 		}
 	}
 

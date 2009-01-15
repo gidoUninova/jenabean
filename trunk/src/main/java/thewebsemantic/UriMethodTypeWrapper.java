@@ -1,6 +1,9 @@
 package thewebsemantic;
 
+import static thewebsemantic.Bean2RDF.logger;
+
 import java.lang.reflect.Method;
+import java.util.logging.Level;
 
 public class UriMethodTypeWrapper extends TypeWrapper {
 
@@ -36,7 +39,9 @@ public class UriMethodTypeWrapper extends TypeWrapper {
 		try {
 			return (constructor != null) ?
 				constructor.newInstance(uri):c.newInstance();
-		} catch (Exception e) {e.printStackTrace();}
+		} catch (Exception e) {
+			logger.log(Level.WARNING, "Exception caught while instantiating " + c, e);
+		}
 		return null;
 	}
 

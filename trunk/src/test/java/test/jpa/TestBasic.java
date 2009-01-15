@@ -153,7 +153,7 @@ public class TestBasic {
 		OntModel om = ModelFactory.createOntologyModel(OntModelSpec.OWL_MEM, m);
 		Individual I = om.getIndividual("http://example.org/genre/jazz");
 		assertNotNull(I);
-		m.write(System.out, "N3");
+		//m.write(System.out, "N3");
 	}
 	
 	@Test
@@ -186,7 +186,42 @@ public class TestBasic {
 		trombone = em.find(MusicalInstrument.class, "http://example.org/instruments/trombone");
 		assertNotNull(trombone.getId());
 		assertEquals("http://example.org/instruments/trombone", trombone.getId().toString());
-		assertNotNull(trombone.getDescription());
+		assertNotNull(trombone.getDescription());		
+	}
+	
+	@Test
+	public void testSets() {
+		EntityManagerFactory factory =  Persistence.createEntityManagerFactory("tws:blank");
+		EntityManager em = factory.createEntityManager();
+		Group g = new Group("administrators");
+		em.persist(g);
+		g.getUsers().add(new User("tom"));
+		em.persist(g);
 		
+		em = factory.createEntityManager();
+		g = em.find(Group.class, "administrators");
+		assertNotNull(g);
+		assertEquals(g.getUsers().size(), 1);
+		Model m = (Model)em.getDelegate();
+		//m.write(System.out, "N3");
+	}
+	
+	@Test
+	public void testList() {
+		EntityManagerFactory factory =  Persistence.createEntityManagerFactory("tws:blank");
+		EntityManager em = factory.createEntityManager();
+
+		Hotel h = new Hotel();
+		h.hotelid = 1234;
+		em.persist(h);
+		h.getAmmenities().add(Ammenity.POOL);
+		em.persist(h);
+		
+		em = factory.createEntityManager();
+		Hotel h1 = em.find(Hotel.class, 1234);
+		assertNotNull(h1);
+		assertEquals(1, h1.getAmmenities().size());
+		Model m = (Model)em.getDelegate();
+		//m.write(System.err, "N3");
 	}
 }

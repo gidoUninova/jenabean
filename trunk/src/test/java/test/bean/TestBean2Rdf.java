@@ -59,7 +59,7 @@ public class TestBean2Rdf {
 	public void testExists() throws Exception {
 		OntModel m = ModelFactory.createOntologyModel(OntModelSpec.OWL_MEM_RDFS_INF);	
 		final Bean2RDF writer = new Bean2RDF(m);
-		final User u = new User();
+		final User u = new User("mark");
 		writer.save(u);		
 		RDF2Bean reader = new RDF2Bean(m);
 		assertTrue(reader.exists(User.class, u.getScreenName()));
@@ -533,12 +533,11 @@ public class TestBean2Rdf {
 		assertEquals("go to bank", list.get(2));
 		//m.write(System.out, "N3");
 		BusyPerson p1 = reader.load(BusyPerson.class, "123");
-		assertNull(p1.getTodoList());
-		reader.fill(p1).with("todoList");
+		assertNotNull(p1.getTodoList());
 		assertEquals(3,p1.getTodoList().size());
 		
 		p1 = reader.load(BusyPerson.class, "123");
-		assertNull(p1.getTodoList());
+		assertNotNull(p1.getTodoList());
 		writer.save(p1);
 		
 		// should still be three, we didn't make any changes, just a shallow load

@@ -1,5 +1,6 @@
 package thewebsemantic;
 
+import static thewebsemantic.Bean2RDF.logger;
 import static thewebsemantic.Util.last;
 
 import java.lang.reflect.Field;
@@ -8,6 +9,7 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
+import java.util.logging.Level;
 
 public class IdFieldTypeWrapper extends TypeWrapper {
 
@@ -29,7 +31,10 @@ public class IdFieldTypeWrapper extends TypeWrapper {
 			if (! idfield.isAccessible() )
 				idfield.setAccessible(true);
 			result = idfield.get(bean);
-		} catch (Exception e) {e.printStackTrace();}
+		} catch (Exception e) {
+			logger.log(Level.WARNING, "Error retrieving id field value.", e);
+
+		}
 		return result.toString();
 	}
 
@@ -77,7 +82,8 @@ public class IdFieldTypeWrapper extends TypeWrapper {
 			return (constructor != null) ? constructor.newInstance(last(uri))
 					: newinstance(uri);
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.log(Level.WARNING, "Could not instantiate bean.", e);
+
 		}
 		return null;
 	}

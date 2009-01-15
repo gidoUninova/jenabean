@@ -5,6 +5,7 @@ import java.lang.reflect.ParameterizedType;
 import java.net.URI;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 import thewebsemantic.Base.NullType;
 
@@ -36,7 +37,15 @@ public abstract class ValuesContext {
     public boolean isCollection() {
        return type().equals(Collection.class);
     }
+    
+    public boolean isCollectionOrSet() {
+    	return isCollection() || isSet();
+    }
 
+    public boolean isSet() {
+        return type().equals(Set.class);
+    }
+    
     public boolean isCollectionType() {
 		return Collection.class.isAssignableFrom(type());
 	}
@@ -87,5 +96,7 @@ public abstract class ValuesContext {
 	public boolean isArray() {
 		return type().isArray();
 	}
+	
+	public String toString() {return getName();}
 
 }

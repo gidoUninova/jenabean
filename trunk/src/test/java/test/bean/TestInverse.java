@@ -28,7 +28,6 @@ public class TestInverse {
 	}
 	@Test
 	public void testExtended()  throws Exception {
-		System.setProperty("jenabean.fieldaccess", "false");
 		OntModel m = ModelFactory.createOntologyModel(OntModelSpec.OWL_MEM_MICRO_RULE_INF);	
 		Bean2RDF writer = new Bean2RDF(m);
 		
@@ -60,7 +59,6 @@ public class TestInverse {
 	
 	@Test
 	public void testBasic() throws Exception {
-		System.setProperty("jenabean.fieldaccess", "false");
 		OntModel m = ModelFactory.createOntologyModel(OntModelSpec.OWL_MEM_MICRO_RULE_INF);	
 		Bean2RDF writer = new Bean2RDF(m);
 

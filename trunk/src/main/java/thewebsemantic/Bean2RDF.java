@@ -67,7 +67,7 @@ public class Bean2RDF extends Base {
 	private static final String UNSUPPORTED_TYPE = "UNSUPPORTED_TYPE";
 	private ArrayList<Object> cycle;
 	private boolean forceDeep = false;
-    private static Logger logger = Logger.getLogger("com.thewebsemantic");
+    public static Logger logger = Logger.getLogger("com.thewebsemantic");
     ResourceBundle bundle = ResourceBundle.getBundle("thewebsemantic.messages");
 
 

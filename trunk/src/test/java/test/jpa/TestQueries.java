@@ -62,7 +62,7 @@ public class TestQueries {
 		assertEquals(2, results.size());
 		peter = em.find(Man.class, "http://example.org/peter");
 		assertEquals("Peter", peter.getName());
-		m.write(System.out, "N3");
+		//m.write(System.out, "N3");
 	}
 	
 	@Test
@@ -99,7 +99,7 @@ public class TestQueries {
 		em.persist(adam);
 		em.persist(eve);
 		
-		jem.getModel().write(System.out, "N3");
+		//jem.getModel().write(System.out, "N3");
 		
 		JBQueryWrapper q = new JBQueryWrapper(query, jem, Human.class);		
 		List<Human> people = q.getResultList();
@@ -112,6 +112,22 @@ public class TestQueries {
 		for (Human human : people) {
 			System.out.println(human.getName());
 		}
+	}
+	
+	@Test
+	public void david() {
+		EntityManagerFactory factory =  Persistence.createEntityManagerFactory("tws:blank");
+		EntityManager em = factory.createEntityManager();
+		
+		Person p = new Person();
+		p.setId(0);
+		p.setFirstName("taylor");
+		em.persist(p);
+		
+		
+		Model m = (Model)em.getDelegate();
+		m.write(System.out, "N3");
+
 	}
 	
 	

@@ -26,6 +26,15 @@ public class TestErrorConditions {
 		RDF2Bean reader = new RDF2Bean(m);
 		bad = reader.load(Bad.class, bad.hashCode());
 		assertNotNull(bad);
-		assertEquals(0, bad.getThings().size());
+		assertEquals(1, bad.getThings().size());
+	}
+	
+	@Test
+	public void privateMethods() {
+		Model m = ModelFactory.createDefaultModel();		
+		Bean2RDF writer = new Bean2RDF(m);		
+		writer.save(new Private("foo"));
+		
+	
 	}
 }

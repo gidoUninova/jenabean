@@ -45,6 +45,7 @@ public class JBEntityManager implements javax.persistence.EntityManager {
 	}
 
 	public void close() {
+		cache.clear();
 		isOpen = false;
 	}
 
@@ -143,8 +144,10 @@ public class JBEntityManager implements javax.persistence.EntityManager {
 	}
 
 	public void persist(Object bean) {
+		if ( cache.contains(bean))
+			return;
+		_reader.init(bean);
 		_writer.save(bean);
-		_reader.load(bean);
 		if (ta != null && ta.isActive())
 			cache.add(bean);
 	}
