@@ -58,7 +58,7 @@ public class IdFieldTypeWrapper extends TypeWrapper {
 	public ValuesContext getProperty(String name) {
 		try {
 			Field f = c.getDeclaredField(name);
-			return new FieldContext(null, f);
+			return new FieldContext(null, f, f.equals(idfield));
 		} catch (NoSuchFieldException e) {
 			e.printStackTrace();
 		}
@@ -71,7 +71,7 @@ public class IdFieldTypeWrapper extends TypeWrapper {
 			if (field.equals(idfield) && uriid)
 				continue;
 			if (!Modifier.isTransient(field.getModifiers()))
-				values.add(new FieldContext(o, field));
+				values.add(new FieldContext(o, field, field.equals(idfield)));
 		}
 		return values.toArray(new ValuesContext[0]);
 	}

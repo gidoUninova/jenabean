@@ -3,10 +3,9 @@ package thewebsemantic;
 import static thewebsemantic.JenaHelper.toLiteral;
 import static thewebsemantic.PrimitiveWrapper.isPrimitive;
 import static thewebsemantic.TypeWrapper.instanceURI;
-import static thewebsemantic.TypeWrapper.type;
 import static thewebsemantic.TypeWrapper.isAnonymous;
+import static thewebsemantic.TypeWrapper.type;
 
-import java.lang.reflect.Array;
 import java.net.URI;
 import java.text.MessageFormat;
 import java.util.ArrayList;
@@ -16,8 +15,8 @@ import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import thewebsemantic.ResolverUtil.IsA;
-
+import com.hp.hpl.jena.graph.Node;
+import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.Property;
 import com.hp.hpl.jena.rdf.model.RDFNode;
@@ -158,7 +157,7 @@ public class Bean2RDF extends Base {
 	private Resource write(Object bean, Resource subject, boolean shallow) {
 		cycle.add(bean);
 		for (ValuesContext p : TypeWrapper.valueContexts(bean))
-			if (!(shallow && p.type().equals(Collection.class)) || forceDeep)
+			if (!(shallow && p.type().isAssignableFrom(Collection.class)) || forceDeep)
 				saveOrUpdate(subject, p);
 		return subject;
 	}
@@ -172,8 +171,6 @@ public class Bean2RDF extends Base {
 			subject.removeAll(property);
 		else if (pc.isPrimitive())
 			subject.removeAll(property).addProperty(property, toLiteral(m, o));
-		else if (pc.isArray())
-			Saver.of(Array.class).save(this, subject, property, o);
 		else if (isNormalObject(o))
 			setPropertyValue(subject, property, o);
 		else 
@@ -222,10 +219,11 @@ public class Bean2RDF extends Base {
 	 */
 	private void setPropertyValue(Resource subject, Property property, Object o) {
 		Statement s = subject.getProperty(property);
-		if (s!=null) {
-			Resource r = s.getResource();
-			if ( r.isAnon() )
-				m.removeAll(null, null, r).removeAll(r, null, null);
+		Resource existing=null;
+		if (s!=null ) {
+			existing = s.getResource();
+			if (existing.isAnon())
+				existing.removeProperties();
 		}
 		subject.removeAll(property).addProperty(property, _write(o, true));
 	}

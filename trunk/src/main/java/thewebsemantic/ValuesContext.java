@@ -17,6 +17,10 @@ public abstract class ValuesContext {
 	protected Object subject;
 
 	public abstract String uri();
+	
+	public abstract boolean isId();
+	
+	public abstract boolean isGenerated();
 
 	public abstract boolean isSymmetric();
 
@@ -98,5 +102,6 @@ public abstract class ValuesContext {
 	}
 	
 	public String toString() {return getName();}
+
 
 }

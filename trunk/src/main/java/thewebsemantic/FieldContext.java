@@ -7,6 +7,8 @@ import java.lang.reflect.ParameterizedType;
 import java.util.Date;
 import java.util.logging.Level;
 
+import javax.persistence.GeneratedValue;
+
 import com.hp.hpl.jena.graph.Node;
 import com.hp.hpl.jena.rdf.model.Model;
 
@@ -14,11 +16,13 @@ class FieldContext extends ValuesContext {
 
 	Field field;
 	TypeWrapper type;
+	boolean idField;
 
-	public FieldContext(Object bean, Field p) {
+	public FieldContext(Object bean, Field p, boolean id) {
 		subject = bean;
 		field = p;
 		type = TypeWrapper.type(bean);
+		idField = id;
 	}
 	
 	public String uri() {
@@ -98,5 +102,17 @@ class FieldContext extends ValuesContext {
 	public boolean isTransitive() {
 		return isTransitive(field);
 	}
+
+	@Override
+	public boolean isId() {
+		return idField;
+	}
+
+	@Override
+	public boolean isGenerated() {
+		return field.isAnnotationPresent(GeneratedValue.class);
+	}
+	
+	
 	
 }

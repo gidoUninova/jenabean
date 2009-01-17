@@ -25,11 +25,11 @@ public abstract class Saver {
 	}
 	
 	public static boolean supports(Class<?> type) {
-		return lookup.containsKey(type);
+		return (type.isArray()) ? true : lookup.containsKey(type);
 	}
 
 	public static Saver of(Class<?> type) {
-		return lookup.get(type);
+		return (type.isArray()) ? lookup.get(Array.class) : lookup.get(type);
 	}
 
 	public abstract void save(Bean2RDF writer, Resource subject, Property property, Object o);

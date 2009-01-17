@@ -41,8 +41,6 @@ public class TestArrays {
 		Bean2RDF writer = new Bean2RDF(m);
 		writer.saveDeep(bean);
 
-	
-		
 		RDF2Bean reader = new RDF2Bean(m);
 		Collection<ExampleArraysBean>  beans = reader.load(ExampleArraysBean.class);
 		assertEquals(1, beans.size());

@@ -119,5 +119,16 @@ class PropertyContext extends ValuesContext {
 		return inverseOf(property.getReadMethod());
 	}
 
+	@Override
+	public boolean isId() {
+		return false;
+	}
+
+	@Override
+	public boolean isGenerated() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 
 }

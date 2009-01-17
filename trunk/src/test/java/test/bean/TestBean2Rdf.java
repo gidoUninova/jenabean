@@ -321,11 +321,12 @@ public class TestBean2Rdf {
 		bean.setMyBoolean(true);
 		bean.setMyCalendar(Calendar.getInstance());
 		bean.setMyBigDecimal(bd);
+		bean.setMyShort((short)1);
 
 		OntModel m = ModelFactory.createOntologyModel();
 		Bean2RDF writer = new Bean2RDF(m);
 		writer.save(bean);
-		//m.write(System.out, "N3");
+		m.write(System.out, "N3");
 		RDF2Bean reader = new RDF2Bean(m);
 		TypeTesterBean bean2 = reader.loadDeep(TypeTesterBean.class, bean.hashCode());
 
@@ -338,6 +339,7 @@ public class TestBean2Rdf {
 		assertEquals(bean.getMyLong(), bean2.getMyLong());
 		assertEquals(bean.isMyBoolean(), bean2.isMyBoolean());
 		//assertEquals(bean.getMyBigDecimal(), bean2.getMyBigDecimal());
+		assertEquals((short)1, bean2.getMyShort());
 		
 		Collection<TypeTesterBean> results = reader.load(TypeTesterBean.class);
 		assertEquals(1, results.size());
