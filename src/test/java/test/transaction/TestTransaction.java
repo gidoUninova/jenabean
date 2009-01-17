@@ -21,6 +21,5 @@ public class TestTransaction {
 		man.setName("Joel Cavazos");
 		writer.save(man);
 		m.abort();
-		
 	}
 }

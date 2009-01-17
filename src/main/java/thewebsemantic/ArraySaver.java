@@ -2,7 +2,9 @@ package thewebsemantic;
 
 import java.lang.reflect.Array;
 
+import com.hp.hpl.jena.rdf.model.NodeIterator;
 import com.hp.hpl.jena.rdf.model.Property;
+import com.hp.hpl.jena.rdf.model.RDFNode;
 import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.rdf.model.Seq;
 import com.hp.hpl.jena.shared.PropertyNotFoundException;
@@ -12,38 +14,35 @@ public class ArraySaver extends Saver {
 	@Override
 	public void save(Bean2RDF writer, Resource subject, Property property,
 			Object array) {
-		// we will not remove children unless we get a 0 length list
+		// don't remove children unless we get a 0 length list
 		if ( array==null)
 			return;
 		Seq s = getSeq(subject, property);
 		int len = Array.getLength(array);
-		int difference = s.size() - len;
-		int seqsize = s.size();
-		if (difference > 0)
-			for (int i = 0; i < difference; s.remove(seqsize-i++)) {}
-		
 		for (int i = 0; i < len; i++) {
 			Object o = Array.get(array, i);
 			if (o==null)
 				continue;
-			if (i >= s.size()) {
-				s.add(writer.toRDFNode(o));
-			} else {
-				s.set(i + 1, writer.toRDFNode(o));
-			}
+			s.add(writer.toRDFNode(o));
 		}
-
 	}
-	
+
 	protected Seq getSeq(Resource subject, Property property) {
 		try {
-			return subject.getRequiredProperty(property).getSeq();
-		} catch (PropertyNotFoundException e) {
-			Seq seq = subject.getModel().createSeq();
-			subject.addProperty(property, seq);
-			return seq;			
-		}
-
+			Seq s = subject.getRequiredProperty(property).getSeq();
+			NodeIterator it = s.iterator();
+			while (it.hasNext()) {
+				RDFNode node = it.nextNode();
+				if (node.isAnon())
+					((Resource)node.as(Resource.class)).removeProperties();
+			}
+			it.close();
+			s.removeProperties();
+			subject.removeAll(property);
+		} catch (PropertyNotFoundException e) {}
+		Seq seq = subject.getModel().createSeq();
+		subject.addProperty(property, seq);
+		return seq;
 	}
 
 }

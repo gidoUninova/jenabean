@@ -17,6 +17,7 @@ public class TypeTesterBean {
 	private boolean myBoolean;
 	private Calendar calendar;
 	private BigDecimal myBigDecimal;
+	private short myShort;
 	
 	public BigDecimal getMyBigDecimal() {
 		return myBigDecimal;
@@ -37,36 +38,47 @@ public class TypeTesterBean {
 	public String getMyString() {
 		return myString;
 	}
+
 	public void setMyString(String myString) {
 		this.myString = myString;
 	}
+
 	public long getMyLong() {
 		return myLong;
 	}
+
 	public void setMyLong(long myLong) {
 		this.myLong = myLong;
 	}
+
 	public int getMyInt() {
 		return myInt;
 	}
+
 	public void setMyInt(int myInt) {
 		this.myInt = myInt;
 	}
+
 	public float getMyFloat() {
 		return myFloat;
 	}
+
 	public void setMyFloat(float myFloat) {
 		this.myFloat = myFloat;
 	}
+	
 	public double getMyDouble() {
 		return myDouble;
 	}
+	
 	public void setMyDouble(double myDouble) {
 		this.myDouble = myDouble;
 	}
+	
 	public Date getMyDate() {
 		return myDate;
 	}
+	
 	public void setMyDate(Date myDate) {
 		this.myDate = myDate;
 	}
@@ -86,6 +98,16 @@ public class TypeTesterBean {
 	public Calendar getMyCalendar() {
 		return calendar;
 	}
+
+	public short getMyShort() {
+		return myShort;
+	}
+
+	public void setMyShort(short myShort) {
+		this.myShort = myShort;
+	}
+	
+
 
 
 }

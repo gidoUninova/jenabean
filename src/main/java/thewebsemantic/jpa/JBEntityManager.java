@@ -134,7 +134,9 @@ public class JBEntityManager implements javax.persistence.EntityManager {
 	}
 
 	public void lock(Object arg0, LockModeType arg1) {
-		// TODO Auto-generated method stub
+		if (! isOpen)
+			throw new IllegalStateException(CLOSED);
+		
 
 	}
 

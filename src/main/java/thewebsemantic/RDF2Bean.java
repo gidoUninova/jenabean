@@ -44,6 +44,7 @@ public class RDF2Bean extends Base {
 	private boolean shallow = false;
 	private Set<String> myIncludes = new HashSet<String>();
 	private static final String[] none = new String[0];
+	private int auto;
 
 	/**
 	 * Constructs and instance of RDF2Bean bound to a particular Jena model.
@@ -474,13 +475,17 @@ public class RDF2Bean extends Base {
 	 * @param target
 	 */
 	public void init(Object target) {
-		Resource node = m.getResource(instanceURI(target));
-		for (ValuesContext ctx : TypeWrapper.valueContexts(target))
+		Resource node = m.getResource(instanceURI(target)); 
+		for (ValuesContext ctx : TypeWrapper.valueContexts(target)) {
 			if ( ctx.isCollectionOrSet() && ctx.invokeGetter() == null) {
 				ctx.setProperty(new LazySet(node, ctx, this));
 			} else if ( ctx.isList() && ctx.invokeGetter() == null) {
 				ctx.setProperty(new LazyList(node, ctx, this));
 			}
+			if (ctx.isId() && ctx.isGenerated()) {
+				ctx.setProperty(auto++);
+			}
+		}
 	}
 
 	private Object newInstance(Resource source, Class c) {

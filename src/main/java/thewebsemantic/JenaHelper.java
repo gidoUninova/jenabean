@@ -31,10 +31,10 @@ public class JenaHelper {
 			return l.getDouble();
 		} else if ( Character.TYPE.equals(c)) {
 			return l.getValue().toString().charAt(0);
+		} else if ( Short.TYPE.equals(c)) {
+			return l.getShort();
 		} else
-			return l.getValue();
-		
-		
+			return l.getValue();		
 	}
 	
 	public static Date date(Literal l) {
@@ -64,6 +64,8 @@ public class JenaHelper {
 			return m.createTypedLiteral(((Integer) o).intValue());
 		else if (o instanceof Long)
 			return m.createTypedLiteral(((Long) o).longValue());
+		else if (o instanceof Short)
+			return m.createTypedLiteral((Short)o);
 		else if (o instanceof Float)
 			return m.createTypedLiteral(((Float) o).floatValue());
 		else if (o instanceof Double)
