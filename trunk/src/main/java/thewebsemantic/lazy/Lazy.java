@@ -1,4 +1,4 @@
-package thewebsemantic;
+package thewebsemantic.lazy;
 
 public interface Lazy {
 

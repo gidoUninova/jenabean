@@ -3,6 +3,8 @@ package thewebsemantic;
 import java.lang.reflect.Array;
 import java.util.List;
 
+import thewebsemantic.lazy.Lazy;
+
 import com.hp.hpl.jena.rdf.model.Property;
 import com.hp.hpl.jena.rdf.model.Resource;
 

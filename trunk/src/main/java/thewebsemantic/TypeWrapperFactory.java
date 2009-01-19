@@ -26,7 +26,7 @@ public class TypeWrapperFactory {
 				return new UriMethodTypeWrapper(c, md.getMethod());
 
 		// now try field annotations
-		Field[] fields = TypeUtils.getDeclaredFields(c);
+		Field[] fields = Util.getDeclaredFields(c);
 		for (Field f : fields) {
 			if (isId(f)) {
 				if (f.isAnnotationPresent(GeneratedValue.class))

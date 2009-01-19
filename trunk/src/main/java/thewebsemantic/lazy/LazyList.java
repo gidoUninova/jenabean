@@ -1,4 +1,4 @@
-package thewebsemantic;
+package thewebsemantic.lazy;
 
 import java.util.Collection;
 import java.util.Iterator;
@@ -7,22 +7,26 @@ import java.util.ListIterator;
 
 import com.hp.hpl.jena.rdf.model.Resource;
 
+
+@SuppressWarnings("unchecked")
 public class LazyList implements List, Lazy {
 
-	private transient ValuesContext ctx;
 	private transient Resource i;
-	private transient RDF2Bean reader;
+	private transient Provider reader;
 	private List data;
+	private Class type;
+	private String propertyUri;
 	
-	public LazyList(Resource i, ValuesContext ctx, RDF2Bean r2b) {
+	public LazyList(Resource i, String propertyUri, Class type, Provider r2b) {
 		this.i = i;
-		this.ctx = ctx;
+		this.propertyUri = propertyUri;
+		this.type = type;
 		reader = r2b;
 	}
 
 	private List data() {
 		if ( data == null)
-			data = reader.lazyList(i, ctx);
+			data = reader.lazyList(i, propertyUri, type);
 		return data;
 	}
 
