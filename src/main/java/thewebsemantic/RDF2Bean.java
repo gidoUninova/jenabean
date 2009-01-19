@@ -19,6 +19,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+import thewebsemantic.lazy.LazyList;
+import thewebsemantic.lazy.LazySet;
+import thewebsemantic.lazy.Provider;
+
 import com.hp.hpl.jena.rdf.model.Literal;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.Property;
@@ -39,13 +43,12 @@ import com.hp.hpl.jena.vocabulary.RDF;
  * 
  * @see Bean2RDF
  */
-public class RDF2Bean extends Base {
+public class RDF2Bean extends Base implements Provider {
 	private HashMap<String, Object> cycle;
 
 	private boolean shallow = false;
 	private Set<String> myIncludes = new HashSet<String>();
 	private static final String[] none = new String[0];
-	private int auto;
 
 	/**
 	 * Constructs and instance of RDF2Bean bound to a particular Jena model.
@@ -479,9 +482,9 @@ public class RDF2Bean extends Base {
 		Resource node = m.getResource(instanceURI(target)); 
 		for (ValuesContext ctx : TypeWrapper.valueContexts(target)) {
 			if ( ctx.isCollectionOrSet() && ctx.invokeGetter() == null) {
-				ctx.setProperty(new LazySet(node, ctx, this));
+				ctx.setProperty(new LazySet(node, ctx.uri(), ctx.t(), this));
 			} else if ( ctx.isList() && ctx.invokeGetter() == null) {
-				ctx.setProperty(new LazyList(node, ctx, this));
+				ctx.setProperty(new LazyList(node, ctx.uri(), ctx.t(), this));
 			}
 			if (ctx.isId() && ctx.isGenerated()) {
 				String uri = TypeWrapper.type(target).typeUri();
@@ -564,10 +567,10 @@ public class RDF2Bean extends Base {
 	 */
 	private void apply(Resource i, ValuesContext ctx) {
 		if (ctx.isCollection() || ctx.isSet() && (shallow && !included(ctx.getName())) ) {
-			ctx.setProperty(new LazySet(i, ctx, this));
+			ctx.setProperty(new LazySet(i, ctx.uri(), ctx.t(), this));
 			return;
 		} else if (ctx.isList() && (shallow && !included(ctx.getName())) ) {
-			ctx.setProperty(new LazyList(i, ctx, this));
+			ctx.setProperty(new LazyList(i, ctx.uri(), ctx.t(), this));
 			return;
 		}
 		StmtIterator it = i.listProperties(m.getProperty(ctx.uri()));
@@ -591,21 +594,21 @@ public class RDF2Bean extends Base {
 		values.close();
 	}
 
-	protected Set lazySet(Resource i, ValuesContext ctx) {
-		Property p = m.createProperty(ctx.uri());
+	public Set lazySet(Resource i, String propertyUri, Class type) {
+		Property p = m.createProperty(propertyUri);
 		StmtIterator values = i.listProperties(p);
-		Set l = fillCollection(ctx.t(), values);
+		Set l = fillCollection(type, values);
 		values.close();
 		return l;
 	}	
 	
-	protected List lazyList(Resource i, ValuesContext ctx) {
-		Property p = m.createProperty(ctx.uri());
+	public List lazyList(Resource i, String propertyUri, Class type) {
+		Property p = m.createProperty(propertyUri);
 		List l = null;
 		StmtIterator values = i.listProperties(p);
 		if ( values.hasNext()) {
 			Seq s = values.nextStatement().getSeq();
-			l = fillList(ctx.t(), s);
+			l = fillList(type, s);
 		} else {
 			l = new ArrayList();
 		}
