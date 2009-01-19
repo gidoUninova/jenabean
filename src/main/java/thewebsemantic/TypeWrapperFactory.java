@@ -5,8 +5,16 @@ import java.beans.MethodDescriptor;
 import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 
 public class TypeWrapperFactory {
+	
+	public static Logger logger = Logger.getLogger("com.thewebsemantic");
+	 
 	public static TypeWrapper newwrapper(Class<?> c) {
 		BeanInfo info = TypeWrapper.beanInfo(c);
 		if (c.isEnum())
@@ -20,10 +28,20 @@ public class TypeWrapperFactory {
 		// now try field annotations
 		Field[] fields = TypeUtils.getDeclaredFields(c);
 		for (Field f : fields) {
-			if (isId(f))
+			if (isId(f)) {
+				if (f.isAnnotationPresent(GeneratedValue.class))
+					validate(f);
 				return new IdFieldTypeWrapper(c, f, fields);
+			}
 		}
 		return new DefaultTypeWrapper(c);
+	}
+	
+	private static void validate(Field f) {
+		GeneratedValue gv = f.getAnnotation(GeneratedValue.class);
+		if (GenerationType.AUTO != gv.strategy() )
+			logger.log(Level.WARNING, gv.strategy() + " is not supported.");
+		
 	}
 	private static boolean isId(AccessibleObject m) {
 		return m.isAnnotationPresent(Id.class)

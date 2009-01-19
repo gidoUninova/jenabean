@@ -1,8 +1,9 @@
 package test.jpa;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -14,8 +15,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.hp.hpl.jena.rdf.model.Model;
-
-import static org.junit.Assert.*;
 
 public class PersonTest {
 	 private final Address a1 = new Address("A Rd.", "", "Dallas", "TX", "75001");
@@ -34,6 +33,7 @@ public class PersonTest {
         p1.setId(0);
         p2.setId(1);
         Model m = (Model)em.getDelegate();
+        m.removeAll();
         //m.write(System.out,"N3");
     }
  
@@ -107,7 +107,7 @@ public class PersonTest {
     }
 
     private Company findCompanyNamed(final EntityManager em, String name) {
-        return (Company) em.createNativeQuery(
+         return (Company) em.createNativeQuery(
                 "select ?s where { " +
                 "?s a <http://test.jpa/Company>  . " +
                 "?s <http://test.jpa/name> ?name FILTER regex(?name, ?match) }")
@@ -139,6 +139,7 @@ public class PersonTest {
     @SuppressWarnings("unchecked")
     @Test
     public void createCompanyAndHirePeople() {
+    	 ((Model)em.getDelegate()).write(System.out, "N3");
         createCompanyWithTwoEmployees();
  
         final List<Person> list = em.createNativeQuery("select ?s where { ?s a <http://test.jpa/Person> }")
@@ -153,17 +154,12 @@ public class PersonTest {
     public void hireAndFire() {
         final Company c1 = createCompanyWithTwoEmployees();
         final List<Person> people = PersonTest.generatePersonObjects();
- 
         em.getTransaction().begin();
- 
- 
         for (Person p : people) {
             c1.fire(p);
         }
-
         em.persist(c1);
         em.getTransaction().commit();
-        //((Model)em.getDelegate()).write(System.out, "N3");
         final Company foundCompany = findCompanyNamed(em, "The Company");
         assertEquals(0, foundCompany.getEmployees().size());
     }

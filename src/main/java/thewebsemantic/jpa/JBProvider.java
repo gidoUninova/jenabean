@@ -148,6 +148,7 @@ public class JBProvider implements PersistenceProvider {
             	addProperty(p, class1.getName());
             if (class1.isAnnotationPresent(NamedNativeQueries.class))
             	storeNamedQuery(class1, querymap);
+ 
 		}
 	}
 

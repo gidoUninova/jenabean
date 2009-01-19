@@ -62,7 +62,6 @@ public class TestQueries {
 		assertEquals(2, results.size());
 		peter = em.find(Man.class, "http://example.org/peter");
 		assertEquals("Peter", peter.getName());
-		//m.write(System.out, "N3");
 	}
 	
 	@Test
