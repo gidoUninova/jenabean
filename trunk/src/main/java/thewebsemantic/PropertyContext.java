@@ -8,6 +8,8 @@ import java.net.URI;
 import java.util.Collection;
 import java.util.logging.Level;
 
+import javax.persistence.GeneratedValue;
+
 import com.hp.hpl.jena.graph.Node;
 import com.hp.hpl.jena.rdf.model.Model;
 
@@ -126,8 +128,7 @@ class PropertyContext extends ValuesContext {
 
 	@Override
 	public boolean isGenerated() {
-		// TODO Auto-generated method stub
-		return false;
+		return property.getReadMethod().isAnnotationPresent(GeneratedValue.class);
 	}
 
 

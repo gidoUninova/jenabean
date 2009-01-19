@@ -29,6 +29,7 @@ import com.hp.hpl.jena.rdf.model.Seq;
 import com.hp.hpl.jena.rdf.model.Statement;
 import com.hp.hpl.jena.rdf.model.StmtIterator;
 import com.hp.hpl.jena.shared.Lock;
+import com.hp.hpl.jena.shared.PropertyNotFoundException;
 import com.hp.hpl.jena.vocabulary.RDF;
 
 /**
@@ -483,7 +484,17 @@ public class RDF2Bean extends Base {
 				ctx.setProperty(new LazyList(node, ctx, this));
 			}
 			if (ctx.isId() && ctx.isGenerated()) {
-				ctx.setProperty(auto++);
+				String uri = TypeWrapper.type(target).typeUri();
+				Resource r = m.createResource(uri);
+				int idx=0;
+				try {
+					Statement s = r.getRequiredProperty(sequence);
+					idx = s.getInt();
+				} catch (PropertyNotFoundException e) {
+
+				}
+				ctx.setProperty(idx);
+				r.removeAll(sequence).addProperty(sequence, m.createTypedLiteral(idx+1));
 			}
 		}
 	}

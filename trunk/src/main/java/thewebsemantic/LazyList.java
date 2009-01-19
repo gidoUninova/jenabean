@@ -7,7 +7,7 @@ import java.util.ListIterator;
 
 import com.hp.hpl.jena.rdf.model.Resource;
 
-public class LazyList implements List {
+public class LazyList implements List, Lazy {
 
 	private transient ValuesContext ctx;
 	private transient Resource i;
@@ -124,6 +124,10 @@ public class LazyList implements List {
 
 	public Object[] toArray(Object[] a) {
 		return data().toArray(a);
+	}
+
+	public boolean isConnected() {
+		return data != null;
 	}
 	
 

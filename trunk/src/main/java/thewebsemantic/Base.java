@@ -18,18 +18,20 @@ import com.hp.hpl.jena.vocabulary.RDF;
 public class Base {
 
 	public static final String JAVACLASS = "http://thewebsemantic.com/javaclass";
+	public static final String SEQUENCE = "http://thewebsemantic.com/sequence";
     ResourceBundle bundle = ResourceBundle.getBundle("thewebsemantic.messages");
 	protected OntModel om;
 	protected Model m;
 	protected Binder binder;
 	protected Property javaclass;
-
+	protected Property sequence;
 	protected Base(Model m) {
 		this.m = m;
 		binder = BinderImp.instance();		
 		if ( m instanceof OntModel) {om = (OntModel)m;}
 		m.enterCriticalSection(Lock.WRITE);
 		javaclass = m.createProperty(JAVACLASS);
+		sequence = m.createProperty(SEQUENCE);
 		javaclass.addProperty(RDF.type,OWL.AnnotationProperty);
 		m.leaveCriticalSection();
 	}

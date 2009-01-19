@@ -6,7 +6,7 @@ import java.util.Set;
 
 import com.hp.hpl.jena.rdf.model.Resource;
 
-public class LazySet implements Set {
+public class LazySet implements Set, Lazy {
 
 	private transient ValuesContext ctx;
 	private transient Resource i;
@@ -105,6 +105,10 @@ public class LazySet implements Set {
 		if (data == null)
 			fill();
 		return data.toArray(a);
+	}
+
+	public boolean isConnected() {
+		return data != null;
 	}
 
 }

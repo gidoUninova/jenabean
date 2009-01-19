@@ -224,4 +224,10 @@ public class TestBasic {
 		Model m = (Model)em.getDelegate();
 		//m.write(System.err, "N3");
 	}
+	
+	@Test
+	public void testGeneratedId() {
+		EntityManagerFactory factory =  Persistence.createEntityManagerFactory("tws:blank");
+		EntityManager em = factory.createEntityManager();		
+	}
 }

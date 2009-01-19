@@ -13,6 +13,9 @@ public class ListSaver extends Saver {
 		// we will not remove children unless we get a 0 length list
 		if ( o==null)
 			return;
+		else if (o instanceof Lazy && ! ((Lazy)o).isConnected()) {
+			return;
+		}
 		Saver.of(Array.class).save(writer, subject, property, ((List)o).toArray());
 
 	}
