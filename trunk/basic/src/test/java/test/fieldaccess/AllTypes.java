@@ -3,8 +3,7 @@ package test.fieldaccess;
 import java.util.Calendar;
 import java.util.Date;
 
-import javax.persistence.Id;
-
+import thewebsemantic.Id;
 import thewebsemantic.RdfProperty;
 import thewebsemantic.binding.RdfBean;
 

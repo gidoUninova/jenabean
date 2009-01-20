@@ -1,7 +1,5 @@
 package test.fieldaccess;
 
-import javax.persistence.Id;
-
 public class SonOfFatAlbert extends FatAlbert {
 
 

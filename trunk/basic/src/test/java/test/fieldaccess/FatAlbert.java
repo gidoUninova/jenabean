@@ -1,7 +1,8 @@
 package test.fieldaccess;
 
-import javax.persistence.Id;
 
+
+import thewebsemantic.Id;
 import thewebsemantic.RdfProperty;
 
 public class FatAlbert {
