@@ -16,11 +16,11 @@ public abstract class ValuesContext {
 
 	protected Object subject;
 
+	public abstract AccessibleObject  getAccessibleObject();
+	
 	public abstract String uri();
 	
 	public abstract boolean isId();
-	
-	public abstract boolean isGenerated();
 
 	public abstract boolean isSymmetric();
 

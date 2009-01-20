@@ -1,6 +1,7 @@
 package thewebsemantic;
 
 import java.beans.PropertyDescriptor;
+import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.ParameterizedType;
 import java.net.URI;
 import java.util.Collection;
@@ -138,9 +139,8 @@ class NullPropertyContext extends ValuesContext {
 	}
 
 	@Override
-	public boolean isGenerated() {
-		// TODO Auto-generated method stub
-		return false;
+	public AccessibleObject getAccessibleObject() {
+		return property.getReadMethod();
 	}
 	
 

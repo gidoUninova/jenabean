@@ -43,6 +43,8 @@ public class JBQueryWrapper implements Query {
 	}
 
 	public List getResultList() {
+		//List<Resource> results = Sparql.exec2(em._model, query, initialSettings);
+		//return new LazyResults(results, em);
 		return Sparql.exec(em._model, type, query, initialSettings);
 	}
 

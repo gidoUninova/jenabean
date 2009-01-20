@@ -8,6 +8,7 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.FlushModeType;
 import javax.persistence.LockModeType;
 import javax.persistence.NamedNativeQuery;
+import javax.persistence.PersistenceException;
 import javax.persistence.Query;
 
 import thewebsemantic.Bean2RDF;
@@ -90,6 +91,8 @@ public class JBEntityManager implements javax.persistence.EntityManager {
 			return _reader.load(type, arg1.toString());
 		} catch (NotFoundException e) {
 			return null;
+		} catch (Exception e) {
+			throw new PersistenceException(e);
 		}
 	}
 

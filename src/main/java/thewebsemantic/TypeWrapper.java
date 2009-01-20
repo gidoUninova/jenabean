@@ -15,7 +15,6 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.logging.Level;
 
-import javax.persistence.Embeddable;
 
 import com.hp.hpl.jena.rdf.model.Resource;
 
@@ -143,13 +142,6 @@ public abstract class TypeWrapper {
 		return type(bean).uri(bean);
 	}
 
-	public static boolean isAnonymous(Object bean) {
-		return type(bean).isAnon(bean);
-	}
-
-	private boolean isAnon(Object bean) {
-		return c.isAnnotationPresent(Embeddable.class);
-	}
 
 	/**
 	 * Reterns the ID

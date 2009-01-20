@@ -2,12 +2,12 @@ package thewebsemantic;
 
 import static thewebsemantic.Bean2RDF.logger;
 
+import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.util.Date;
 import java.util.logging.Level;
 
-import javax.persistence.GeneratedValue;
 
 import com.hp.hpl.jena.graph.Node;
 import com.hp.hpl.jena.rdf.model.Model;
@@ -109,10 +109,8 @@ class FieldContext extends ValuesContext {
 	}
 
 	@Override
-	public boolean isGenerated() {
-		return field.isAnnotationPresent(GeneratedValue.class);
+	public AccessibleObject getAccessibleObject() {
+		return field;
 	}
-	
-	
 	
 }

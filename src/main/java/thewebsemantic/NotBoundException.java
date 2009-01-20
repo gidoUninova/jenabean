@@ -1,8 +1,7 @@
 package thewebsemantic;
 
-import javax.persistence.PersistenceException;
 
-public class NotBoundException extends PersistenceException {
+public class NotBoundException extends RuntimeException {
 	public NotBoundException(String msg) {
 		super(msg);
 	}

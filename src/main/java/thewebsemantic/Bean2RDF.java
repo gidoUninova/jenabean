@@ -3,7 +3,6 @@ package thewebsemantic;
 import static thewebsemantic.JenaHelper.toLiteral;
 import static thewebsemantic.PrimitiveWrapper.isPrimitive;
 import static thewebsemantic.TypeWrapper.instanceURI;
-import static thewebsemantic.TypeWrapper.isAnonymous;
 import static thewebsemantic.TypeWrapper.type;
 
 import java.net.URI;
@@ -66,7 +65,7 @@ public class Bean2RDF extends Base {
 	private boolean forceDeep = false;
     public static Logger logger = Logger.getLogger("com.thewebsemantic");
     ResourceBundle bundle = ResourceBundle.getBundle("thewebsemantic.messages");
-
+    private JPAHelper jpa;
 
 	/**
 	 * construct a new instance bound to OntModel <tt>m</tt>.
@@ -76,8 +75,14 @@ public class Bean2RDF extends Base {
 	 */
 	public Bean2RDF(Model m) {
 		super(m);
+		jpa = new NullJPAHelper();
 	}
 
+	public Bean2RDF(Model m, JPAHelper jpa) {
+		super(m);
+		this.jpa = jpa;
+		
+	}	
 	/**
 	 * Saves <tt>bean</tt> to jena model.
 	 * 
@@ -126,7 +131,7 @@ public class Bean2RDF extends Base {
 	}
 
 	private Resource toResource(Object bean) {
-		return ( isAnonymous(bean)) ? m.createResource(getRDFSClass(bean)) : 
+		return (jpa.isEmbedded(bean)) ? m.createResource(getRDFSClass(bean)) : 
 			m.createResource(instanceURI(bean), getRDFSClass(bean));
 	}
 

@@ -2,14 +2,11 @@ package thewebsemantic;
 
 import java.beans.BeanInfo;
 import java.beans.MethodDescriptor;
+import java.lang.annotation.Annotation;
 import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 
 public class TypeWrapperFactory {
 	
@@ -29,23 +26,19 @@ public class TypeWrapperFactory {
 		Field[] fields = Util.getDeclaredFields(c);
 		for (Field f : fields) {
 			if (isId(f)) {
-				if (f.isAnnotationPresent(GeneratedValue.class))
-					validate(f);
 				return new IdFieldTypeWrapper(c, f, fields);
 			}
 		}
 		return new DefaultTypeWrapper(c);
 	}
 	
-	private static void validate(Field f) {
-		GeneratedValue gv = f.getAnnotation(GeneratedValue.class);
-		if (GenerationType.AUTO != gv.strategy() )
-			logger.log(Level.WARNING, gv.strategy() + " is not supported.");
-		
-	}
+
 	private static boolean isId(AccessibleObject m) {
-		return m.isAnnotationPresent(Id.class)
-				|| m.isAnnotationPresent(javax.persistence.Id.class);
+		for (Annotation a : m.getAnnotations()) {
+			if ("Id".equals(a.annotationType().getSimpleName()))
+				return true;
+		}
+		return false;
 	}
 
 	private static boolean isId(MethodDescriptor md) {
