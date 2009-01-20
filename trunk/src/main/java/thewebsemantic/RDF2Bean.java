@@ -49,6 +49,7 @@ public class RDF2Bean extends Base implements Provider {
 	private boolean shallow = false;
 	private Set<String> myIncludes = new HashSet<String>();
 	private static final String[] none = new String[0];
+	private JPAHelper jpa;
 
 	/**
 	 * Constructs and instance of RDF2Bean bound to a particular Jena model.
@@ -59,6 +60,12 @@ public class RDF2Bean extends Base implements Provider {
 	 */
 	public RDF2Bean(Model model) {
 		super(model);
+		jpa = new NullJPAHelper();
+	}
+	
+	public RDF2Bean(Model model, JPAHelper h) {
+		super(model);
+		jpa = h;
 	}
 
 	/**
@@ -486,7 +493,7 @@ public class RDF2Bean extends Base implements Provider {
 			} else if ( ctx.isList() && ctx.invokeGetter() == null) {
 				ctx.setProperty(new LazyList(node, ctx.uri(), ctx.t(), this));
 			}
-			if (ctx.isId() && ctx.isGenerated()) {
+			if (ctx.isId() && jpa.isGenerated(ctx)) {
 				String uri = TypeWrapper.type(target).typeUri();
 				Resource r = m.createResource(uri);
 				int idx=0;

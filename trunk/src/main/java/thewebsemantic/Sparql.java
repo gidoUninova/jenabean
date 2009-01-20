@@ -70,8 +70,8 @@ public class Sparql {
 		}
 	}
 	
-	public static <T> LinkedList<Resource> exec2(Model m, String query) {
-		QueryExecution qexec = getQueryExec(m, query);
+	public static <T> LinkedList<Resource> exec2(Model m, String query, QuerySolution initialBindings) {
+		QueryExecution qexec = getQueryExec(m, query, initialBindings);
 		LinkedList<Resource> beans = new LinkedList<Resource>();
 		try {
 			m.enterCriticalSection(Lock.READ);
