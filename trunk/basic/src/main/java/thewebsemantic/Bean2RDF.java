@@ -65,7 +65,7 @@ public class Bean2RDF extends Base {
 	private boolean forceDeep = false;
     public static Logger logger = Logger.getLogger("com.thewebsemantic");
     ResourceBundle bundle = ResourceBundle.getBundle("thewebsemantic.messages");
-    private JPAHelper jpa;
+    private AnnotationHelper jpa;
 
 	/**
 	 * construct a new instance bound to OntModel <tt>m</tt>.
@@ -78,7 +78,7 @@ public class Bean2RDF extends Base {
 		jpa = new NullJPAHelper();
 	}
 
-	public Bean2RDF(Model m, JPAHelper jpa) {
+	public Bean2RDF(Model m, AnnotationHelper jpa) {
 		super(m);
 		this.jpa = jpa;
 		

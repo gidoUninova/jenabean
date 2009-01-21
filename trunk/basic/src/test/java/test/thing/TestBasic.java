@@ -6,6 +6,7 @@ import static org.junit.Assert.assertEquals;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.Date;
 
 import org.junit.Test;
@@ -353,13 +354,6 @@ Organization: None Provided
 		System.out.println("\n\n-----------------------------------\n\n");
 		//m.write(System.out, "RDF/XML-ABBREV");
 		
-	}
-
-	@Test
-	public void foafExamples4() throws URISyntaxException {		
-		Model m = ModelFactory.createDefaultModel(); 
-		m.read("file:basic/src/test/java/test/thing/example4.rdf");
-		//m.write(System.out, "RDF/XML-ABBREV", "file:src/test/java/test/thing/example4.rdf#");
 	}
 	
 	@Test

@@ -49,7 +49,7 @@ public class RDF2Bean extends Base implements Provider {
 	private boolean shallow = false;
 	private Set<String> myIncludes = new HashSet<String>();
 	private static final String[] none = new String[0];
-	private JPAHelper jpa;
+	private AnnotationHelper jpa;
 
 	/**
 	 * Constructs and instance of RDF2Bean bound to a particular Jena model.
@@ -63,7 +63,7 @@ public class RDF2Bean extends Base implements Provider {
 		jpa = new NullJPAHelper();
 	}
 	
-	public RDF2Bean(Model model, JPAHelper h) {
+	public RDF2Bean(Model model, AnnotationHelper h) {
 		super(model);
 		jpa = h;
 	}
@@ -212,20 +212,8 @@ public class RDF2Bean extends Base implements Provider {
 		return load(c, id, false);
 	}
 
-	/**
-	 * Loads an ontology individual as a java bean, based on annotations or
-	 * bindings applied to Class <tt>c</tt>.
-	 * 
-	 * @param <T>
-	 * @param c
-	 * @param id
-	 * @return instance of Class<tt>c</tt> matching <tt>id</tt> from model, if
-	 *         one exists.
-	 * @throws NotFoundException
-	 */
-	public <T> T load(Class<T> c, String id) throws NotFoundException {
-		return load(c, id, true);
-	}
+
+
 
 	/**
 	 * Similar to load(Class, String), with the ability to include
@@ -250,18 +238,20 @@ public class RDF2Bean extends Base implements Provider {
 			throws NotFoundException {
 		return load(c, id, true, includes);
 	}
-
+	
 	/**
-	 * same as <tt>load(String)</tt> overloaded for id's of type integer.
+	 * Loads an ontology individual as a java bean, based on annotations or
+	 * bindings applied to Class <tt>c</tt>.
 	 * 
 	 * @param <T>
 	 * @param c
 	 * @param id
-	 * @return
+	 * @return instance of Class<tt>c</tt> matching <tt>id</tt> from model, if
+	 *         one exists.
 	 * @throws NotFoundException
 	 */
-	public <T> T load(Class<T> c, int id) throws NotFoundException {
-		return load(c, Integer.toString(id), true);
+	public <T> T load(Class<T> c, Object id) throws NotFoundException {
+		return load(c, id.toString(), true);
 	}
 
 	public <T> T load(Class<T> c, Resource r) {

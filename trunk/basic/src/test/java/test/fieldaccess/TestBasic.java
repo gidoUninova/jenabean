@@ -1,24 +1,63 @@
 package test.fieldaccess;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.*;
 
+import java.net.URI;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import thewebsemantic.Bean2RDF;
 import thewebsemantic.RDF2Bean;
 import thewebsemantic.binding.Jenabean;
 
+import com.hp.hpl.jena.ontology.OntModel;
+import com.hp.hpl.jena.ontology.OntModelSpec;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 
 public class TestBasic {
+	
+	@Test
+	public void companies() {
+		OntModel m = ModelFactory.createOntologyModel(OntModelSpec.OWL_DL_MEM_RULE_INF);
+		Company ibm = new Company();
+		ibm.identifier = URI.create("http://www.ibm.com");
+		ibm.name = "IBM";
+		ibm.industry = Industry.INFORMATION_TECHNOLOGY;
+		ibm.dontsaveme = "hi";
+		
+		Bean2RDF writer = new Bean2RDF(m);
+		writer.save(ibm);
+		
+		RDF2Bean reader = new RDF2Bean(m);
+		Company test = reader.load(Company.class, "http://www.ibm.com");
+		assertEquals(URI.create("http://www.ibm.com"), test.identifier);
+		assertEquals("IBM", test.name);
+		assertEquals(Industry.INFORMATION_TECHNOLOGY, test.industry);
+		assertEquals(null, test.dontsaveme);
+		
+		assertNotNull(test.products);
+		Product p = new Product();
+		p.id = 0;
+		p.name = "AIX";
+		test.products.add(p);
+		writer.save(test);
+		
+		test = reader.load(Company.class, "http://www.ibm.com");
+		assertEquals(1, test.products.size());
+		
+		for(int i=0; i<10; i++) {
+			p = new Product();
+			p.id = i+1;
+			test.products.add(p);
+		}
+		writer.save(test);
+		test = reader.load(Company.class, "http://www.ibm.com");
+		assertEquals(test.products.size(), 11);
+	}
 
 	@Test
 	public void simple() {
@@ -63,6 +102,7 @@ public class TestBasic {
 			bean.name = "Tyler Moon";
 			bean.nicknames = new String[] { "bob", "doogy", "fats", "mo" };
 			bean.nothing = 57;
+			bean.version = 3;
 			bean.save();
 		}
 		//m.write(System.out, "N3");
@@ -74,6 +114,7 @@ public class TestBasic {
 		assertEquals(444444444, bean2.ssn);
 		assertEquals(1000000.01, bean2.debt, 0);
 		assertEquals(d, bean2.birthday);
+		assertEquals(3, bean2.version);
 		//assertEquals(c, bean2.appointment);
 	}
 }

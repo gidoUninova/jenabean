@@ -52,6 +52,8 @@ public class TestBean2Rdf {
 		bean.setId("kisv1.1");
 		bean.setValue(444);
 		writer.save(bean);
+		m.setNsPrefix("", "http://test.bean/");
+		m.write(System.out, "N3");
 
 	}
 	

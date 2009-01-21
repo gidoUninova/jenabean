@@ -1,6 +1,6 @@
 package thewebsemantic;
 
-public class NullJPAHelper implements JPAHelper {
+public class NullJPAHelper implements AnnotationHelper {
 
 	@Override
 	public boolean isGenerated(ValuesContext ctx) {
