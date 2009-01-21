@@ -179,5 +179,63 @@ public class TestArrays {
 		assertEquals(0, two.integers.length);
 		model.write(System.out, "N3");
 	}
+
+	@Test
+	public void testTypes2()  {
+		OntModel model = ModelFactory.createOntologyModel();	
+		model.setNsPrefix("xsd", "http://www.w3.org/2001/XMLSchema#");	
+		Bean2RDF writer = new Bean2RDF(model);
+		RDF2Bean reader = new RDF2Bean(model);
+		Arrayzing2 one = new Arrayzing2();
+		one.id = 0;
+		one.strings = new String[] {"1", "2", "3", "4"};
+		one.chars = new char[] {'a','b','c','d','e','f','g'};
+		one.integers = new int[] {0,1,2,3,4,5,6,2345, -45};
+		one.longs = new long[] {1, 2l, 3, 4, 1230000, -234};
+		one.shorts = new short[] {0, 1, 2, 3, -4};
+		one.doubles = new double[] {1.1, 2.2, 3.333, -4.444};
+		one.floats = new float[] {3.444f, 1.23f, -123.123f, 0.6667f};
+		writer.save(one);
+		
+		Arrayzing2 two = reader.load(Arrayzing2.class, 0);
+		assertArrayEquals(two.strings, new String[] {"1", "2", "3", "4"});
+		assertArrayEquals(two.chars,new char[] {'a','b','c','d','e','f','g'} );
+		assertArrayEquals(two.integers, new int[] {0,1,2,3,4,5,6,2345, -45});
+		assertArrayEquals(two.longs, new long[] {1, 2l, 3, 4, 1230000, -234});
+		assertEquals(one.doubles.length, 4);
+		assertEquals(one.floats.length, 4);
+	}
 	
+	@Test
+	public void testArrayRemove2() {
+		OntModel model = ModelFactory.createOntologyModel();	
+		model.setNsPrefix("xsd", "http://www.w3.org/2001/XMLSchema#");	
+		Bean2RDF writer = new Bean2RDF(model);
+		RDF2Bean reader = new RDF2Bean(model);
+		Arrayzing2 one = new Arrayzing2();
+		one.id = 0;
+		one.strings = new String[] {"1", "2", "3", "4"};
+		one.chars = new char[] {'a','b','c','d','e','f','g'};
+		one.integers = new int[] {0,1,2,3,4,5,6,2345, -45};
+		one.longs = new long[] {1, 2l, 3, 4, 1230000, -234};
+		one.shorts = new short[] {0, 1, 2, 3, -4};
+		one.doubles = new double[] {1.1, 2.2, 3.333, -4.444};
+		one.floats = new float[] {3.444f, 1.23f, -123.123f, 0.6667f};
+		writer.save(one);	
+		Arrayzing2 two = reader.load(Arrayzing2.class, 0);
+		two.integers = null;
+		writer.save(two);
+		two = reader.load(Arrayzing2.class, 0);
+		assertNotNull(two.integers);
+		assertArrayEquals(two.integers, new int[] {0,1,2,3,4,5,6,2345, -45});
+		
+		//remove integers from array
+		two.integers = new int[] {};
+		writer.save(two);
+		
+		two = reader.load(Arrayzing2.class, 0);
+		assertNotNull(two.integers);
+		assertEquals(0, two.integers.length);
+		model.write(System.out, "N3");
+	}
 }
