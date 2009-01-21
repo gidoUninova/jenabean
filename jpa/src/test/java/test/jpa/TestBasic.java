@@ -17,7 +17,7 @@ import javax.persistence.Query;
 
 import org.junit.Test;
 
-import test.bean.Yin;
+
 import thewebsemantic.jpa.JBFactory;
 import thewebsemantic.jpa.JBProvider;
 
