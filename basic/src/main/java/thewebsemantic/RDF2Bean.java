@@ -196,24 +196,9 @@ public class RDF2Bean extends Base implements Provider {
 	 * @return An instance of T, otherwise null
 	 * @see Namespace
 	 */
-	public <T> T loadDeep(Class<T> c, int id) throws NotFoundException {
-		return load(c, Integer.toString(id), false);
+	public <T> T loadDeep(Class<T> c, Object id) throws NotFoundException {
+		return load(c, id.toString(), false);
 	}
-
-	/**
-	 * Same as loadDeep(Class, String) overloaded for id's of type integer.
-	 * 
-	 * @param c
-	 * @param id
-	 * @return
-	 * @throws NotFoundException
-	 */
-	public <T> T loadDeep(Class<T> c, String id) throws NotFoundException {
-		return load(c, id, false);
-	}
-
-
-
 
 	/**
 	 * Similar to load(Class, String), with the ability to include
@@ -563,7 +548,7 @@ public class RDF2Bean extends Base implements Provider {
 	 * @throws InvocationTargetException
 	 */
 	private void apply(Resource i, ValuesContext ctx) {
-		if (ctx.isCollection() || ctx.isSet() && (shallow && !included(ctx.getName())) ) {
+		if ( (ctx.isCollection() || ctx.isSet()) && (shallow && !included(ctx.getName())) ) {
 			ctx.setProperty(new LazySet(i, ctx.uri(), ctx.t(), this));
 			return;
 		} else if (ctx.isList() && (shallow && !included(ctx.getName())) ) {
