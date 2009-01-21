@@ -2,6 +2,6 @@
 
 *Q:* _Why do I need to annotate my beans with an Id?_
 
-Jenabean will create a URI for you, but it needs to know what makes your bean instance unique.  It's class path and class name are useful, but it's still necessary to distinguish between multiple instances of the same class.  In the absence of an @Id annotated field or method, Jenabean will use the object's hash code value (via the hashCode() method of java.lang.Object) but be warned, this is no unique, and will change when the bean is reconstituted from the triple store.
+Jenabean will create a URI for you, but it needs to know what makes your bean instance unique.  Its class path and class name are useful, but it's still necessary to distinguish between multiple instances of the same class.  In the absence of an @Id annotated field or method, Jenabean will use the object's hash code value (via the hashCode() method of java.lang.Object) but be warned, this is no unique, and will change when the bean is reconstituted from the triple store.
 
 [http://code.google.com/p/jenabean/wiki/Main Back to Top]
