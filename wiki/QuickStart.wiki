@@ -43,7 +43,7 @@ Create an instance of you bean and save it...
 === 5. Read it back out and verify the RDF ===
 Read it back out and let jena show us the RDF we've created...
 {{{
-        Collection<Song> songs = load(Song.class);
+        Collection<Song> songs = Song.load();
 	for (Song song : songs)
 		System.out.println(song.getTitle() + ":" + 
 		song.getGenre().getName());	
