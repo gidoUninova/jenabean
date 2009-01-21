@@ -3,6 +3,7 @@ package test.fieldaccess;
 import static org.junit.Assert.*;
 
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
@@ -12,6 +13,7 @@ import org.junit.Test;
 import thewebsemantic.Bean2RDF;
 import thewebsemantic.RDF2Bean;
 import thewebsemantic.binding.Jenabean;
+import thewebsemantic.lazy.LazySet;
 
 import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.ontology.OntModelSpec;
@@ -57,6 +59,22 @@ public class TestBasic {
 		writer.save(test);
 		test = reader.load(Company.class, "http://www.ibm.com");
 		assertEquals(test.products.size(), 11);
+		ArrayList<Product> remove = new ArrayList<Product>();
+		for(Product prod : test.products) {
+			if (prod.id % 2 == 0)
+				remove.add(prod);
+		}
+		test.products.removeAll(remove);
+		writer.save(test);
+		test = reader.load(Company.class, "http://www.ibm.com");
+		assertEquals(5, test.products.size());
+		
+		for(Product prod : test.products) {
+			assertTrue(prod.id % 2 != 0);
+		}	
+		
+		test = reader.loadDeep(Company.class, "http://www.ibm.com");
+		assertTrue(test.products.getClass() != LazySet.class);
 	}
 
 	@Test

@@ -47,11 +47,10 @@ public class TestArrays {
 		
 		ExampleArraysBean loadedBean = beans.iterator().next();
 		assertEquals(5, loadedBean.getAges().length);
-		reader.fill(loadedBean).with("people");
+		
 		for (Person p: loadedBean.getPeople()) {
 			System.out.println(p.getFirstName());
 		}
-		reader.fill(loadedBean).with("times");
 		for (Date d : loadedBean.getTimes()) {
 			System.out.println(d);
 		}
@@ -101,7 +100,7 @@ public class TestArrays {
 		model.setNsPrefix("xsd", "http://www.w3.org/2001/XMLSchema#");	
 		Bean2RDF writer = new Bean2RDF(model);
 		RDF2Bean reader = new RDF2Bean(model);
-		Molecule m = new Molecule();
+		Molecule m = new Molecule("zephanol");
 		m.setSymbols( new String[] {"H", "2", "O", null, "2", "O", "Na"});
 		writer.saveDeep(m);
 		reader.loadDeep(Molecule.class);
@@ -114,8 +113,13 @@ public class TestArrays {
 		for(int i=0; i<10; i++) {
 			stuff.add("hello");
 			m.setSymbols(stuff.toArray(new String[] {}));
-			writer.saveDeep(m);
+			writer.save(m);
 		}
-		//model.write(System.out, "N3");
+		
+		m = reader.load(Molecule.class, "zephanol" );
+		assertEquals(10, m.getSymbols().length);
+		model.write(System.out, "N3");
+		
+		
 	} 
 }
