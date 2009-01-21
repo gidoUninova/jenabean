@@ -1,4 +1,5 @@
 #summary Jenabean documentation.
-*
- # QuickStart
- # WhatsUpWithThat
+
+  * Contents
+    # QuickStart
+    # WhatsUpWithThat
