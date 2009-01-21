@@ -15,6 +15,7 @@ public class AllTypes extends RdfBean<AllTypes> {
 	public long ssn;
 	public float salary;
 	public double debt;
+	public short version;
 	public Date birthday;
 	public Calendar appointment;
 	public String[] nicknames;

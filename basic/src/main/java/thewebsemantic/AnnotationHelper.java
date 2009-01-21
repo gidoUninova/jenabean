@@ -1,6 +1,6 @@
 package thewebsemantic;
 
-public interface JPAHelper {
+public interface AnnotationHelper {
 
 	boolean isGenerated(ValuesContext ctx);
 
