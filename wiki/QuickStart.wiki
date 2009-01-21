@@ -8,7 +8,7 @@ jenabean uses Jena which can be downloaded [http://jena.sourceforge.net/download
 === 2. Create your model classes ===
 Create a java bean class and use the @Id annotation to indicate which method has the unique id for this "thing".  We're using a convenience class, RdfBean, to make saving easier and the starting quicker.
 
-[http://jenabean.googlecode.com/svn/trunk/src/example/Song.java Song.java]
+[http://jenabean.googlecode.com/svn/trunk/src/example/java/example/Song.java Song.java]
 {{{
 public class Song extends RdfBean<Song> {
 	private String composer;
@@ -23,7 +23,7 @@ public class Song extends RdfBean<Song> {
 
 === 3. Create a jena model and bind with the jenabean singleton ===
 Create a jena ontology model instance and make jenabean aware of it...
-[http://jenabean.googlecode.com/svn/trunk/src/example/SimpleExample.java SimpleExample.java]
+[http://jenabean.googlecode.com/svn/trunk/src/example/java/example/SimpleExample.java SimpleExample.java]
 {{{
 	OntModel m = ModelFactory.createOntologyModel();
 	Jenabean.instance().bind(m);
