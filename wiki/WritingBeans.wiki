@@ -33,3 +33,22 @@ Customer cust = new Customer();
 cust.setId(0);
 writer.save(cust);
 }}}
+
+The results are a set of triples, and printed in N3 format it looks like this...
+
+{{{
+<http://thewebsemantic.com/javaclass>
+      a       <http://www.w3.org/2002/07/owl#AnnotationProperty> .
+
+<http://example/Customer>
+      a       <http://www.w3.org/2000/01/rdf-schema#Class> ;
+      <http://thewebsemantic.com/javaclass>
+              "example.Customer" .
+
+<http://example/Customer/0>
+      a       <http://example/Customer> ;
+      <http://example/customerId>
+              "0"^^<http://www.w3.org/2001/XMLSchema#int> ;
+      <http://example/name>
+              "1st National"^^<http://www.w3.org/2001/XMLSchema#string> .
+}}}
