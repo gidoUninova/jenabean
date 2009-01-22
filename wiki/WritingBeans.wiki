@@ -1,6 +1,7 @@
-=== Introduction ===
+Java developers have objects.  Jena has triples.  We need something to translate an object with one or more properties into a set of triples that loosely say the same thing.  The first step is to create an instance of `thewebsemantic.Bean2RDF`:
 
+{{{
+Bean2RDF writer = new Bean2RDF(myModel);
+}}}
 
-
-
-= Details =
+Typically you will create one writer per model.  Your Jena model may be of any variety, inferencing or non-inferencing.
