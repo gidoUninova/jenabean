@@ -1,0 +1,2 @@
+
+Jenabean is a lightweight object to RDF toolkit for Java 5 and later.
