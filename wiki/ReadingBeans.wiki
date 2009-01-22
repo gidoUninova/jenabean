@@ -1,0 +1,4 @@
+Reading beans created with `Bean2RDF` is very easy.  When writing your bean to the model, jenabean left an annotation that indicated the class it was created from.  To read out RDF as objects use `thewebsemantic.RDF2Bean`.
+{{{
+RDF2Bean reader = new RDF2Bean(myModel);
+}}}
