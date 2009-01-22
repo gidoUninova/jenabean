@@ -1,10 +1,7 @@
 #summary One-sentence summary of this page.
 
-* [Articles HOWTO articles]
-    * [ArticlesXSS Web security]
-    * [ArticlesDom DOM manipulation]
-    * [ArticlesStyle CSS and style]
-    * [ArticlesTips Tips and tricks]
-  * [DOMReference DOM reference]
-  * [HTMLElements HTML reference]
-  * [CSSReference CSS reference]
+#sidebar TableOfContents
+
+You can specify the sidebar for a wiki page by selecting another wiki page that defines your side navigation. The doctype project uses the sidebar extensively across its wiki.
+
+One way of adding a sidebar is by setting the #sidebar pragma, as shown below. Alternatively, the sidebar pragma can be left blank if no side navigation is desired.  
