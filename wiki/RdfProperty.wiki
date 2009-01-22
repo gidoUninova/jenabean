@@ -1,8 +1,0 @@
-#summary RdfProperty annotation for customizing property persistence options.
-
-= Introduction =
-
-
-
-
-= Details =
