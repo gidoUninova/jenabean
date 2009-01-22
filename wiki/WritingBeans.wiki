@@ -9,6 +9,7 @@ Jenabean attempts to be as non-intrusive as possible, however, it requires your 
 {{{
 public class Customer {
   @Id private int customerId;
+  // class abbreviated
 }
 }}}
 
@@ -21,6 +22,14 @@ public class Book {
   @Id public String getIsbn() {
     return isbn;
   }
+  // class abbreviated
 }
+}}}
 
+Saving or persisting a bean within a Jena model is a simple method call.
+
+{{{
+Customer cust = new Customer();
+cust.setId(0);
+writer.save(cust);
 }}}
