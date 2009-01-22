@@ -36,7 +36,7 @@ cust.setId(0);
 writer.save(cust);
 }}}
 
-The results are a set of triples, and printed in N3 format it looks like this...
+The results are a set of triples, and printed in N3 format using `m.write(System.out, "N3");` it looks like this...
 
 {{{
 :Customer
