@@ -4,4 +4,4 @@ Java developers have objects.  Jena has triples.  We need something to translate
 Bean2RDF writer = new Bean2RDF(myModel);
 }}}
 
-Typically you will create one writer per model.  Your Jena model may be of any variety, inferencing or non-inferencing.
+Typically you will create one writer per model.  Your Jena model may be of any variety, inferencing or non-inferencing.  Jenabean attempts to be as non-intrusive as possible, however, it has one requirement.
