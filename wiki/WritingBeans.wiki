@@ -36,7 +36,7 @@ cust.setId(0);
 writer.save(cust);
 }}}
 
-The results are a set of triples, and printed in N3 format using `m.write(System.out, "N3");` it looks like this...
+The results are a set of triples, which printed in N3 format using `m.write(System.out, "N3");` look like this...
 
 {{{
 :Customer
@@ -51,4 +51,4 @@ The results are a set of triples, and printed in N3 format using `m.write(System
 
 }}}
 
-By default the bean's package becomes the namespace or domain for creating the entity and property URI's.  The class's simple name becomes the rdfs class name, and the bean's properties become the rdf property names.
+By default the bean's package becomes the name space or domain for creating the entity and property URI's.  The class's simple name becomes the rdfs class name, and the bean's properties become the rdf property names.  This is the simplest example that can possibly work regarding saving beans via jenabean.  If you want to specifically map your class to a particular name space see NameSpace.
