@@ -15,4 +15,11 @@ This returns a typed collection of 0 to n customer instances.  It will never ret
 Customer cust = reader.load(Customer.class, 0);
 }}}
 
-This method will throw `thewebsemantic.NotFoundException` if a bean of the specified class and id is not found.
+This method will throw `thewebsemantic.NotFoundException` if a bean of the specified class and id is not found.  Finally, you may execute a SPARQL query against the model using `thewebsemantic.Sparql`.
+
+{{{
+String query = "...";
+List customers = Sparql.exec(myModel, Customer.class, query);
+}}}
+
+In contrast, `Sparql.exec(...)` returns an ordered list, governed by the SPARQL query you provided.  Your SPARQL cannot be arbitrary and must be garaunteed to select instances of the correct type.  To learn more see SparqlQueries.
