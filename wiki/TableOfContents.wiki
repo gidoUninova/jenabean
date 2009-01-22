@@ -1,4 +1,4 @@
   * QuickStart
-  * Writing
-  * Reading
+  * WritingBeans
+  * ReadingBeans
  
