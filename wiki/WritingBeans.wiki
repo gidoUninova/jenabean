@@ -11,3 +11,16 @@ public class Customer {
   @Id private int customerId;
 }
 }}}
+
+or using a method
+
+{{{
+public class Book {
+  private String isbn;
+
+  @Id public String getIsbn() {
+    return isbn;
+  }
+}
+
+}}}
