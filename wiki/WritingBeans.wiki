@@ -7,6 +7,8 @@ Bean2RDF writer = new Bean2RDF(myModel);
 Jenabean attempts to be as non-intrusive as possible, however, it requires your bean to have an id field or method marked with the `@Id` annotation.
 
 {{{
+package example;
+import thewebsemantic.Id;
 public class Customer {
   @Id private int customerId;
   // class abbreviated
@@ -37,18 +39,16 @@ writer.save(cust);
 The results are a set of triples, and printed in N3 format it looks like this...
 
 {{{
-<http://thewebsemantic.com/javaclass>
-      a       <http://www.w3.org/2002/07/owl#AnnotationProperty> .
-
-<http://example/Customer>
-      a       <http://www.w3.org/2000/01/rdf-schema#Class> ;
+:Customer
+      a       rdfs:Class ;
       <http://thewebsemantic.com/javaclass>
               "example.Customer" .
 
 <http://example/Customer/0>
-      a       <http://example/Customer> ;
-      <http://example/customerId>
-              "0"^^<http://www.w3.org/2001/XMLSchema#int> ;
-      <http://example/name>
-              "1st National"^^<http://www.w3.org/2001/XMLSchema#string> .
+      a       :Customer ;
+      :customerId "0"^^xsd:int ;
+      :name   "1st National"^^xsd:string .
+
 }}}
+
+By default the bean's package becomes the namespace or domain for creating the entity and property URI's.  The class's simple name becomes the rdfs class name, and the bean's properties become the rdf property names.
