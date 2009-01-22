@@ -18,7 +18,7 @@ public class IdMethodTypeWrapper extends TypeWrapper {
 	 * if true this type wrapper services a class with id of type java.lang.URI
 	 */
 	private boolean uriid = false;
-	private Constructor uriConstructor;
+	private Constructor<?> uriConstructor;
 
 	public IdMethodTypeWrapper(Class<?> c, Method m) {
 		super(c);
