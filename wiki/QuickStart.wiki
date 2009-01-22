@@ -23,6 +23,7 @@ public class Song extends RdfBean<Song> {
 
 === 3. Create a jena model and bind with the jenabean singleton ===
 Create a jena ontology model instance and make jenabean aware of it...
+
 [http://jenabean.googlecode.com/svn/trunk/src/example/java/example/SimpleExample.java SimpleExample.java]
 {{{
 	OntModel m = ModelFactory.createOntologyModel();
