@@ -7,9 +7,7 @@ Bean2RDF writer = new Bean2RDF(myModel);
 Jenabean attempts to be as non-intrusive as possible, however, it requires your bean to have an id field or method marked with the `@Id` annotation.
 
 {{{
-public void Customer {
+public class Customer {
   @Id private int customerId;
 }
 }}}
-
-
