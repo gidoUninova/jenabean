@@ -1,6 +1,6 @@
 #summary One-sentence summary of this page.
 
-#sidebar TableOfContents
+
 
 You can specify the sidebar for a wiki page by selecting another wiki page that defines your side navigation. The doctype project uses the sidebar extensively across its wiki.
 
