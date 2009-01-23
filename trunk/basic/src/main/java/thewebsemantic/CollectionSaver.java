@@ -11,8 +11,13 @@ public class CollectionSaver extends Saver {
 
 	@Override
 	public void save(Bean2RDF writer, Resource subject, Property property, Object o) {
-		if (o instanceof Lazy && ! ((Lazy)o).isConnected())
-			return;
+		if (o instanceof Lazy) {
+			Lazy lazy = (Lazy)o;
+			if (! lazy.isConnected())
+				return;
+			else if (! lazy.modified() )
+				return;
+		}	
 		writer.updateCollection(subject, property, (Collection<Object>)o);
 	}
 
