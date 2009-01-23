@@ -16,6 +16,7 @@ public class LazyList implements List, Lazy {
 	private List data;
 	private Class type;
 	private String propertyUri;
+	private boolean modified = false;
 	
 	public LazyList(Resource i, String propertyUri, Class type, Provider r2b) {
 		this.i = i;
@@ -31,22 +32,27 @@ public class LazyList implements List, Lazy {
 	}
 
 	public void add(int index, Object element) {
+		modified = true;
 		data().add(index, element);
 	}
 
 	public boolean add(Object e) {
+		modified = true;
 		return data().add(e);
 	}
 
 	public boolean addAll(Collection c) {
+		modified = true;
 		return data().addAll(c);
 	}
 
 	public boolean addAll(int index, Collection c) {
+		modified = true;
 		return data().addAll(index, c);
 	}
 
 	public void clear() {
+		modified = true;
 		data().clear();
 	}
 
@@ -95,22 +101,27 @@ public class LazyList implements List, Lazy {
 	}
 
 	public Object remove(int index) {
+		modified = true;
 		return data().remove(index);
 	}
 
 	public boolean remove(Object o) {
+		modified = true;
 		return data().remove(o);
 	}
 
 	public boolean removeAll(Collection c) {
+		modified = true;
 		return data().removeAll(c);
 	}
 
 	public boolean retainAll(Collection c) {
+		modified = true;
 		return data().retainAll(c);
 	}
 
 	public Object set(int index, Object element) {
+		modified = true;
 		return data().set(index, element);
 	}
 
@@ -132,6 +143,10 @@ public class LazyList implements List, Lazy {
 
 	public boolean isConnected() {
 		return data != null;
+	}
+
+	public boolean modified() {
+		return modified;
 	}
 	
 

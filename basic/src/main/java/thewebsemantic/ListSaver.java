@@ -17,6 +17,8 @@ public class ListSaver extends Saver {
 			return;
 		else if (o instanceof Lazy && ! ((Lazy)o).isConnected()) {
 			return;
+		} else if (o instanceof Lazy && ! ((Lazy)o).modified()) {
+			return;
 		}
 		Saver.of(Array.class).save(writer, subject, property, ((List)o).toArray());
 

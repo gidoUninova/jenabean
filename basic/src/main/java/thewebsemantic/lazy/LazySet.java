@@ -15,6 +15,7 @@ public class LazySet implements Set, Lazy {
 	private Set data;
 	private String propertyUri;
 	private Class type;
+	private boolean modified = false;
 
 	public LazySet(Resource i, String propertyUri, Class type, Provider r2b) {
 		this.i = i;
@@ -23,96 +24,82 @@ public class LazySet implements Set, Lazy {
 		reader = r2b;
 	}
 
-	private void fill() {
-		data = reader.lazySet(i, propertyUri, type);
+	private Set data() {
+		if (data == null)
+			data = reader.lazySet(i, propertyUri, type);
+		return data;
 	}
+	
 
 	public boolean add(Object e) {
-		if (data == null)
-			fill();
-		return data.add(e);
+		modified = true;
+		return data().add(e);
 	}
 
 	public boolean addAll(Collection c) {
-		if (data == null)
-			fill();
-		return data.addAll(c);
+		modified = true;
+		return data().addAll(c);
 	}
 
 	public void clear() {
-		if (data == null)
-			fill();
-		data.clear();
+		modified = true;
+		data().clear();
 	}
 
 	public boolean contains(Object o) {
-		if (data == null)
-			fill();
-		return data.contains(o);
+		return data().contains(o);
 	}
 
 	public boolean containsAll(Collection c) {
-		if (data == null)
-			fill();
-		return data.containsAll(c);
+		return data().containsAll(c);
 	}
 
 	public boolean isEmpty() {
-		if (data == null)
-			fill();
-		return data.isEmpty();
+		return data().isEmpty();
 	}
 
 	public Iterator iterator() {
-		if (data == null)
-			fill();
-		return data.iterator();
+		return data().iterator();
 	}
 
 	public boolean remove(Object o) {
-		if (data == null)
-			fill();
-		return data.remove(o);
+		modified = true;
+		return data().remove(o);
 	}
 
 	public Object remove(int index) {
-		if (data == null)
-			fill();
-		return data.remove(index);
+		modified = true;
+		return data().remove(index);
 	}
 
 	public boolean removeAll(Collection c) {
-		if (data == null)
-			fill();
-		return data.removeAll(c);
+		modified = true;
+		return data().removeAll(c);
 	}
 
 	public boolean retainAll(Collection c) {
-		if (data == null)
-			fill();
-		return data.retainAll(c);
+		modified = true;
+		return data().retainAll(c);
 	}
 
 	public int size() {
-		if (data == null)
-			fill();
-		return data.size();
+		return data().size();
 	}
 
 	public Object[] toArray() {
-		if (data == null)
-			fill();
-		return data.toArray();
+		return data().toArray();
 	}
 
 	public Object[] toArray(Object[] a) {
-		if (data == null)
-			fill();
-		return data.toArray(a);
+		return data().toArray(a);
 	}
 
 	public boolean isConnected() {
 		return data != null;
+	}
+
+	public boolean modified() {
+		return modified;
 	}
 
 }
