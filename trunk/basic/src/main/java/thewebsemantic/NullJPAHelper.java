@@ -10,4 +10,8 @@ public class NullJPAHelper implements AnnotationHelper {
 		return false;
 	}
 
+	public Object proxy(Object o) {
+		return 0;
+	}
+
 }
