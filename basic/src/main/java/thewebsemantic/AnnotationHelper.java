@@ -6,4 +6,6 @@ public interface AnnotationHelper {
 
 	boolean isEmbedded(Object bean);
 
+	Object proxy(Object o);
+
 }

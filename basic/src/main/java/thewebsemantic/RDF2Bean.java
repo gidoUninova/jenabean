@@ -486,7 +486,8 @@ public class RDF2Bean extends Base implements Provider {
 
 	private Object newInstance(Resource source, Class c) {
 		try {
-			return wrap(javaclass(source, c)).toBean(source);
+			Object o = wrap(javaclass(source, c)).toBean(source);
+			return jpa.proxy(o);
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
