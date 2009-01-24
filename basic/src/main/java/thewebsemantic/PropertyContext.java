@@ -5,6 +5,7 @@ import static thewebsemantic.Bean2RDF.logger;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.logging.Level;
 
 

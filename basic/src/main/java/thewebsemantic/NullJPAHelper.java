@@ -10,8 +10,14 @@ public class NullJPAHelper implements AnnotationHelper {
 		return false;
 	}
 
-	public Object proxy(Object o) {
-		return 0;
+	public boolean proxyRequired() {
+		return false;
+	}
+
+	@Override
+	public Class getProxy(Class<?> c) throws InstantiationException,
+			IllegalAccessException {
+		throw new UnsupportedOperationException();
 	}
 
 }

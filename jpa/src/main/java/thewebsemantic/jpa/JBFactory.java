@@ -1,9 +1,12 @@
 package thewebsemantic.jpa;
 
-import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.AnnotatedElement;
+import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
+
+import javassist.util.proxy.MethodHandler;
+import javassist.util.proxy.ProxyFactory;
 
 import javax.persistence.Embedded;
 import javax.persistence.EntityManager;
@@ -11,14 +14,15 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.GeneratedValue;
 import javax.persistence.NamedNativeQuery;
 
+import thewebsemantic.AnnotationHelper;
 import thewebsemantic.Bean2RDF;
-import thewebsemantic.JPAHelper;
 import thewebsemantic.RDF2Bean;
 import thewebsemantic.ValuesContext;
+import thewebsemantic.binding.Persistable;
 
 import com.hp.hpl.jena.rdf.model.Model;
 
-public class JBFactory implements EntityManagerFactory, JPAHelper {
+public class JBFactory implements EntityManagerFactory, AnnotationHelper, MethodHandler {
 
 	private Model _model;
 	private HashMap<String, NamedNativeQuery> _queries;
@@ -58,14 +62,33 @@ public class JBFactory implements EntityManagerFactory, JPAHelper {
 		return _model;
 	}
 
-	@Override
 	public boolean isGenerated(ValuesContext ctx) {
 		return ctx.getAccessibleObject().isAnnotationPresent(GeneratedValue.class);
 	}
 
-	@Override
 	public boolean isEmbedded(Object bean) {
 		AnnotatedElement ao = bean.getClass();
 		return ao.isAnnotationPresent(Embedded.class);
+	}
+
+	@Override
+	public Class getProxy(Class c) throws InstantiationException, IllegalAccessException {
+		ProxyFactory f = new ProxyFactory();
+		f.setInterfaces(new Class[] {Persistable.class});
+		f.setHandler(this);
+		f.setSuperclass(c);
+		return f.createClass();
+	}
+
+	@Override
+	public Object invoke(Object arg0, Method arg1, Method arg2, Object[] arg3)
+			throws Throwable {
+
+		return arg2.invoke(arg0, arg3);
+	}
+
+	@Override
+	public boolean proxyRequired() {
+		return true;
 	}
 }

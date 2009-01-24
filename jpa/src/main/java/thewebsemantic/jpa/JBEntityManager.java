@@ -17,6 +17,10 @@ import thewebsemantic.RDF2Bean;
 
 import com.hp.hpl.jena.rdf.model.Model;
 
+/**
+ * NEW, CLEAN, DIRTY 
+ *
+ */
 public class JBEntityManager implements javax.persistence.EntityManager {
 
 	private static final String TRANSACTIONS_NOT_SUPPORTED = "This model does not support transactions.";
