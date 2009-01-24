@@ -1,7 +1,9 @@
 package test.jpa;
 
+import java.net.URI;
 import java.util.Collection;
 
+import javax.persistence.Id;
 import javax.persistence.NamedNativeQueries;
 import javax.persistence.NamedNativeQuery;
 
@@ -20,10 +22,11 @@ import thewebsemantic.Uri;
 public class Human {
 	private String name;
 	private String description;
-	private String uri;
+	private URI uri;
 	private Collection<Human> children;
 	private Human knew;
 	
+	public Human() {}
 	public Human getKnew() {
 		return knew;
 	}
@@ -41,14 +44,10 @@ public class Human {
 		this.children = children;
 	}
 
-	public Human(String uri) {
+	public Human(URI uri) {
 		this.uri = uri;
 	}
 	
-	@Uri
-	public String uri() {
-		return uri;
-	}
 	
 	@RdfProperty("http://semanticbible.org/ns/2006/NTNames#name_en")
 	public String getName() {
@@ -80,6 +79,15 @@ public class Human {
 	
 	public boolean equals(Human h) {
 		return uri.equals(h.uri);
+	}
+
+	@Id
+	public URI getUri() {
+		return uri;
+	}
+
+	public void setUri(URI uri) {
+		this.uri = uri;
 	}
 	
 	

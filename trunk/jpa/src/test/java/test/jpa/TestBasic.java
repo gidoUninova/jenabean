@@ -7,6 +7,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.net.URI;
+import java.net.URL;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -91,7 +92,8 @@ public class TestBasic {
 	@Test
 	public void testForceAssembler() {
 		Model m = ModelFactory.createDefaultModel();
-		m.read("file:src/test/resources/testassembler.n3", "N3");
+		URL uri = getClass().getResource("/testassembler.n3");
+		m.read(uri.toString(), "N3");
 		JBProvider p = new JBProvider(m);
 		JBFactory f =  p.createEntityManagerFactory("tws:test", null);
 		EntityManager em =  f.createEntityManager();
@@ -130,7 +132,8 @@ public class TestBasic {
 	@Test
 	public void testBad() {
 		Model m = ModelFactory.createDefaultModel();
-		m.read("file:src/test/resources/testassembler.n3", "N3");
+		URL uri = getClass().getResource("/testassembler.n3");
+		m.read(uri.toString(), "N3");
 		JBProvider p = new JBProvider(m);
 		JBFactory f =  p.createEntityManagerFactory("tws:test", null);
 		EntityManager em =  f.createEntityManager();

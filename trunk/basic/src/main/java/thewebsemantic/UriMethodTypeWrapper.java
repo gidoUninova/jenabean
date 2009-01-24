@@ -5,6 +5,8 @@ import static thewebsemantic.Bean2RDF.logger;
 import java.lang.reflect.Method;
 import java.util.logging.Level;
 
+import com.hp.hpl.jena.rdf.model.Resource;
+
 public class UriMethodTypeWrapper extends TypeWrapper {
 
 	private Method uriMethod;
@@ -43,6 +45,11 @@ public class UriMethodTypeWrapper extends TypeWrapper {
 			logger.log(Level.WARNING, "Exception caught while instantiating " + c, e);
 		}
 		return null;
+	}
+
+	@Override
+	public Object toProxyBean(Resource source, AnnotationHelper jpa) {
+		throw new UnsupportedOperationException();
 	}
 
 }

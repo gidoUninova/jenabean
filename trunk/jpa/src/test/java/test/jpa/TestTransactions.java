@@ -1,5 +1,7 @@
 package test.jpa;
 
+import java.net.URI;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityNotFoundException;
@@ -19,7 +21,7 @@ public class TestTransactions {
 		EntityManagerFactory factory =  Persistence.createEntityManagerFactory("tws:filemodel");
 		EntityManager em = factory.createEntityManager();
 		em.getTransaction().begin();
-		Man m = new Man("http://example.org/joe");
+		Man m = new Man(URI.create("http://example.org/joe"));
 		m.setName("Joseph");
 		m.setDescription("had a nice coat.");
 		em.persist(m);
@@ -38,7 +40,7 @@ public class TestTransactions {
 		EntityManager em = factory.createEntityManager();
 		EntityTransaction ta = em.getTransaction();
 		ta.begin();
-		Man m = new Man("http://example.org/mark");
+		Man m = new Man(URI.create("http://example.org/mark"));
 		m.setName("Mark");
 		m.setDescription("A disciple of Jesus.");
 		em.persist(m);

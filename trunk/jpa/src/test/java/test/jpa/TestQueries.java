@@ -3,6 +3,7 @@ package test.jpa;
 import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
+import java.net.URI;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -35,8 +36,8 @@ public class TestQueries {
 				"WHERE { FILTER(bound(?value) && bound(?id)) }"
 		});
 
-		Man peter = new Man("http://example.org/peter");
-		Man paul = new Man("http://example.org/paul");
+		Man peter = new Man(URI.create("http://example.org/peter"));
+		Man paul = new Man(URI.create("http://example.org/paul"));
 		paul.setName("Paul");
 		em.persist(peter);
 		em.persist(paul);
@@ -77,18 +78,18 @@ public class TestQueries {
 				"}"
 		});
 		
-		Woman mary = new Woman("http://example.org/mary");
+		Woman mary = new Woman(URI.create("http://example.org/mary"));
 		mary.setName("Mary");
-		Woman eve = new Woman("http://example.org/eve");
+		Woman eve = new Woman(URI.create("http://example.org/eve"));
 		mary.setName("Eve");
 
-		Man peter = new Man("http://example.org/peter");
+		Man peter = new Man(URI.create("http://example.org/peter"));
 		peter.setName("Peter");
 		peter.setKnew(mary);
-		Man paul = new Man("http://example.org/paul");
+		Man paul = new Man(URI.create("http://example.org/paul"));
 		paul.setName("Paul");
 		paul.setKnew(mary);
-		Man adam = new Man("http://example.org/adam");
+		Man adam = new Man(URI.create("http://example.org/adam"));
 		adam.setName("adam");
 		adam.setKnew(eve);
 		

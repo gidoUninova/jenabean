@@ -1,5 +1,7 @@
 package test.jpa;
 
+import java.net.URI;
+
 import javax.persistence.NamedNativeQueries;
 import javax.persistence.NamedNativeQuery;
 
@@ -28,7 +30,7 @@ import thewebsemantic.Namespace;
 
 @Namespace("http://semanticbible.org/ns/2006/NTNames#")
 public class Woman extends Human {
-	public Woman(String uri) {
+	public Woman(URI uri) {
 		super(uri);
 	}
 }

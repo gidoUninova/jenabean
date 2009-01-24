@@ -6,6 +6,8 @@ public interface AnnotationHelper {
 
 	boolean isEmbedded(Object bean);
 
-	Object proxy(Object o);
+	boolean proxyRequired();
+
+	Class getProxy(Class<?> c) throws InstantiationException, IllegalAccessException;
 
 }

@@ -11,6 +11,8 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.logging.Level;
 
+import com.hp.hpl.jena.rdf.model.Resource;
+
 public class IdFieldTypeWrapper extends TypeWrapper {
 
 	private Field idfield;
@@ -94,6 +96,18 @@ public class IdFieldTypeWrapper extends TypeWrapper {
 			idfield.set(o, URI.create(uri));
 		return o;
 	}
-
+	
+	public Object toProxyBean(Resource source, AnnotationHelper jpa) {
+		try {
+			Class cls = jpa.getProxy(c);
+			Object obj = cls.newInstance();
+			if (uriid)
+				idfield.set(obj, URI.create(source.getURI()));
+			return obj;
+		} catch (Exception e) {
+			logger.log(Level.WARNING, "Exception caught while invoking default constructor on " + c, e);
+		}
+		return null;
+	}
 
 }

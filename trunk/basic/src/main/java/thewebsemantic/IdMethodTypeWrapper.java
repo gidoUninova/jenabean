@@ -9,6 +9,8 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.logging.Level;
 
+import com.hp.hpl.jena.rdf.model.Resource;
+
 public class IdMethodTypeWrapper extends TypeWrapper {
 
 	private Method idReadMethod;
@@ -74,6 +76,19 @@ public class IdMethodTypeWrapper extends TypeWrapper {
 				return super.toBean(uri);
 		} catch (Exception e) {
 			logger.log(Level.WARNING, "Error instantiating bean.", e);
+		}
+		return null;
+	}
+	
+	public Object toProxyBean(Resource source, AnnotationHelper jpa) {
+		try {
+			Class cls = jpa.getProxy(c);
+			Object obj = cls.newInstance();
+			if (idWriteMethod != null)
+				idWriteMethod.invoke(obj,URI.create(source.getURI()));
+			return obj;
+		} catch (Exception e) {
+			logger.log(Level.WARNING, "Exception caught while invoking default constructor on " + c, e);
 		}
 		return null;
 	}

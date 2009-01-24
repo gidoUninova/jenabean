@@ -15,6 +15,8 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.logging.Level;
 
+import thewebsemantic.binding.Persistable;
+
 
 import com.hp.hpl.jena.rdf.model.Resource;
 
@@ -51,7 +53,10 @@ public abstract class TypeWrapper {
 	}
 
 	public static synchronized TypeWrapper type(Object o) {
-		return wrap(o.getClass());
+		if (o instanceof Persistable)
+			return wrap(o.getClass().getSuperclass());
+		else
+			return wrap(o.getClass());
 	}
 
 	public static String getId(Object o) {
@@ -178,7 +183,7 @@ public abstract class TypeWrapper {
 	 * @return
 	 * @throws Exception
 	 */
-	public Object toBean(Resource source) {
+	public final Object toBean(Resource source) {
 		return toBean(source.getURI());
 	}
 
@@ -192,5 +197,7 @@ public abstract class TypeWrapper {
 		}
 		return null;
 	}
+
+	public abstract Object toProxyBean(Resource source, AnnotationHelper jpa);
 
 }

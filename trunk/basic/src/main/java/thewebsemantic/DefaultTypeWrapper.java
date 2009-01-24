@@ -1,5 +1,7 @@
 package thewebsemantic;
 
+import com.hp.hpl.jena.rdf.model.Resource;
+
 public class DefaultTypeWrapper extends TypeWrapper {
 
 	public DefaultTypeWrapper(Class<?> c) {
@@ -13,6 +15,11 @@ public class DefaultTypeWrapper extends TypeWrapper {
 
 	public String id(Object bean) {
 		return String.valueOf(bean.hashCode());
+	}
+
+	@Override
+	public Object toProxyBean(Resource source, AnnotationHelper jpa) {
+		throw new UnsupportedOperationException();
 	}
 
 
