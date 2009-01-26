@@ -1,0 +1,59 @@
+package test.jpa.library;
+
+import static org.junit.Assert.assertEquals;
+
+import java.util.Arrays;
+import java.util.List;
+
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+import javax.persistence.Query;
+
+import org.junit.Test;
+
+import static thewebsemantic.jpa.Util.write;
+
+public class Test1 {
+	
+
+    Author[] authors = {
+    	new Author("Hans","C","Anderson"),	
+    	new Author("Ray","","Bradbury"),
+    	new Author("Edgar","R","Burrows"),
+    	new Author("Bill","","Venners"),
+    	new Author("Vox","","Day"),
+    	new Author("John","R","Tolkein")
+    };
+    
+
+	
+	@Test
+	public void first() {
+		EntityManagerFactory factory =  Persistence.createEntityManagerFactory("tws:books");
+		EntityManager em = factory.createEntityManager();
+		int i=0;
+		for (Author author : authors) {
+			em.persist(author);
+			assertEquals(i++, author.getId());
+		}
+		Query q = em.createNamedQuery("Author.ALL");
+		q.setParameter("type", Author.class);
+		List<Author> list = q.getResultList();
+		assertEquals(6, list.size());
+	}
+
+
+	public void createBooks() {
+		//newBook("1565923715", )
+		
+	}
+	
+	public Book newBook(String isbn, Author[] authors, String title) {
+		Book b = new Book();
+		b.setIsbn(isbn);		
+		b.setAuthors(Arrays.asList(authors));
+		b.setTitle(title);
+		return b;
+	}
+}

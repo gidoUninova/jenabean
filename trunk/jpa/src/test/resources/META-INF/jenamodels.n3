@@ -25,3 +25,7 @@ tws:filemodel
 tws:notamodel a tws:badguy .
 
 tws:blank a ja:MemoryModel .
+
+tws:books a ja:MemoryModel ;
+	tws:package "test.jpa.library";
+	.

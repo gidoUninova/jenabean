@@ -19,6 +19,7 @@ import javax.persistence.Query;
 import org.junit.Test;
 
 
+import thewebsemantic.binding.Persistable;
 import thewebsemantic.jpa.JBFactory;
 import thewebsemantic.jpa.JBProvider;
 
@@ -64,8 +65,9 @@ public class TestBasic {
 		EntityManagerFactory factory =  Persistence.createEntityManagerFactory("tws:test");
 		EntityManager em = factory.createEntityManager();
 		Yin yin = new Yin();
+		yin.id = 0;
 		em.persist(yin);		
-		Yin yin2 = em.find(Yin.class, yin.hashCode());
+		Yin yin2 = em.find(Yin.class, 0);
 		assertNotNull(yin2);
 	}
 	
@@ -140,7 +142,9 @@ public class TestBasic {
 		Query q = em.createNamedQuery("Human.hasChildren");
 		List<Human> people = q.getResultList();
 		for (Human human : people) {
-			assertTrue(human.getClass() == Man.class || human.getClass() == Woman.class); 
+			assertTrue(human instanceof Persistable);
+			Class clz = human.getClass().getSuperclass();
+			assertTrue(clz == Man.class || clz == Woman.class); 
 		}
 	}
 	

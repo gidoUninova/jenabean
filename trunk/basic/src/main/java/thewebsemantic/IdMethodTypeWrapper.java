@@ -31,14 +31,14 @@ public class IdMethodTypeWrapper extends TypeWrapper {
 			// get the URI constructor if it exists
 			try {
 				uriConstructor = c.getConstructor(URI.class);
-			} catch (NoSuchMethodException e) {
-				// now get the id write method property
-				PropertyDescriptor[] props = descriptors();
-				for (PropertyDescriptor propertyDescriptor : props)
-					if (idReadMethod.equals(propertyDescriptor.getReadMethod()))
-						idWriteMethod = propertyDescriptor.getWriteMethod();
-			}
+			} catch (NoSuchMethodException e) {}
 		}
+		
+		// now get the id write method property
+		PropertyDescriptor[] props = descriptors();
+		for (PropertyDescriptor propertyDescriptor : props)
+			if (idReadMethod.equals(propertyDescriptor.getReadMethod()))
+				idWriteMethod = propertyDescriptor.getWriteMethod();
 
 	}
 	
@@ -68,7 +68,7 @@ public class IdMethodTypeWrapper extends TypeWrapper {
 		try {
 			if (uriid && uriConstructor != null)
 				return uriConstructor.newInstance(URI.create(uri));
-			else if (idWriteMethod != null) {
+			else if (uriid && idWriteMethod != null) {
 				Object obj = c.newInstance();
 				idWriteMethod.invoke(obj,URI.create(uri));
 				return obj;
@@ -84,7 +84,7 @@ public class IdMethodTypeWrapper extends TypeWrapper {
 		try {
 			Class cls = jpa.getProxy(c);
 			Object obj = cls.newInstance();
-			if (idWriteMethod != null)
+			if (uriid && idWriteMethod != null)
 				idWriteMethod.invoke(obj,URI.create(source.getURI()));
 			return obj;
 		} catch (Exception e) {

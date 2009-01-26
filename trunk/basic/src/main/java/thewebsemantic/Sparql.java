@@ -70,6 +70,20 @@ public class Sparql {
 		}
 	}
 	
+	public static <T> LinkedList<T> exec(Model m, RDF2Bean reader, Class<T> c, String query, QuerySolution initialBindings) {
+		QueryExecution qexec = getQueryExec(m, query, initialBindings);
+		LinkedList<T> beans = new LinkedList<T>();
+		try {
+			m.enterCriticalSection(Lock.READ);
+			ResultSet results = qexec.execSelect();
+			for (;results.hasNext();) beans.add(reader.load(c, resource(results)));
+			return beans;
+		} finally {
+			m.leaveCriticalSection();
+			qexec.close();
+		}
+	}
+	
 	public static <T> LinkedList<Resource> exec2(Model m, String query, QuerySolution initialBindings) {
 		QueryExecution qexec = getQueryExec(m, query, initialBindings);
 		LinkedList<Resource> beans = new LinkedList<Resource>();

@@ -19,6 +19,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+import thewebsemantic.binding.Persistable;
 import thewebsemantic.lazy.LazyList;
 import thewebsemantic.lazy.LazySet;
 import thewebsemantic.lazy.Provider;
@@ -448,6 +449,8 @@ public class RDF2Bean extends Base implements Provider {
 		for (ValuesContext ctx : TypeWrapper.valueContexts(target))
 			if (ctx.isAggregateType())
 				apply(source, ctx);
+		if ( target instanceof Persistable)
+			((Persistable)target).activate();
 		return target;
 	}
 	
@@ -680,6 +683,8 @@ public class RDF2Bean extends Base implements Provider {
 					javaclass, class1.getName());
 		}
 	}
+	
+	
 }
 /*
  * Copyright (c) 2007

@@ -20,6 +20,7 @@ import com.hp.hpl.jena.rdf.model.Model;
 
 public class TestEmployee {
 
+
 	@BeforeClass
 	public static void init() {
 		EntityManagerFactory emf = Persistence
@@ -33,6 +34,7 @@ public class TestEmployee {
 		new SamplePopulation().persistAll(em);
 		em.getTransaction().commit();
 		em.close();
+		m.write(System.out, "N3");
 	}
 
 	@AfterClass
@@ -43,6 +45,16 @@ public class TestEmployee {
 		EntityManager em = emf.createEntityManager();
 		Model m = (Model) em.getDelegate();
 		m.removeAll();
+	}
+	
+	@Test
+	public void checkManagedEmployees() {
+		EntityManager em = getEM();
+		Employee one = em.find(Employee.class, 1);
+		assertEquals(2, one.getManagedEmployees().size());
+		for (Employee e : one.getManagedEmployees()) {
+			assertTrue(e.getId() == 0 || e.getId() == 5);
+		}
 	}
 
 	@SuppressWarnings("unchecked")
