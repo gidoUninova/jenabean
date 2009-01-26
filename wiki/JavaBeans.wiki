@@ -1,0 +1,1 @@
+#summary Jenabean accepts the conventions provided by Sun's JavaBean [[http://java.sun.com/javase/technologies/desktop/javabeans/index.jsp][specification]]
