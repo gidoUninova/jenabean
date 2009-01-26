@@ -1,5 +1,10 @@
 package thewebsemantic;
 
+import static thewebsemantic.Bean2RDF.logger;
+
+import java.net.URI;
+import java.util.logging.Level;
+
 import com.hp.hpl.jena.rdf.model.Resource;
 
 public class DefaultTypeWrapper extends TypeWrapper {
@@ -19,7 +24,12 @@ public class DefaultTypeWrapper extends TypeWrapper {
 
 	@Override
 	public Object toProxyBean(Resource source, AnnotationHelper jpa) {
-		throw new UnsupportedOperationException();
+		try {
+			return jpa.getProxy(c).newInstance();
+		} catch (Exception e) {
+			logger.log(Level.WARNING, "Exception caught while invoking default constructor on " + c, e);
+		}
+		return null;
 	}
 
 

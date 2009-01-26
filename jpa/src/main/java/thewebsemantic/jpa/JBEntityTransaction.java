@@ -11,9 +11,9 @@ public class JBEntityTransaction implements EntityTransaction {
 	private TransactionHandler ta;
 	private boolean isActive = false;
 	private boolean isRollBackOnly = false;
-	private EntityManager em;
+	private JBEntityManager em;
 	
-	public JBEntityTransaction(TransactionHandler ta, EntityManager em) {
+	public JBEntityTransaction(TransactionHandler ta, JBEntityManager em) {
 		this.ta = ta;
 		this.em = em;
 	}
@@ -35,6 +35,7 @@ public class JBEntityTransaction implements EntityTransaction {
 			em.flush();
 			ta.commit();
 			isActive = false;
+			em.commited();
 		} catch (Exception e) {
 			throw new RollbackException(e);
 		}

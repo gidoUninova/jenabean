@@ -45,11 +45,11 @@ public class JBQueryWrapper implements Query {
 	public List getResultList() {
 		//List<Resource> results = Sparql.exec2(em._model, query, initialSettings);
 		//return new LazyResults(results, em);
-		return Sparql.exec(em._model, type, query, initialSettings);
+		return Sparql.exec(em._model, em._reader, type, query, initialSettings);
 	}
 
 	public Object getSingleResult() {
-		List result = Sparql.exec(em._model, type, query, initialSettings);
+		List result = Sparql.exec(em._model, em._reader, type, query, initialSettings);
 		if ( result.size() > 1 ) 
 			throw new NonUniqueResultException();
 		else if ( result.size()==0 )

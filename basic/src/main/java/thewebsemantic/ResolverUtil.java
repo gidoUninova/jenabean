@@ -48,7 +48,7 @@ import java.util.jar.JarInputStream;
  * 
  * <p>
  * General searches are initiated by calling the
- * {@link #find(net.sourceforge.stripes.util.ResolverUtil.Test, String)} ()}
+ * {@link #find(Test1.sourceforge.stripes.util.ResolverUtil.Test, String)} ()}
  * method and supplying a package name and a Test instance. This will cause the
  * named package <b>and all sub-packages</b> to be scanned for classes that meet
  * the test. There are also utility methods for the common use cases of scanning

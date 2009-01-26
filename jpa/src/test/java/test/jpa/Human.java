@@ -9,7 +9,6 @@ import javax.persistence.NamedNativeQuery;
 
 import thewebsemantic.Namespace;
 import thewebsemantic.RdfProperty;
-import thewebsemantic.Uri;
 @NamedNativeQueries( { 
 	@NamedNativeQuery(
 		name="Human.hasChildren", 

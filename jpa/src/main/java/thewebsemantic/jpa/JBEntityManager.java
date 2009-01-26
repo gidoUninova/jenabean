@@ -3,17 +3,24 @@ package thewebsemantic.jpa;
 import java.util.HashMap;
 import java.util.HashSet;
 
+import javassist.util.proxy.ProxyFactory;
+
+import javax.persistence.Embeddable;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.EntityTransaction;
 import javax.persistence.FlushModeType;
+import javax.persistence.GeneratedValue;
 import javax.persistence.LockModeType;
 import javax.persistence.NamedNativeQuery;
 import javax.persistence.PersistenceException;
 import javax.persistence.Query;
 
+import thewebsemantic.AnnotationHelper;
 import thewebsemantic.Bean2RDF;
 import thewebsemantic.NotFoundException;
 import thewebsemantic.RDF2Bean;
+import thewebsemantic.ValuesContext;
+import thewebsemantic.binding.Persistable;
 
 import com.hp.hpl.jena.rdf.model.Model;
 
@@ -21,7 +28,7 @@ import com.hp.hpl.jena.rdf.model.Model;
  * NEW, CLEAN, DIRTY 
  *
  */
-public class JBEntityManager implements javax.persistence.EntityManager {
+public class JBEntityManager implements javax.persistence.EntityManager, AnnotationHelper {
 
 	private static final String TRANSACTIONS_NOT_SUPPORTED = "This model does not support transactions.";
 	private static final String CLOSED = "This EntityManager is closed.";
@@ -33,24 +40,43 @@ public class JBEntityManager implements javax.persistence.EntityManager {
 	private FlushModeType flushType = FlushModeType.COMMIT;
 	private JBEntityTransaction ta;
 	private HashSet<Object> cache;
+	private FlushListener flushListener;
+	private boolean pendingClose = false;
 
-	public JBEntityManager(Model m, HashMap<String, NamedNativeQuery> queries, Bean2RDF writer, RDF2Bean reader) {
+	public JBEntityManager(Model m, HashMap<String, NamedNativeQuery> queries) {
 		_model = m;
-		_writer = writer;
-		_reader = reader;
+		_writer = new Bean2RDF(m, this);
+		_reader = new RDF2Bean(m, this);
 		_queries = queries;
 		isOpen = true;
 		cache = new HashSet<Object>();
 	}
 
+	protected void commited() {
+		if (pendingClose)
+			cleanup();
+	}
+	
 	public void clear() {
 		if (! isOpen)
 			throw new IllegalStateException(CLOSED);
-		// TODO Auto-generated method stub
+		cache.clear();
 	}
 
 	public void close() {
+		if (withinTransaction())
+			pendingClose = true;
+		else
+			cleanup();
+	}
+
+	private void cleanup() {
 		cache.clear();
+		_writer = null;
+		_reader = null;
+		ta = null;
+		_queries = null;
+		flushListener = null;
 		isOpen = false;
 	}
 
@@ -101,8 +127,12 @@ public class JBEntityManager implements javax.persistence.EntityManager {
 	}
 
 	public void flush() {
-		for (Object obj : cache)
+		for (Object obj : cache) {
+			if (flushListener != null)
+				flushListener.notify(obj);
 			_writer.save(obj);
+		}
+		cache.clear();
 	}
 
 	public Model getDelegate() {
@@ -156,9 +186,14 @@ public class JBEntityManager implements javax.persistence.EntityManager {
 		if ( cache.contains(bean))
 			return;
 		_reader.init(bean);
-		_writer.save(bean);
-		if (ta != null && ta.isActive())
+		if (withinTransaction())
 			cache.add(bean);
+		else
+			_writer.save(bean);
+	}
+
+	private boolean withinTransaction() {
+		return ta != null && ta.isActive();
 	}
 
 	public void refresh(Object bean) {
@@ -177,4 +212,44 @@ public class JBEntityManager implements javax.persistence.EntityManager {
 		return _model;
 	}
 
+	
+
+	// AnnotationHelper stuff
+	
+	public boolean isGenerated(ValuesContext ctx) {
+		return ctx.getAccessibleObject().isAnnotationPresent(GeneratedValue.class);
+	}
+
+	public boolean isEmbedded(Object bean) {
+		if (bean instanceof Persistable)
+			return isEmbedded(bean.getClass().getSuperclass());
+		else
+			return isEmbedded(bean.getClass());
+	}
+	
+	private boolean isEmbedded(Class c) {
+		return c.isAnnotationPresent(Embeddable.class);
+	}
+
+	@Override
+	public Class getProxy(Class c) throws InstantiationException, IllegalAccessException {
+		ProxyFactory f = new ProxyFactory();
+		f.setInterfaces(new Class[] {Persistable.class});
+		f.setHandler(new JBMethodHandler(cache));
+		f.setSuperclass(c);
+		return f.createClass();
+	}
+
+	@Override
+	public boolean proxyRequired() {
+		return true;
+	}
+
+	public void setFlushListener(FlushListener flushListener) {
+		this.flushListener = flushListener;
+	}
+
+	public FlushListener getFlushListener() {
+		return flushListener;
+	}
 }

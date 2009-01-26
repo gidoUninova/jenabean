@@ -35,20 +35,7 @@ public class SamplePopulation {
 			basicLargeProjectExample4(), basicLargeProjectExample5() };
 
 	public SamplePopulation() {
-
-		// Setup management hierarchy
-		addManagedEmployees(0, new int[] { 2, 3, 4 });
-		addManagedEmployees(1, new int[] { 5, 0 });
-		addManagedEmployees(2, new int[] {});
-		addManagedEmployees(3, new int[] {});
-		addManagedEmployees(4, new int[] {});
-		addManagedEmployees(5, new int[] {});
-		addManagedEmployees(6, new int[] {});
-		addManagedEmployees(7, new int[] {});
-		addManagedEmployees(8, new int[] {});
-		addManagedEmployees(9, new int[] { 11 });
-		addManagedEmployees(10, new int[] { 6 });
-		addManagedEmployees(11, new int[] { 1 });
+System.out.println("constructor");
 
 		// Setup Employee-Project associations
 		addProjects(0, new int[] { 0, 1, 2 }, new int[] {});
@@ -65,6 +52,7 @@ public class SamplePopulation {
 	}
 
 	public Employee basicEmployeeExample1() {
+		System.out.println("members");
 		Employee employee = new Employee();
 
 		employee.setFirstName("Bob");
@@ -543,11 +531,27 @@ public class SamplePopulation {
 		for (int index = 0; index < this.employees.length; index++) {
 			em.persist(this.employees[index]);
 		}
+		// Setup management hierarchy
+		addManagedEmployees(0, new int[] { 2, 3, 4 });
+		addManagedEmployees(1, new int[] { 5, 0 });
+		addManagedEmployees(2, new int[] {});
+		addManagedEmployees(3, new int[] {});
+		addManagedEmployees(4, new int[] {});
+		addManagedEmployees(5, new int[] {});
+		addManagedEmployees(6, new int[] {});
+		addManagedEmployees(7, new int[] {});
+		addManagedEmployees(8, new int[] {});
+		addManagedEmployees(9, new int[] { 11 });
+		addManagedEmployees(10, new int[] { 6 });
+		addManagedEmployees(11, new int[] { 1 });
+
+		/*
 		for (int index = 0; index < this.smallProjects.length; index++) {
 			em.persist(this.smallProjects[index]);
 		}
 		for (int index = 0; index < this.largeProjects.length; index++) {
 			em.persist(this.largeProjects[index]);
 		}
+		*/
 	}
 }
