@@ -42,5 +42,18 @@ public class TestWeirdTypes {
 		Quantity q2 = reader.load(Quantity.class, 1.0002);
 		assertNotNull(q2);
 	}
+	
+	@Test
+	public void auto() {
+		Model m = ModelFactory.createDefaultModel();
+		Bean2RDF writer = new Bean2RDF(m);
+		RDF2Bean reader = new RDF2Bean(m);
+		for(int i=0; i<20; i++) {
+			AutoId bean = new AutoId();
+			reader.init(bean);
+			assertEquals(i, bean.id);
+			writer.save(bean);
+		}		
+	}
 
 }

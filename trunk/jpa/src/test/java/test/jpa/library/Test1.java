@@ -1,6 +1,7 @@
 package test.jpa.library;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
+import static thewebsemantic.jpa.Util.concrete;
 
 import java.util.Arrays;
 import java.util.List;
@@ -12,7 +13,8 @@ import javax.persistence.Query;
 
 import org.junit.Test;
 
-import static thewebsemantic.jpa.Util.write;
+import test.jpa.Counter;
+import thewebsemantic.binding.Persistable;
 
 public class Test1 {
 	
@@ -41,6 +43,27 @@ public class Test1 {
 		q.setParameter("type", Author.class);
 		List<Author> list = q.getResultList();
 		assertEquals(6, list.size());
+		
+		Book b = new Book();
+		b.setIsbn("1565923715");
+		
+		Author tolkein = em.find(Author.class, 5);
+		list.clear();
+		list.add(tolkein);
+		b.setAuthors(list);
+		em.persist(b);
+		em.flush();
+		b = em.find(Book.class, "1565923715");
+		tolkein = b.getAuthors().iterator().next();
+		
+		
+		Counter c = new Counter();
+		concrete(em).setFlushListener(c);
+		tolkein.setFirstName("J");
+		tolkein.setMiddleInitial("RR");
+		assertTrue(tolkein instanceof Persistable);
+		em.flush();
+		assertEquals(1, c.count);
 	}
 
 

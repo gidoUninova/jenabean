@@ -11,7 +11,7 @@ import com.hp.hpl.jena.rdf.model.Resource;
 @SuppressWarnings("unchecked")
 public class LazyList implements List, Lazy {
 
-	private transient Resource i;
+	private transient Resource subject;
 	private transient Provider reader;
 	private List data;
 	private Class type;
@@ -19,7 +19,7 @@ public class LazyList implements List, Lazy {
 	private boolean modified = false;
 	
 	public LazyList(Resource i, String propertyUri, Class type, Provider r2b) {
-		this.i = i;
+		this.subject = i;
 		this.propertyUri = propertyUri;
 		this.type = type;
 		reader = r2b;
@@ -27,7 +27,7 @@ public class LazyList implements List, Lazy {
 
 	private List data() {
 		if ( data == null)
-			data = reader.lazyList(i, propertyUri, type);
+			data = reader.lazyList(subject, propertyUri, type);
 		return data;
 	}
 
