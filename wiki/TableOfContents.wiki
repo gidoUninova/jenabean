@@ -1,5 +1,5 @@
-  * IntroDuction
-  * QuickStart
-  * WritingBeans
-  * ReadingBeans
+  * [IntroDuction Introduction]
+  * [QuickStart Quickstart Guide]
+  * [WritingBeans Writing JavaBeans]
+  * [ReadingBeans Reading JavaBeans]
  
