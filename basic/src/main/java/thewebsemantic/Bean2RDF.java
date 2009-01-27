@@ -131,8 +131,10 @@ public class Bean2RDF extends Base {
 	}
 
 	private Resource toResource(Object bean) {
-		return (jpa.isEmbedded(bean)) ? m.createResource(getRDFSClass(bean)) : 
-			m.createResource(instanceURI(bean), getRDFSClass(bean));
+		if (jpa.isEmbedded(bean))
+			return m.createResource(getRDFSClass(bean)); 
+		else
+			return m.createResource(instanceURI(bean), getRDFSClass(bean));
 	}
 
 	private Resource existing(Object bean) {

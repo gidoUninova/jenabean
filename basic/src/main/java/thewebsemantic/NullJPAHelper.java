@@ -1,9 +1,12 @@
 package thewebsemantic;
 
+import thewebsemantic.Generated;
+
 public class NullJPAHelper implements AnnotationHelper {
 
 	public boolean isGenerated(ValuesContext ctx) {
-		return false;
+		return ctx.getAccessibleObject().isAnnotationPresent(Generated.class);
+
 	}
 
 	public boolean isEmbedded(Object bean) {

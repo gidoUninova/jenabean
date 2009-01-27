@@ -253,9 +253,8 @@ public class RDF2Bean extends Base implements Provider {
 			String[] includes) throws NotFoundException {
 		init(shallow, includes);
 		try {
-			T result = toObject(c, id);
-			if (result != null)
-				return result;
+			if (exists(c, id))
+				return toObject(c, id);
 			throw new NotFoundException();
 		} finally {
 			m.leaveCriticalSection();
@@ -371,8 +370,7 @@ public class RDF2Bean extends Base implements Provider {
 	}
 
 	private <T> T toObject(Class<T> c, String id) {
-		return (!exists(c, id)) ? null : toObject(c, m.getResource(wrap(c).uri(
-				id)));
+		return toObject(c, m.getResource(wrap(c).uri(id)));
 	}
 
 	public Object load(String uri) throws NotFoundException {
@@ -449,6 +447,11 @@ public class RDF2Bean extends Base implements Provider {
 		for (ValuesContext ctx : TypeWrapper.valueContexts(target))
 			if (ctx.isAggregateType())
 				apply(source, ctx);
+		
+		/*
+		 * now activate the proxy so that it marks dirty state 
+		 * for saving on commit or flush
+		 */
 		if ( target instanceof Persistable)
 			((Persistable)target).activate();
 		return target;
@@ -466,25 +469,27 @@ public class RDF2Bean extends Base implements Provider {
 	public void init(Object target) {
 		Resource node = m.getResource(instanceURI(target)); 
 		for (ValuesContext ctx : TypeWrapper.valueContexts(target)) {
-			if ( ctx.isCollectionOrSet() && ctx.invokeGetter() == null) {
+			if ( ctx.isCollectionOrSet() && ctx.invokeGetter() == null)
 				ctx.setProperty(new LazySet(node, ctx.uri(), ctx.t(), this));
-			} else if ( ctx.isList() && ctx.invokeGetter() == null) {
+			else if ( ctx.isList() && ctx.invokeGetter() == null)
 				ctx.setProperty(new LazyList(node, ctx.uri(), ctx.t(), this));
-			}
-			if (ctx.isId() && jpa.isGenerated(ctx)) {
-				String uri = TypeWrapper.type(target).typeUri();
-				Resource r = m.createResource(uri);
-				int idx=0;
-				try {
-					Statement s = r.getRequiredProperty(sequence);
-					idx = s.getInt();
-				} catch (PropertyNotFoundException e) {
-
-				}
-				ctx.setProperty(idx);
-				r.removeAll(sequence).addProperty(sequence, m.createTypedLiteral(idx+1));
-			}
+			else if (ctx.isId() && jpa.isGenerated(ctx))
+				generateid(target, ctx);
 		}
+	}
+
+	private void generateid(Object target, ValuesContext ctx) {
+		String uri = TypeWrapper.type(target).typeUri();
+		Resource r = m.createResource(uri);
+		int idx=0;
+		try {
+			Statement s = r.getRequiredProperty(sequence);
+			idx = s.getInt();
+		} catch (PropertyNotFoundException e) {
+
+		}
+		ctx.setProperty(idx);
+		r.removeAll(sequence).addProperty(sequence, m.createTypedLiteral(idx+1));
 	}
 
 	private Object newInstance(Resource source, Class c) {
