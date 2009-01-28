@@ -14,3 +14,11 @@ SELECT ?s WHERE {
    ...
 }
 }}}
+
+Once you've crafted your SPARQL query use `thewebsemantic.Sparql` to run the query and return a list of results.
+
+{{{
+String 	queryString = 
+	"SELECT ?s WHERE { ?s a <http://test.bean/FatBean> }";
+Collection<FatBean> result2 = Sparql.exec(m, FatBean.class, queryString);
+}}}
