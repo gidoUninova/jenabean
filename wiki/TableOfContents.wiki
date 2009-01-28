@@ -2,5 +2,5 @@
   * [QuickStart Quickstart Guide]
   * [WritingBeans Writing JavaBeans]
   * [ReadingBeans Reading JavaBeans]
-  * [SparqlQuery Beans from SPARQL queries]
+  * [SparqlQueries Beans from SPARQL queries]
  
