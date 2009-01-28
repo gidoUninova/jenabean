@@ -1,13 +1,16 @@
-#summary One-sentence summary of this page.
+#summary How to use SPARQL to load beans out of a jena model.
 
-= Introduction =
+Jenabean can load a beans given a SPARQL query and a java type.  Your query must comply with a simple pattern by selecting a single subject "?s". 
 
-Add your content here.
- 
+{{{
+SELECT ?s WHERE { ... }
+}}}
 
-= Details =
+It's also important that your query intentionaly return resources that are mappable to the desired type.  The easiest way to do this is sparql is add a type assertion:
 
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
+{{{
+SELECT ?s WHERE { 
+   ?s a <http://test.bean/Man> . 
+   ...
+}
+}}}
