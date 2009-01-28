@@ -15,8 +15,7 @@ SELECT ?s WHERE {
 }
 }}}
 
-Once you've crafted your SPARQL query use `thewebsemantic.Sparql` to run the query and return a list of results.
-
+Once you've crafted your SPARQL query use `thewebsemantic.Sparql` to run the query, passing it a jena model, a type, and your query.
 {{{
 String 	queryString = 
 	"SELECT ?s WHERE { ?s a <http://test.bean/FatBean> }";
