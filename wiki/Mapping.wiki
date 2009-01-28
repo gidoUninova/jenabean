@@ -4,7 +4,7 @@ OWL/RDF has classes.  Supposedly the ontology author gave the classnames some th
 
 {{{
 @Namespace("http://xmlns.com/foaf/0.1/") 
-public class Fellow {
+public class Person {
         // abreviated
 	public String getName() {
 		return name;
@@ -21,7 +21,7 @@ This will cause your bean to be saved as an instance of foaf:Person.  If your be
 {{{
 @Namespace("http://xmlns.com/foaf/0.1/")
 @RdfType("Person")
-public class Person {
+public class Fellow {
         // abreviated
 	public String getName() {
 		return name;
