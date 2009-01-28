@@ -22,7 +22,8 @@ public class TestSpecification {
 		EntityManager em2 = factory.createEntityManager();
 		factory.close();
 		assertFalse(em1.isOpen());
-		assertFalse(em2.isOpen());		
+		assertFalse(em2.isOpen());	
+		
 	}
 	
 	/**
