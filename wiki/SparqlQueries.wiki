@@ -6,7 +6,7 @@ Jenabean can load a beans given a SPARQL query and a java type.  Your query must
 SELECT ?s WHERE { ... }
 }}}
 
-It's also important that your query intentionaly return resources that are mappable to the desired type.  The easiest way to do this is sparql is add a type assertion:
+Jenabean expects that the single bound return variable be named "?s".  It's also important that your query intentionaly return resources that are mappable to the desired type.  The easiest way to do this is sparql is add a type assertion:
 
 {{{
 SELECT ?s WHERE { 
