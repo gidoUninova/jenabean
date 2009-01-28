@@ -3,4 +3,4 @@
   * [WritingBeans Writing JavaBeans]
   * [ReadingBeans Reading JavaBeans]
   * [SparqlQueries Beans from SPARQL queries]
- 
+  * [Mapping Mapping beans to ontology types]
