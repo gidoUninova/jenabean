@@ -16,4 +16,4 @@ public class Person {
 }
 }}}
 
-
+This will cause your bean to be saved as an instance of foaf:Person.  @Namespace applies to the entire class, therefore, the name property in the example will also go under the foaf namespace as foaf:name, a valid foaf property.  The idea here is brevity.  We control our classes and the names of our properties, so assuming we name things according to the ontology, we can save some key strokes.
