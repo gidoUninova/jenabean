@@ -1,1 +1,19 @@
 #summary Jenabean only requires beans to have an id annotation, however, you probably want to map to specific ontology classes and properties...here's how.
+
+OWL/RDF has classes.  Supposedly the ontology author gave the classnames some thought, like foaf:Person.  The easiest thing to do is to name your JavaBeans according to the ontology class they are bound to and use the `@Namespace` annotation...
+
+{{{
+@Namespace("http://xmlns.com/foaf/0.1/")
+public class Person {
+        // abreviated
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+}
+}}}
+
+
