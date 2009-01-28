@@ -16,12 +16,16 @@ public class JBFactory implements EntityManagerFactory {
 	private HashMap<String, NamedNativeQuery> _queries;
 	private boolean isOpen;
 	private HashSet<JBEntityManager> entityManagers;
+	private String name;
+	private JBProvider provider;
 
-	public JBFactory(Model m, HashMap<String, NamedNativeQuery> queries) {
+	public JBFactory(JBProvider p, String n, Model m, HashMap<String, NamedNativeQuery> queries) {
 		_model = m;
 		_queries = queries;
 		isOpen = !_model.isClosed();
 		entityManagers = new HashSet<JBEntityManager>();
+		name = n;
+		provider = p;
 	}
 
 	public synchronized void close() {
@@ -32,6 +36,8 @@ public class JBFactory implements EntityManagerFactory {
 			em.close();
 		}
 		entityManagers.clear();
+		provider.notifyClosed(this);
+		provider = null;
 	}
 
 	public synchronized EntityManager createEntityManager() {
@@ -52,6 +58,10 @@ public class JBFactory implements EntityManagerFactory {
 
 	public Model getModel() {
 		return _model;
+	}
+
+	public Object getName() {
+		return name;
 	}
 
 

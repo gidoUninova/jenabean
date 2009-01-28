@@ -92,7 +92,7 @@ public class JBProvider implements PersistenceProvider {
 					m = Assembler.general.openModel(r);
 					m.enterCriticalSection(Lock.WRITE);
 					m.createProperty(JAVACLASS).addProperty(RDF.type,OWL.AnnotationProperty);
-					return new JBFactory(m, bindAll(m, getPackages(r)));
+					return new JBFactory(this, emName, m, bindAll(m, getPackages(r)));
 				} catch(Exception e) {
 					throw new PersistenceException(e);
 				} finally {
@@ -104,6 +104,10 @@ public class JBProvider implements PersistenceProvider {
 		}
 		return null;
 
+	}
+	
+	protected void notifyClosed(JBFactory f) {
+		this.entityManagers.remove(f.getName());
 	}
 
 	private String[] getPackages(Resource r) {
