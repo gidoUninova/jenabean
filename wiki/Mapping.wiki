@@ -1,0 +1,1 @@
+#summary Jenabean only requires beans to have an id annotation, however, you probably want to map to specific ontology classes and properties...here's how.
