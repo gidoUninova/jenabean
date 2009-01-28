@@ -1,4 +1,4 @@
-  * [IntroDuction Introduction]
+  * [Introduction Introduction]
   * [QuickStart Quickstart Guide]
   * [WritingBeans Writing JavaBeans]
   * [ReadingBeans Reading JavaBeans]
