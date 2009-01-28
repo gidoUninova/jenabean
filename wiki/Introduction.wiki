@@ -1,13 +1,1 @@
-#summary One-sentence summary of this page.
-
-= Introduction =
-
-Add your content here.
-
-
-= Details =
-d
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
+Jenabean is a lightweight object to RDF toolkit for Java 5 and later.  It doesn't require additional jars aside from those already required by Jena.  Instead of the customary XML descriptor, it uses annotations directly on your JavaBean classes to determine how to persist data as RDF.  Client code interacts will two classes, either Bean2RDF or RDF2Bean.  Bean2RDF serializes JavaBeans into a Jena model while RDF2Bean reads RDF statements in the model and constructs objects.
