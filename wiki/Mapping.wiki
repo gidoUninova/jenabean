@@ -24,3 +24,13 @@ This will cause your bean to be saved as an instance of foaf:Person.  @Namespace
 		return children;
 	}
 }}}
+
+Note that the same thing may also be done via the bean's fields.
+
+{{{
+	@RdfProperty("http://semanticbible.org/ns/2006/NTNames#parentOf")
+	private Collection<Human> children;
+
+}}}
+
+You may use `@Id` and `@RdfProperty` on property getter methods or fields.  You should choose either one, don't annotate both fields and getter methods or mix the two.  Jenabean will assume after the first field annotation that it's a field based bean and ignore method annotations.
