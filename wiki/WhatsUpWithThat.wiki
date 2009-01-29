@@ -11,4 +11,4 @@ Sans any annotations except @Id, jenabean uses the classe's package as the URL d
 
 *Q:* _Why can't I use `java.util.ArrayList` or `java.utio.HashSet` as bean properties?_
 
-Jeanbean deals with the raw collection interfaces `Collection`, `List`, and `Set`.  In order to support lazy loading, and to detect when the collection is modified, Jenabean uses it's own special implementations of these interfaces.  This is in keeping with common practice regarding object to relational binding tools (hibernate, jpa).  
+Jeanbean deals with the raw collection interfaces `Collection`, `List`, and `Set`.  In order to support lazy loading, and to detect when the collection is modified, Jenabean uses it's own special implementations of these interfaces.  This is in keeping with common practice regarding object to relational binding tools (hibernate, jpa).  In most common cases, you're encouraged to use Collection or Set.  If you need an ordered agregate property, you may use List or an array type.
