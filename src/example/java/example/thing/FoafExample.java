@@ -1,5 +1,7 @@
 package example.thing;
 
+import java.net.URI;
+
 import thewebsemantic.Thing;
 import thewebsemantic.vocabulary.Foaf;
 import thewebsemantic.vocabulary.Geo;
@@ -9,6 +11,11 @@ import thewebsemantic.vocabulary.Skos;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 
+/**
+ * To run this you'll need the Jena jars + the jenabean jar. 
+ * (http://code.google.com/p/jenabean/)
+ *
+ */
 public class FoafExample {
 	
 	public static void main(String[] args) {
@@ -23,14 +30,18 @@ public class FoafExample {
 	t.as(Foaf.class).
 	    aimChatID("example").
 		birthday("01/01/1999").
-		weblog(new Thing("http://thewebsemantic.com", m)).
-		knows(new Thing("http://bblfish.net/people/henry/card#me", m)).
+		name("Bob Ducharm").
+		firstName("Bob").
+		family_name("Ducharm").
+		homepage(URI.create("http://www.snee.com/")).
+		weblog(URI.create("http://www.snee.com/bobdc.blog/")).
+		knows(new Thing("http://www.thewebsemantic.com/card.rdf", m)).
 	as(Geo.class).
 		lat(33.3f).
 		long_(120.1f).
 	    isa(Skos.Concept.class).
 	as(Rdfs.class).
-	 	label("an example of polymorphic Thing with 3 vocabularies");
+	 	label("an example for Bob");
 		m.write(System.out, "N3");
 	}
 }
