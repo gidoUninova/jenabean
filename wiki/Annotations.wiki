@@ -30,5 +30,12 @@ public class ExampleBean {
   
 
 == `@Namespace` ==
+Jenabean will create a default namespace for you bean based on its package.  Use this annotation when you want to override the default behavior.  After your bean has been namespaced, all of it's properties will inherit the same namespace.  If your namespace is "http://example.org/ontology#" and your bean has a name property, it's URI will be `http://example.org/ontology#name`.  `@Namespace` is a class level annotation.
+
+{{{
+@Namespace("http://example.org/ontology#")
+public class ExampleBean {
+
+}}}
 
 == `@RdfProperty` ==
