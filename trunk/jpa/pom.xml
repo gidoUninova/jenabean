@@ -41,10 +41,11 @@
 		</dependency>
 
 		<dependency>
-			<groupId>com.googlecode.jenabean</groupId>
-			<artifactId>jenabean</artifactId>
-			<version>0.7</version>
+			<groupId>org.jboss</groupId>
+			<artifactId>javassist</artifactId>
+			<version>3.7.1.GA</version>
 		</dependency>
+
 	</dependencies>
 
 
@@ -59,6 +60,26 @@
 					<target>1.5</target>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>build-helper-maven-plugin</artifactId>
+				<version>1.1</version>
+				<executions>
+					<execution>
+						<id>add-source</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>add-source</goal>
+						</goals>
+						<configuration>
+							<sources>
+								<source>../basic/src/main</source>
+							</sources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
 		</plugins>
 
 
@@ -72,6 +93,10 @@
 		<repository>
 			<id>maven</id>
 			<url>http://repo2.maven.org/maven2</url>
+		</repository>
+		<repository>
+			<id>jboss</id>
+			<url>http://repository.jboss.org/maven2</url>
 		</repository>
 	</repositories>
 
