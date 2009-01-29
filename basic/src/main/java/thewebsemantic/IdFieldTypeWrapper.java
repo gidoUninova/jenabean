@@ -18,10 +18,12 @@ public class IdFieldTypeWrapper extends TypeWrapper {
 	private Field idfield;
 	private Field[] fields;
 	private boolean uriid = false;
+	//private Constructor uriConstructor;
 	
 	public IdFieldTypeWrapper(Class<?> c, Field f, Field[] fields) {
 		super(c);
 		idfield = f;
+		idfield.setAccessible(true);
 		uriid = idfield.getType().equals(URI.class);
 		this.fields = fields;
 	}
@@ -92,7 +94,8 @@ public class IdFieldTypeWrapper extends TypeWrapper {
 	
 	private Object newinstance(String uri) throws Exception {
 		Object o = c.newInstance();
-		if (uriid)
+		
+		if (uriid && uri!=null)
 			idfield.set(o, URI.create(uri));
 		return o;
 	}

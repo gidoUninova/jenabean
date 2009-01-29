@@ -8,7 +8,7 @@ import com.hp.hpl.jena.rdf.model.ModelFactory;
 public class AssemblerExample {
 	public static void main(String[] args) {
 		OntModel m = ModelFactory.createOntologyModel();
-		m.read("file:src/main/java/example/assembler.n3", "N3");
+		m.read("file:src/example/java/example/assembler.n3", "N3");
 		Bean2RDF writer = new Bean2RDF(m);
 		
 		Connection con = new Connection();

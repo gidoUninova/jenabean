@@ -1,14 +1,17 @@
 package example.foaf;
 
+import java.net.URI;
 import java.util.Collection;
 
+import thewebsemantic.Id;
 import thewebsemantic.Namespace;
 import thewebsemantic.Resource;
-import thewebsemantic.Uri;
 
 @Namespace(FoafUri.NS)
 public class Agent {
 
+	
+	@Id URI uri;
 	Collection<Resource> mbox;	
 	String mbox_sha1sum;
 	String gender;
@@ -23,15 +26,11 @@ public class Agent {
 	Collection<Resource> made; 
 	Collection<Resource> holdsAccount; 
 	String birthday;
-	String uri;
 	
-	public Agent(String uri) {
+	public Agent() {}
+	
+	public Agent(URI uri) {
 		this.uri = uri;
-	}
-	
-	@Uri
-	public String uri() {
-		return uri;
 	}
 
 	public String getMbox_sha1sum() {
@@ -119,5 +118,13 @@ public class Agent {
 
 	public void setMbox(Collection<Resource> mbox) {
 		this.mbox = mbox;
+	}
+
+	public URI getUri() {
+		return uri;
+	}
+
+	public void setUri(URI uri) {
+		this.uri = uri;
 	} 
 }

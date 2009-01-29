@@ -1,6 +1,6 @@
 package test.jpa;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 import java.io.IOException;
 import java.net.URI;
@@ -20,13 +20,43 @@ import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.sparql.util.StringUtils;
 
 public class TestQueries {
+	
+	@Test
+	public void testUpdateOnSelect() {
+		EntityManagerFactory factory =  Persistence.createEntityManagerFactory("tws:blank");
+		EntityManager em = factory.createEntityManager();
+		Model m = (Model)em.getDelegate();
+		String delete = StringUtils.join("\n", new String[] {
+			"DELETE { ?s ?p ?o } WHERE { ?s a ?type . ?s ?p ?o }"
+		});
+		Query query = em.createNativeQuery(delete);
+		query.setParameter("type", Man.class);
+		
+		boolean caught = false;
+		try {
+			query.getResultList();
+		} catch (Exception e) {
+			caught = true;
+		}
+		assertTrue(caught);
+		caught = false;
+		query = em.createNativeQuery("SELECT ?s WHERE {?s ?p ?v}");
+		query.setParameter("type", Man.class);
+		try {
+			query.executeUpdate();
+		} catch (Exception e) {
+			caught = true;
+		}
+		assertTrue(caught);
+
+	}
 
 	@Test
 	public void testUpdateQuery() {
 		EntityManagerFactory factory =  Persistence.createEntityManagerFactory("tws:blank");
 		EntityManager em = factory.createEntityManager();
 		Model m = (Model)em.getDelegate();
-		String squery = StringUtils.join("\n", new String[] {
+		String delete = StringUtils.join("\n", new String[] {
 			"DELETE { ?s ?p ?o } WHERE { ?s a ?type . ?s ?p ?o }"
 		});
 		
@@ -42,7 +72,7 @@ public class TestQueries {
 		em.persist(peter);
 		em.persist(paul);
 		
-		Query query = em.createNativeQuery(squery);
+		Query query = em.createNativeQuery(delete);
 		query.setParameter("type", Man.class);
 		query.executeUpdate();
 
@@ -104,6 +134,9 @@ public class TestQueries {
 		JBQueryWrapper q = new JBQueryWrapper(query, jem, Human.class);		
 		List<Human> people = q.getResultList();
 		assertEquals(3, people.size());
+		q.setMaxResults(2);
+		people = q.getResultList();
+		assertEquals(2, people.size());
 		
 		//bind to just people who knew Mary
 		q.setParameter("uri", mary);
@@ -112,6 +145,10 @@ public class TestQueries {
 		for (Human human : people) {
 			System.out.println(human.getName());
 		}
+		
+		q.setFirstResult(1);
+		people = q.getResultList();
+		assertEquals(1, people.size());
 	}
 	
 	@Test

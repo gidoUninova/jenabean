@@ -19,6 +19,7 @@ import com.hp.hpl.jena.rdf.model.Property;
 import com.hp.hpl.jena.rdf.model.RDFNode;
 import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.rdf.model.Statement;
+import com.hp.hpl.jena.rdf.model.StmtIterator;
 import com.hp.hpl.jena.shared.Lock;
 import com.hp.hpl.jena.vocabulary.RDF;
 import com.hp.hpl.jena.vocabulary.RDFS;
@@ -131,10 +132,12 @@ public class Bean2RDF extends Base {
 	}
 
 	private Resource toResource(Object bean) {
-		if (jpa.isEmbedded(bean))
-			return m.createResource(getRDFSClass(bean)); 
+		String uri = instanceURI(bean);
+		Resource type = getRDFSClass(bean);
+		if (jpa.isEmbedded(bean) || uri==null)
+			return m.createResource(type); 
 		else
-			return m.createResource(instanceURI(bean), getRDFSClass(bean));
+			return m.createResource(uri, type);
 	}
 
 	private Resource existing(Object bean) {
@@ -193,17 +196,31 @@ public class Bean2RDF extends Base {
 	 * @param subject
 	 * @param property
 	 * @param c
-	 */
+	
 	protected void updateCollection(Resource subject, Property property,
 			Collection<?> c) {
 		if (c == null)
 			return;
+		removeAnonymousNodes(subject, property);
 		subject.removeAll(property);
 		for (Object o : c)
 			subject.addProperty(property, toRDFNode(o));
 
 	}
 
+	private void removeAnonymousNodes(Resource subject, Property property) {
+		ArrayList<Resource> anonNodes = new ArrayList<Resource>();
+		StmtIterator it = subject.listProperties(property);
+		while (it.hasNext()) {
+			Resource r = it.nextStatement().getResource();
+			if (r.isAnon())
+				anonNodes.add(r);
+		}
+		it.close();
+		for (Resource resource : anonNodes)
+			resource.removeProperties();
+	}
+*/
 	protected RDFNode toRDFNode(Object o) {
 		if (isPrimitive(o)) 
 			return toLiteral(m, o);
