@@ -46,7 +46,7 @@ public class Main {
 				System.out.println(a.getClass()); //it's a Person!
 				if ( a instanceof Person) {
 					Person p = (Person)a;
-					System.out.println( g.uri() + " has member " + p.getName());
+					System.out.println( g.getUri() + " has member " + p.getName());
 				}
 				
 			}

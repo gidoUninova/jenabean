@@ -1,5 +1,6 @@
 package example.foaf;
 
+import java.net.URI;
 import java.util.Collection;
 
 import thewebsemantic.Namespace;
@@ -26,7 +27,9 @@ public class Person extends Agent {
 	Collection<Resource> currentProject;
 	Collection<Resource> pastProject;
 
-	public Person(String uri) {
+	public Person() {}
+	
+	public Person(URI uri) {
 		super(uri);
 	}
 

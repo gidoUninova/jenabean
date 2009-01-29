@@ -15,11 +15,11 @@ public class NTNamesExample2 {
 	public static void main(String[] args) {
 		OntModel m = ModelFactory.createOntologyModel();
 		m.setNsPrefix("xsd", "http://www.w3.org/2001/XMLSchema#");
-		m.read("file:src/main/java/example/NTNames.owl");
+		m.read("file:src/example/java/example/NTNames.owl");
 		OntDocumentManager.getInstance().addAltEntry(
 				"http://www.semanticbible.org/2006/11/NTNames.owl",
-				"file:src/main/java/example/NTNames.owl");
-		m.read("file:src/main/java/example/NTN-individuals.owl");
+				"file:src/example/java/example/NTNames.owl");
+		m.read("file:src/example/java/example/NTN-individuals.owl");
 		Jenabean J = Jenabean.instance();
 		J.bind(m);
 		J.bindAll("example");

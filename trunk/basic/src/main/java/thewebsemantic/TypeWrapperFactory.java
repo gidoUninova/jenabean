@@ -24,11 +24,10 @@ public class TypeWrapperFactory {
 
 		// now try field annotations
 		Field[] fields = Util.getDeclaredFields(c);
-		for (Field f : fields) {
-			if (isId(f)) {
+		for (Field f : fields)
+			if (isId(f))
 				return new IdFieldTypeWrapper(c, f, fields);
-			}
-		}
+		
 		return new DefaultTypeWrapper(c);
 	}
 	

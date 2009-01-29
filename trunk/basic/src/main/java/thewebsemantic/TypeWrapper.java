@@ -167,7 +167,8 @@ public abstract class TypeWrapper {
 
 	protected String invokeMethod(Object bean, Method me) {
 		try {
-			return me.invoke(bean).toString();
+			Object o = me.invoke(bean);
+			return (o==null) ? null: o.toString();
 		} catch (Exception e) {
 			logger.log(Level.WARNING, "Failed invoking method " + 
 					me.getName() + " on class " + bean.getClass() , e);

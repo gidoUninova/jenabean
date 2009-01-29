@@ -1,22 +1,27 @@
 package example.foaf;
 
+import java.net.URI;
+
+import thewebsemantic.Id;
 import thewebsemantic.Namespace;
-import thewebsemantic.Uri;
 
 @Namespace(FoafUri.NS)
 public class Document {
 
-	String uri;
+	@Id
+	URI uri;
 	
-	public Document(String uri) {
+	public Document() {}
+	
+	public Document(URI uri) {
 		this.uri = uri;
 	}
-	@Uri
-	public String getUri() {
+	
+	public URI getUri() {
 		return uri;
 	}
 
 	public String toString() {
-		return uri;
+		return uri.toString();
 	}	
 }

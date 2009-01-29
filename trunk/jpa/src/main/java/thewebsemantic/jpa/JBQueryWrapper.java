@@ -28,6 +28,8 @@ public class JBQueryWrapper implements Query {
 	String query;
 	Class<?> type;
 	QuerySolutionMap initialSettings;
+	private int firstResult = 0;
+	private int maxResult = -1;
 
 	
 	public JBQueryWrapper(String q, JBEntityManager entityManager, Class c) {
@@ -45,11 +47,11 @@ public class JBQueryWrapper implements Query {
 	public List getResultList() {
 		//List<Resource> results = Sparql.exec2(em._model, query, initialSettings);
 		//return new LazyResults(results, em);
-		return Sparql.exec(em._model, em._reader, type, query, initialSettings);
+		return Sparql.exec(em._reader, type, query, initialSettings, firstResult, maxResult);
 	}
 
 	public Object getSingleResult() {
-		List result = Sparql.exec(em._model, em._reader, type, query, initialSettings);
+		List result = Sparql.exec( em._reader, type, query, initialSettings, 0, -1);
 		if ( result.size() > 1 ) 
 			throw new NonUniqueResultException();
 		else if ( result.size()==0 )
@@ -58,8 +60,8 @@ public class JBQueryWrapper implements Query {
 	}
 
 	public Query setFirstResult(int startPosition) {
-		// TODO Auto-generated method stub
-		return null;
+		firstResult = startPosition;
+		return this;
 	}
 
 	public Query setFlushMode(FlushModeType flushMode) {
@@ -68,13 +70,12 @@ public class JBQueryWrapper implements Query {
 	}
 
 	public Query setHint(String hintName, Object value) {
-		// TODO Auto-generated method stub
-		return null;
+		throw new UnsupportedOperationException("RDBMS specific, doesn't modify SPARQL queries.");
 	}
 
 	public Query setMaxResults(int maxResult) {
-		// TODO Auto-generated method stub
-		return null;
+		this.maxResult = maxResult;
+		return this;
 	}
 
 	public Query setParameter(String name, Object value) {
