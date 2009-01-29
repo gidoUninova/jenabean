@@ -1,4 +1,5 @@
 #summary Questions about Jenabean
+#labels Featured
 
 *Q:* _Why do I need to annotate my beans with an Id?_
 
