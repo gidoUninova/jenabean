@@ -1,4 +1,4 @@
-#summary Jenabean only requires beans to have an id annotation, however, you probably want to map to specific ontology classes and properties...here's how.
+#summary Jenabean only requires that beans have an id annotation and default no-args constructor, however, you probably want to map to specific ontology classes and properties...here's how.
 
 OWL/RDF has classes.  Supposedly the ontology author gave the classnames some thought, like foaf:Person.  The easiest thing to do is to name your JavaBeans according to the ontology class they are bound to and use the `@Namespace` annotation...
 
