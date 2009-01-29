@@ -8,6 +8,25 @@ The only annotation required by Jenabean.  Place it on a field or getter method 
   # `java.lang.Long`
   # `java.lang.Double`
   # `java.lang.Float`
+  # `java.net.URI`
+
+You should only annotate one field or one getter method with @Id.  Never mix and match method annotations with field annotations.  Use either field annotations or method annotations.
+
+{{{
+public class ExampleBean {
+  @Id private int myid;
+}
+}}}
+
+{{{
+public class ExampleBean {
+  private int myid;
+
+  @Id
+  public int getMyid() {return myid;}
+  public void setMyid(int i) { myid=i;}
+}
+}}}
   
 
 == `@Namespace` ==
