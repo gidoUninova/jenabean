@@ -17,7 +17,6 @@ public class NullJPAHelper implements AnnotationHelper {
 		return false;
 	}
 
-	@Override
 	public Class getProxy(Class<?> c) throws InstantiationException,
 			IllegalAccessException {
 		throw new UnsupportedOperationException();
