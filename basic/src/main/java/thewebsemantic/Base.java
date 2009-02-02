@@ -71,6 +71,10 @@ public class Base {
 	class NullType {
 
 	}
+	
+	public Model getModel() {
+		return m;
+	}	
 
 }
 
