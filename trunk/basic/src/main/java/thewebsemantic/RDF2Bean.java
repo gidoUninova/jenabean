@@ -688,12 +688,6 @@ public class RDF2Bean extends Base implements Provider {
 					javaclass, class1.getName());
 		}
 	}
-	
-	public Model getModel() {
-		return m;
-	}
-	
-	
 }
 /*
  * Copyright (c) 2007

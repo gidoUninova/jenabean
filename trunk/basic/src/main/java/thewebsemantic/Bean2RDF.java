@@ -19,7 +19,6 @@ import com.hp.hpl.jena.rdf.model.Property;
 import com.hp.hpl.jena.rdf.model.RDFNode;
 import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.rdf.model.Statement;
-import com.hp.hpl.jena.rdf.model.StmtIterator;
 import com.hp.hpl.jena.shared.Lock;
 import com.hp.hpl.jena.vocabulary.RDF;
 import com.hp.hpl.jena.vocabulary.RDFS;
@@ -190,37 +189,6 @@ public class Bean2RDF extends Base {
 		return !o.getClass().isArray() && !(o instanceof Collection) && !(o instanceof Map);
 	}
 
-	/**
-	 * update a one to many property.
-	 * 
-	 * @param subject
-	 * @param property
-	 * @param c
-	
-	protected void updateCollection(Resource subject, Property property,
-			Collection<?> c) {
-		if (c == null)
-			return;
-		removeAnonymousNodes(subject, property);
-		subject.removeAll(property);
-		for (Object o : c)
-			subject.addProperty(property, toRDFNode(o));
-
-	}
-
-	private void removeAnonymousNodes(Resource subject, Property property) {
-		ArrayList<Resource> anonNodes = new ArrayList<Resource>();
-		StmtIterator it = subject.listProperties(property);
-		while (it.hasNext()) {
-			Resource r = it.nextStatement().getResource();
-			if (r.isAnon())
-				anonNodes.add(r);
-		}
-		it.close();
-		for (Resource resource : anonNodes)
-			resource.removeProperties();
-	}
-*/
 	protected RDFNode toRDFNode(Object o) {
 		if (isPrimitive(o)) 
 			return toLiteral(m, o);
