@@ -2,7 +2,6 @@ package thewebsemantic;
 
 import static thewebsemantic.Bean2RDF.logger;
 
-import java.net.URI;
 import java.util.logging.Level;
 
 import com.hp.hpl.jena.rdf.model.Resource;
