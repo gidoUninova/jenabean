@@ -151,7 +151,6 @@ public class JBProvider implements PersistenceProvider {
             	removeAll(p).
             	addProperty(p, class1.getName());
             if (class1.isAnnotationPresent(NamedNativeQueries.class)) {
-            	
             	storeNamedQuery(class1, querymap);
             }
  
@@ -161,7 +160,6 @@ public class JBProvider implements PersistenceProvider {
 	protected void storeNamedQuery(Class<? extends Object> class1,HashMap<String, NamedNativeQuery> querymap) {
 		NamedNativeQueries queries = class1.getAnnotation(NamedNativeQueries.class);
 		for(NamedNativeQuery query : queries.value()) {
-			System.out.println(query.name());
 			querymap.put(query.name(), query);
 		}
 	}
