@@ -2,6 +2,7 @@ package thewebsemantic.jpa;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 
 import javassist.util.proxy.ProxyFactory;
 
@@ -40,6 +41,7 @@ public class JBEntityManager implements javax.persistence.EntityManager, Annotat
 	private FlushModeType flushType = FlushModeType.COMMIT;
 	private JBEntityTransaction ta;
 	private HashSet<Object> cache;
+	private Map<Class, Class> proxyCache;
 	private FlushListener flushListener;
 	private boolean pendingClose = false;
 
@@ -50,6 +52,7 @@ public class JBEntityManager implements javax.persistence.EntityManager, Annotat
 		_queries = queries;
 		isOpen = true;
 		cache = new HashSet<Object>();
+		proxyCache = new HashMap<Class, Class>();
 	}
 
 	protected void commited() {
@@ -233,11 +236,17 @@ public class JBEntityManager implements javax.persistence.EntityManager, Annotat
 
 	@Override
 	public Class getProxy(Class c) throws InstantiationException, IllegalAccessException {
+		if (!proxyCache.containsKey(c))	
+			cacheProxyClass(c);
+		return proxyCache.get(c);
+	}
+
+	private void cacheProxyClass(Class c) {
 		ProxyFactory f = new ProxyFactory();
 		f.setInterfaces(new Class[] {Persistable.class});
 		f.setHandler(new JBMethodHandler(cache));
 		f.setSuperclass(c);
-		return f.createClass();
+		proxyCache.put(c, f.createClass());
 	}
 
 	@Override
