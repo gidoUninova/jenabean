@@ -217,6 +217,10 @@ public class Bean2RDF extends Base {
 		}
 		subject.removeAll(property).addProperty(property, _write(o, true));
 	}
+	
+	public void n3() {
+		m.write(System.out,"N3");
+	}
 }
 /*
  * Copyright (c) 2007
