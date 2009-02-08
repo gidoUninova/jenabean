@@ -1,5 +1,6 @@
 package test.id;
 
+import java.util.Collection;
 import java.util.Date;
 import static org.junit.Assert.*;
 
@@ -34,7 +35,6 @@ public class TestWeirdTypes {
 		Model m = ModelFactory.createDefaultModel();
 		Bean2RDF writer = new Bean2RDF(m);
 		RDF2Bean reader = new RDF2Bean(m);
-		
 		Quantity q = new Quantity();
 		q.setAmount(1.0002);
 		q.setUnits("km");
@@ -48,12 +48,32 @@ public class TestWeirdTypes {
 		Model m = ModelFactory.createDefaultModel();
 		Bean2RDF writer = new Bean2RDF(m);
 		RDF2Bean reader = new RDF2Bean(m);
+		
+		AutoIdMethod bean2 = new AutoIdMethod();
+		reader.init(bean2);
+		writer.save(bean2);
+		
+		bean2 = new AutoIdMethod();
+		reader.init(bean2);
+		writer.save(bean2);
 		for(int i=0; i<20; i++) {
 			AutoId bean = new AutoId();
 			reader.init(bean);
 			assertEquals(i, bean.id);
 			writer.save(bean);
-		}		
+		}	
+		
+		Collection<AutoId> ids = reader.load(AutoId.class);
+		assertEquals(20, ids.size());
+		
+		AutoId bean = new AutoId();
+		reader.init(bean);
+		assertEquals(20, bean.id);
+		
+		
+
+		writer.n3();
+		
 	}
 
 }
