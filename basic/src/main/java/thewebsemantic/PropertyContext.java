@@ -14,11 +14,17 @@ class PropertyContext extends ValuesContext {
 
 	PropertyDescriptor property;
 	TypeWrapper type;
+	boolean idmethod = false;
 
 	public PropertyContext(Object bean, PropertyDescriptor p) {
 		subject = bean;
 		property = p;
 		type = TypeWrapper.type(bean);
+	}
+
+	public PropertyContext(Object bean, PropertyDescriptor p, boolean b) {
+		this(bean, p);
+		idmethod = b;		
 	}
 	
 	/* (non-Javadoc)
@@ -120,7 +126,7 @@ class PropertyContext extends ValuesContext {
 
 	@Override
 	public boolean isId() {
-		return false;
+		return idmethod;
 	}
 
 	@Override
