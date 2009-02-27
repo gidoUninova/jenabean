@@ -15,9 +15,11 @@ import java.util.logging.Level;
 
 import thewebsemantic.Base.NullType;
 
+import com.hp.hpl.jena.ontology.OntResource;
 import com.hp.hpl.jena.rdf.model.Literal;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.Property;
+import com.hp.hpl.jena.rdf.model.RDFNode;
 import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.rdf.model.Statement;
 import com.hp.hpl.jena.rdf.model.StmtIterator;
@@ -57,6 +59,10 @@ public class Thing implements InvocationHandler, As {
 		return r;
 	}
 	
+	public OntResource getOntResource() {
+		return (OntResource)r.as(OntResource.class);
+	}
+	
 	public Model getModel() {
 		return model;
 	}
@@ -72,6 +78,7 @@ public class Thing implements InvocationHandler, As {
         r.addProperty(RDF.type, model.getResource(ns+Util.getRdfType(c)));
 		return as(c);
 	}
+
 
 	public Object invoke(Object proxy, Method method, Object[] args)
 			throws Throwable {

@@ -5,48 +5,48 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
+import thewebsemantic.TypeWrapper;
+
 import com.hp.hpl.jena.rdf.model.Resource;
 
 public class LazyResults implements List {
 
+	List<Resource> resources;
+	JBEntityManager em;
 	
 	public LazyResults(List<Resource> results, JBEntityManager em) {
-		// TODO Auto-generated constructor stub
+		resources = results;
+		this.em = em;
 	}
 
 	@Override
 	public boolean add(Object e) {
-		// TODO Auto-generated method stub
-		return false;
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public void add(int index, Object element) {
-		// TODO Auto-generated method stub
-
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public boolean addAll(Collection c) {
-		// TODO Auto-generated method stub
-		return false;
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public boolean addAll(int index, Collection c) {
-		// TODO Auto-generated method stub
-		return false;
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public void clear() {
-		// TODO Auto-generated method stub
-
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public boolean contains(Object o) {
-		// TODO Auto-generated method stub
+		
 		return false;
 	}
 
@@ -58,14 +58,15 @@ public class LazyResults implements List {
 
 	@Override
 	public Object get(int index) {
-		// TODO Auto-generated method stub
-		return null;
+		Resource r = resources.get(index);
+		return em._reader.load(r.getURI());
 	}
 
 	@Override
 	public int indexOf(Object o) {
-		// TODO Auto-generated method stub
-		return 0;
+		String uri = TypeWrapper.type(o).uri(o);
+		Resource r = em._model.createResource(uri);
+		return resources.indexOf(r);
 	}
 
 	@Override

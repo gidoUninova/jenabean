@@ -99,7 +99,6 @@ public class JBProvider implements PersistenceProvider {
 					if ( m!= null)
 						m.leaveCriticalSection();
 				}
-
 			}
 		}
 		return null;
