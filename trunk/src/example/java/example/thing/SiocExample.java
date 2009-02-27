@@ -24,6 +24,7 @@ public class SiocExample {
 		for (Thing thing : space.space_of()) {
 			Sioc.Container container = thing.as(Sioc.Container.class);
 			System.out.println(container.description());
+			System.out.println("\tcontains " + container.container_of().size() + " items.");
 		}
 		
 	}
