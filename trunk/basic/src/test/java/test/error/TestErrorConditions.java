@@ -21,8 +21,7 @@ public class TestErrorConditions {
 		bad.getThings().add("one");
 		bad.getOther().put("foo", "bar");
 		writer.save(bad);		
-		//m.write(System.out, "N3");
-		
+	
 		RDF2Bean reader = new RDF2Bean(m);
 		bad = reader.load(Bad.class, bad.hashCode());
 		assertNotNull(bad);
