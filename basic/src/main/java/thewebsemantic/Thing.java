@@ -19,7 +19,6 @@ import com.hp.hpl.jena.ontology.OntResource;
 import com.hp.hpl.jena.rdf.model.Literal;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.Property;
-import com.hp.hpl.jena.rdf.model.RDFNode;
 import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.rdf.model.Statement;
 import com.hp.hpl.jena.rdf.model.StmtIterator;
@@ -33,10 +32,12 @@ public class Thing implements InvocationHandler, As {
 
 	private static Method as;
 	private static Method isa;
+	private static Method asResource;
 	static {
 		try {
 			as = As.class.getMethod("as", Class.class);
 			isa = As.class.getMethod("isa", Class.class);
+			asResource = As.class.getMethod("asResource");
 		} catch (Exception e) {
 			logger.log(Level.WARNING, "Could not access methods on As interface.", e);
 		}
@@ -55,6 +56,10 @@ public class Thing implements InvocationHandler, As {
 		this(m.createResource(), m);
 	}
 
+	public Thing $(String uri) {
+		return new Thing(uri, model);
+	}
+	
 	public Resource getResource() {
 		return r;
 	}
@@ -87,6 +92,8 @@ public class Thing implements InvocationHandler, As {
 			return as((Class) args[0]);
 		else if ( method.equals(isa))
 			return isa((Class) args[0]);
+		else if ( method.equals(asResource))
+			return asResource();
 		else if (method.getParameterTypes().length == 0)
 			return get(method);
 		else if (method.isAnnotationPresent(Functional.class)) {
@@ -95,6 +102,10 @@ public class Thing implements InvocationHandler, As {
 		}
 		add(method, args);
 		return proxy;
+	}
+
+	public Resource asResource() {
+		return this.r;
 	}
 
 	private Object get(Method m) {
@@ -205,6 +216,8 @@ public class Thing implements InvocationHandler, As {
 				r.addProperty(p, arg[0].toString(), arg[1].toString());
 		} else if (arg[0] instanceof Thing)
 			set(p, (Thing) arg[0]);
+		else if (arg[0] instanceof As)
+			set(p, ((As)arg[0]).asResource());
 		else if (arg[0] instanceof URI)
 			set(p, ((URI)arg[0]).toString());
 	}

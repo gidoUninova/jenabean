@@ -2,12 +2,11 @@ package thewebsemantic.vocabulary;
 
 import java.util.Collection;
 
-import thewebsemantic.As;
 import thewebsemantic.Namespace;
 import thewebsemantic.Thing;
 
 @Namespace("http://rdfs.org/sioc/ns#")
-public interface Sioc extends As {
+public interface Sioc extends Rdfs {
 	public interface Community extends Sioc {};
 
 	public interface Container extends Sioc {};
@@ -35,7 +34,7 @@ public interface Sioc extends As {
 	Collection<Thing> next_version();
 	Sioc next_version(Thing t);
 	Collection<Thing> topic();
-	Sioc topic(Thing t);
+	Sioc topic(Object t);
 	Collection<Thing> avatar();
 	Sioc avatar(Thing t);
 	Collection<Thing> links_to();
@@ -45,7 +44,7 @@ public interface Sioc extends As {
 	Collection<Thing> moderator_of();
 	Sioc moderator_of(Thing t);
 	Collection<Thing> has_creator();
-	Sioc has_creator(Thing t);
+	Sioc has_creator(Object t);
 	Collection<Thing> member_of();
 	Sioc member_of(Thing t);
 	Collection<Thing> has_function();
@@ -59,7 +58,7 @@ public interface Sioc extends As {
 	Collection<Thing> parent_of();
 	Sioc parent_of(Thing t);
 	Collection<Thing> has_reply();
-	Sioc has_reply(Thing t);
+	Sioc has_reply(Object t);
 	Collection<Thing> has_member();
 	Sioc has_member(Thing t);
 	Collection<Thing> has_container();
