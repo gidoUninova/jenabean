@@ -1,11 +1,13 @@
 package thewebsemantic.vocabulary;
 
 import java.util.Collection;
+
+import thewebsemantic.As;
 import thewebsemantic.Namespace;
 import thewebsemantic.Thing;
 
 @Namespace("http://www.w3.org/2000/01/rdf-schema#")
-public interface Rdfs {
+public interface Rdfs extends As {
 	interface Class extends Rdfs {}
 	interface Resource extends Rdfs {}
 	
