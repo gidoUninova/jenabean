@@ -7,8 +7,6 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
 
-import com.hp.hpl.jena.rdf.model.Model;
-
 public class Vinay {
 
 	/**
