@@ -11,13 +11,13 @@ public interface ReviewVocab extends As {
 	   interface Review extends ReviewVocab {}
 	   interface Comment extends ReviewVocab {}
 	   interface Feedback extends ReviewVocab {}
-	   ReviewVocab hasReview(Thing t);
+	   ReviewVocab hasReview(Object t);
 	   Collection<Thing> hasReview();
-	   ReviewVocab commenter(Thing t);
+	   ReviewVocab commenter(Object t);
 	   Collection<Thing> commenter();
-	   ReviewVocab hasComment(Thing t);
+	   ReviewVocab hasComment(Object t);
 	   Collection<Thing> hasComment();
-	   ReviewVocab hasFeedback(Thing t);
+	   ReviewVocab hasFeedback(Object t);
 	   Collection<Thing> hasFeedback();
 	   ReviewVocab rating(Object o);
 	   int rating();

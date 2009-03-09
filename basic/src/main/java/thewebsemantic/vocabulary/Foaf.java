@@ -24,11 +24,11 @@ public interface Foaf extends As {
 
 	Collection<String> dnaChecksum();
 
-	Foaf topic(Thing t);
+	Foaf topic(Object t);
 
 	Collection<Thing> topic();
 
-	Foaf theme(Thing t);
+	Foaf theme(Object t);
 
 	Collection<Thing> theme();
 
@@ -40,7 +40,7 @@ public interface Foaf extends As {
 
 	Collection<String> family_name();
 
-	Foaf openid(Thing t);
+	Foaf openid(Object t);
 
 	Collection<Thing> openid();
 
@@ -48,7 +48,7 @@ public interface Foaf extends As {
 
 	Collection<Thing> schoolHomepage();
 
-	Foaf pastProject(Thing t);
+	Foaf pastProject(Object t);
 
 	Collection<Thing> pastProject();
 
@@ -60,7 +60,7 @@ public interface Foaf extends As {
 
 	Collection<String> myersBriggs();
 
-	Foaf mbox(Thing t);
+	Foaf mbox(Object t);
 
 	Collection<Thing> mbox();
 
@@ -73,15 +73,15 @@ public interface Foaf extends As {
 	Foaf sha1(Object o);
 	String sha1();
 
-	Foaf publications(Thing t);
+	Foaf publications(Object t);
 
 	Collection<Thing> publications();
 
-	Foaf holdsAccount(Thing t);
+	Foaf holdsAccount(Object t);
 
 	Collection<Thing> holdsAccount();
 
-	Foaf currentProject(Thing t);
+	Foaf currentProject(Object t);
 
 	Collection<Thing> currentProject();
 
@@ -89,7 +89,7 @@ public interface Foaf extends As {
 
 	Collection<Thing> workInfoHomepage();
 
-	Foaf made(Thing t);
+	Foaf made(Object t);
 
 	Collection<Thing> made();
 
@@ -98,15 +98,15 @@ public interface Foaf extends As {
 	Collection<String> aimChatID();
 
 	@Functional
-	Foaf primaryTopic(Thing t);
+	Foaf primaryTopic(Object t);
 
 	Thing primaryTopic();
 
-	Foaf thumbnail(Thing t);
+	Foaf thumbnail(Object t);
 
 	Collection<Thing> thumbnail();
 
-	Foaf based_near(Thing t);
+	Foaf based_near(Object t);
 
 	Collection<Thing> based_near();
 
@@ -114,7 +114,7 @@ public interface Foaf extends As {
 
 	Collection<Thing> workplaceHomepage();
 
-	Foaf logo(Thing t);
+	Foaf logo(Object t);
 
 	Collection<Thing> logo();
 
@@ -126,23 +126,23 @@ public interface Foaf extends As {
 
 	Collection<Thing> title();
 
-	Foaf fundedBy(Thing t);
+	Foaf fundedBy(Object t);
 
 	Collection<Thing> fundedBy();
 
-	Foaf depiction(Thing t);
+	Foaf depiction(Object t);
 
 	Collection<Thing> depiction();
 
-	Foaf accountServiceHomepage(Thing t);
+	Foaf accountServiceHomepage(Object t);
 
 	Collection<Thing> accountServiceHomepage();
 
-	Foaf page(Thing t);
+	Foaf page(Object t);
 
 	Collection<Thing> page();
 
-	Foaf isPrimaryTopicOf(Thing t);
+	Foaf isPrimaryTopicOf(Object t);
 
 	Collection<Thing> isPrimaryTopicOf();
 
@@ -158,15 +158,15 @@ public interface Foaf extends As {
 
 	Collection<Thing> homepage();
 
-	Foaf knows(Thing t);
+	Foaf knows(Object t);
 
 	Collection<Thing> knows();
 
-	Foaf depicts(Thing t);
+	Foaf depicts(Object t);
 
 	Collection<Thing> depicts();
 
-	Foaf interest(Thing t);
+	Foaf interest(Object t);
 
 	Collection<Thing> interest();
 
@@ -182,15 +182,15 @@ public interface Foaf extends As {
 
 	Collection<String> accountName();
 
-	Foaf membershipClass(Thing t);
+	Foaf membershipClass(Object t);
 
 	Collection<Thing> membershipClass();
 
-	Foaf tipjar(Thing t);
+	Foaf tipjar(Object t);
 
 	Collection<Thing> tipjar();
 
-	Foaf maker(Thing t);
+	Foaf maker(Object t);
 
 	Collection<Thing> maker();
 
@@ -198,7 +198,7 @@ public interface Foaf extends As {
 	Foaf name_(Object s);
 	Collection<String> name();
 
-	Foaf img(Thing t);
+	Foaf img(Object t);
 
 	Collection<Thing> img();
 
@@ -207,11 +207,11 @@ public interface Foaf extends As {
 
 	String birthday();
 
-	Foaf givenname(Thing t);
+	Foaf givenname(Object t);
 
 	Collection<Thing> givenname();
 
-	Foaf member(Thing t);
+	Foaf member(Object t);
 
 	Collection<Thing> member();
 
@@ -223,11 +223,11 @@ public interface Foaf extends As {
 
 	Collection<String> icqChatID();
 
-	Foaf phone(Thing t);
+	Foaf phone(Object t);
 
 	Collection<Thing> phone();
 
-	Foaf topic_interest(Thing t);
+	Foaf topic_interest(Object t);
 
 	Collection<Thing> topic_interest();
 }
