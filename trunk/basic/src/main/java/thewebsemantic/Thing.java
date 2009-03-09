@@ -56,7 +56,7 @@ public class Thing implements InvocationHandler, As {
 		this(m.createResource(), m);
 	}
 
-	public Thing $(String uri) {
+	public Thing at(String uri) {
 		return new Thing(uri, model);
 	}
 	

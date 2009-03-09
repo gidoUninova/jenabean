@@ -27,7 +27,7 @@ public interface Ical extends As {
 
 	Collection<String> transp();
 
-	Ical dtstamp(Thing t);
+	Ical dtstamp(Object t);
 
 	Collection<Thing> dtstamp();
 
@@ -51,15 +51,15 @@ public interface Ical extends As {
 
 	Collection<String> categories();
 
-	Ical rrule(Thing t);
+	Ical rrule(Object t);
 
 	Collection<Thing> rrule();
 
-	Ical trigger(Thing t);
+	Ical trigger(Object t);
 
 	Collection<Thing> trigger();
 
-	Ical attendee(Thing t);
+	Ical attendee(Object t);
 
 	Collection<Thing> attendee();
 
@@ -67,11 +67,11 @@ public interface Ical extends As {
 
 	Collection<String> uid();
 
-	Ical organizer(Thing t);
+	Ical organizer(Object t);
 
 	Collection<Thing> organizer();
 
-	Ical duration(Thing t);
+	Ical duration(Object t);
 
 	Collection<Thing> duration();
 
@@ -79,7 +79,7 @@ public interface Ical extends As {
 
 	Collection<String> tzoffsetto();
 
-	Ical created(Thing t);
+	Ical created(Object t);
 
 	Collection<Thing> created();
 
@@ -95,7 +95,7 @@ public interface Ical extends As {
 
 	Collection<String> priority();
 
-	Ical lastModified(Thing t);
+	Ical lastModified(Object t);
 
 	Collection<Thing> lastModified();
 
@@ -119,11 +119,11 @@ public interface Ical extends As {
 
 	Collection<String> tzoffsetfrom();
 
-	Ical geo(Thing t);
+	Ical geo(Object t);
 
 	Collection<Thing> geo();
 
-	Ical exrule(Thing t);
+	Ical exrule(Object t);
 
 	Collection<Thing> exrule();
 
@@ -139,11 +139,11 @@ public interface Ical extends As {
 
 	Collection<String> prodid();
 
-	Ical rdate(Thing t);
+	Ical rdate(Object t);
 
 	Collection<Thing> rdate();
 
-	Ical freebusy(Thing t);
+	Ical freebusy(Object t);
 
 	Collection<Thing> freebusy();
 
@@ -159,11 +159,11 @@ public interface Ical extends As {
 
 	Collection<String> resources();
 
-	Ical recurrenceId(Thing t);
+	Ical recurrenceId(Object t);
 
 	Collection<Thing> recurrenceId();
 
-	Ical due(Thing t);
+	Ical due(Object t);
 
 	Collection<Thing> due();
 
@@ -171,7 +171,7 @@ public interface Ical extends As {
 
 	Collection<String> contact();
 
-	Ical completed(Thing t);
+	Ical completed(Object t);
 
 	Collection<Thing> completed();
 
@@ -181,7 +181,7 @@ public interface Ical extends As {
 
 	// Ical X-(Object o);
 	// Collection<String> X-();
-	Ical exdate(Thing t);
+	Ical exdate(Object t);
 
 	Collection<Thing> exdate();
 
@@ -189,15 +189,15 @@ public interface Ical extends As {
 
 	Collection<String> sequence();
 
-	Ical attach(Thing t);
+	Ical attach(Object t);
 
 	Collection<Thing> attach();
 
-	Ical url(Thing t);
+	Ical url(Object t);
 
 	Collection<Thing> url();
 
-	Ical tzurl(Thing t);
+	Ical tzurl(Object t);
 
 	Collection<Thing> tzurl();
 }
