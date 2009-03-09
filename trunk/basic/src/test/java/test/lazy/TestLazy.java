@@ -9,6 +9,7 @@ import org.junit.Test;
 import thewebsemantic.Bean2RDF;
 import thewebsemantic.RDF2Bean;
 import thewebsemantic.lazy.LazyList;
+import thewebsemantic.lazy.LazySet;
 
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
@@ -46,7 +47,7 @@ public class TestLazy {
 		c.staff.addAll(staff);
 		c.staff.add(staff.get(0));
 		c.staff.add(staff.get(1));
-		assertTrue(c.staff instanceof LazyList);
+		assertTrue(c.staff instanceof LazySet);
 		
 		
 	}
