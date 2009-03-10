@@ -35,7 +35,12 @@ public class InterfaceBuilder {
 					buffer.append("\n");
 					buffer.append(literalGetter(namespace, type, ontProperty));
 					buffer.append("\n");					
-				}
+				} else {
+					buffer.append(resourceSetter(namespace, type, ontProperty));
+					buffer.append("\n");
+					buffer.append(resourceGetter(namespace, type, ontProperty));
+					buffer.append("\n");
+				} 
 			}
 		}
 		System.out.println(buffer);
@@ -52,7 +57,7 @@ public class InterfaceBuilder {
 			OntProperty ontProperty) {
 		return functional(ontProperty) + indent + "public " + type + " "
 			+ ontProperty.getURI().substring(namespace.length())
-			+ "(Thing t);";
+			+ "(Object t);";
 	}
 
 	private Object literalGetter(String namespace, String type,
@@ -81,7 +86,7 @@ public class InterfaceBuilder {
 	}
 
 	public static void main(String[] args) {
-		new InterfaceBuilder().create("http://www.ldodds.com/projects/musicbrainz/schema/index.rdf",
-				"http://musicbrainz.org/mm/mm-2.1#", "Review");
+		new InterfaceBuilder().create("http://dublincore.org/2008/01/14/dcterms.rdf#",
+				"http://purl.org/dc/terms/", "DCTerms");
 	}
 }
