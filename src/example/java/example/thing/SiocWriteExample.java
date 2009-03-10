@@ -1,6 +1,7 @@
 package example.thing;
 
 import thewebsemantic.Thing;
+import thewebsemantic.vocabulary.DCTerms;
 import thewebsemantic.vocabulary.Rdfs;
 import thewebsemantic.vocabulary.Sioc;
 
@@ -22,8 +23,12 @@ public class SiocWriteExample {
 	public static void main(String[] args) {
 		Model m = ModelFactory.createDefaultModel();
 		m.setNsPrefix("sioc", Sioc.NS);
+		m.setNsPrefix("dcterms", "http://purl.org/dc/terms/");
 		Thing thing = new Thing(m);
 		thing.at(uri1).
+		    as(DCTerms.class).
+		    title("Creating connections between discussion clouds with SIOC").
+		    created("2006-09-07T09:33:30Z").
 			isa(Sioc.Post.class).
 			has_container(thing.at(uri2)).
 			has_creator(
