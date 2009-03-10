@@ -5,28 +5,20 @@ import java.util.Collection;
 import thewebsemantic.Namespace;
 import thewebsemantic.Thing;
 
-@Namespace("http://rdfs.org/sioc/ns#")
+@Namespace(Sioc.NS)
 public interface Sioc extends Rdfs {
+	
+	public static final String NS = "http://rdfs.org/sioc/ns#";
 	public interface Community extends Sioc {};
-
 	public interface Container extends Sioc {};
-
 	public interface Forum extends Sioc {};
-
 	public interface Item extends Sioc {};
-
 	public interface Post extends Sioc {};
-
 	public interface Role extends Sioc {};
-
 	public interface Site extends Sioc {};
-
 	public interface Space extends Sioc {};
-
-	public 	interface Thread extends Sioc {};
-
+	public interface Thread extends Sioc {};
 	public interface User extends Sioc {};
-
 	public interface UserGroup extends Sioc {};
 
 	Collection<Thing> previous_version();
