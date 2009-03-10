@@ -47,6 +47,5 @@ public class SiocWriteExample {
 		RDFWriter w = m.getWriter("RDF/XML-ABBREV");		
 		w.setProperty( "blockRules" , "" );
 		w.write(m, System.out, null);
-
 	}
 }
