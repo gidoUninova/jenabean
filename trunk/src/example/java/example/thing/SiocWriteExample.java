@@ -4,8 +4,7 @@ import thewebsemantic.Thing;
 import thewebsemantic.vocabulary.Rdfs;
 import thewebsemantic.vocabulary.Sioc;
 
-import com.hp.hpl.jena.ontology.OntModel;
-import com.hp.hpl.jena.ontology.OntModelSpec;
+import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 import com.hp.hpl.jena.rdf.model.RDFWriter;
 
@@ -21,9 +20,8 @@ public class SiocWriteExample {
 	private static final String uri1 = "http://johnbreslin.com/blog/2006/09/07/creating-connections-between-discussion-clouds-with-sioc/";
 
 	public static void main(String[] args) {
-		OntModel m = ModelFactory.createOntologyModel(OntModelSpec.OWL_MEM_MICRO_RULE_INF);
-		m.setNsPrefix("sioc", "http://rdfs.org/sioc/ns#");
-
+		Model m = ModelFactory.createDefaultModel();
+		m.setNsPrefix("sioc", Sioc.NS);
 		Thing thing = new Thing(m);
 		thing.at(uri1).
 			isa(Sioc.Post.class).
@@ -43,7 +41,7 @@ public class SiocWriteExample {
 		// with the example being duplicated.
 		RDFWriter w = m.getWriter("RDF/XML-ABBREV");		
 		w.setProperty( "blockRules" , "" );
-		w.write(m.getBaseModel(), System.out, null);
+		w.write(m, System.out, null);
 
 	}
 }
