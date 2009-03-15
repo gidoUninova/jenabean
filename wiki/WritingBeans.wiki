@@ -1,4 +1,5 @@
 #summary Asserting facts using Jena's api can become tedious when your application is primarily built upon a JavaBean domain model.
+#sidebar TableOfContents
 
 Java developers have objects.  Jena has triples.  We need something to translate an object with one or more properties into a set of triples that loosely say the same thing.  The first step is to create an instance of `thewebsemantic.Bean2RDF`:
 
