@@ -5,6 +5,12 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+/**
+ * Namespace provides jenabean with the information it needs
+ * to append a namespace to your classname and properties.  
+ * 
+ *
+ */
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME) 
 public @interface Namespace {
