@@ -39,8 +39,7 @@ import com.hp.hpl.jena.vocabulary.RDF;
 
 /**
  * RDF2Bean converts one or more RDF nodes into java beans. Normally these are
- * nodes created by the Bean2RDF class. <code>@Namespace</code> annotation value
- * of the Class.
+ * nodes created by the Bean2RDF class. 
  * 
  * @see Bean2RDF
  */
@@ -678,9 +677,18 @@ public class RDF2Bean extends Base implements Provider {
 		ctx.setProperty(convertLiteral(l, ctx.type()));
 	}
 
-	public void bindAll(String... s) {
+	/**
+	 * Prepares this reader to bind to all annotated classes in 
+	 * provided list of packages.  If the RDF wasn't created using
+	 * Jenabean, it lacks annotations specifying the source class for each
+	 * individual.  Invoking <code>bindAll</code> prepares the reader by
+	 * indicating the packages where your jenabeans can be found.
+	 * 
+	 * @param pkg
+	 */
+	public void bindAll(String... pkg) {
 		ResolverUtil<Object> resolver = new ResolverUtil<Object>();
-		resolver.findAnnotated(Namespace.class, s);
+		resolver.findAnnotated(Namespace.class, pkg);
 		Set<Class<? extends Object>> classes = resolver.getClasses();
 		for (Class<? extends Object> class1 : classes) {
 			Namespace ns = class1.getAnnotation(Namespace.class);
