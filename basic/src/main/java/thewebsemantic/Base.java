@@ -15,6 +15,11 @@ import com.hp.hpl.jena.shared.Lock;
 import com.hp.hpl.jena.vocabulary.OWL;
 import com.hp.hpl.jena.vocabulary.RDF;
 
+/**
+ * Provides functionality common to both {@link RDF2Bean} and {@link Bean2RDF}
+ * 
+ *
+ */
 public class Base {
 
 	public static final String JAVACLASS = "http://thewebsemantic.com/javaclass";

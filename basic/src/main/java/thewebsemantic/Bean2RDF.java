@@ -24,26 +24,29 @@ import com.hp.hpl.jena.vocabulary.RDF;
 import com.hp.hpl.jena.vocabulary.RDFS;
 
 /**
+ * <p>
  * Converts a simple java bean to RDF, provided it's annotated with
  * <code>Namespace</code>. To make a bean persitable by jenabean, you are merely
  * required to add the Namespace annotation. By default public bean properties
  * are converted to rdf properties by appending "has" and proper casing the
  * property name. For example, a bean with methods getName() and setName() would
  * result in the RDF property "hasName", with the namespace given in the classes
- * Namespace annotation. <br/>
- * <br/>
+ * Namespace annotation.
+ * </p>
+ * <p>
  * The default behavior for rdf property naming is overridden by using the
  * RdfProperty annotation along with the getter method. The value supplied to
  * the RdfProperty annotation is taken as the full RDF property URI. <br/>
- * <br/>
+ * </p>
+ * <p>
  * The bean itself is typed using the Namespace annotation along with the bean
  * name, for example, Book.class with namespace "http://example.org/" becomes
  * rdf type "http://example.org/Book". <br/>
- * <br/>
+ * </p>
+ * <p>
  * Here's a simple example of a bean that's ready to be saved:
- * 
+ * <code>
  * <pre>
- * &lt;code&gt;
  * package org.example;
  * import thewebsemantic.Id;
  * public Book {
@@ -52,9 +55,9 @@ import com.hp.hpl.jena.vocabulary.RDFS;
  *    &#064;Id
  *    public String getName() {return name;}
  * }
- * &lt;/code&gt;
  * </pre>
- * 
+ * </code>
+ * </p>
  * @see Namespace
  * @see Id
  * @see RdfProperty
@@ -68,7 +71,7 @@ public class Bean2RDF extends Base {
     private AnnotationHelper jpa;
 
 	/**
-	 * construct a new instance bound to OntModel <tt>m</tt>.
+	 * construct a new instance bound to OntModel <code>m</code>.
 	 * 
 	 * @param m
 	 * Jena OntModel instance
@@ -84,7 +87,7 @@ public class Bean2RDF extends Base {
 		
 	}	
 	/**
-	 * Saves <tt>bean</tt> to jena model.
+	 * Saves <code>bean</code> to jena model.
 	 * 
 	 * @param bean
 	 * @return jena resource representing <tt>bean</tt> within the model
@@ -93,6 +96,11 @@ public class Bean2RDF extends Base {
 		return write(bean, false);
 	}
 
+	/**
+	 * Deletes <code>bean</code> from the model.
+	 * 
+	 * @param bean
+	 */
 	public void delete(Object bean) {
 		Resource i = m.getResource(instanceURI(bean));
 		m.removeAll(null, null, i).removeAll(i, null, null);
@@ -109,7 +117,7 @@ public class Bean2RDF extends Base {
 	}
 
 	/**
-	 * write a bean to the triple store
+	 * Writes a bean to the triple store.
 	 * 
 	 * @param bean
 	 * @return

@@ -21,8 +21,7 @@ public class Vinay {
 		//Query q = em.createNativeQuery("SELECT ?s WHERE {?s a <http://example.vinay/Employee> . ?s <http://example.vinay/role> ?role}",Employee.class);
 		q.setParameter("role", Role.ARCHITECT);
 		Collection<Employee> emps = q.getResultList();
-		for (Employee employee : emps) {
-			
+		for (Employee employee : emps) {			
 			System.out.println(employee.getClass());
 		}
 	}
