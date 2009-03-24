@@ -24,7 +24,11 @@ import com.hp.hpl.jena.rdf.model.Statement;
 import com.hp.hpl.jena.rdf.model.StmtIterator;
 import com.hp.hpl.jena.vocabulary.RDF;
 
-
+/**
+ * 
+ * 
+ *
+ */
 public class Thing implements InvocationHandler, As {
 	private Model model;
 
