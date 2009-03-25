@@ -1,0 +1,20 @@
+#summary Jenabean maven access.
+
+
+==Step 1: add the repository path to your pom.xml file==
+{{{
+<repositories> 
+  <repository> 
+    <id>Jenabean</id> 
+    <url>http://jenabean.googlecode.com/svn/trunk/repo</url> 
+  </repository>
+</repositories> 
+}}}
+==Step 2: add the jenabean dependency==
+{{{
+<dependency> 
+   <groupId>com.thewebsemantic</groupId> 
+   <artifactId>jenabean</artifactId> 
+   <version>1.0.1</version> 
+</dependency>
+}}}
