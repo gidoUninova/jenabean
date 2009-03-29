@@ -1,0 +1,17 @@
+<Module>
+<ModulePrefs title="Developer Forum" /> 
+	<Content type="html">
+		<![CDATA[ 
+<object id='stU09dRUxIR1pXQlRbU1xeUVBS' width='425' height='344' type='application/x-shockwave-flash' data='http://www.screentoaster.com/swf/STPlayer.swf'  codebase='http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=9,0,115,0'>
+		<param name='movie' value='http://www.screentoaster.com/swf/STPlayer.swf'/>
+		<param name='allowFullScreen' value='true'/>
+		<param name='allowScriptAccess' value='always'/>
+		<param name='flashvars' value='video=stU09dRUxIR1pXQlRbU1xeUVBS'/>
+	</object>
+	<div style='width: 425px; text-align: right;'>
+		<a href='http://www.screentoaster.com/'>Free online screencasting tool</a>
+	</div>
+  ]]> 
+  </Content>
+
+</Module>
