@@ -1,6 +1,10 @@
 <Module>
 	<Content type="html">
-		<ModulePrefs title="Developer Forum" />
+<ModulePrefs title="Developer Forum" 
+    title_url="http://groups.google.com/group/Google-Gadgets-API" 
+    height="200" 
+    author="..." 
+    author_email="..."/> 
 		<![CDATA[ 
 <object id='stU09dRUxIR1pXQlRbU1xeUVBS' width='425' height='344' type='application/x-shockwave-flash' data='http://www.screentoaster.com/swf/STPlayer.swf'  codebase='http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=9,0,115,0'>
 		<param name='movie' value='http://www.screentoaster.com/swf/STPlayer.swf'/>
