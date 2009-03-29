@@ -1,7 +1,8 @@
 <Module>
   <ModulePrefs title="Developer Forum" 
     title_url="http://groups.google.com/group/Google-Gadgets-API" 
-    height="344" 
+    height="350" 
+    width="430"
     author="thewebsemantic" 
     author_email="xxx@google.com"/> 
   <Content type="html">
