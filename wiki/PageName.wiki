@@ -1,19 +1,30 @@
 {{{
 
+//mexican cities translated into Japanese
 PREFIX co: <http://www.geonames.org/countries/#>
-PREFIX geo: <http://www.w3.org/2003/01/geo/wgs84_pos#>
 
-SELECT  ?link ?name ?lat ?lon
+SELECT  ?name ?pop
 WHERE
   { 
-    ?city gn:name "London" .
-    ?city gn:inCountry co:GB .
-    ?link gs:nearby(?city 30) .
-    ?link gn:featureCode gn:S.AIRP .
-    ?link gn:name ?name  .
-    ?link geo:lat ?lat .
-    ?link geo:long ?lon 
+     ?city gn:inCountry co:MX .
+      ?city gn:population ?pop .
+     ?city gn:name ?name
+   }
+
+//mexican cities translated into Japanese
+PREFIX co: <http://www.geonames.org/countries/#>
+
+SELECT  ?name ?pop
+WHERE
+  { 
+     ?city gn:inCountry co:MX .
+      ?city gn:population ?pop .
+     ?city gn:alternateName ?name
+  FILTER ( lang(?name) = "ja")
+
   }
+
+
 
 
 // Airports around London
@@ -48,7 +59,6 @@ WHERE
     FILTER( xsd:int(?pop) > 1000000)
 
   }
-
 
 
 }}}
