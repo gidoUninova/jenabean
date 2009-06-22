@@ -17,6 +17,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.NamedNativeQueries;
 import javax.persistence.NamedNativeQuery;
 import javax.persistence.PersistenceException;
+import javax.persistence.spi.LoadState;
 import javax.persistence.spi.PersistenceProvider;
 import javax.persistence.spi.PersistenceUnitInfo;
 
@@ -161,6 +162,24 @@ public class JBProvider implements PersistenceProvider {
 		for(NamedNativeQuery query : queries.value()) {
 			querymap.put(query.name(), query);
 		}
+	}
+
+	@Override
+	public LoadState isLoaded(Object arg0) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public LoadState isLoadedWithReference(Object arg0, String arg1) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public LoadState isLoadedWithoutReference(Object arg0, String arg1) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

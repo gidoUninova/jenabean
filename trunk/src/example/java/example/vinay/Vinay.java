@@ -14,11 +14,18 @@ public class Vinay {
 	 */
 	public static void main(String[] args) {
 		EntityManagerFactory factory =  Persistence.createEntityManagerFactory("tws:filemodel");
-		System.out.println(factory.getClass());
 		EntityManager em = factory.createEntityManager();
 		em.getTransaction().begin();
+		Employee e = new Employee();
+		e.setFistName("Vinay");
+		e.setLastName("Patel");
+		e.setRole(Role.ARCHITECT);
+		em.persist(e);
+		em.getTransaction().commit();
+		
+		
+		
 		Query q = em.createNamedQuery("Employee.ALL");
-		//Query q = em.createNativeQuery("SELECT ?s WHERE {?s a <http://example.vinay/Employee> . ?s <http://example.vinay/role> ?role}",Employee.class);
 		q.setParameter("role", Role.ARCHITECT);
 		Collection<Employee> emps = q.getResultList();
 		for (Employee employee : emps) {			
