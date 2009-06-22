@@ -3,10 +3,12 @@ package thewebsemantic.jpa;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import javassist.util.proxy.ProxyFactory;
 
 import javax.persistence.Embeddable;
+import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.EntityTransaction;
 import javax.persistence.FlushModeType;
@@ -15,6 +17,9 @@ import javax.persistence.LockModeType;
 import javax.persistence.NamedNativeQuery;
 import javax.persistence.PersistenceException;
 import javax.persistence.Query;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.QueryBuilder;
+import javax.persistence.metamodel.Metamodel;
 
 import thewebsemantic.AnnotationHelper;
 import thewebsemantic.Bean2RDF;
@@ -261,4 +266,107 @@ public class JBEntityManager implements javax.persistence.EntityManager, Annotat
 	public FlushListener getFlushListener() {
 		return flushListener;
 	}
+
+	@Override
+	public Query createQuery(CriteriaQuery arg0) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void detach(Object o) {
+		cache.remove(o);
+		
+	}
+
+	@Override
+	public <T> T find(Class<T> arg0, Object arg1, Map<String, Object> arg2) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public <T> T find(Class<T> arg0, Object arg1, LockModeType arg2) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public <T> T find(Class<T> arg0, Object arg1, LockModeType arg2,
+			Map<String, Object> arg3) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public EntityManagerFactory getEntityManagerFactory() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public LockModeType getLockMode(Object arg0) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Metamodel getMetamodel() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Map<String, Object> getProperties() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public QueryBuilder getQueryBuilder() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Set<String> getSupportedProperties() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void lock(Object arg0, LockModeType arg1, Map<String, Object> arg2) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void refresh(Object arg0, Map<String, Object> arg1) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void refresh(Object arg0, LockModeType arg1) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void refresh(Object arg0, LockModeType arg1, Map<String, Object> arg2) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setProperty(String arg0, Object arg1) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public <T> T unwrap(Class<T> arg0) {
+		return (T)this._model;
+	}
+
 }

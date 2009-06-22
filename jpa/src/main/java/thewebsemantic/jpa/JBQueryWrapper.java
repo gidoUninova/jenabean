@@ -4,9 +4,12 @@ import java.net.URI;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.FlushModeType;
+import javax.persistence.LockModeType;
 import javax.persistence.NoResultException;
 import javax.persistence.NonUniqueResultException;
 import javax.persistence.Query;
@@ -125,6 +128,66 @@ public class JBQueryWrapper implements Query {
 	public Query setParameter(int position, Calendar value,
 			TemporalType temporalType) {
 		throw new UnsupportedOperationException("all dates become xsd:dateTime");
+	}
+
+	@Override
+	public int getFirstResult() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public FlushModeType getFlushMode() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Map<String, Object> getHints() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public LockModeType getLockMode() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public int getMaxResults() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public Map<String, Object> getNamedParameters() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List getPositionalParameters() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Set<String> getSupportedHints() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Query setLockMode(LockModeType arg0) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public <T> T unwrap(Class<T> arg0) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
