@@ -4,7 +4,7 @@
 	<groupId>com.googlecode.jenabean</groupId>
 	<artifactId>jenabean</artifactId>
 	<packaging>jar</packaging>
-	<version>1.0.1</version>
+	<version>1.0.2</version>
 	<name>Jenabean binding library for RDF</name>
 	<url>http://jenabean.googlecode.com</url>
 
