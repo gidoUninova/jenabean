@@ -10,6 +10,7 @@ import java.beans.PropertyDescriptor;
 import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -68,11 +69,16 @@ public abstract class TypeWrapper {
 	}
 	
 	public ValuesContext[] getValueContexts(Object o) {
-		PropertyDescriptor[] props = descriptors();
-		ValuesContext[] values = new ValuesContext[props.length];
-		for (int i = 0; i < props.length; i++)
-			values[i] = new PropertyContext(o, props[i]);
-		return values;	
+		
+		
+		ArrayList<ValuesContext> values = new ArrayList<ValuesContext>();		
+		for (PropertyDescriptor property : descriptors()) {
+			if ( property.getReadMethod().isAnnotationPresent(Transient.class))
+				continue;
+			values.add( new PropertyContext(o, property) );			
+		}
+		return values.toArray(new ValuesContext[0]);
+
 	}
 
 	public ValuesContext getProperty(String name) {

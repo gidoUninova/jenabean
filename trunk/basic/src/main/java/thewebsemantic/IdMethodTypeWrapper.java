@@ -59,6 +59,8 @@ public class IdMethodTypeWrapper extends TypeWrapper {
 		for (PropertyDescriptor property : descriptors()) {
 			if (uriid && idReadMethod.equals(property.getReadMethod()))
 				continue;
+			if ( property.getReadMethod().isAnnotationPresent(Transient.class))
+				continue;
 			boolean idmethod = idReadMethod.equals(property.getReadMethod());
 			values.add( new PropertyContext(o, property, idmethod) );			
 		}
