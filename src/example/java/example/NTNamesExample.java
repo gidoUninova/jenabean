@@ -6,14 +6,19 @@ import java.util.Collection;
 
 import thewebsemantic.Sparql;
 import thewebsemantic.binding.Jenabean;
+
 import com.hp.hpl.jena.ontology.OntDocumentManager;
 import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 
 public class NTNamesExample {
+ 
+	
 
 	public static void main(String[] args) {
+		
 		OntModel m = ModelFactory.createOntologyModel();
+		
 		m.setNsPrefix("xsd", "http://www.w3.org/2001/XMLSchema#");
 		m.read("file:src/example/java/example/NTNames.owl");
 		OntDocumentManager.getInstance().addAltEntry(
@@ -27,7 +32,7 @@ public class NTNamesExample {
 		Collection<Woman> women = load(Woman.class);
 		long t2 = System.currentTimeMillis();
 		System.out.println(t2-t1);
-
+		
 		for (Woman w : women) {
 			J.reader().fill(w).with("children"); // loads getChildren() 
 			System.out.println(w.getClass().getSimpleName() + ":" +  w.uri() + " : " + tickler(w));

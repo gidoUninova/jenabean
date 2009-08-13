@@ -34,6 +34,12 @@ public class Main {
 		Collection<Person> people = reader.loadDeep(Person.class);
 		Collection<Agent> agents = reader.load(Agent.class);
 		
+		Collection<Group> many = reader.load( Group.class );
+		Group one = reader.load(Group.class, "id");
+		
+		Object o = many;
+		o = one;
+		
 		//m.writeAll(System.out, "N3", null); System.exit(0);
 		System.out.println("There are " + people.size() + " People in this graph.");
 		System.out.println("There are " + groups.size() + " Groups in this graph.");
