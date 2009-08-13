@@ -22,6 +22,7 @@ public class Company {
 		this.size = size;
 	}
 
+	@Id
 	public URI getIdentifier() {
 		return identifier;
 	}
