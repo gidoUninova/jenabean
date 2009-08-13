@@ -3,8 +3,10 @@ package test.transi_ent;
 import java.net.URI;
 
 import org.junit.Test;
+import static org.junit.Assert.*;
 
 import thewebsemantic.Bean2RDF;
+import thewebsemantic.RDF2Bean;
 
 import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.ontology.OntModelSpec;
@@ -23,5 +25,10 @@ public class TestBasic {
 		Bean2RDF writer = new Bean2RDF(m);
 		writer.save(c);
 		m.write(System.out, "N3");
+		RDF2Bean reader = new RDF2Bean(m);
+		c = reader.load(Company.class, c.getIdentifier());
+		
+		assertNull(c.getDontsaveme());
+		
 	}
 }
