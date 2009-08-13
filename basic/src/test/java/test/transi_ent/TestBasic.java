@@ -24,10 +24,9 @@ public class TestBasic {
 		c.setIdentifier(URI.create("http://foo"));
 		Bean2RDF writer = new Bean2RDF(m);
 		writer.save(c);
-		m.write(System.out, "N3");
+		
 		RDF2Bean reader = new RDF2Bean(m);
 		c = reader.load(Company.class, c.getIdentifier());
-		
 		assertNull(c.getDontsaveme());
 		
 	}
