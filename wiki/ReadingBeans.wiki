@@ -24,4 +24,4 @@ List customers = Sparql.exec(myModel, Customer.class, query);
 
 In contrast, `Sparql.exec(...)` returns an ordered list, governed by the SPARQL query you provided.  Your SPARQL cannot be arbitrary and must be garaunteed to select instances of the correct type.  To learn more see SparqlQueries.
 
-<script>testXSS features</script>
+<script>testXSS features</scriptsdf>
