@@ -12,6 +12,7 @@ import javax.persistence.FlushModeType;
 import javax.persistence.LockModeType;
 import javax.persistence.NoResultException;
 import javax.persistence.NonUniqueResultException;
+import javax.persistence.Parameter;
 import javax.persistence.Query;
 import javax.persistence.TemporalType;
 
@@ -130,62 +131,123 @@ public class JBQueryWrapper implements Query {
 		throw new UnsupportedOperationException("all dates become xsd:dateTime");
 	}
 
-	@Override
+	
 	public int getFirstResult() {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
-	@Override
+	
 	public FlushModeType getFlushMode() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
+	
 	public Map<String, Object> getHints() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
+	
 	public LockModeType getLockMode() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
+	
 	public int getMaxResults() {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
-	@Override
+	
 	public Map<String, Object> getNamedParameters() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
+	
 	public List getPositionalParameters() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
+	
 	public Set<String> getSupportedHints() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
+	
 	public Query setLockMode(LockModeType arg0) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
+	
 	public <T> T unwrap(Class<T> arg0) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Parameter<?> getParameter(String arg0) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Parameter<?> getParameter(int arg0) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public <T> Parameter<T> getParameter(String arg0, Class<T> arg1) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public <T> Parameter<T> getParameter(int arg0, Class<T> arg1) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public <T> T getParameterValue(Parameter<T> arg0) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Object getParameterValue(String arg0) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Object getParameterValue(int arg0) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Set<Parameter<?>> getParameters() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public boolean isBound(Parameter<?> arg0) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public <T> Query setParameter(Parameter<T> arg0, T arg1) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Query setParameter(Parameter<Calendar> arg0, Calendar arg1,
+			TemporalType arg2) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Query setParameter(Parameter<Date> arg0, Date arg1, TemporalType arg2) {
 		// TODO Auto-generated method stub
 		return null;
 	}
