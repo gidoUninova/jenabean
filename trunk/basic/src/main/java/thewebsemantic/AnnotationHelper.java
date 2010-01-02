@@ -15,6 +15,6 @@ public interface AnnotationHelper {
 
 	boolean proxyRequired();
 
-	Class getProxy(Class<?> c) throws InstantiationException, IllegalAccessException;
+	<T> Class<? extends T> getProxy(Class<T> c) throws InstantiationException, IllegalAccessException;
 
 }

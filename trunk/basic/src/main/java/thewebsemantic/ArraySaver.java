@@ -34,7 +34,7 @@ public class ArraySaver extends Saver {
 			while (it.hasNext()) {
 				RDFNode node = it.nextNode();
 				if (node.isAnon())
-					((Resource)node.as(Resource.class)).removeProperties();
+					node.as(Resource.class).removeProperties();
 			}
 			it.close();
 			s.removeProperties();

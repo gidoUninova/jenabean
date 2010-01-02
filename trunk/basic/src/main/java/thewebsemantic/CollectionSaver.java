@@ -37,7 +37,7 @@ public class CollectionSaver extends Saver {
 		while (it.hasNext()) {
 			RDFNode n = it.nextStatement().getObject();
 			if (n.isAnon())
-				anonNodes.add((Resource)n.as(Resource.class));
+				anonNodes.add(n.as(Resource.class));
 		}
 		it.close();
 		for (Resource resource : anonNodes)
