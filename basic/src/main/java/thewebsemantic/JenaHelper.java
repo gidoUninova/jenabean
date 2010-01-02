@@ -15,7 +15,7 @@ import com.hp.hpl.jena.rdf.model.RDFNode;
 public class JenaHelper {
 
 	public static Object convertLiteral(RDFNode node, Class<?> c) {
-		return convertLiteral((Literal)node.as(Literal.class), c);
+		return convertLiteral(node.as(Literal.class), c);
 	}
 
 	public static Object convertLiteral(Literal l, Class<?> c) {
@@ -46,10 +46,6 @@ public class JenaHelper {
 		Object o = l.getDouble();
 		System.out.println(o.getClass());
 		return null;
-	}
-		
-	public static Literal asLiteral(RDFNode n) {
-		return (Literal)n.as(Literal.class);
 	}
 
 	public static Literal toLiteral(Model m, Object o) {	

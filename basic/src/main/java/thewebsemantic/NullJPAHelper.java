@@ -6,7 +6,6 @@ public class NullJPAHelper implements AnnotationHelper {
 
 	public boolean isGenerated(ValuesContext ctx) {
 		return ctx.getAccessibleObject().isAnnotationPresent(Generated.class);
-
 	}
 
 	public boolean isEmbedded(Object bean) {
@@ -17,7 +16,7 @@ public class NullJPAHelper implements AnnotationHelper {
 		return false;
 	}
 
-	public Class getProxy(Class<?> c) throws InstantiationException,
+	public <T> Class<? extends T> getProxy(Class<T> c) throws InstantiationException,
 			IllegalAccessException {
 		throw new UnsupportedOperationException();
 	}

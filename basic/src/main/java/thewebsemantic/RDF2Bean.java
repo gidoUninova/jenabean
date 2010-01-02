@@ -408,7 +408,7 @@ public class RDF2Bean extends Base implements Provider {
 		if (node.isLiteral()) 
 			return (T) convertLiteral(node, c);
 		else
-			return toObject(c, (Resource) node.as(Resource.class));
+			return toObject(c, node.as(Resource.class));
 	}
 	
 	private boolean isCycle(Resource i) {

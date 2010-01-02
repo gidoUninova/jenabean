@@ -69,7 +69,7 @@ public class Thing implements InvocationHandler, As {
 	}
 	
 	public OntResource getOntResource() {
-		return (OntResource)r.as(OntResource.class);
+		return r.as(OntResource.class);
 	}
 	
 	public Model getModel() {
