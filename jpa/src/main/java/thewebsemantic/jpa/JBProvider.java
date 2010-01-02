@@ -20,6 +20,7 @@ import javax.persistence.PersistenceException;
 import javax.persistence.spi.LoadState;
 import javax.persistence.spi.PersistenceProvider;
 import javax.persistence.spi.PersistenceUnitInfo;
+import javax.persistence.spi.ProviderUtil;
 
 import thewebsemantic.Namespace;
 import thewebsemantic.ResolverUtil;
@@ -164,20 +165,25 @@ public class JBProvider implements PersistenceProvider {
 		}
 	}
 
-	@Override
+	
 	public LoadState isLoaded(Object arg0) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
+	
 	public LoadState isLoadedWithReference(Object arg0, String arg1) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
+	
 	public LoadState isLoadedWithoutReference(Object arg0, String arg1) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public ProviderUtil getProviderUtil() {
 		// TODO Auto-generated method stub
 		return null;
 	}

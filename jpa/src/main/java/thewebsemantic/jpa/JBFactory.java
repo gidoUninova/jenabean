@@ -9,7 +9,8 @@ import javax.persistence.Cache;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.NamedNativeQuery;
-import javax.persistence.criteria.QueryBuilder;
+import javax.persistence.PersistenceUnitUtil;
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.metamodel.Metamodel;
 
 import com.hp.hpl.jena.rdf.model.Model;
@@ -68,32 +69,35 @@ public class JBFactory implements EntityManagerFactory {
 		return name;
 	}
 
-	@Override
+	
 	public Cache getCache() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
+	
 	public Metamodel getMetamodel() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
+	
 	public Map<String, Object> getProperties() {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-	@Override
-	public QueryBuilder getQueryBuilder() {
+	
+	public Set<String> getSupportedProperties() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
-	public Set<String> getSupportedProperties() {
+	public CriteriaBuilder getCriteriaBuilder() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public PersistenceUnitUtil getPersistenceUnitUtil() {
 		// TODO Auto-generated method stub
 		return null;
 	}

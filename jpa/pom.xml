@@ -25,7 +25,7 @@
 		<dependency>
 			<groupId>com.hp.hpl.jena</groupId>
 			<artifactId>arq</artifactId>
-			<version>2.8.1</version>
+			<version>2.8.2</version>
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
@@ -37,7 +37,7 @@
 		<dependency>
 			<groupId>org.hibernate.java-persistence</groupId>
 			<artifactId>jpa-api</artifactId>
-			<version>2.0.Beta2</version>
+			<version>2.0-cr-1</version>
 		</dependency>
 
 		<!--
@@ -49,6 +49,11 @@
 			<groupId>org.jboss</groupId>
 			<artifactId>javassist</artifactId>
 			<version>3.7.1.GA</version>
+		</dependency>
+		<dependency>
+			<groupId>com.googlecode.jenabean</groupId>
+			<artifactId>jenabean</artifactId>
+			<version>1.0.3</version>
 		</dependency>
 
 	</dependencies>
@@ -93,7 +98,7 @@
 	<repositories>
 		<repository>
 			<id>jena</id>
-			<url>http://jena.hpl.hp.com/repo</url>
+			<url>http://openjena.org/repo</url>
 		</repository>
 		<repository>
 			<id>maven</id>
@@ -102,6 +107,11 @@
 		<repository>
 			<id>jboss</id>
 			<url>http://repository.jboss.org/maven2</url>
+		</repository>
+		<repository>
+			<id>jenabean</id>
+			<name>jenabean</name>
+			<url>https://jenabean.googlecode.com/svn/trunk/repo</url>
 		</repository>
 	</repositories>
 

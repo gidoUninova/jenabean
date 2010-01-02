@@ -25,7 +25,6 @@ public class JBMethodHandler implements MethodHandler {
 		this.cache = cache;
 	}
 
-	@Override
 	public Object invoke(Object target, Method method, Method proxyMethod, Object[] arg3)
 			throws Throwable {
 		if ( method.equals(activate))
