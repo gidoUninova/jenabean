@@ -51,7 +51,7 @@
 			<version>3.7.1.GA</version>
 		</dependency>
 		<dependency>
-			<groupId>com.googlecode.jenabean</groupId>
+			<groupId>thewebsemantic</groupId>
 			<artifactId>jenabean</artifactId>
 			<version>1.0.3</version>
 		</dependency>
@@ -111,7 +111,7 @@
 		<repository>
 			<id>jenabean</id>
 			<name>jenabean</name>
-			<url>https://jenabean.googlecode.com/svn/trunk/repo</url>
+			<url>hhttp://jenabean.googlecode.com/svn/trunk/repo</url>
 		</repository>
 	</repositories>
 
