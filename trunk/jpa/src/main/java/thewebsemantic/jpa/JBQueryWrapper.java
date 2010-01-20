@@ -25,7 +25,6 @@ import com.hp.hpl.jena.rdf.model.RDFNode;
 import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.update.UpdateAction;
 
-@SuppressWarnings("unchecked")
 public class JBQueryWrapper implements Query {
 
 	JBEntityManager em;
