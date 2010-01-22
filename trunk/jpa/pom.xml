@@ -70,30 +70,21 @@
 					<target>1.5</target>
 				</configuration>
 			</plugin>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>build-helper-maven-plugin</artifactId>
-				<version>1.1</version>
-				<executions>
-					<execution>
-						<id>add-source</id>
-						<phase>generate-sources</phase>
-						<goals>
-							<goal>add-source</goal>
-						</goals>
-						<configuration>
-							<sources>
-								<source>../basic/src/main</source>
-							</sources>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-
 		</plugins>
 
 
 	</build>
+
+	<distributionManagement>
+		<repository>
+			<id>googlecode</id>
+			<url>svn:https://jenabean.googlecode.com/svn/trunk/repo</url>
+		</repository>
+		<snapshotRepository>
+			<id>googlecode.snapshot</id>
+			<url>svn:https://jenabean.googlecode.com/svn/trunk/snapshotrepo</url>
+		</snapshotRepository>
+	</distributionManagement>
 
 	<repositories>
 		<repository>
@@ -111,7 +102,7 @@
 		<repository>
 			<id>jenabean</id>
 			<name>jenabean</name>
-			<url>hhttp://jenabean.googlecode.com/svn/trunk/repo</url>
+			<url>http://jenabean.googlecode.com/svn/trunk/repo</url>
 		</repository>
 	</repositories>
 
