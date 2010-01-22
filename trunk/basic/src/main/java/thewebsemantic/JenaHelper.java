@@ -33,6 +33,8 @@ public class JenaHelper {
 			return l.getValue().toString().charAt(0);
 		} else if ( Short.TYPE.equals(c)) {
 			return l.getShort();
+		} else if ( LocalizedString.class.equals(c)) {
+			return new LocalizedString(l);
 		} else
 			return l.getValue();		
 	}
