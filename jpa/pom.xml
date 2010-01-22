@@ -5,7 +5,7 @@
 	<groupId>com.googlecode.jenabean</groupId>
 	<artifactId>jpa4jena</artifactId>
 	<packaging>jar</packaging>
-	<version>0.7-SNAPSHOT</version>
+	<version>0.7</version>
 	<name>Jenabean binding library for RDF</name>
 	<url>http://jenabean.googlecode.com</url>
 
@@ -53,13 +53,21 @@
 		<dependency>
 			<groupId>thewebsemantic</groupId>
 			<artifactId>jenabean</artifactId>
-			<version>1.0.3</version>
+			<version>1.0.4</version>
 		</dependency>
 
 	</dependencies>
 
 
 	<build>
+	
+			<extensions>
+			<extension>
+				<groupId>org.jvnet.wagon-svn</groupId>
+				<artifactId>wagon-svn</artifactId>
+				<version>1.9</version>
+			</extension>
+		</extensions>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
