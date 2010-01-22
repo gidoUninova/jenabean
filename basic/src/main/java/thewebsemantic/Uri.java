@@ -32,8 +32,9 @@ import java.lang.annotation.Target;
  * 
  * }
  * </code>
- * 
+ * @deprecated use combination of java.net.URI and {@link #Id} annotation instead
  */
+@Deprecated
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME) 
 public @interface Uri {
