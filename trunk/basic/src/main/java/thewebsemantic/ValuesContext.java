@@ -64,8 +64,6 @@ public abstract class ValuesContext {
 
 	public abstract Class<?> t();
 	
-    public abstract TypeWrapper tw();
-
 	public Class<?> getGenericType(ParameterizedType type) {
 		return (type == null) ? NullType.class : (Class<?>) type
 				.getActualTypeArguments()[0];		
