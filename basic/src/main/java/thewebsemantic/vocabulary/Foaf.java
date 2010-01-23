@@ -36,9 +36,9 @@ public interface Foaf extends As {
 
 	Collection<String> msnChatID();
 
-	Foaf family_name(String s);
+	Foaf familyName(String s);
 
-	Collection<String> family_name();
+	Collection<String> familyName();
 
 	Foaf openid(Object t);
 

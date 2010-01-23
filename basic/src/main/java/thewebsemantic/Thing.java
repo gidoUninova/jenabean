@@ -123,6 +123,11 @@ public class Thing implements InvocationHandler, As {
 		String ns = wrap(c).namespace();
 		Property p = model.getProperty(ns + methodName);
 		StmtIterator it = r.listProperties(p);
+		return  (it.hasNext()) ? convertToObject(genericType, returnType, it) : null;
+	}
+
+	private Object convertToObject(Class<?> genericType, Class<?> returnType,
+			StmtIterator it) {
 		if (isPrimitive(returnType))
 			return primitive(returnType, it);
 		else if (returnType==Literal.class)
@@ -136,7 +141,8 @@ public class Thing implements InvocationHandler, As {
 		else if (returnType==Collection.class
 				&& genericType.equals(Thing.class))
 			return thingCollection(it);
-		return null;
+		else
+			return null;
 	}
 
 	private Literal thing(StmtIterator it) {
