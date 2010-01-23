@@ -690,12 +690,30 @@ public class RDF2Bean extends Base implements Provider {
 		ResolverUtil<Object> resolver = new ResolverUtil<Object>();
 		resolver.findAnnotated(Namespace.class, pkg);
 		Set<Class<? extends Object>> classes = resolver.getClasses();
-		for (Class<? extends Object> class1 : classes) {
-			Namespace ns = class1.getAnnotation(Namespace.class);
-            m.getResource(ns.value() + Util.getRdfType(class1)).addProperty(
-					javaclass, class1.getName());
-		}
+		for (Class<? extends Object> class1 : classes)
+			bind(class1);
 	}
+
+	/**
+	 * Prepares this reader to bind to a particular
+	 * annotated class.
+	 *  
+	 */
+	public void bind(Class<? extends Object> class1) {
+		Namespace ns = class1.getAnnotation(Namespace.class);
+		   m.getResource(ns.value() + Util.getRdfType(class1)).addProperty(
+				javaclass, class1.getName());
+	}
+	
+	/**
+	 * Prepares this reader to bind to all annotated classes in 
+	 * provided list of package.
+	 */	
+	public void bind(Package... packages) {
+		for (Package p : packages)
+			bindAll(p.getName());
+	}
+	
 }
 /*
  * Copyright (c) 2007

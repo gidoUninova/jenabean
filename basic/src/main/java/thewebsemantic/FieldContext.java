@@ -21,7 +21,10 @@ class FieldContext extends ValuesContext {
 	public FieldContext(Object bean, Field p, boolean id) {
 		subject = bean;
 		field = p;
-		type = TypeWrapper.type(bean);
+		//if (subject==null)
+			type =TypeWrapper.wrap(p.getDeclaringClass());
+		//else
+		//	type = TypeWrapper.type(bean);
 		idField = id;
 	}
 	
@@ -38,14 +41,8 @@ class FieldContext extends ValuesContext {
 				: TypeWrapper.getRDFAnnotation(field).symmetric();
 	}
 	
-    public TypeWrapper tw() {
-    	return type;
-    }
-
-    
-	
 	public boolean isInverse() {
-		return TypeWrapper.getRDFAnnotation(field).transitive();
+		return ! "".equals(TypeWrapper.getRDFAnnotation(field).inverseOf());
 	}
 	
 	public String inverseOf() {
