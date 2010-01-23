@@ -145,12 +145,12 @@ public class Thing implements InvocationHandler, As {
 			return null;
 	}
 
-	private Literal thing(StmtIterator it) {
+	private Object thing(StmtIterator it) {
 		Statement s = it.nextStatement();
 		if (s.getObject().isLiteral())
 			return s.getLiteral();
 		else
-			return null;
+			return new Thing(s.getResource(), s.getModel());
 	}
 
 	private Object literal(StmtIterator it) {
