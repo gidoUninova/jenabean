@@ -10,7 +10,9 @@ import com.hp.hpl.jena.rdf.model.ModelFactory;
 public class Main {
 
 	/**
-	 * @param args
+	 * This is our event written to ical
+	 * using Jenabean's fluent programming interface.
+	 * 
 	 */
 	public static void main(String[] args) {
 		
