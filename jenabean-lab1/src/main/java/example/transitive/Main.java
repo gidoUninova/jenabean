@@ -13,22 +13,25 @@ public class Main {
 	 * 
 	 */
 	public static void main(String[] args) {
-		OntModel m = ModelFactory.createOntologyModel(OWL_MEM_MICRO_RULE_INF); 
+		//OntModel m = ModelFactory.createOntologyModel(OWL_MEM_MICRO_RULE_INF); 
+		OntModel m = ModelFactory.createOntologyModel();
 		Bean2RDF writer = new Bean2RDF(m);
 		
 		init(writer);
-		writer.n3();
+		//writer.n3();
 
 		RDF2Bean reader = new RDF2Bean(m);
 		City sfo = reader.load(City.class, "SFO");
-		
+
+		System.out.println("San Francisco is within the following...");
 		for (Location l : sfo.within)
-			System.out.println(l.name + " of type " + l.getClass());
+			System.out.println('\t' + l.name + ":" + l.getClass().getSimpleName());
 
 		
 		Continent na = reader.load(Continent.class, "NA");
+		System.out.println("The following are contained withing North America...");
 		for (Location l : na.contains)
-			System.out.println(l.name + " is in North America." );
+			System.out.println('\t' + l.name );
 		
 	}
 
