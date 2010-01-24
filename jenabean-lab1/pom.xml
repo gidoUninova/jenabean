@@ -2,6 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>thewebsemantic</groupId>
   <artifactId>jenabean-lab1</artifactId>
+  <name>Jenabean labs</name>
   <version>0.0.1-SNAPSHOT</version>
   <dependencies>
  	<dependency>
