@@ -277,11 +277,11 @@ public class RDF2Bean extends Base implements Provider {
 	 * @return
 	 * @throws NotFoundException
 	 */
-	public synchronized Object load(Object target) {
+	public synchronized <A> A load(A target) {
 		init(shallow, none);
 		try {
 			Resource source = m.getResource(instanceURI(target));
-			return applyProperties(source, target);
+			return (A)applyProperties(source, target);
 		} finally {
 			m.leaveCriticalSection();
 		}
