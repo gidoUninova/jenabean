@@ -28,7 +28,7 @@ public class Main {
 			dtend("20100124T220000Z").
 			summary("Jena Semantic Web Programming with Taylor Cowan, Sanjiva Nath & Jeremy Carroll").
 			location("Parisoma - 1436 Howard (at 10th) in San Francisco - San Francisco, CA  94103 - USA")
-		.as(Geo.class).
+		.as(Geo.class).		
 			lat(37.77f).
 			long_(-122.41f);
               
