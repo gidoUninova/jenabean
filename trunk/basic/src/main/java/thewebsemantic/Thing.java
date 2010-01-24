@@ -230,6 +230,8 @@ public class Thing implements InvocationHandler, As {
 			set(p, ((As)arg[0]).asResource());
 		else if (arg[0] instanceof URI)
 			set(p, ((URI)arg[0]).toString());
+		else if (arg[0] instanceof Resource)
+			set(p, (Resource)arg[0]);
 	}
 
 	private void set(Property p, Thing arg) {
