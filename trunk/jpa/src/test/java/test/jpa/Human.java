@@ -16,7 +16,6 @@ import thewebsemantic.RdfProperty;
 		"SELECT DISTINCT ?s	WHERE { ?s a :Human . ?s :parentOf ?Thing . }"
 		)	
 })
-
 @Namespace("http://semanticbible.org/ns/2006/NTNames#")
 public class Human {
 	private String name;
