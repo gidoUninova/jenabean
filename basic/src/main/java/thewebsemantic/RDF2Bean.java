@@ -534,7 +534,8 @@ public class RDF2Bean extends Base implements Provider {
 			result = binder.getClass(oc.getURI());
 		else if ( oc.getProperty(javaclass) != null) {
 			Statement node = oc.getProperty(javaclass);
-			Class<?> klass = Class.forName(node.getLiteral().getString());
+			ClassLoader cl = Thread.currentThread().getContextClassLoader();
+			Class<?> klass = cl.loadClass(node.getLiteral().getString());
 			binder.save(klass, oc.getURI());
 			result = klass;
 		}
