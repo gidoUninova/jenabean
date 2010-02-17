@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE rdf:RDF 
+[<!ENTITY vCard "http://www.w3.org/2001/vcard-rdf/3.0#">
+]>
+<rdf:RDF 
+	xmlns:gr="http://purl.org/goodrelations/v1#" 
+	xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" 
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema#" 
+	xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" 
+	xmlns:owl="http://www.w3.org/2002/07/owl#" 
+	xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#" 
+	xmlns:eco="http://www.ebusiness-unibw.org/ontologies/eclass/5.1.4/#" 
+	xmlns:foaf="http://xmlns.com/foaf/0.1/" 
+	xmlns="http://stores.bestbuy.com/semanticweb#" 
+	xml:base="http://stores.bestbuy.com/semanticweb">
+
+	<owl:AnnotationProperty rdf:about="&vCard;ADR"/>
+	<owl:AnnotationProperty rdf:about="&vCard;Street"/>
+	<owl:AnnotationProperty rdf:about="&vCard;Pcode"/> 
+	<owl:AnnotationProperty rdf:about="&vCard;City"/> 
+	<owl:AnnotationProperty rdf:about="&vCard;Country"/> 
+	<owl:AnnotationProperty rdf:about="&vCard;TEL"/> 
+	<owl:AnnotationProperty rdf:about="&vCard;EMAIL"/>
+
+	<owl:Ontology rdf:about="">
+		<owl:imports rdf:resource="http://purl.org/goodrelations/v1"/>
+		<rdfs:label xml:lang="en">RDF/XML data for Best Buy Co., Inc., based on http://purl.org/goodrelations/</rdfs:label>
+	</owl:Ontology>
+	<gr:BusinessEntity rdf:ID="BusinessEntity">
+		<gr:legalName rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Best Buy Co., Inc.</gr:legalName>
+		<rdfs:seeAlso rdf:resource="http://bestbuyinc.com"/>
+		<vCard:ADR rdf:parseType="Resource">
+			<vCard:Street>7601 Penn Avenue South</vCard:Street>
+			<vCard:Pcode>55423</vCard:Pcode>
+			<vCard:City>Richfield</vCard:City>
+			<vCard:Country>US</vCard:Country>
+			<vCard:TEL rdf:parseType="Resource">
+				<rdf:value>+1-612-292-6397</rdf:value>
+				<rdf:type rdf:resource="http://www.w3.org/2001/vcard-rdf/3.0#work"/>
+				<rdf:type rdf:resource="http://www.w3.org/2001/vcard-rdf/3.0#voice"/>
+			</vCard:TEL>
+		</vCard:ADR>
+		<gr:offers rdf:resource="#BestBuyStore_840_offering" />
+	</gr:BusinessEntity>
+	<gr:Offering rdf:ID="BestBuyStore_840_offering">
+		<gr:availableAtOrFrom rdf:resource="#BestBuyStore_840"/>
+		<rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Best Buy is the source for electronics, televisions, DVD players, 
+home audio, car audio, computers, cameras, music, movies, software, games and more. Research, compare and buy securely online; pick it up in a store.</rdfs:comment>
+		<gr:hasBusinessFunction rdf:resource="http://purl.org/goodrelations/v1#Sell"/>
+		<gr:hasBusinessFunction rdf:resource="http://purl.org/goodrelations/v1#Repair"/>
+		<gr:hasBusinessFunction rdf:resource="http://purl.org/goodrelations/v1#Maintain"/>
+		<gr:hasBusinessFunction rdf:resource="http://purl.org/goodrelations/v1#Dispose"/>
+		<gr:validFrom rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2009-06-04T00:00:00-05:00</gr:validFrom>
+		<gr:validThrough rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2009-11-23T00:00:00-06:00</gr:validThrough>
+		<gr:eligibleRegions rdf:datatype="http://www.w3.org/2001/XMLSchema#string">US</gr:eligibleRegions>
+		<gr:eligibleCustomerTypes rdf:resource="http://purl.org/goodrelations/v1#Enduser"/>
+		<gr:eligibleCustomerTypes rdf:resource="http://purl.org/goodrelations/v1#PublicInstitution"/>
+		<gr:eligibleCustomerTypes rdf:resource="http://purl.org/goodrelations/v1#Reseller"/>
+		<gr:acceptedPaymentMethods rdf:resource="http://purl.org/goodrelations/v1#MasterCard"/>
+		<gr:acceptedPaymentMethods rdf:resource="http://purl.org/goodrelations/v1#VISA"/>
+		<gr:acceptedPaymentMethods rdf:resource="http://purl.org/goodrelations/v1#AmericanExpress"/>
+		<gr:acceptedPaymentMethods rdf:resource="http://purl.org/goodrelations/v1#Discover"/>
+		<gr:availableDeliveryMethods rdf:resource="http://purl.org/goodrelations/v1#UPS"/>
+		<gr:availableDeliveryMethods rdf:resource="http://purl.org/goodrelations/v1#DeliveryModeMail"/>
+		<gr:availableDeliveryMethods rdf:resource="http://purl.org/goodrelations/v1#DeliveryModeDirectDownload"/>
+	</gr:Offering>
+	<gr:LocationOfSalesOrServiceProvisioning rdf:ID="BestBuyStore_840">
+		<rdfs:label xml:lang="en">Best Buy - BattleCreek  , Store 840</rdfs:label>
+		<vCard:ADR rdf:parseType="Resource">
+			<vCard:Street>12765 Harper Village Dr Ste 160</vCard:Street>
+			<vCard:Pcode>49041</vCard:Pcode>
+			<vCard:City>Battle Creek</vCard:City>
+			<vCard:Country>US</vCard:Country>
+			<vCard:TEL rdf:parseType="Resource">
+				<rdf:value>+1-269-979-8336</rdf:value>
+				<rdf:type rdf:resource="http://www.w3.org/2001/vcard-rdf/3.0#work"/>
+				<rdf:type rdf:resource="http://www.w3.org/2001/vcard-rdf/3.0#voice"/>
+			</vCard:TEL>
+			<vCard:EMAIL rdf:parseType="Resource">
+				<rdf:value>localstorepages@bestbuy.com</rdf:value>
+				<rdf:type rdf:resource="http://www.w3.org/2001/vcard-rdf/3.0#internet"/>
+			</vCard:EMAIL>
+		</vCard:ADR>
+				<vCard:PHOTO vCard:TYPE="image/jpeg" rdf:resource="http://stores.bestbuy.com/840/wp-content/store-images/Best Buy - BattleCreek.jpg"/>
+		<vCard:GEO rdf:parseType="Resource">
+			<vCard:latitude>42.264992</vCard:latitude>
+			<vCard:longitude>-85.178268</vCard:longitude>
+		</vCard:GEO>
+				<gr:hasOpeningHoursSpecification>
+			<gr:OpeningHoursSpecification rdf:ID="OpeningHoursSpecification_Mon_am">
+				<gr:hasOpeningHoursDayOfWeek rdf:resource="http://purl.org/goodrelations/v1#Monday"/>
+				<gr:opens rdf:datatype="http://www.w3.org/2001/XMLSchema#time">10:00:00</gr:opens>
+				<gr:closes rdf:datatype="http://www.w3.org/2001/XMLSchema#time">21:00:00</gr:closes>
+			</gr:OpeningHoursSpecification>
+		</gr:hasOpeningHoursSpecification>
+		<gr:hasOpeningHoursSpecification>
+			<gr:OpeningHoursSpecification rdf:ID="OpeningHoursSpecification_Tue_am">
+				<gr:hasOpeningHoursDayOfWeek rdf:resource="http://purl.org/goodrelations/v1#Tuesday"/>
+				<gr:opens rdf:datatype="http://www.w3.org/2001/XMLSchema#time">10:00:00</gr:opens>
+				<gr:closes rdf:datatype="http://www.w3.org/2001/XMLSchema#time">21:00:00</gr:closes>
+			</gr:OpeningHoursSpecification>
+		</gr:hasOpeningHoursSpecification>
+		<gr:hasOpeningHoursSpecification>
+			<gr:OpeningHoursSpecification rdf:ID="OpeningHoursSpecification_Wed_am">
+				<gr:hasOpeningHoursDayOfWeek rdf:resource="http://purl.org/goodrelations/v1#Wednesday"/>
+				<gr:opens rdf:datatype="http://www.w3.org/2001/XMLSchema#time">10:00:00</gr:opens>
+				<gr:closes rdf:datatype="http://www.w3.org/2001/XMLSchema#time">21:00:00</gr:closes>
+			</gr:OpeningHoursSpecification>
+		</gr:hasOpeningHoursSpecification>
+		<gr:hasOpeningHoursSpecification>
+			<gr:OpeningHoursSpecification rdf:ID="OpeningHoursSpecification_Thu_am">
+				<gr:hasOpeningHoursDayOfWeek rdf:resource="http://purl.org/goodrelations/v1#Thursday"/>
+				<gr:opens rdf:datatype="http://www.w3.org/2001/XMLSchema#time">10:00:00</gr:opens>
+				<gr:closes rdf:datatype="http://www.w3.org/2001/XMLSchema#time">21:00:00</gr:closes>
+			</gr:OpeningHoursSpecification>
+		</gr:hasOpeningHoursSpecification>
+		<gr:hasOpeningHoursSpecification>
+			<gr:OpeningHoursSpecification rdf:ID="OpeningHoursSpecification_Fri_am">
+				<gr:hasOpeningHoursDayOfWeek rdf:resource="http://purl.org/goodrelations/v1#Friday"/>
+				<gr:opens rdf:datatype="http://www.w3.org/2001/XMLSchema#time">10:00:00</gr:opens>
+				<gr:closes rdf:datatype="http://www.w3.org/2001/XMLSchema#time">21:00:00</gr:closes>
+			</gr:OpeningHoursSpecification>
+		</gr:hasOpeningHoursSpecification>
+		<gr:hasOpeningHoursSpecification>
+			<gr:OpeningHoursSpecification rdf:ID="OpeningHoursSpecification_Sat_am">
+				<gr:hasOpeningHoursDayOfWeek rdf:resource="http://purl.org/goodrelations/v1#Saturday"/>
+				<gr:opens rdf:datatype="http://www.w3.org/2001/XMLSchema#time">10:00:00</gr:opens>
+				<gr:closes rdf:datatype="http://www.w3.org/2001/XMLSchema#time">21:00:00</gr:closes>
+			</gr:OpeningHoursSpecification>
+		</gr:hasOpeningHoursSpecification>
+		<gr:hasOpeningHoursSpecification>
+			<gr:OpeningHoursSpecification rdf:ID="OpeningHoursSpecification_Sun_am">
+				<gr:hasOpeningHoursDayOfWeek rdf:resource="http://purl.org/goodrelations/v1#Sunday"/>
+				<gr:opens rdf:datatype="http://www.w3.org/2001/XMLSchema#time">11:00:00</gr:opens>
+				<gr:closes rdf:datatype="http://www.w3.org/2001/XMLSchema#time">19:00:00</gr:closes>
+			</gr:OpeningHoursSpecification>
+		</gr:hasOpeningHoursSpecification>
+	</gr:LocationOfSalesOrServiceProvisioning>
+</rdf:RDF>
