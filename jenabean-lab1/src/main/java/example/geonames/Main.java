@@ -17,13 +17,13 @@ public class Main {
 		// if you have a connection to the internet you may uncomment 
 		// this line and consume linked data.  Try variations on the query 
 		// for fun.
-		m.read("file:london.rdf");
+		//m.read("file:london.rdf");
 
-		//m.read("http://ws.geonames.org/search?q=london&maxRows=10&type=rdf");
+		m.read("http://ws.geonames.org/search?q=london&maxRows=10&type=rdf");
 		RDF2Bean reader = new RDF2Bean(m);
 		reader.bind(Feature.class);
-		reader.bind(Feature.class.getPackage());
-		reader.bindAll("com.foo", "com.bar");
+		//reader.bind(Feature.class.getPackage());
+		//reader.bindAll("com.foo", "com.bar");
 		
 		Collection<Feature> locations = reader.load(Feature.class);
 		for (Feature feature : locations) {
@@ -31,6 +31,6 @@ public class Main {
 				//if ( s.getLang().equals("fr"))
 					System.out.println(s.getLang() + ":" + s);
 			
-		}		
+		}
 	}
 }
