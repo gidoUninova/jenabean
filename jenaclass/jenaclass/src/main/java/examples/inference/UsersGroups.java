@@ -2,6 +2,8 @@ package examples.inference;
 
 import java.util.List;
 
+import org.mindswap.pellet.jena.PelletReasonerFactory;
+
 import com.hp.hpl.jena.ontology.OntClass;
 import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.ontology.OntModelSpec;
@@ -20,7 +22,8 @@ public class UsersGroups {
 	 */
 	public static void main(String[] args) {
 		OntModel model = ModelFactory.createOntologyModel(OntModelSpec.OWL_MEM_MICRO_RULE_INF);
-		
+		//OntModel model = ModelFactory.createOntologyModel();
+		//OntModel model = ModelFactory.createOntologyModel(PelletReasonerFactory.THE_SPEC); 
 		OntClass Role = model.createClass(domain + "role");
 		OntClass User = model.createClass(domain + "user");
 
