@@ -74,6 +74,8 @@ public class IdFieldTypeWrapper extends TypeWrapper {
 		for (Field field : fields) {
 			if (field.equals(idfield) && uriid)
 				continue;
+			if (field.isAnnotationPresent(Transient.class))
+				 continue;
 			if (!Modifier.isTransient(field.getModifiers()))
 				values.add(new FieldContext(o, field, field.equals(idfield)));
 		}
