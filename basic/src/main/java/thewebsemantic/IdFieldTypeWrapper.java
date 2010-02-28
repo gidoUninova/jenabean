@@ -3,9 +3,11 @@ package thewebsemantic;
 import static thewebsemantic.Bean2RDF.logger;
 import static thewebsemantic.Util.last;
 
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.net.URI;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
@@ -48,7 +50,15 @@ public class IdFieldTypeWrapper extends TypeWrapper {
 		if (idfield.getType().equals(URI.class))
 			return id;
 		else
-			return typeUri() + '/' + id;
+			return  typeUri() + '/' + urlencode(id);
+	}
+
+	private String urlencode(String id) {
+		try {
+			return URLEncoder.encode(id, "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	public String[] collections() {
