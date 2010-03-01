@@ -3,9 +3,11 @@ package thewebsemantic;
 import static thewebsemantic.Bean2RDF.logger;
 
 import java.beans.PropertyDescriptor;
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.net.URI;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.logging.Level;
 
@@ -47,9 +49,17 @@ public class IdMethodTypeWrapper extends TypeWrapper {
 		if (uriid)
 			return id;
 		else
-			return typeUri() + '/' + id;
+			return typeUri() + '/' + urlencode(id);
 	}
 
+	private String urlencode(String id) {
+		try {
+			return URLEncoder.encode(id, "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
 	public String id(Object bean) {
 		return invokeMethod(bean, idReadMethod);
 	}

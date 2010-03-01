@@ -5,7 +5,7 @@ import java.rmi.server.UID;
 import thewebsemantic.Id;
 
 public class RdfBeanId<T> extends RdfBean<T> {
-
+	@Id
 	protected String id;
 
 	public RdfBeanId() {
@@ -16,7 +16,7 @@ public class RdfBeanId<T> extends RdfBean<T> {
 		this.id = id;
 	}
 
-	@Id
+	
 	public String id() {return id;}
 
 }
