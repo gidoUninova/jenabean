@@ -13,10 +13,6 @@ public class Person extends RdfBeanId<Person> {
 		super();
 	}
 
-	public Person(String id) {
-		super(id);
-	}
-
 	public Language getLang() {
 		return lang;
 	}
