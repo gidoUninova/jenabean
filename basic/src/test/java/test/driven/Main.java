@@ -26,6 +26,7 @@ public class Main {
 		
 		Person p1 = p.load(p.id());
 		assertEquals(Language.KOREAN, p1.getLang());
+		//Jenabean.instance().model().write(System.out, "N3");
 		p1.fill("visited");
 		assertEquals(3, p1.getVisited().size());
 	}
