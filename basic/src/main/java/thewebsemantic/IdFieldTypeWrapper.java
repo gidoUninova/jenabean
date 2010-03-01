@@ -47,7 +47,7 @@ public class IdFieldTypeWrapper extends TypeWrapper {
 	
 	@Override
 	public String uri(String id) {
-		if (idfield.getType().equals(URI.class))
+		if (uriid)
 			return id;
 		else
 			return  typeUri() + '/' + urlencode(id);
