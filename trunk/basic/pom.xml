@@ -5,7 +5,7 @@
 	<groupId>thewebsemantic</groupId>
 	<artifactId>jenabean</artifactId>
 	<packaging>jar</packaging>
-	<version>1.0.5</version>
+	<version>1.0.7</version>
 	<name>Jenabean binding library for RDF</name>
 	<url>http://jenabean.googlecode.com</url>
 
