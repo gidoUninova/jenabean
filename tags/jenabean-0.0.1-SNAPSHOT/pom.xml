@@ -1,0 +1,22 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>thewebsemantic</groupId>
+  <artifactId>jenabean-lab1</artifactId>
+  <name>Jenabean labs</name>
+  <version>0.0.1-SNAPSHOT</version>
+  <dependencies>
+ 	<dependency>
+			<groupId>thewebsemantic</groupId>
+			<artifactId>jenabean</artifactId>
+			<version>1.0.5</version>
+		</dependency>
+  </dependencies>
+  
+  <repositories>
+  	<repository>
+			<id>jenabean</id>
+			<name>jenabean</name>
+			<url>http://jenabean.googlecode.com/svn/trunk/repo</url>
+		</repository>
+  </repositories>
+</project>
