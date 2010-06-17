@@ -1,9 +1,10 @@
 TODO:
-*  merge all "example" like folder into one.
-*  rename basic as src and move the current src into example
-*  move down the repo => /svn/repo and note /svn/trunk/repo
-*  move experimental or rename it..
-*  what is /svn/jenaclass ?
+  CLEANING:
+  *  merge all "example" like folder into one.
+  *  rename basic as src and move the current src into example
+  *  move down the repo => /svn/repo and note /svn/trunk/repo
+  *  move experimental or rename it..
+  *  what is /svn/jenaclass ?
 
 A better tree would be:
 
@@ -23,4 +24,5 @@ A better tree would be:
     ...
   wiki
 
-
+  JUNIT
+  * adding junit test to the project
