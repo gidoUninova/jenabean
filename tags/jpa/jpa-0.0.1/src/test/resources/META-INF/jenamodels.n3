@@ -1,0 +1,31 @@
+@prefix rdf:        <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:       <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl:        <http://www.w3.org/2002/07/owl#> .
+
+@prefix ja:         <http://jena.hpl.hp.com/2005/11/Assembler#> .
+@prefix jr:         <http://jena.hpl.hp.com/2003/08/Assembler.ReificationMode#> .
+
+@prefix dc:         <http://purl.org/dc/elements/1.1/> .
+@prefix tws:        <http://www.thewebsemantic.com/> .
+
+
+tws:test a ja:MemoryModel ;
+  tws:package "example.foaf", "example.foo", "example.vinay"; 
+  ja:externalContent <file:../NTNames.owl>,
+        <file:../NTN-individuals.owl>; 
+
+.
+
+tws:filemodel
+    tws:package "test.jpa", "example.vinay";
+    ja:directory <file:..> ; 
+    ja:modelName "simple.n3" 
+    . 
+    
+tws:notamodel a tws:badguy .
+
+tws:blank a ja:MemoryModel .
+
+tws:books a ja:MemoryModel ;
+	tws:package "test.jpa.library";
+	.
