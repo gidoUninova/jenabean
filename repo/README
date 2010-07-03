@@ -1,5 +1,0 @@
-This repository is now obsolete and has been moved to the project's root over /repo/{jpa4jena,jenabean}.
-Future release of jpa4jena and jenabean are going to be available only on the new repository.
-Please change your pom dependency to the new repository.
-
-
