@@ -517,7 +517,7 @@ public class RDF2Bean extends Base implements Provider {
 		StmtIterator it = source.listProperties(RDF.type);
 		Resource oc = null;
 		while (it.hasNext()) {
-			oc = it.nextStatement().getResource();	
+			oc = it.nextStatement().getResource();
 			Class<?> declared = declaredClass(oc);
 			if (c.isAssignableFrom(declared)) {
 				it.close();
