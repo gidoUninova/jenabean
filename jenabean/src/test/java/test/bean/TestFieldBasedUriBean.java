@@ -5,8 +5,8 @@ import java.util.Collection;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-import com.hp.hpl.jena.ontology.OntModel;
-import com.hp.hpl.jena.rdf.model.ModelFactory;
+import org.apache.jena.ontology.OntModel;
+import org.apache.jena.rdf.model.ModelFactory;
 
 import thewebsemantic.Bean2RDF;
 import thewebsemantic.RDF2Bean;

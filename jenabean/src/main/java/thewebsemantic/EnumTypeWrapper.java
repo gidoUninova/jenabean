@@ -2,7 +2,7 @@ package thewebsemantic;
 
 import static thewebsemantic.Util.last;
 
-import com.hp.hpl.jena.rdf.model.Resource;
+import org.apache.jena.rdf.model.Resource;
 
 public class EnumTypeWrapper extends TypeWrapper {
 	

@@ -9,8 +9,8 @@ import java.util.Set;
 
 import thewebsemantic.Base.NullType;
 
-import com.hp.hpl.jena.rdf.model.Model;
-import com.hp.hpl.jena.rdf.model.Property;
+import org.apache.jena.rdf.model.Model;
+import org.apache.jena.rdf.model.Property;
 
 public abstract class ValuesContext {
 

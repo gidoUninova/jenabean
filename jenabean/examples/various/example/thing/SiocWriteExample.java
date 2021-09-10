@@ -5,9 +5,9 @@ import thewebsemantic.vocabulary.DCTerms;
 import thewebsemantic.vocabulary.Rdfs;
 import thewebsemantic.vocabulary.Sioc;
 
-import com.hp.hpl.jena.rdf.model.Model;
-import com.hp.hpl.jena.rdf.model.ModelFactory;
-import com.hp.hpl.jena.rdf.model.RDFWriter;
+import org.apache.jena.rdf.model.Model;
+import org.apache.jena.rdf.model.ModelFactory;
+import org.apache.jena.rdf.model.RDFWriter;
 
 public class SiocWriteExample {
 	private static final String uri9 = "http://johnbreslin.com/blog/category/semantic-web/";

@@ -4,8 +4,8 @@ import java.util.Collection;
 
 import thewebsemantic.Bean2RDF;
 import thewebsemantic.binding.Jenabean;
-import com.hp.hpl.jena.rdf.model.Model;
-import com.hp.hpl.jena.rdf.model.ModelFactory;
+import org.apache.jena.rdf.model.Model;
+import org.apache.jena.rdf.model.ModelFactory;
 
 public class SimpleExample {
 	public static void main(String[] args) {

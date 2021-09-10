@@ -2,7 +2,7 @@ package test.thing;
 
 import thewebsemantic.Thing;
 
-import com.hp.hpl.jena.rdf.model.Model;
+import org.apache.jena.rdf.model.Model;
 
 public class ThingFactory {
 
@@ -11,7 +11,7 @@ public class ThingFactory {
 		this.m = m;
 	}
 
-	public Thing _(String string) {
+	public Thing __(String string) {
 		return new Thing(string, m);
 	}
 

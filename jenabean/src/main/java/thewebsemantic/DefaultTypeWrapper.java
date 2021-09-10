@@ -4,7 +4,7 @@ import static thewebsemantic.Bean2RDF.logger;
 
 import java.util.logging.Level;
 
-import com.hp.hpl.jena.rdf.model.Resource;
+import org.apache.jena.rdf.model.Resource;
 
 public class DefaultTypeWrapper extends TypeWrapper {
 

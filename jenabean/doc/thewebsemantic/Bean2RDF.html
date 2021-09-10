@@ -167,7 +167,7 @@ Converts a simple java bean to RDF, provided it's annotated with
 <B>Constructor Summary</B></FONT></TH>
 </TR>
 <TR BGCOLOR="white" CLASS="TableRowColor">
-<TD><CODE><B><A HREF="../thewebsemantic/Bean2RDF.html#Bean2RDF(com.hp.hpl.jena.ontology.OntModel)">Bean2RDF</A></B>(com.hp.hpl.jena.ontology.OntModel&nbsp;m)</CODE>
+<TD><CODE><B><A HREF="../thewebsemantic/Bean2RDF.html#Bean2RDF(org.apache.jena.ontology.OntModel)">Bean2RDF</A></B>(org.apache.jena.ontology.OntModel&nbsp;m)</CODE>
 
 <BR>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;construct a new instance bound to OntModel <tt>m</tt>.</TD>
@@ -192,7 +192,7 @@ Converts a simple java bean to RDF, provided it's annotated with
 </TR>
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
-<CODE>&nbsp;com.hp.hpl.jena.rdf.model.Resource</CODE></FONT></TD>
+<CODE>&nbsp;org.apache.jena.rdf.model.Resource</CODE></FONT></TD>
 <TD><CODE><B><A HREF="../thewebsemantic/Bean2RDF.html#save(java.lang.Object)">save</A></B>(java.lang.Object&nbsp;bean)</CODE>
 
 <BR>
@@ -200,7 +200,7 @@ Converts a simple java bean to RDF, provided it's annotated with
 </TR>
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
-<CODE>&nbsp;com.hp.hpl.jena.rdf.model.Resource</CODE></FONT></TD>
+<CODE>&nbsp;org.apache.jena.rdf.model.Resource</CODE></FONT></TD>
 <TD><CODE><B><A HREF="../thewebsemantic/Bean2RDF.html#saveDeep(java.lang.Object)">saveDeep</A></B>(java.lang.Object&nbsp;bean)</CODE>
 
 <BR>
@@ -238,10 +238,10 @@ Converts a simple java bean to RDF, provided it's annotated with
 </TR>
 </TABLE>
 
-<A NAME="Bean2RDF(com.hp.hpl.jena.ontology.OntModel)"><!-- --></A><H3>
+<A NAME="Bean2RDF(org.apache.jena.ontology.OntModel)"><!-- --></A><H3>
 Bean2RDF</H3>
 <PRE>
-public <B>Bean2RDF</B>(com.hp.hpl.jena.ontology.OntModel&nbsp;m)</PRE>
+public <B>Bean2RDF</B>(org.apache.jena.ontology.OntModel&nbsp;m)</PRE>
 <DL>
 <DD>construct a new instance bound to OntModel <tt>m</tt>.
 <P>
@@ -262,7 +262,7 @@ public <B>Bean2RDF</B>(com.hp.hpl.jena.ontology.OntModel&nbsp;m)</PRE>
 <A NAME="save(java.lang.Object)"><!-- --></A><H3>
 save</H3>
 <PRE>
-public com.hp.hpl.jena.rdf.model.Resource <B>save</B>(java.lang.Object&nbsp;bean)</PRE>
+public org.apache.jena.rdf.model.Resource <B>save</B>(java.lang.Object&nbsp;bean)</PRE>
 <DL>
 <DD>Saves <tt>bean</tt> to jena model.
 <P>
@@ -287,7 +287,7 @@ public void <B>delete</B>(java.lang.Object&nbsp;bean)</PRE>
 <A NAME="saveDeep(java.lang.Object)"><!-- --></A><H3>
 saveDeep</H3>
 <PRE>
-public com.hp.hpl.jena.rdf.model.Resource <B>saveDeep</B>(java.lang.Object&nbsp;bean)</PRE>
+public org.apache.jena.rdf.model.Resource <B>saveDeep</B>(java.lang.Object&nbsp;bean)</PRE>
 <DL>
 <DD>Saves the entire object graph starting with <tt>bean</tt>.
 <P>

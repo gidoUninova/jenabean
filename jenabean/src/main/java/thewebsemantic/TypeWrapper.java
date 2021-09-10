@@ -19,7 +19,7 @@ import java.util.logging.Level;
 import thewebsemantic.binding.Persistable;
 
 
-import com.hp.hpl.jena.rdf.model.Resource;
+import org.apache.jena.rdf.model.Resource;
 
 /**
  * Retrieves annotation information as well as other type related operations on

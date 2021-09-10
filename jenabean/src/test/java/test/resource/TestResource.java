@@ -6,7 +6,7 @@ import java.util.Collection;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-import com.hp.hpl.jena.rdf.model.ModelFactory;
+import org.apache.jena.rdf.model.ModelFactory;
 
 import thewebsemantic.NotFoundException;
 import thewebsemantic.Resource;

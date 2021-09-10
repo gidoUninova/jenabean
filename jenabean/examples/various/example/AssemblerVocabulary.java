@@ -1,6 +1,6 @@
 /* CVS $Id: $ */
 package example; 
-import com.hp.hpl.jena.rdf.model.*;
+import org.apache.jena.rdf.model.*;
  
 /**
  * Vocabulary definitions from file:src/example/assembler.n3 

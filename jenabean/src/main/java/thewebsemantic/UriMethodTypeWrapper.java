@@ -5,7 +5,7 @@ import static thewebsemantic.Bean2RDF.logger;
 import java.lang.reflect.Method;
 import java.util.logging.Level;
 
-import com.hp.hpl.jena.rdf.model.Resource;
+import org.apache.jena.rdf.model.Resource;
 
 public class UriMethodTypeWrapper extends TypeWrapper {
 

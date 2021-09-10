@@ -6,7 +6,7 @@ import java.security.NoSuchAlgorithmException;
 import net.sourceforge.stripes.action.ActionBean;
 import net.sourceforge.stripes.action.ActionBeanContext;
 
-import com.hp.hpl.jena.ontology.OntModel;
+import org.apache.jena.ontology.OntModel;
 
 import example.StripesContext;
 

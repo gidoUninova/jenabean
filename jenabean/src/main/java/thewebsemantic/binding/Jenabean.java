@@ -10,8 +10,8 @@ import thewebsemantic.Sparql;
 import thewebsemantic.binder.Binder;
 import thewebsemantic.binder.BinderImp;
 
-import com.hp.hpl.jena.ontology.OntClass;
-import com.hp.hpl.jena.rdf.model.Model;
+import org.apache.jena.ontology.OntClass;
+import org.apache.jena.rdf.model.Model;
 
 public class Jenabean  {
 	

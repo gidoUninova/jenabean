@@ -11,7 +11,7 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.logging.Level;
 
-import com.hp.hpl.jena.rdf.model.Resource;
+import org.apache.jena.rdf.model.Resource;
 
 public class IdMethodTypeWrapper extends TypeWrapper {
 

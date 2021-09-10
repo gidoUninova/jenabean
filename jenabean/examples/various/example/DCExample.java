@@ -6,8 +6,8 @@ import java.util.Collection;
 import thewebsemantic.Bean2RDF;
 import thewebsemantic.RDF2Bean;
 
-import com.hp.hpl.jena.ontology.OntModel;
-import com.hp.hpl.jena.rdf.model.ModelFactory;
+import org.apache.jena.ontology.OntModel;
+import org.apache.jena.rdf.model.ModelFactory;
 
 public class DCExample {
 	public static void main(String[] args) throws Exception {

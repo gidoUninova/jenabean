@@ -5,7 +5,7 @@ import java.util.Iterator;
 import java.util.Set;
 
 
-import com.hp.hpl.jena.rdf.model.Resource;
+import org.apache.jena.rdf.model.Resource;
 
 @SuppressWarnings("unchecked")
 public class LazySet implements Set, Lazy {

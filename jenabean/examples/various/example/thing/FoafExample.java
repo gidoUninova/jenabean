@@ -8,8 +8,8 @@ import thewebsemantic.vocabulary.Geo;
 import thewebsemantic.vocabulary.Rdfs;
 import thewebsemantic.vocabulary.Skos;
 
-import com.hp.hpl.jena.rdf.model.Model;
-import com.hp.hpl.jena.rdf.model.ModelFactory;
+import org.apache.jena.rdf.model.Model;
+import org.apache.jena.rdf.model.ModelFactory;
 
 /**
  * To run this you'll need the Jena jars + the jenabean jar. 

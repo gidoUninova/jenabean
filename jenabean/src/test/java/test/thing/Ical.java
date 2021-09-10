@@ -3,7 +3,7 @@ package test.thing;
 import java.util.Collection;
 import java.util.Date;
 
-import com.hp.hpl.jena.rdf.model.Literal;
+import org.apache.jena.rdf.model.Literal;
 
 import thewebsemantic.As;
 import thewebsemantic.Namespace;

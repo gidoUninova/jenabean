@@ -7,7 +7,7 @@ import java.util.Collection;
 
 import thewebsemantic.NotFoundException;
 
-import com.hp.hpl.jena.rdf.model.Resource;
+import org.apache.jena.rdf.model.Resource;
 
 public class RdfBean<T> {
 

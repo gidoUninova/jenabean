@@ -2,8 +2,8 @@ package example;
 
 import java.util.Collection;
 
-import com.hp.hpl.jena.rdf.model.Model;
-import com.hp.hpl.jena.rdf.model.ModelFactory;
+import org.apache.jena.rdf.model.Model;
+import org.apache.jena.rdf.model.ModelFactory;
 
 import thewebsemantic.Bean2RDF;
 import thewebsemantic.Id;

@@ -4,8 +4,8 @@ import java.io.IOException;
 
 import thewebsemantic.binding.Jenabean;
 
-import com.hp.hpl.jena.rdf.model.Model;
-import com.hp.hpl.jena.rdf.model.ModelFactory;
+import org.apache.jena.rdf.model.Model;
+import org.apache.jena.rdf.model.ModelFactory;
 import static java.net.URI.create;
 
 public class Main2 {

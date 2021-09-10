@@ -9,8 +9,8 @@ import org.junit.Test;
 import thewebsemantic.NotFoundException;
 import thewebsemantic.binding.Jenabean;
 
-import com.hp.hpl.jena.ontology.OntModel;
-import com.hp.hpl.jena.rdf.model.ModelFactory;
+import org.apache.jena.ontology.OntModel;
+import org.apache.jena.rdf.model.ModelFactory;
 import static org.junit.Assert.*;
 import static thewebsemantic.binding.Jenabean.*;
 
