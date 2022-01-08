@@ -3,12 +3,20 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
                       http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>thewebsemantic</groupId>
+    <groupId>io.github.schlotze</groupId>
     <artifactId>jenabean</artifactId>
     <packaging>jar</packaging>
     <version>2.0.0</version>
     <name>Jenabean binding library for RDF</name>
-    <url>http://jenabean.googlecode.com</url>
+    <url>https://github.com/schlotze/jenabean</url>
+    <description>Jenabean is an annotation based library to bind java beans to RDF/OWL.</description>
+
+    <developers>
+        <developer>
+            <id>schlotze</id>
+            <name>Sebastian Scholze</name>
+        </developer>
+    </developers>
 
     <licenses>
         <license>
@@ -18,7 +26,7 @@
         </license>
     </licenses>
     <scm>
-        <url>http://jenabean.googlecode.com/svn</url>
+        <url>https://github.com/schlotze/jenabean/tree/master/jenabean</url>
     </scm>
 
     <properties>
@@ -31,12 +39,12 @@
         <dependency>
             <groupId>org.apache.jena</groupId>
             <artifactId>jena-core</artifactId>
-            <version>4.1.0</version>
+            <version>4.3.2</version>
         </dependency>
         <dependency>
             <groupId>org.apache.jena</groupId>
             <artifactId>jena-arq</artifactId>
-            <version>4.1.0</version>
+            <version>4.3.2</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
@@ -63,6 +71,50 @@
                 <configuration>
                     <release>${java.version}</release>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                        <configuration> <!-- add this to disable checking -->
+                            <additionalOptions>-Xdoclint:none</additionalOptions>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+                <version>3.0.1</version>
+                <executions>
+                    <execution>
+                        <id>sign-artifacts</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>sign</goal>
+                        </goals>
+                        <configuration>
+                            <keyname>BCC0CA99</keyname>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
