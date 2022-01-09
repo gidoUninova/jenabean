@@ -215,7 +215,7 @@
 <name>London Reefs</name> 
 <featureClass rdf:resource="http://www.geonames.org/ontology#U"/> 
 <featureCode rdf:resource="http://www.geonames.org/ontology#U.RFSU"/> 
-<inCountry rdf:resource="http://www.geonames.org/countries/#  "/> 
+<inCountry rdf:resource="http://www.geonames.org/countries/#%20%20"/>
 <wgs84_pos:lat>8.85</wgs84_pos:lat> 
 <wgs84_pos:long>112.5333333</wgs84_pos:long> 
 <nearbyFeatures rdf:resource="http://sws.geonames.org/1879967/nearby.rdf"/> 
