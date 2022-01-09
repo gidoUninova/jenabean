@@ -11,13 +11,12 @@
 
     <name>Jenabean</name>
 
-    <inceptionYear>2022</inceptionYear>
+    <inceptionYear>2015</inceptionYear>
 
     <url>https://github.com/schlotze/jenabean</url>
 
     <organization>
-        <name>schlotze</name>
-        <url>https://github.com/schlotze/</url>
+        <name>thewebsemantic</name>
     </organization>
 
     <properties>
