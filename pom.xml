@@ -3,7 +3,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>io.github.schlotze</groupId>
+    <groupId>de.atb-bremen</groupId>
     <artifactId>parent</artifactId>
     <version>2.0.0</version>
 
@@ -13,10 +13,11 @@
 
     <inceptionYear>2015</inceptionYear>
 
-    <url>https://github.com/schlotze/jenabean</url>
+    <url>https://github.com/ATB-Bremen/jenabean</url>
 
     <organization>
-        <name>thewebsemantic</name>
+        <name>ATB – Institut für angewandte Systemtechnik Bremen GmbH</name>
+        <url>https://www.atb-bremen.de</url>
     </organization>
 
     <properties>
